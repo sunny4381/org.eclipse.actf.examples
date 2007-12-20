@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Copyright (c) 2007 IBM Corporation and others.
+ All rights reserved. This program and the accompanying materials
+ are made available under the terms of the Eclipse Public License v1.0
+ which accompanies this distribution, and is available at
+ http://www.eclipse.org/legal/epl-v10.html
+
+ Contributors:
+     Hisashi MIYASHITA - initial API and implementation
+-->
+<project name="ActiveEclipse" default="all" basedir=".">
+  <property name="Eclipse"	value="c:/wen32/Eclipse/3.2.2"/>
+  <property name="java_home"	value="c:/wen32/jdk/Sun/1512"/>
+  <property name="jre"	        value="${java_home}/jre"/>
+  <property name="clsid"	value="{93FFA50F-2EA4-412F-856D-99B1BEFEEE27}"/>
+  <property name="lib"		value="./lib"/>
+  <property name="bin"		value="./bin"/>
+  <property name="src"		value="./src"/>
+  <property name="test"		value="./test"/>
+
+  <path id="compile.class.path">
+    <pathelement path="${Eclipse}/startup.jar" />
+  </path>
+
+  <target name="all" depends="jar" />
+
+  <target name="init">
+    <mkdir dir="${bin}" />
+  </target>
+
+  <target name="compile" depends="init">
+    <javac srcdir="${src}" destdir="${bin}"
+	   classpath="${bin}" source="1.5"
+	   debug="on" optimize="on" deprecation="off">
+      <classpath refid="compile.class.path" />
+    </javac>
+  </target>
+
+  <target name="jar" depends="compile">
+    <!-- unjar src="${Eclipse}/startup.jar" dest="${bin}"/-->
+    <jar jarfile="ActiveEclipse.jar"
+	 basedir="${bin}"
+	 excludes="**/.svn"
+	 manifest="src/META-INF/MANIFEST.MF"/>
+  </target>
+
+  <target name="package" depends="jar">
+    <exec executable="${java_home}/bin/packager">
+      <arg value="-clsid"/>
+      <arg value="${clsid}"/>
+      <arg value="-out"/>
+      <arg value="${jre}/axbridge/bin"/>
+      <arg value="-reg"/>
+      <arg value="ActiveEclipse.jar"/>
+      <arg value="org.eclipse.actf.examples.aibrowser.bean.NavigatorUIBean"/>
+    </exec>
+  </target>
+
+  <target name="clean" depends="init">
+    <delete dir="${bin}"/>
+  </target>
+
+</project>

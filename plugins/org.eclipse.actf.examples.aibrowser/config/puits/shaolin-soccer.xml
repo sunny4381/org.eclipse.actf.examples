@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Copyright (c) 2007 IBM Corporation and others.
+ All rights reserved. This program and the accompanying materials
+ are made available under the terms of the Eclipse Public License v1.0
+ which accompanies this distribution, and is available at
+ http://www.eclipse.org/legal/epl-v10.html
+
+ Contributors:
+     IBM Corporation - initial API and implementation
+-->
+<puits xmlns="urn:puits">
+  <meta xmlns="http://www.ibm.com/xmlns/prod/AcTF/aiBrowser/selector/1.0">
+	<targetSite uri="http://www.apple.com/trailers/miramax/shaolin_soccer/viewingpage.html">
+	  <targetContent key="*"/>
+	</targetSite>
+  </meta>
+  
+  <alternative type="audio-description">
+	<item importance="high">
+	  <start type="relTime">00:41:000</start>
+	  <duration>00:02:500</duration>
+	  <description xml:lang="en">The shoot hits the post, and the post bends.</description>
+	  <description xml:lang="ja">シュートでゴールポストが曲がる</description>
+	</item>	
+	<item importance="high">
+	  <start type="relTime">01:14:000</start>
+	  <duration>00:02:500</duration>
+	  <description xml:lang="en">The man shoots at the cocrete wall, and makes a hole.</description>
+	  <description xml:lang="ja">コンクリートの壁にシュートをし、穴をあける</description>
+	</item>
+	<item importance="high">
+	  <start type="relTime">01:24:000</start>
+	  <duration>00:02:500</duration>
+	  <description xml:lang="en">The man's shoot knocks two men down. </description>
+	  <description xml:lang="ja">シュートで、２人の男を吹き飛ばす</description>
+	</item>	
+	<item importance="high">
+	  <start type="relTime">01:42:000</start>
+	  <duration>00:02:500</duration>
+	  <description xml:lang="en">The kicked ball is in flames, but the keeper catches it with one finger.</description>
+	  <description xml:lang="ja">シュートしたボールから火が出るが、キーパーは指一本で止める</description>
+	</item>		
+	<item importance="high">
+	  <start type="relTime">01:53:000</start>
+	  <duration>00:02:500</duration>
+	  <description xml:lang="en">The wind of the powerful shoot tears off the keeper's uniform.</description>
+	  <description xml:lang="ja">シュートしたボールの風で、キーパーのユニフォームが破れる</description>
+	</item>		
+  </alternative>  
+</puits>

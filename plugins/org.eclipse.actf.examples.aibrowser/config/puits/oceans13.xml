@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Copyright (c) 2007 IBM Corporation and others.
+ All rights reserved. This program and the accompanying materials
+ are made available under the terms of the Eclipse Public License v1.0
+ which accompanies this distribution, and is available at
+ http://www.eclipse.org/legal/epl-v10.html
+
+ Contributors:
+     IBM Corporation - initial API and implementation
+-->
+<puits xmlns="urn:puits">
+  <meta xmlns="http://www.ibm.com/xmlns/prod/AcTF/aiBrowser/selector/1.0">
+	<targetSite uri="http://oceans13.warnerbros.com/">
+	  <targetContent key="*"/>
+	</targetSite>
+  </meta>
+  
+  <alternative type="audio-description">
+	<item importance="high">
+	  <start type="relTime">00:19:000</start>
+	  <duration>00:02:500</duration>
+	  <description xml:lang="en">If you cross one ocean</description>
+	  <description xml:lang="ja">一人に出会うと</description>
+	</item>	
+	<item importance="high">
+	  <start type="relTime">00:28:000</start>
+	  <duration>00:02:500</duration>
+	  <description xml:lang="en">You face them all</description>
+	  <description xml:lang="ja">全員に会う</description>
+	</item>
+	<item importance="high">
+	  <start type="relTime">00:43:000</start>
+	  <duration>00:02:500</duration>
+	  <description xml:lang="en">On June 8</description>
+	  <description xml:lang="ja">６月８日</description>
+	</item>
+	<item importance="high">
+	  <start type="relTime">00:59:000</start>
+	  <duration>00:02:500</duration>
+	  <description xml:lang="en">Revenge is a funny thing</description>
+	  <description xml:lang="ja">リベンジは楽しい</description>
+	</item>		
+	<item importance="high">
+	  <start type="relTime">01:07:000</start>
+	  <duration>00:02:500</duration>
+	  <description xml:lang="en">But what are the odds of getting even?</description>
+	  <description xml:lang="ja">互角になる見込みはあるか？</description>
+	</item>		
+	<item importance="high">
+	  <start type="relTime">01:27:000</start>
+	  <duration>00:02:500</duration>
+	  <description xml:lang="en">George Clooney</description>
+	  <description xml:lang="ja">ジョージクルーニー</description>
+	</item>
+	<item importance="high">
+	  <start type="relTime">01:30:000</start>
+	  <duration>00:02:500</duration>
+	  <description xml:lang="en">Brad Pitt</description>
+	  <description xml:lang="ja">ブラッドピット</description>
+	</item>
+	<item importance="high">
+	  <start type="relTime">01:36:000</start>
+	  <duration>00:02:500</duration>
+	  <description xml:lang="en">Mad Damon</description>
+	  <description xml:lang="ja">マッドデイモン</description>
+	</item>
+	<item importance="high">
+	  <start type="relTime">01:44:000</start>
+	  <duration>00:02:500</duration>
+	  <description xml:lang="en">Andy Garcia</description>
+	  <description xml:lang="ja">アンディガルシア</description>
+	</item>
+	<item importance="high">
+	  <start type="relTime">01:49:000</start>
+	  <duration>00:02:500</duration>
+	  <description xml:lang="en">Don Cheadle</description>
+	  <description xml:lang="ja">ドンチードル</description>
+	</item>	
+	<item importance="high">
+	  <start type="relTime">01:52:000</start>
+	  <duration>00:02:500</duration>
+	  <description xml:lang="en">Bernie Mac</description>
+	  <description xml:lang="ja">バーニーマック</description>
+	</item>
+	<item importance="high">
+	  <start type="relTime">01:55:500</start>
+	  <duration>00:02:500</duration>
+	  <description xml:lang="en">With Ellen Barkin</description>
+	  <description xml:lang="ja">エレンバーキン</description>
+	</item>
+	<item importance="high">
+	  <start type="relTime">02:00:500</start>
+	  <duration>00:02:500</duration>
+	  <description xml:lang="en">And Al Pacino</description>
+	  <description xml:lang="ja">アルパチーノ</description>
+	</item>	
+	<item importance="high">
+	  <start type="relTime">02:09:000</start>
+	  <duration>00:02:500</duration>
+	  <description xml:lang="en">Ocean's thirteen</description>
+	  <description xml:lang="ja">オーシャンズサーティーン</description>
+	</item>	
+	<item importance="high">
+	  <start type="relTime">02:09:000</start>
+	  <duration>02:25:000</duration>
+	  <description xml:lang="en">June 8</description>
+	  <description xml:lang="ja">６月８日</description>
+	</item>		
+  </alternative>
+</puits>

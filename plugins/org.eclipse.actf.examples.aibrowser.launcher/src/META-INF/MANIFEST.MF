@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+
+Name: org/eclipse/actf/examples/aibrowser/launcher/bean/NavigatorUIBean.class
+Java-Bean: true
+
+Name: org/eclipse/actf/examples/aibrowser/launcher/nvm3/Nvm3Service.class
+Java-Bean: true

@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Eclipse ACTF Example aiBrowser (Incubation)
+Bundle-SymbolicName: org.eclipse.actf.examples.aibrowser;singleton:=true
+Bundle-Version: 0.0.1
+Bundle-Activator: org.eclipse.actf.examples.aibrowser.ClientPlugin
+Bundle-Vendor: Eclipse.org
+Bundle-Localization: plugin
+Require-Bundle: org.eclipse.actf.model.flash.proxy,
+ org.eclipse.actf.common,
+ org.eclipse.actf.ai.xmlstore,
+ org.eclipse.actf.ai.navigator,
+ org.eclipse.core.runtime,
+ org.eclipse.ui
+Eclipse-LazyStart: true

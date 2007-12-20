@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Copyright (c) 2007 IBM Corporation and others.
+ All rights reserved. This program and the accompanying materials
+ are made available under the terms of the Eclipse Public License v1.0
+ which accompanies this distribution, and is available at
+ http://www.eclipse.org/legal/epl-v10.html
+
+ Contributors:
+     IBM Corporation - initial API and implementation
+-->
+<UserPreferences xmlns="http://www.ibm.com/xmlns/prod/AcTF/aiBrowser/preferences/1.0">
+  <Commands>
+	<PASSTHROUGH><key>VK_ALT</key></PASSTHROUGH>
+    
+	<!-- for demo --><!--
+	<SPEED_UP><key>VK_UP CTRL_MASK</key></SPEED_UP>
+	<SPEED_DOWN><key>VK_DOWN CTRL_MASK</key></SPEED_DOWN>
+	<PLAY_NEXT><key>VK_RIGHT CTRL_MASK</key></PLAY_NEXT>
+	<PLAY_PREV><key>VK_LEFT CTRL_MASK</key></PLAY_PREV>
+	<START_RECORDING><key>VK_0 CTRL_MASK</key></START_RECORDING>
+	-->
+	
+	<!-- invalidation (for demo) -->
+	<NOOP>
+	  <key>VK_N CTRL_MASK</key>
+	  <key>VK_Q CTRL_MASK</key>
+	</NOOP>
+	
+	<!-- Default is no operation. They will be overloaded. -->	
+	<NOOP>
+	  <key jawsscript="false">VK_A</key><key jawsscript="false">VK_A SHIFT_MASK</key>
+	  <key jawsscript="false">VK_B</key><key jawsscript="false">VK_B SHIFT_MASK</key>
+	  <key jawsscript="false">VK_C</key><key jawsscript="false">VK_C SHIFT_MASK</key>
+	  <key jawsscript="false">VK_D</key><key jawsscript="false">VK_D SHIFT_MASK</key>
+	  <key jawsscript="false">VK_E</key><key jawsscript="false">VK_E SHIFT_MASK</key>
+	  <key jawsscript="false">VK_F</key><key jawsscript="false">VK_F SHIFT_MASK</key>
+	  <key jawsscript="false">VK_G</key><key jawsscript="false">VK_G SHIFT_MASK</key>
+	  <key jawsscript="false">VK_H</key><key jawsscript="false">VK_H SHIFT_MASK</key>
+	  <key jawsscript="false">VK_I</key><key jawsscript="false">VK_I SHIFT_MASK</key>
+	  <key jawsscript="false">VK_J</key><key jawsscript="false">VK_J SHIFT_MASK</key>
+	  <key jawsscript="false">VK_K</key><key jawsscript="false">VK_K SHIFT_MASK</key>
+	  <key jawsscript="false">VK_L</key><key jawsscript="false">VK_L SHIFT_MASK</key>
+	  <key jawsscript="false">VK_M</key><key jawsscript="false">VK_M SHIFT_MASK</key>
+	  <key jawsscript="false">VK_N</key><key jawsscript="false">VK_N SHIFT_MASK</key>
+	  <key jawsscript="false">VK_O</key><key jawsscript="false">VK_O SHIFT_MASK</key>
+	  <key jawsscript="false">VK_P</key><key jawsscript="false">VK_P SHIFT_MASK</key>
+	  <key jawsscript="false">VK_Q</key><key jawsscript="false">VK_Q SHIFT_MASK</key>
+	  <key jawsscript="false">VK_R</key><key jawsscript="false">VK_R SHIFT_MASK</key>
+	  <key jawsscript="false">VK_S</key><key jawsscript="false">VK_S SHIFT_MASK</key>
+	  <key jawsscript="false">VK_T</key><key jawsscript="false">VK_T SHIFT_MASK</key>
+	  <key jawsscript="false">VK_U</key><key jawsscript="false">VK_U SHIFT_MASK</key>
+	  <key jawsscript="false">VK_V</key><key jawsscript="false">VK_V SHIFT_MASK</key>
+	  <key jawsscript="false">VK_W</key><key jawsscript="false">VK_W SHIFT_MASK</key>
+	  <key jawsscript="false">VK_X</key><key jawsscript="false">VK_X SHIFT_MASK</key>
+	  <key jawsscript="false">VK_Y</key><key jawsscript="false">VK_Y SHIFT_MASK</key>
+	  <key jawsscript="false">VK_Z</key><key jawsscript="false">VK_Z SHIFT_MASK</key>
+	  <key jawsscript="false">VK_1</key><key jawsscript="false">VK_1 SHIFT_MASK</key>
+  	  <key jawsscript="false">VK_2</key><key jawsscript="false">VK_2 SHIFT_MASK</key>
+  	  <key jawsscript="false">VK_3</key><key jawsscript="false">VK_3 SHIFT_MASK</key>
+  	  <key jawsscript="false">VK_4</key><key jawsscript="false">VK_4 SHIFT_MASK</key>
+  	  <key jawsscript="false">VK_5</key><key jawsscript="false">VK_5 SHIFT_MASK</key>
+  	  <key jawsscript="false">VK_6</key><key jawsscript="false">VK_6 SHIFT_MASK</key>
+	  <key jawsscript="false">VK_7</key><key jawsscript="false">VK_7 SHIFT_MASK</key>
+	  <key jawsscript="false">VK_8</key><key jawsscript="false">VK_8 SHIFT_MASK</key>
+	  <key jawsscript="false">VK_9</key><key jawsscript="false">VK_9 SHIFT_MASK</key>
+	  <key jawsscript="false">VK_0</key><key jawsscript="false">VK_0 SHIFT_MASK</key>
+	</NOOP>
+  </Commands>
+  
+  <Functions>
+    <stopSpeak><key jawskey="VK_CONTROL">VK_CONTROL</key></stopSpeak>
+    <stopSpeak><key jawskey="VK_CONTROL">VK_CONTROL CTRL_MASK</key></stopSpeak>
+    <stopSpeak><key jawskey="VK_SHIFT">VK_SHIFT SHIFT_MASK</key></stopSpeak>
+  </Functions>
+  
+  <Functions>
+	<treeRight><key>VK_RIGHT CTRL_MASK</key></treeRight>
+	<treeLeft><key>VK_LEFT CTRL_MASK</key></treeLeft>
+	<treeUp><key>VK_UP CTRL_MASK</key></treeUp>
+	<treeDown><key>VK_DOWN CTRL_MASK</key></treeDown>
+  </Functions>
+  
+  <!--++++++++++++++++ File Menu +++++++++++++++++++++-->
+
+  <Functions menu="file" menuGroup="fileGroup">
+  	<openTab><key>VK_O CTRL_MASK</key></openTab>
+    <launchBrowser><key>VK_I CTRL_MASK ALT_MASK</key></launchBrowser>
+  </Functions>
+  
+  <Functions menu="file" menuGroup="importGroup">
+  	<importMetadata><key>VK_I CTRL_MASK</key></importMetadata>
+  	<exportMetadata><key>VK_E CTRL_MASK</key></exportMetadata>
+  	<separator/>
+  	<exportAllMetadata><key>VK_E CTRL_MASK ALT_MASK</key></exportAllMetadata>
+  </Functions>
+  
+  <Functions menu="file" menuGroup="closeGroup">
+	<closeTab><key>VK_W CTRL_MASK</key></closeTab>
+  </Functions>
+  
+  <!--++++++++++++++++ Navigate Menu +++++++++++++++++++++--> 
+
+  <Functions menu="navigate" menuGroup="navigation">
+	<traverseDown>
+		<key>VK_DOWN</key>
+	</traverseDown>
+	<traverseUp>
+		<key>VK_UP</key>
+	</traverseUp>
+	<speakAll>
+		<key>VK_DOWN ALT_MASK</key>
+		<!-- <key>VK_DOWN INSERT_MASK</key> -->
+	</speakAll>
+	<separator/>
+	<click>
+	  <key>VK_RETURN</key>
+	  <key>VK_SPACE</key>
+	</click>	
+  </Functions>
+
+  <Functions menu="navigate" menuGroup="search">
+  	<searchNext><key>VK_F CTRL_MASK</key></searchNext>
+  	<searchPrevious><key>VK_R CTRL_MASK</key></searchPrevious>
+	<showAccessKeyList><key>VK_K ALT_MASK CTRL_MASK</key></showAccessKeyList>
+  </Functions>
+  
+  <Functions menu="navigate" menuGroup="etc">
+	<forceRestart><key>VK_F4</key></forceRestart>
+	<selectNextNVM3><key>VK_N CTRL_MASK ALT_MASK</key></selectNextNVM3>
+	<toggleDescriptionEnable><key>VK_A CTRL_MASK ALT_MASK</key></toggleDescriptionEnable>
+  </Functions>
+  
+  <!--++++++++++++++++ Jump Menu +++++++++++++++++++++--> 
+
+  <Functions menu="org.eclipse.actf.examples.aibrowser.jumping" menuGroup="jumping1">
+	<treeTop><key>VK_HOME</key><key>VK_HOME CTRL_MASK</key></treeTop>
+	<treeBottom><key>VK_END</key><key>VK_END CTRL_MASK</key></treeBottom>
+  </Functions>
+
+  <Functions menu="org.eclipse.actf.examples.aibrowser.jumping" menuGroup="jumping2">
+	<nextHeader>
+	  <key>VK_RIGHT</key>
+	  <key>VK_H</key>
+	</nextHeader>
+	<nextLink><key>VK_TAB</key></nextLink>
+	<nextObject><key>VK_O</key></nextObject>
+	<nextInputable><key>VK_F</key></nextInputable>
+	<nextListItem><key>VK_I</key></nextListItem>
+	<nextBlock><key>VK_N</key></nextBlock>
+	<nextMedia><key>VK_M</key></nextMedia>
+    <nextAlterable><key>VK_A</key></nextAlterable>
+	<separator/>
+	<previousHeader>
+	  <key>VK_LEFT</key>
+	  <key>VK_H SHIFT_MASK</key>
+	</previousHeader>
+	<previousLink><key>VK_TAB SHIFT_MASK</key></previousLink>
+	<previousObject><key>VK_O SHIFT_MASK</key></previousObject>
+	<previousInputable><key>VK_F SHIFT_MASK</key></previousInputable>
+	<previousListItem><key>VK_I SHIFT_MASK</key></previousListItem>
+	<previousBlock><key>VK_N SHIFT_MASK</key></previousBlock>
+	<previousMedia><key>VK_M SHIFT_MASK</key></previousMedia>
+    <previousAlterable><key>VK_A SHIFT_MASK</key></previousAlterable>
+  </Functions>
+  
+  <Functions menu="org.eclipse.actf.examples.aibrowser.jumping" menuGroup="jumping3">
+  	<nextHeader1><key jawskey="currentScript">VK_1</key></nextHeader1>
+  	<nextHeader2><key jawskey="currentScript">VK_2</key></nextHeader2>
+  	<nextHeader3><key jawskey="currentScript">VK_3</key></nextHeader3>
+  	<nextHeader4><key jawskey="currentScript">VK_4</key></nextHeader4>
+  	<nextHeader5><key jawskey="currentScript">VK_5</key></nextHeader5>
+  	<nextHeader6><key jawskey="currentScript">VK_6</key></nextHeader6>
+	<separator/>
+	<previousHeader1><key jawskey="currentScript">VK_1 SHIFT_MASK</key></previousHeader1>
+	<previousHeader2><key jawskey="currentScript">VK_2 SHIFT_MASK</key></previousHeader2>
+	<previousHeader3><key jawskey="currentScript">VK_3 SHIFT_MASK</key></previousHeader3>
+	<previousHeader4><key jawskey="currentScript">VK_4 SHIFT_MASK</key></previousHeader4>
+	<previousHeader5><key jawskey="currentScript">VK_5 SHIFT_MASK</key></previousHeader5>
+	<previousHeader6><key jawskey="currentScript">VK_6 SHIFT_MASK</key></previousHeader6>
+  </Functions>
+  
+  <!--++++++++++++++++ Multimedia Menu +++++++++++++++++++++--> 
+  
+  <Functions menu="org.eclipse.actf.examples.aibrowser.multimedia" menuGroup="basic">
+	<playMedia><key>VK_P CTRL_MASK</key></playMedia>
+	<stopMedia><key>VK_S CTRL_MASK</key></stopMedia>
+	<pauseMedia>
+	  <key jawskey="VK_P CTRL_MASK ALT_MASK SHIFT_MASK">VK_PAUSE</key>
+	  <key display="none" jawskey="VK_P CTRL_MASK ALT_MASK SHIFT_MASK">VK_PAUSE CTRL_MASK</key>
+	  <key display="none">VK_P CTRL_MASK ALT_MASK SHIFT_MASK</key>
+	</pauseMedia>
+  </Functions>
+  
+  <Functions menu="org.eclipse.actf.examples.aibrowser.multimedia" menuGroup="volume">
+	<muteMedia><key>VK_M CTRL_MASK</key></muteMedia>
+	<volumeDownMedia><key>VK_J CTRL_MASK</key></volumeDownMedia>
+	<volumeUpMedia><key>VK_K CTRL_MASK</key></volumeUpMedia>
+	<separator/>
+	<minimalVolumeDownMedia><key>VK_J SHIFT_MASK CTRL_MASK</key></minimalVolumeDownMedia>
+	<minimalVolumeUpMedia><key>VK_K SHIFT_MASK CTRL_MASK</key></minimalVolumeUpMedia>
+	<separator/>
+	<repairFlash><key>VK_R CTRL_MASK</key></repairFlash>
+  </Functions>
+  
+  <!--++++++++++++++++ Annotation Menu +++++++++++++++++++++--> 
+
+  <Functions menu="org.eclipse.actf.examples.aibrowser.multimedia" menuGroup="etc">
+	<speechSpeedUp><key jawshandle="true">VK_PAGE_UP CTRL_MASK ALT_MASK</key></speechSpeedUp>
+	<speechSpeedDown><key jawshandle="true">VK_PAGE_DOWN CTRL_MASK ALT_MASK</key></speechSpeedDown>
+  </Functions>
+
+  <Functions menu="org.eclipse.actf.examples.aibrowser.annotation" menuGroup="memo">
+    <editAltText><key>VK_A CTRL_MASK</key></editAltText>
+    <makeLandmark><key>VK_H CTRL_MASK</key></makeLandmark>
+  </Functions>
+
+  <Functions menu="org.eclipse.actf.examples.aibrowser.annotation" menuGroup="file">
+    <saveUserInfo><key>VK_S CTRL_MASK ALT_MASK</key></saveUserInfo>
+    <removeUserInfo><key>VK_R CTRL_MASK ALT_MASK</key></removeUserInfo>
+  </Functions>
+
+  <!--++++++++++++++++ Window Menu +++++++++++++++++++++--> 
+
+  <Functions menu="window" menuGroup="navStart">
+  	<navigateRefresh><key>VK_F5</key></navigateRefresh>
+	<forward><key>VK_RIGHT ALT_MASK</key></forward>
+	<backward><key>VK_LEFT ALT_MASK</key></backward>
+	<enterBrowserAddress><key>VK_D ALT_MASK</key></enterBrowserAddress>
+	<separator/>
+	<nextTab><key>VK_TAB CTRL_MASK</key></nextTab>
+	<prevTab><key>VK_TAB CTRL_MASK SHIFT_MASK</key></prevTab>
+	<separator/>
+	<speakCurrentStatus><key>VK_S</key></speakCurrentStatus>
+	<speakMediaStatus><key>VK_T</key></speakMediaStatus>
+	<separator/>
+	<toggleLeftViewsShowing><key>VK_T CTRL_MASK ALT_MASK</key></toggleLeftViewsShowing>
+  </Functions>
+
+  <Functions>
+	<backward><key>VK_BACK_SPACE</key></backward>
+  </Functions>
+  
+</UserPreferences>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Copyright (c) 2007 IBM Corporation and others.
+ All rights reserved. This program and the accompanying materials
+ are made available under the terms of the Eclipse Public License v1.0
+ which accompanies this distribution, and is available at
+ http://www.eclipse.org/legal/epl-v10.html
+
+ Contributors:
+     IBM Corporation - initial API and implementation
+-->
+<puits xmlns="urn:puits">
+  <meta xmlns="http://www.ibm.com/xmlns/prod/AcTF/aiBrowser/selector/1.0">
+	<targetSite uri="http://www-8.ibm.com/systems/tw/p/tackbackcontrol/index.html">
+	  <targetContent key="*"/>
+	</targetSite>
+	<targetSite uri="http://www-07.ibm.com/systems/tw/p/tackbackcontrol/index.html">
+	  <targetContent key="*"/>
+	</targetSite>
+  </meta>
+  
+  <alternative type="audio-description">
+	<item importance="high">
+	  <start type="relTime">00:00:500</start>
+	  <duration>00:02:500</duration>
+	  <description xml:lang="en">in the large room</description>
+	  <description xml:lang="ja">広い部屋</description>
+	</item>
+	<item importance="high">
+	  <start type="relTime">00:03:000</start>
+	  <duration>00:04:000</duration>
+	  <description xml:lang="en">a man is sitting</description>
+	  <description xml:lang="ja">青年が一人</description>
+	</item>
+	<item importance="high">
+	  <start type="relTime">00:07:000</start>
+	  <duration>00:06:000</duration>
+	  <description xml:lang="en">but servers are breeding behind him</description>
+	  <description xml:lang="ja">勝手に増殖するサーバー</description>
+	</item>
+	<item importance="high">
+	  <start type="relTime">00:13:000</start>
+	  <duration>00:06:000</duration>
+	  <description xml:lang="en">he doesn't notice but the servers are still breeding</description>
+	  <description xml:lang="ja">青年は気が付かない</description>
+	</item>
+	<item importance="high">
+	  <start type="relTime">00:19:000</start>
+	  <duration>00:05:000</duration>
+	  <description xml:lang="en">turning his head to look back</description>
+	  <description xml:lang="ja">ゆっくりと振り返る青年</description>
+	</item>
+	<item importance="high">
+	  <start type="relTime">00:24:000</start>
+	  <duration>00:02:000</duration>
+	  <description xml:lang="en">he is surprised!</description>
+	  <description xml:lang="ja">驚く青年</description>
+	</item>
+  </alternative>
+</puits>

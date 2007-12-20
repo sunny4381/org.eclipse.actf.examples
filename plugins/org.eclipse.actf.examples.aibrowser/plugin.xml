@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+
+   <extension
+         id="aiBrowserApplication"
+         point="org.eclipse.core.runtime.applications">
+      <application>
+         <run
+               class="org.eclipse.actf.examples.aibrowser.AiBrowserApplication">
+         </run>
+      </application>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectives">
+      <perspective
+            name="Browser Perspective"
+            class="org.eclipse.actf.examples.aibrowser.Perspective"
+            id="org.eclipse.actf.examples.aibrowser.DefaultPerspective">
+      </perspective>
+   </extension>
+   <extension
+         point="org.eclipse.ui.actionSets">
+      <actionSet
+            id="org.eclipse.actf.examples.aibrowser.ActionSet"
+            label="Accessibility Browser Action Sets"
+            visible="true">
+         <menu
+               id="org.eclipse.actf.examples.aibrowser.FavoritesMenu"
+               label="F&amp;avorites"
+               path="org.eclipse.actf.examples.aibrowser.FileMenu">
+            <separator name="favoritesgroup"/>
+         </menu>
+            <action
+                  class="org.eclipse.actf.examples.aibrowser.actions.OpenHelpAction"
+                  id="org.eclipse.actf.examples.aibrowser.actions.OpenHelpAction"
+                  label="%Menu.&amp;OpenHelp"
+                  menubarPath="help/helpStart"
+                  style="push"/>
+      </actionSet>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer class="org.eclipse.actf.examples.aibrowser.preferences.PreferenceInitializer"/>
+   </extension>
+   <extension
+         id="aiBrowser"
+         point="org.eclipse.core.runtime.products">
+      <product
+            application="org.eclipse.actf.examples.aibrowser.aiBrowserApplication"
+            name="aiBrowser for Multimedia">
+         <property
+               name="windowImages"
+               value="icons/bl_16.gif,icons/bl_32.gif,icons/bl_48.gif"/>
+         <property
+               name="aboutText"
+               value="%About.Text"/>
+         <property
+               name="aboutImage"
+               value="about.bmp"/>
+         <property
+               name="startupProgressRect"
+               value="0,318,500,12"/>
+         <property
+               name="startupForegroundColor"
+               value="000000"/>
+         <property
+               name="startupMessageRect"
+               value="10,250,480,20"/>
+      </product>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension targetID="org.eclipse.actf.examples.aibrowser.DefaultPerspective">
+         <actionSet id="org.eclipse.actf.model.flash.proxy.actionSet"/>
+      </perspectiveExtension>
+   </extension>
+   <extension
+         point="org.eclipse.ui.startup">
+      <startup class="org.eclipse.actf.examples.aibrowser.monitor.ABrowserMonitor"/>
+   </extension>
+
+</plugin>

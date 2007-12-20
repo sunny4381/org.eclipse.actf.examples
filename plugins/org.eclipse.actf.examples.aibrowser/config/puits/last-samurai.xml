@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Copyright (c) 2007 IBM Corporation and others.
+ All rights reserved. This program and the accompanying materials
+ are made available under the terms of the Eclipse Public License v1.0
+ which accompanies this distribution, and is available at
+ http://www.eclipse.org/legal/epl-v10.html
+
+ Contributors:
+     IBM Corporation - initial API and implementation
+-->
+<puits xmlns="urn:puits">
+  <meta xmlns="http://www.ibm.com/xmlns/prod/AcTF/aiBrowser/selector/1.0">
+	<targetSite uri="http://lastsamurai.warnerbros.com/epk/clip3.html?id=clip3&amp;type=windows&amp;speed=500000">
+	  <targetContent key="*"/>
+	</targetSite>
+  </meta>
+  
+  <alternative type="audio-description">
+	<item importance="high">
+	  <start type="relTime">00:09:000</start>
+	  <duration>00:02:500</duration>
+	  <description xml:lang="en">Katsumoto stands up, and slowly approaches the man.</description>
+	  <description xml:lang="ja">勝本は立ち上がって、ゆっくりと男に近付いていく</description>
+	</item>
+	<item importance="high">
+	  <start type="relTime">00:53:000</start>
+	  <duration>00:02:500</duration>
+	  <description xml:lang="en">The man looks back at Katsumoto.</description>
+	  <description xml:lang="ja">男は勝本の方に振り向く</description>
+	</item>	
+	<item importance="high">
+	  <start type="relTime">01:00:000</start>
+	  <duration>00:02:500</duration>
+	  <description xml:lang="en">Katsumoto bows to the man.</description>
+	  <description xml:lang="ja">勝本は男にお辞儀をする</description>
+	</item>		
+	<item importance="high">
+	  <start type="relTime">01:16:000</start>
+	  <duration>00:02:500</duration>
+	  <description xml:lang="en">Katsumoto smiles and leaves.</description>
+	  <description xml:lang="ja">勝本は笑って、去っていく</description>
+	</item>			
+  </alternative>
+</puits>

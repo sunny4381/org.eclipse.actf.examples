@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?pde version="3.1"?>
+
+<product name="aiBrowser for Multimedia" id="org.eclipse.actf.examples.aibrowser.aiBrowser" application="org.eclipse.actf.examples.aibrowser.aiBrowserApplication" useFeatures="true">
+
+   <aboutInfo>
+      <image path="/org.eclipse.actf.examples.aibrowser/about.bmp"/>
+      <text>
+         %About.Text
+      </text>
+   </aboutInfo>
+
+   <configIni use="default"/>
+
+   <launcherArgs>
+      <programArgs>-vm .\jre\bin\javaw.exe -forceProxy -clean</programArgs>
+      <vmArgs>-Xmx256m</vmArgs>
+   </launcherArgs>
+
+   <windowImages i16="/org.eclipse.actf.examples.aibrowser/icons/bl_16.gif" i32="/org.eclipse.actf.examples.aibrowser/icons/bl_32.gif" i48="/org.eclipse.actf.examples.aibrowser/icons/bl_48.gif"/>
+
+   <splash
+      location="org.eclipse.actf.examples.aibrowser"
+      startupProgressRect="0,318,500,12"
+      startupMessageRect="10,250,480,20"
+      startupForegroundColor="000000" />
+   <launcher name="aiBrowser">
+      <solaris/>
+      <win useIco="true">
+         <ico path="/org.eclipse.actf.examples.aibrowser/icons/aiBrowser.ico"/>
+         <bmp/>
+      </win>
+   </launcher>
+
+
+   <plugins>
+      <plugin id="com.ibm.accessibility.abrowser.client"/>
+      <plugin id="com.ibm.accessibility.abrowser.dombycom"/>
+      <plugin id="com.ibm.accessibility.abrowser.keyhook.win32"/>
+      <plugin id="com.ibm.accessibility.abrowser.keyui"/>
+      <plugin id="com.ibm.accessibility.abrowser.navigator"/>
+      <plugin id="com.ibm.accessibility.abrowser.nvm3"/>
+      <plugin id="com.ibm.accessibility.abrowser.query"/>
+      <plugin id="com.ibm.accessibility.adesigner.client"/>
+      <plugin id="com.ibm.accessibility.adesigner.common"/>
+      <plugin id="com.ibm.accessibility.adesigner.pngmaker"/>
+      <plugin id="com.ibm.accessibility.adesigner.runtime"/>
+      <plugin id="com.ibm.accessibility.browser.odf"/>
+      <plugin id="com.ibm.accessibility.com.win32"/>
+      <plugin id="com.ibm.accessibility.common"/>
+      <plugin id="com.ibm.accessibility.extension"/>
+      <plugin id="com.ibm.accessibility.lowvision"/>
+      <plugin id="com.ibm.accessibility.proxy"/>
+      <plugin id="com.ibm.accessibility.tts.protalker"/>
+      <plugin id="com.ibm.accessibility.tts.sapi"/>
+      <plugin id="com.ibm.accessibility.tts.svdk"/>
+      <plugin id="com.ibm.accessibility.voice"/>
+      <plugin id="com.ibm.accessibility.waxcoding"/>
+      <plugin id="com.ibm.accessibility.win32"/>
+      <plugin id="com.ibm.icu"/>
+      <plugin id="com.ibm.odf"/>
+      <plugin id="org.apache.xerces"/>
+      <plugin id="org.eclipse.core.commands"/>
+      <plugin id="org.eclipse.core.contenttype"/>
+      <plugin id="org.eclipse.core.expressions"/>
+      <plugin id="org.eclipse.core.jobs"/>
+      <plugin id="org.eclipse.core.runtime"/>
+      <plugin id="org.eclipse.core.runtime.compatibility.auth"/>
+      <plugin id="org.eclipse.core.runtime.compatibility.registry" fragment="true"/>
+      <plugin id="org.eclipse.equinox.common"/>
+      <plugin id="org.eclipse.equinox.preferences"/>
+      <plugin id="org.eclipse.equinox.registry"/>
+      <plugin id="org.eclipse.help"/>
+      <plugin id="org.eclipse.jface"/>
+      <plugin id="org.eclipse.osgi"/>
+      <plugin id="org.eclipse.swt"/>
+      <plugin id="org.eclipse.swt.win32.win32.x86" fragment="true"/>
+      <plugin id="org.eclipse.ui"/>
+      <plugin id="org.eclipse.ui.workbench"/>
+   </plugins>
+
+   <features>
+      <feature id="org.eclipse.actf.examples.aibrowser" version="0.0.1"/>
+      <feature id="org.eclipse.actf.examples.aibrowser.nls" version="0.0.1"/>
+   </features>
+
+</product>
