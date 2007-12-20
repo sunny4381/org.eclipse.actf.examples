@@ -1,0 +1,178 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<link rel="StyleSheet" href="style.css" type="text/css" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="copyright" content="Copyright (c) IBM Corporation and others 2007. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page." >
+<title>設定について : Accessibility Internet Browser for Multimedia Help</title>
+</head>
+
+<body>
+<p class="navigation">
+<a href="index.html">目次に戻る</a>
+</p>
+
+<h1>設定について</h1>
+	<p class="h1">
+	  各設定を行うには、ウィンドウ・メニューから 「設定」 を選択して設定ダイアログを開きます。
+	</p>
+	<div class="h1">
+	  <ul>
+		<li><a href="#voices">音声</a>
+		<ul>
+			<li><a href="#sapi">SAPI 設定</a></li>
+			<li><a href="#protalker">ProTalker 設定</a></li>
+		</ul></li>
+		<li><a href="#audio">音声解説</a></li>
+		<li><a href="#flash">Flash プロキシ</a></li>
+		<li><a href="#annotation">注釈</a></li>
+	  </ul>
+	</div>
+
+<a name="voices"></a>
+<h2>音声</h2>
+	<p class="h2">
+            音声出力の基本設定を行うパネルです。使用する音声合成エンジンの選択と、音声出力速度の設定を行います。
+            音声合成エンジンごとに異なる設定に関しては、それぞれの音声合成エンジンの設定パネルを利用します。
+	</p>
+	<p class="h2 img">
+	  <img src="img/voices.png" alt="音声設定ページの画像"/>
+	</p>
+	<dl class="h2">
+	  <dt>TTS エンジン</dt>
+	  <dd>音声合成 (Text-To-Speech) エンジンを選択します。
+	  <dl>
+	  <dt>JAWS</dt>
+	  <dd>JAWS for Windows が aiBrowser 起動時に実行されている場合にのみ選択可能です。</dd>
+	  <dt>Window-Eyes</dt>
+	  <dd>Window-Eyes が aiBrowser 起動時に実行されている場合にのみ選択可能です。</dd>
+	  <dt>ProTalker</dt>
+	  <dd>ProTalker OCX (ptocx.exe) がインストールされている場合にのみ選択可能です。 <a href="#protalker">「ProTalker 設定」 へ</a></dd>
+	  <dt>SAPI 5 TTS</dt>
+      <dd>Microsoft&#174; Speech API (SAPI) 5.0 対応の音声合成エンジンを利用する場合に選択します。
+	  <a href="#sapi">「SAPI 設定」 へ</a></dd>
+	  </dl></dd>
+	  <dt>速度</dt>
+	  <dd>音声再生の速度を設定します。スライダを左に動かすと遅くなり、右に動かすと速くなります。実際の音声再生速度は、音声合成エンジンによって異なります。
+	  (この設定は JAWS 読み上げ速度には反映されません。JAWS 読み上げ速度を変更する場合は「Ctrl + Alt + PageUp」または「Ctrl + Alt + PageDown」キーを押してください)</dd>
+	  <dt>テスト</dt>
+	  <dd>設定した音声再生速度を確認するためのテスト音声を再生します。
+	  <br/>TTS エンジンを切り替えた場合は、先に 「<b>適用</b>」 ボタンを選択してから 「<b>テスト</b>」 ボタンを選択してください。
+	  </dd>
+	</dl>
+
+	<a name="protalker"></a>
+	<h2 id="sapiSettings">ProTalker 設定</h2>
+	<p class="h2">
+	</p>
+	<p class="h2 img">
+	  <img src="img/protalker-settings.png" alt="ProTalker設定ページの画像"/>
+	</p>
+	<dl class="h2">
+	  <dt>音声タイプ</dt>
+	  <dd>「読み秀君」 または 「読み子ちゃん」 を選択します。</dd>
+	  <dt>テスト</dt>
+	  <dd>設定を確認するためのテスト音声を再生します。</dd>
+	</dl>
+	
+	<a name="sapi"></a>
+	<h2 id="sapiSettings">SAPI設定</h2>
+	<p class="h2">
+	  aiBrowser には、Microsoft&#174; Speech API (SAPI) 5.0 対応の音声合成エンジンを利用して音声出力を行う機能が含まれています。
+	    日本語音声合成エンジンは aiBrowser には含まれていませんので別途入手してください。
+	    音声出力を行うオーディオ再生デバイスを外部 USB スピーカ等に切り替えることができます。
+	</p>
+	<p class="h2 img">
+	  <img src="img/sapiSettings.png" alt="SAPI設定ページの画像"/>
+	</p>
+	<dl class="h2">
+	  <dt>音声</dt>
+	  <dd>使用する音声の名前を選択します。</dd>
+	  <dt>オーディオ再生デバイス</dt>
+	  <dd>音声出力を行うオーディオ再生デバイスを選択します。</dd>
+	  <dt>テスト</dt>
+	  <dd>設定を確認するためのテスト音声を再生します。</dd>
+	</dl>
+
+
+	<a name="audio"></a>
+	<h2>音声解説</h2>
+	<p class="h2">
+	  音声解説用の音声設定を行います。
+	</p>
+	<p class="h2 img">
+	  <img src="img/audio-description.png" alt="Preference page of Audio Description image"/>
+	</p>
+	<dl class="h2">
+	  <dt>TTSエンジン</dt>
+	  <dd>音声解説のための TTS エンジンを選択します。
+	    文書の読み上げと異なる TTS エンジンを選択することも可能です。</dd>
+	</dl>
+
+	<a name="flash"></a>
+	<h2>Flash プロキシ</h2>
+	<p class="h2">
+	  プロキシの設定を行います。
+	</p>
+	<p class="h2 img">
+	  <img src="img/flash-dom.png" alt="Preference page of Flash Proxy image"/>
+	</p>
+	<dl class="h2">
+	  <dt>HTTP プロキシの適用:</dt>
+	  <dd>どの HTTP 通信にプロキシを適用するかを設定します。 
+	  <ul>
+		<li><b>無し</b>: すべての HTTP 通信にプロキシを適用しません。
+		このオプションが選択されている場合は、Flash にアクセスしたりコントロールすることはできません。</li>
+		<li><b>このセッションのみ</b>: aiBrowser に関する通信にのみプロキシを適用します。</li>
+		<li><b>システム全体</b>: すべての HTTP 通信に対してプロキシを適用します 。たとえば aiBrowser 以外のブラウザでウェブページを閲覧する場合にも適用されます。 </li>
+	  </ul>
+	  </dd>
+	  <dt>タイムアウト（秒）</dt>
+	  <dd>プロキシ使用時のコネクションタイムアウト時間を、非負の整数で指定します。デフォルト値は30(秒)です。</dd>
+	  <dt>対象となる SWF の最低バージョン</dt>
+	  <dd>非負の整数を指定します。指定したバージョンより古い Flash コンテンツに対しては、通信を可能にするための処理を行いません。デフォルト値は5です。
+	  <b>注意:</b> バージョン5未満のコンテンツでは ActionScript の機能が限られているため、aiBrowser の機能では内部状態を取得することができません。 </dd>
+	  <dt>インターネットキャッシュの削除</dt>
+	  <dd>Flash コンテンツをコントロールするためには、ページを閲覧する前にインターネットキャッシュを削除する必要があります。
+	    ただし、キャッシュを削除するとブラウザのパフォーマンスに影響を与えますので、ここで aiBrowser 起動時にインターネットキャッシュを削除するかどうかを選択します。 
+	  <dl>
+	    <dt>確認せずに削除する</dt><dd>aiBrowser 起動時に確認ダイアログを表示せずにキャッシュを削除します。</dd>
+	    <dt>削除する前に確認する</dt><dd>aiBrowser 起動時にキャッシュを削除するか問い合わせる確認ダイアログが表示されます </dd>
+	    <dt>常に削除しない</dt><dd>aiBrowser 起動時にキャッシュを削除しません。
+		この場合、以下のいずれかの手順で明示的にキャッシュを削除する必要があります。 
+		<ol class="space">
+		  <li>aiBrowser のメニューから <b>「ファイル」 &gt; 「インターネットキャッシュを削除」</b> を選択します</li>
+		<li>次に Internet Explorer で 「<b>ツール</b>」 &gt; 「<b>インターネットオプション</b>」 を選択します。または、システムのコントロールパネルから 「<b>インターネット オプション</b>」 を選択します (ここでの手順は Internet Explorer 6 の場合です)</li>
+		<li>「<b>全般</b>」 タブの中の<b>インターネット一時ファイル</b>項目にある 「<b>ファイルの削除</b>」 ボタンを選択します</li>
+		<li>「[Temporary Internet files] フォルダのすべてのファイルを削除しますか?」 というダイアログが表示されたら、「<b>OK</b>」 ボタンを選択します</li>
+		<li><b>インターネットオプション</b>設定パネルに戻ったら、「<b>OK</b>」 ボタンを選択して閉じます</li>
+		</ol>
+	    </dd>
+	    </dl>
+	  </dd>
+	</dl>
+	<p class="h2 img">
+	  <img src="img/clear-confirm.png" alt="キャッシュ削除ダイアログの画像"/>
+	</p>
+
+	<a name="annotation"></a>
+	<h2>注釈</h2>
+	<p class="h2">
+	  注釈機能の設定を行います。
+	</p>
+	<dl class="h2">
+	  <dt>自動的に注釈を保存する</dt>
+	  <dd>このチェックボックスをオンにすると、注釈やしおりの変更が自動的に保存されます。
+	    注釈を手動で保存するには、このチェックボックスをオフにして、保存したいタイミングで 「Ctrl + Alt + S」 キーを押します。
+	  </dd>
+	</dl>
+	<p class="h2 img">
+	  <img src="img/user-annotation.png" alt="注釈設定ページの画像"/>
+	</p>
+
+
+<p class="navigation">
+<a href="index.html">目次に戻る</a>
+</p>
+</body>
+</html>

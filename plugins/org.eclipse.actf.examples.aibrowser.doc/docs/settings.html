@@ -1,0 +1,191 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+	<link rel="StyleSheet" href="style.css" type="text/css" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="copyright" content="Copyright (c) IBM Corporation and others 2007. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page." >
+	<title>Preferences : Accessibility Internet Browser for Multimedia Help</title>
+  </head>
+
+  <body>
+	<p class="navigation">
+	  <a href="index.html">Back to Index</a>
+	</p>
+
+	<h1>Preferences</h1>
+	<p class="h1">
+	  To open preferences dialog, select "Preference..." menu in "Window" menu.
+	</p>
+	<div class="h1">
+	  <ul>
+	    <li><a href="#voices">Voices</a>
+	    <ul>
+	      <li><a href="#sapi">SAPI5 TTS</a></li>
+	      <li><a href="#protalker">ProTalker TTS</a></li>
+	    </ul></li>
+	    <li><a href="#audio">Audio Description</a></li>
+	    <li><a href="#flash">Flash Proxy</a></li>
+	    <li><a href="#annotation">User Annotation</a></li>
+	  </ul>
+	</div>
+
+	<a name="voices"></a>
+	<h2>Voices</h2>
+	<p class="h2">
+	  Use this dialog to change the basic voice settings. The basic voice settings include the TTS engine and speed. 
+	  Use the TTS settings dialog located in the voice preferences to set the TTS-engine-dependent settings.
+	</p>
+	<p class="h2 img">
+	  <img src="img/voices.png" alt="Preference page of Voices image"/>
+	</p>
+	<dl class="h2">
+	  <dt>TTS engine</dt>
+	  <dd>
+	    Selects a TTS engine for document reading.
+	    <dl>
+	      <dt>JAWS</dt>
+	      <dd>The JAWS option will be available when you use aiBrowser with JAWS. 
+	      JAWS should be running before aiBrowser is launched.</dd>
+	      <dt>Window-Eyes</dt>
+	      <dd>The Window-Eyes option will be available when you use aiBrowser with Window-Eyes. 
+	      Window-Eyes should be running before aiBrowser is launched.</dd>
+	      <dt>ProTalker</dt>
+	      <dd>The ProTalker option will be available when ProTalker OCX (ptocx.exe) is installed in your computer.
+	      <a href="#protalker">Go To ProTalker Settings</a></dd>
+	      <dt>SAPI 5</dt>
+	      <dd>Windows&#174; XP includes a default voice, "Microsoft Sam". 
+	      <a href="#sapi">Go To SAPI 5 Settings</a></dd>
+	    </dl>
+	  </dd>
+	  <dt>Speed</dt>
+	  <dd>Controls the speed of the speaking voice. When the slider is moved to the left, 
+	  the reading is slower, and when moved to the right, the reading becomes faster. 
+	  The range of voice speaking speeds differs for each Text-To-Speech engine.
+	  (This setting does not affect to reading speed of JAWS. 
+	  If you want to change reading speed of JAWS, 
+	  please type "Control + Alt + PageUp or PageDown".)</dd>
+	  <dt>Test</dt>
+	  <dd>Reads a test message using the current <b>Speed</b> setting. 
+	  <br/>Click on the <b>Apply</b> button and then the <b>Test</b> button to test a TTS engine.
+	  </dd>
+	</dl>
+
+	<a name="protalker"></a>
+	<h2 id="sapiSettings">ProTalker settings</h2>
+	<p class="h2">
+	</p>
+	<p class="h2 img">
+	  <img src="img/protalker-settings.png" alt="Preference page of ProTalker"/>
+	</p>
+	<dl class="h2">
+	  <dt>Voice type</dt>
+	  <dd>Selects a voice gender, male or female.</dd>
+	  <dt>Test</dt>
+	  <dd>Reads a test message using the current settings.</dd>
+	</dl>
+	
+	<a name="sapi"></a>
+	<h2 id="sapiSettings">SAPI5 TTS settings</h2>
+	<p class="h2">
+	  The aiBrowser supports any Microsoft&#174; SAPI 5 compliant Text-to-Speech engine.
+	  Windows&#174; XP includes a default voice, "Microsoft Sam". 
+	  The voice can be changed by installing a different TTS engine. 
+	  The preferred audio output device can also be changed to optional audio output devices, such as external USB speakers.
+	</p>
+	<p class="h2 img">
+	  <img src="img/sapiSettings.png" alt="Preference page of SAPI5 TTS"/>
+	</p>
+	<dl class="h2">
+	  <dt>Voice name</dt>
+	  <dd>Selects a named voice.</dd>
+	  <dt>Audio Output Device</dt>
+	  <dd>Selects an available audio output device.</dd>
+	  <dt>Test</dt>
+	  <dd>Reads a test message using the current settings.</dd>
+	</dl>
+
+	<a name="audio"></a>
+	<h2>Audio Description</h2>
+	<p class="h2">
+	  Use this dialog to change the voice settings for audio description. 
+	</p>
+	<p class="h2 img">
+	  <img src="img/audio-description.png" alt="Preference page of Audio Description image"/>
+	</p>
+	<dl class="h2">
+	  <dt>TTS engine</dt>
+	  <dd>Selects a TTS engine for the audio description function. 
+	  A different voice from that used for document reading can be selected for the audio descriptions. </dd>
+	</dl>
+
+	<a name="flash"></a>
+	<h2>Flash Proxy</h2>
+	<p class="h2">
+	  Configure behavior of the proxy.
+	</p>
+	<p class="h2 img">
+	  <img src="img/flash-dom.png" alt="Preference page of Flash Proxy image"/>
+	</p>
+	<dl class="h2">
+	  <dt>Use HTTP Proxy For:</dt>
+	  <dd>Configure the HTTP connections mediated by the proxy.
+	  <ul>
+		<li><b>None</b>: The proxy mediates no HTTP connections. 
+		You cannot access or control Flash content if this option is selected.</li>
+		<li><b>This session only</b>: The proxy mediates connections related to this aiBrowser session.</li>
+		<li><b>System global</b>: The proxy mediates all HTTP connections, even for websites viewed using a browser other than the aiBrowser.
+		a browser other than the aiBrowser.</li>
+	  </ul>
+	  </dd>
+	  <dt>Timeout (second)</dt>
+	  <dd>Specify a non-negative integer. This sets the connection timeout when the proxy is used. Default is 30 (seconds).</dd>
+	  <dt>Minimum SWF version to be handled</dt>
+	  <dd>Specify a non-negative integer. The proxy does not process Flash content if it is older than a version specified here.  
+	  Default is 5. <b>Note:</b> Since Flash content older than the version 5 has limited ActionScript functionality, 
+	  aiBrowser cannot obtain its internal structure.</dd>
+	  <dt>Internet Cache Clear</dt>
+	  <dd>The Internet cache must be cleared before viewing webpages to add the controls 
+	  for Flash content. However clearing the cache affects browser performance. 
+	  These settings control whether or not aiBrowser should clear the cache at startup time. 
+	  <dl>
+		<dt>Clear without confirming</dt><dd>If this option is selected, then aiBrowser clears your cache at start-up without any confirmation dialog.</dd>
+		<dt>Confirm before clear</dt><dd>If this option is selected, then aiBrowser shows a confirmation dialog to ask whether or not to clear the cache.</dd>
+		<dt>Never clear the cache</dt><dd>If this option is selected, then aiBrowser does not clear cache at start-up. The Internet cache must be explicitly 
+		cleared to use the Flash Proxy view. The following illustrated example is for Internet Explorer 6. 
+		<ul>
+		  <li>Select the <b>Tools &gt; Internet Options</b> menu in the Internet Explorer, or select <b>Internet Options</b> from the Control Panel.</li>
+		  <li>Select the <b>General</b> tab at the top of the dialog box and select <b>Delete Files</b> under <b>Temporary Internet Files</b>. </li>
+		  <li>A confirmation dialog asks &quot;Delete all files in the Temporary Internet files&quot;.
+		  Select <b>OK</b>. The dialog closes.</li>
+		  <li>Select <b>OK</b> to close the <b>Internet Options</b> dialog.</li>
+		</ul>
+		</dd>
+	  </dl>
+	  </dd>
+	</dl>
+	<p class="h2 img">
+	  <img src="img/clear-confirm.png" alt="Cache Clear Confirm Dialog"/>
+	</p>
+
+	<a name="annotation"></a>
+	<h2>User Annotation</h2>
+	<p class="h2">
+	  Use this dialog to change the behavior of the user annotation functions.
+	</p>
+	<dl class="h2">
+	  <dt>Save annotation automatically</dt>
+	  <dd>If this option is selected, annotations are automatically saved 
+	  every time when annotations are edited or landmarks are set. 
+	  Annotations can be saved manually by typing "Control + Alt + S". 
+	  </dd>
+	</dl>
+	<p class="h2 img">
+	  <img src="img/user-annotation.png" alt="Preference page of User Annotation image"/>
+	</p>
+
+
+	<p class="navigation">
+	  <a href="index.html">Back to Index</a>
+	</p>
+  </body>
+</html>
