@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="org.eclipse.actf.examples.aibrowser"
-      label="Eclipse ACTF aDesigner Runtime (Incubation)"
+      label="Eclipse ACTF Example aiBrowser feature (Incubation)"
       version="0.0.1"
       provider-name="Eclipse.org">
 
