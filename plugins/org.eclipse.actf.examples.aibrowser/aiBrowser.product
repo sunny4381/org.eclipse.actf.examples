@@ -13,7 +13,7 @@
    <configIni use="default"/>
 
    <launcherArgs>
-      <programArgs>-vm .\jre\bin\javaw.exe -forceProxy -clean</programArgs>
+      <programArgs>-forceProxy -clean</programArgs>
       <vmArgs>-Xmx256m</vmArgs>
    </launcherArgs>
 

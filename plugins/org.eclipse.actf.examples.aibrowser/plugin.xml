@@ -79,5 +79,9 @@
          point="org.eclipse.ui.startup">
       <startup class="org.eclipse.actf.examples.aibrowser.monitor.ABrowserMonitor"/>
    </extension>
+   <extension
+         point="org.eclipse.actf.common.browserFavorites">
+      <favorites prefFile="favorites.pref"/>
+   </extension>
 
 </plugin>
