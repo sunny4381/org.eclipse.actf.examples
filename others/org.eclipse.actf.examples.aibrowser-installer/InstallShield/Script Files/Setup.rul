@@ -1,0 +1,145 @@
+/*******************************************************************************
+ * Copyright (c) 2007 IBM Corporation and Others
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Hisashi MIYASHITA - initial API and implementation
+ *******************************************************************************/
+//
+// Include Ifx.h for built-in InstallScript function prototypes, for Windows 
+// Installer API function prototypes and constants, and to declare code for 
+// the OnBegin and OnEnd events.
+#include "ifx.h"
+
+#define JAWS_REGROOT "SOFTWARE\\Freedom Scientific\\JAWS"
+#define JAWS_APPCONFIGDIR "Freedom Scientific\\JAWS"
+#define JAWS_SCRIPTDIR "SETTINGS"
+#define APPLICATION_NAME "aiBrowser"
+
+// The keyword export identifies MyFunction() as an entry-point function.
+// The argument it accepts must be a handle to the Installer database.
+export prototype DetectJaws(HWND);  
+export prototype JawsScriptInstall(HWND);  
+export prototype CleanupInstallDirectory(HWND);  
+
+prototype SetupJawsScript(STRING, STRING);  
+prototype InstallJawsScript(STRING, STRING, STRING);  
+prototype CopyJawsScript(STRING, STRING, STRING);  
+prototype CompileJawsScript(STRING, STRING);  
+
+// Functions
+
+function DetectJaws(hMSI)
+    NUMBER result;
+    STRING installFlag;
+begin
+    result = RegDBSetDefaultRoot(HKEY_LOCAL_MACHINE);
+   	if (RegDBQueryKeyCount(JAWS_REGROOT, REGDB_KEYS) > 1) then
+	    result = MsiSetProperty(hMSI, "JAWSINSTALLED", "True"); 
+	    result = 1024;
+		MsiGetProperty(hMSI, "JAWSINSTALLED", installFlag, result);
+    	// SprintfBox(INFORMATION, "Debug-DetectJaws", "%s", installFlag);
+   	endif;
+end;
+
+function JawsScriptInstall(hMSI)   
+    NUMBER result;
+    NUMBER idx;
+    LIST subKeys;
+    STRING key;
+    STRING installFlag;
+begin
+	//result = 1024;
+	//MsiGetProperty(hMSI, "JAWSINSTALLED", installFlag, result);
+    // SprintfBox(INFORMATION, "Debug-JawsScriptInstall-0", "%s", installFlag);
+	//if (installFlag != "True") then
+	//	return FALSE;
+	//endif;
+	//result = 1024;
+	//MsiGetProperty(ISMSI_HANDLE, "JAWSSCRIPTINSTALL", installFlag, result);
+    //// SprintfBox(INFORMATION, "Debug-JawsScriptInstall-0", "%s", installFlag);
+    //if (installFlag != "1") then
+    //	return FALSE;
+   	//endif;
+    
+    result = RegDBSetDefaultRoot(HKEY_LOCAL_MACHINE);
+    subKeys = ListCreate(STRINGLIST);
+   	RegDBQueryKey(JAWS_REGROOT, REGDB_KEYS, subKeys);
+   	
+	result = ListGetFirstString(subKeys, key); 
+    while (result != END_OF_LIST) 
+        // SprintfBox(INFORMATION, "Debug-JawsScriptInstall", "%s", key); 
+        SetupJawsScript(key, JAWS_REGROOT + "\\" + key);
+        result = ListGetNextString(subKeys, key);
+    endwhile;  
+end;
+
+function SetupJawsScript(key, fullkeypath)
+	NUMBER result;
+	NUMBER nvSize, nType;
+	STRING dir;
+	STRING locale;
+	STRING jawsdir;
+	LIST dirs;
+begin
+	if (RegDBGetKeyValueEx(fullkeypath, "Target", nType, jawsdir, nvSize) < 0) then
+		return FALSE;
+	endif;
+
+	dir = FOLDER_APPDATA + "\\" + JAWS_APPCONFIGDIR + "\\" + key + "\\" + JAWS_SCRIPTDIR;
+    // SprintfBox (INFORMATION, "Debug-SetupJawsScript-0", "%s", dir); 
+	dirs = ListCreate(STRINGLIST);
+	FindAllDirs(dir, EXCLUDE_SUBDIR, dirs);
+	
+	result = ListGetFirstString(dirs, locale);
+    while (result != END_OF_LIST) 
+        // SprintfBox (INFORMATION, "Debug-SetupJawsScript", "%s", locale); 
+        InstallJawsScript(locale, APPLICATION_NAME, jawsdir);
+        result = ListGetNextString(dirs, locale);
+    endwhile;
+    return TRUE;
+end;
+
+function InstallJawsScript(dir, execname, jawsdir)
+	NUMBER result;
+	STRING target, installdir;
+begin
+	target = dir + "\\" + execname;
+	result = 4096;
+	MsiGetProperty(ISMSI_HANDLE, "CustomActionData", installdir, result);
+	//SprintfBox (INFORMATION, "Debug-InstallJawsScript", "%s %s %s", SRCDIR, targetdir, TARGETDIR); 
+	
+	CopyJawsScript(installdir, target, ".jcf");
+	CopyJawsScript(installdir, target, ".jkm");
+	CopyJawsScript(installdir, target, ".jsh");
+	CopyJawsScript(installdir, target, ".jss");
+	CompileJawsScript(jawsdir, target + ".jss");
+end;
+
+function CopyJawsScript(installdir, target, suffix)
+begin
+	CopyFile(installdir + "\\Scripts\\Jaws\\aiBrowser" + suffix, target + suffix);
+end;
+
+function CompileJawsScript(jawsdir, target)
+    STRING scompileName;
+begin
+	scompileName = "\"" + jawsdir + "\\" + "scompile.exe" + "\"";
+	target = "\"" + target + "\"";
+    // SprintfBox (INFORMATION, "Debug-CompileJawsScript", "%s %s", scompileName, target); 
+	LaunchApplication("", scompileName + " " + target, "", SW_HIDE,
+	                  LAAW_PARAMETERS.nTimeOut, LAAW_OPTION_WAIT | LAAW_OPTION_CHANGEDIRECTORY);	
+end;
+
+function CleanupInstallDirectory(hMSI)
+	NUMBER result;
+	STRING installdir;
+begin
+	result = 4096;
+	MsiGetProperty(ISMSI_HANDLE, "CustomActionData", installdir, result);
+	
+	DeleteDir(INSTALLDIR, ALLCONTENTS);
+end;
