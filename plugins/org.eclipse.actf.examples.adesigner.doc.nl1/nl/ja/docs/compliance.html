@@ -1,0 +1,98 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML lang="ja">
+<HEAD>
+<META http-equiv="Content-Type" CONTENT="text/html; charset=SHIFT_JIS">
+<META http-equiv="Content-Style-Type" content="text/css">
+<meta name="copyright" content="Copyright (c) IBM Corporation and others 2007. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page." >
+<TITLE>Web アクセシビリティ・ガイドラインへの準拠</TITLE>
+<LINK href="aDesigner.css" rel="stylesheet" type="text/css" class="head">
+</HEAD>
+<BODY>
+<H1>Web アクセシビリティ・ガイドラインへの準拠</H1>
+
+<UL>
+<LI><a href="#accGuideline">アクセシビリティ・ガイドライン</a>
+<LI><a href="#accGuidelineSelect">アクセシビリティ・ガイドラインを選択する</a>
+<LI><a href="#detailReport">詳細レポートでの作業</a>
+</UL>
+
+<H2 id="accGuideline">アクセシビリティ・ガイドライン</H2>
+<P>
+aDesigner は、ウェブページが以下の4つのアクセシビリティ・ガイドラインに準拠しているかどうかをチェックすることができます。
+</P>
+<UL class="space">
+<LI><A href="http://www.w3.org/TR/WCAG10/">Web Content Accessibility Guidelines (WCAG)</A>: 最も有名なアクセシビリティ・ガイドラインの一つです。World Wide Web Consortium のワーキンググループの一つである Web Accessibility Initiative により発行されています。
+
+<LI><A href="http://www.section508.gov/index.cfm?FuseAction=Content&ID=12#Web">Section 508 of the Rehabilitation Act §1194.22 (Section 508)</A>: 米国リハビリテーション法508条の中のウェブに関する標準の一つです。
+この法律によれば、連邦政府により開発・調達される情報技術は障害者にとってアクセシブルであることが求められています。
+
+<LI>日本工業規格 (JIS) X8341-3: 情報通信にかかわる装置、ソフトウェア、およびサービスを高齢者・障害者にとってアクセシブルにするために求められる規格です。
+
+<LI><A href="http://www-6.ibm.com/jp/accessibility/guideline/accessweb.html">IBM ウェブ・アクセシビリティ・チェックリスト</A>: IBMが定めているアクセシビリティ指針です。
+</UL>
+
+<H2 id="accGuidelineSelect">アクセシビリティ・ガイドラインを選択する</H2>
+<P>
+aDesigner のチェックで使用したいアクセシビリティ・ガイドラインは、以下の手順で選択することができます:
+</P>
+<OL class="space">
+<LI>「<B>ウィンドウ</B>」 &gt; 「<B>設定</B>」 を選択して 「<B>設定</B>」 パネルを開き、「<B>ガイドラインチェッカー メニュー</B>」 を表示する。
+<LI>「ガイドライン」 でアクセシビリティ・ガイドラインを選択する。<BR>
+<LI>「評価指標」 で評価指標を選択する。<BR>
+<LI>「行番号の追加」 でチェックボックスをオンにすると、音声ユーザビリティ視覚化時の
+詳細レポート（個別表示）において、検出された問題点が存在している HTML 
+文書内の行番号が表示されるようになります。また、このチェックボックスを
+オフにすると aDesigner は実行時の Document Object Model に基づいて視覚化お
+よびアクセシビリティ・チェックを行います（これは一部の JavaScript を利用
+したページを評価する際に有効です）。
+</OL>
+
+<H2 id="detailReport">詳細レポートでの作業</H2>
+<P>
+<B>詳細レポートの分類表示</B>では、エラーは「要修正」、「ユーザー確認」、「情報」 の3つに分類されます。
+これは、aDesigner が自動的に問題を検出したかどうかという基準による分類です。
+</P>
+<P>
+「要修正」 は、aDesigner が自動的に検出したもので、対処が必要な問題点です。
+要修正の項目には、aDesigner の先進的なチェックにより検出された問題点と、アクセシビリティ・ガイドラインへの準拠に関する問題点の両方が含まれます。
+「ユーザー確認」 は、ユーザー（ウェブページ制作者）が実際に確認してみる必要があるもので、内容によって対処が必要ない場合もあります。
+「情報」 は、ガイドライン・評価指標などに関する情報です。 
+</P>
+
+<B>詳細レポートの個別表示</B>には、「<B>ウィンドウ</B>」 &gt; 「<B>設定</B>」 」 &gt; 「<B>ガイドラインチェッカー メニュー</B>」 で選択したアクセシビリティ・ガイドラインの欄が表示され、検出された問題点に対応する各ガイドラインの項目が表示されます。
+対応する項目がない場合もあります。
+各ガイドラインのチェック項目は次のとおりです。
+
+<UL>
+<LI>WCAG: ピリオドで区切られた二つの数字（例 &quot;13.6&quot;）
+<LI>Section 508: 一つのアルファベット（例 &quot;o&quot;）
+<LI>JISX8341-3: ピリオドで区切られた二つの数字と一つのアルファベット（例 &quot;5.1.a&quot;）
+<LI>IBM ウェブ・アクセシビリティ・チェックリスト: 一つの数字（例 &quot;8&quot;）
+</UL>
+<P>
+これらの記号を用いて各ガイドラインを参照することで、問題点の詳細と対処法を知ることができます。
+</P>
+<P>
+個別のレポートに対応するガイドラインの参照は、以下の方法でも見ることができます:
+</P>
+<OL class="space">
+<LI>行の上で右クリックして（または Shift+F10 キーを押す）、コンテキストメニューを開く。
+<LI>コンテキストメニューから 「<B>ガイドラインを見る</B>」 を選択する。
+</OL>
+
+<H1 class="related">関連項目</H1>
+<UL class="related">
+<LI><A href="problemsBlind.html">「音声ユーザビリティ」タブ で検出されるアクセシビリティ、およびユーザビリティの問題点</A>
+<LI><A href="problemsLv.html">「ロービジョン」タブ で検出されるアクセシビリティ、およびユーザビリティの問題点</A>
+<LI><A href="odf/guideline.html">ODF アクセシビリティチェックリスト</a></li>
+</UL>
+
+<P>
+<A href="index.html">インデックスに戻る</A>
+<hr>
+<DIV class="logo"><IMG src="images/logo.gif" alt=""></DIV>
+</P>
+
+
+</BODY>
+</HTML>

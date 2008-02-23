@@ -1,0 +1,78 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML lang="ja">
+<HEAD>
+<META http-equiv="Content-Type" CONTENT="text/html; charset=SHIFT_JIS">
+<META http-equiv="Content-Style-Type" content="text/css">
+<meta name="copyright" content="Copyright (c) IBM Corporation and others 2007. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page." >
+<TITLE>「OpenDocument アクセシビリティモード」でロービジョンユーザーにとってのアクセシビリティやユーザビリティをチェックする</TITLE>
+<LINK href="aDesigner.css" rel="stylesheet" type="text/css" class="head">
+</HEAD>
+<BODY>
+<H1>「OpenDocument アクセシビリティモード」でロービジョンユーザーにとってのアクセシビリティやユーザビリティをチェックする</H1>
+<P>
+aDesigner で ODF ファイルを開いてシミュレーションを実行することにより、ロービジョンユーザー（ここでは弱視、色覚異常、白内障、あるいはそれらが組み合わせられた症状を持つユーザー）にとってのアクセシビリティおよびユーザビリティをチェックすることができます。
+</P>
+<P>
+チェックは、以下の手順で行います:
+</P>
+<OL class="space">
+<LI>下記のいずれかの方法で ODF ファイルを読み込む （OpenDocument アクセシビリティモードでは、ローカルファイルのみサポートしています）:
+  <UL class="nospace">
+  <LI>「<B>ファイル</B>」 &gt; 「<B>開く</B>」 の順に選択し、URL を指定する、もしくは 「<B>参照</B>」 を選択してODFファイルを開く。
+  <LI>オフィスビューを選択した後、オフィスビュー上部の「<B>ODF ファイルを開く</B>」ボタンをクリックし、ODFファイルを開く。  
+  <LI>アドレス入力バーに URL を入力し、「<B>現在の URL を開く</B>」 ボタンを選択する。
+  </UL>
+
+<LI><b>オフィス</b>ビューにODFファイルが表示される。右上のパネルの上部にある 「<B>ロービジョン</B>」 タブを選する。
+
+<LI>（必要に応じて） 「<B>全画面</B>」 チェックボックスにチェックを入れてシミュレーションを行う範囲を指定する。<BR>
+<B>（注）</B>
+全画面機能はプレゼンテーションファイル(ODPファイル)のみサポートしています。
+このチェックボックスにチェックが入っている場合は、現在<b>オフィス</b>ビューに表示されているページにかかわらず、ファイル全体が処理対象となります。
+チェックが外れている場合は、現在<b>オフィス</b>ビューに表示されているページのみが処理対象となります。
+
+<LI>下記のいずれかの方法で<A href="parametersLv.html">設定パネル（ロービジョン シミュレーション 設定）</A>を開く:
+  <UL class="nospace">
+  <LI>「<B>設定</B>」 ボタンを選択する。
+  <LI>「<B>ウィンドウ</B>」 &gt; 「<B>設定</B>」 &gt; 「<b>ロービジョン シミュレーション</b>」 の順に選択する。  
+  </UL>
+  各項目の設定を行い、「<B>適用</B>」 または 「<B>OK</B>」 を選択する。
+
+<LI>下記のいずれかの方法で、ロービジョンシミュレーションとアクセシビリティ・ユーザビリティのチェックを行う:
+  <UL class="nospace">
+  <LI>「<B>シミュレーション実行</B>」 ボタンを選択する。
+    <LI>「<B>視覚化</B>」メニュー &gt; 「<B>ロービジョンシ ミュレーション</B>」 の順に選択する。もしくは，ショートカットキー Ctrl+Shift+O を利用する。
+  </UL>
+<B>（注）</B>
+OpenDocument アクセシビリティモードのロービジョンシミュレーションでは、自動チェックによる評価結果ビューへのレポート表示はサポートしていません。
+シミュレーション結果の画像から、読みにくい文字や画像が含まれていないかチェックしてください。
+
+<LI>（必要に応じて） 「<B>保存</B>」 ボタンを選択して、シミュレーション結果やチェック結果をファイルとして保存する。<BR>
+レポートファイルはHTML形式で、次の三つで構成されています。 (1) Problem Map、(2) <b>シミュレーション</b>ビュー、(3) 検出されたエラーの個別表示です。
+OpenDocument アクセシビリティモードのロービジョンシミュレーションでは、(2)のシミュレーションビューのみサポートしています。
+
+<LI>（必要に応じて） 「<B>ビューの同期</B>」 チェックボックスにチェックを入れて、スクロールの仕方を選択する。<BR>
+<B>（注）</B>プレゼンテーションファイルでは、このチェックボックスにチェックが入っている場合は、<b>オフィス</b>ビューと<b>シミュレーション</b>ビューの垂直方向のスクロールが同期します。
+（シミュレーションビューのスクロールバーを操作することにより、オフィスビューの画面もスクロールします。）
+ただし、<b>オフィス</b>ビューと<b>シミュレーション</b>ビューの間仕切りを動かして大きさを変えた場合には、同期スクロールはできなくなります。
+
+</OL>
+
+<H1 class="related">関連項目</H1>
+<UL class="related">
+<LI><A href="workspaceOdf.html">OpenDocument アクセシビリティモードの構成</A>
+<LI><A href="odf/install.html">「OpenDocument アクセシビリティモード」 のインストールガイド</A>
+<LI><A href="checkOdfBlind.html">「OpenDocument アクセシビリティモード」で音声ブラウザユーザーにとってのアクセシビリティやユーザビリティをチェックする</A>
+<LI><A href="checkOdfPresentation.html">「OpenDocument アクセシビリティモード」で会議室でのスライドショーの見え方をチェックする</A>
+<LI><A href="odf/guideline.html">OpenDocument のアクセシビリティチェック項目</A>
+</UL>
+
+<P>
+<A href="index.html">インデックスに戻る</A>
+<hr>
+<DIV class="logo"><IMG src="images/logo.gif" alt=""></DIV>
+</P>
+
+
+</BODY>
+</HTML>

@@ -1,0 +1,194 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML lang="ja">
+<HEAD>
+<META http-equiv="Content-Type" CONTENT="text/html; charset=SHIFT_JIS">
+<META http-equiv="Content-Style-Type" content="text/css">
+<meta name="copyright" content="Copyright (c) IBM Corporation and others 2007. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page." >
+<TITLE>「Flash アクセシビリティモード」 で Flash コンテンツを含むウェブページのアクセシビリティをチェックする</TITLE>
+<LINK href="aDesigner.css" rel="stylesheet" type="text/css" class="head">
+</HEAD>
+<BODY>
+<H1>「Flash アクセシビリティモード」で Flash コンテンツを含むウェブページのアクセシビリティをチェックする
+</H1>
+
+<ul>
+<li><a href="#flashGuideline">Flash コンテンツのアクセシビリティガイドライン</a>
+<li><a href="#checkProcess">各項目のチェックプロセス</a>
+<ol>
+<li><a href="#textInfo">テキスト情報の提供</a>
+<li><a href="#animationControl">アニメーションの制御</a>
+<li><a href="#siteInfo">サイト構造に関する情報の提供</a>
+<li><a href="#keyboardOP">キーボードのみでの操作の保証</a>
+<li><a href="#voiceControl">音声読み上げ順序の制御</a>
+<li><a href="#componentAcc">コンポーネントのアクセシビリティの有効化</a>
+<li><a href="#caption">キャプションの提供</a>
+<li><a href="#color">色の使用に関する注意</a>
+</ol>
+</ul>
+
+<P>
+「Flash アクセシビリティモード」では、Flash コンテンツを含むウェブページを読み込んで、視覚障害者が使用するスクリーンリーダなどでどのように読み上げられるかをチェックし、アクセシビリティ上の問題点を修正することができます。
+</P>
+<H2 id="flashGuideline">Flash コンテンツのアクセシビリティガイドライン</H2>
+<P>
+Flash コンテンツに対するアクセシビリティガイドラインで特に有名なものはありませんが、Adobe&#174; Systems Inc. よりベストプラクティスが公開されています。
+<blockquote cite="http://download.macromedia.com/pub/japanese/solutions/downloads/accessibility/">
+<a href="http://download.macromedia.com/pub/japanese/solutions/downloads/accessibility/FlashAccessibilityBestPractices_jp.pdf">ボブ リーガン著, 「アクセシブルな Flash デザインのベストプラクティス」, 2003年10月, Adobe Systems Inc. (PDF ファイル)</a>
+</blockquote>
+この文書には、ベストプラクティスとして以下の8項目があげられています。
+</P>
+<OL>
+<LI>テキスト情報を提供する</LI>
+<LI>アニメーションを制御する</LI>
+<LI>サイト構造に関する情報を提供する</LI>
+<LI>キーボードのみでの操作を保証する</LI>
+<LI>音声読み上げ順序を制御する</LI>
+<LI>コンポーネントのアクセシビリティを有効にする</LI>
+<LI>キャプションを提供する</LI>
+<LI>色を思慮深く使用する</LI>
+</OL>
+<P>
+以下で、これらを aDesigner の Flash アクセシビリティモード (および他のモード) を用いてチェックする方法を説明します。
+
+なお、前述の文書は、「ガイドライン」 ではなく 「ベストプラクティス」 であることに注意してください。
+これらの多くは、自動的にチェックすることが困難であり、人手を必要とします。aDesigner はこのプロセスを効率的にサポートします。
+</P>
+
+<H2 id="checkProcess">各項目のチェックプロセス</H2>
+<P>
+以下のチェックは 「Flash アクセシビリティモード」 で行いますが、<a href="#color">8. 色の使用に関する注意</a>のみ、「HTML アクセシビリティモード」 で行いますので、ご注意ください。
+</P>
+チェック対象となるウェブページを<b>ブラウザ</b>ビューに表示してください。
+
+<H3 id="textInfo">1. テキスト情報の提供</H3>
+<UL class="space">
+<LI><b>ブラウザ</b>ビューにウェブページを表示すると同時に、アクセシビリティ・チェックが自動的に実行されます。ウィンドウ内の各ビューに結果が表示されるまでお待ちください。
+<LI>アクセシビリティ自動チェック結果の確認:
+<BR><B>GUI レポート</B>ビューに、アクセシビリティ自動チェックの結果が表示されます (図1)。表示された問題点については、<A href="checkGui.html#guiProblems">GUI アクセシビリティモードで検出される問題点</A>を参照してください。ここに表示される問題点は、すべてテキスト情報の欠落に関するものです。
+  <UL class="space">
+  <LI>標準設定では、ウェブページ全体がチェック対象となります。
+  Flash コンテンツのみを対象にしたい場合は <b>GUI サマリー</b>ビューのメニューで 「<b>Flash 項目のみ表示する</b>」 をオンにしてください。
+  <LI>表示されるエラーの種類 (エラー、警告、情報) を変更したい場合は、ビューメニュー (Ctrl+F10) で変更することができます。
+  <LI>エラー表示行を選択すると、エラーの場所が<b>ブラウザ</b>ビューで点滅すると共に <b>GUI サマリー</b>ビューおよび <b>GUI アウトライン</b>ビュー上で選択され、どこにエラーがあるのかを確認することができます。
+  <LI><b>チェック結果の例：</b> テキスト情報のないボタンが検出された場合
+<br><b>GUI サマリー</b>ビューには 「(数字) ボタン」 のように
+  表示されます (図2)。これは、スクリーンリーダの種類によっては、このように読み上げられることを意味します。
+  また <b>GUI アウトライン</b>ビューでは 「名前なし (ボタン)」 と表示されます (図3)。
+  </UL>
+</UL>
+
+<DIV class="figure">
+<IMG src="images/flash/checkreport.png" alt=""><BR>
+<SPAN>図1. 自動アクセシビリティ・チェック結果</SPAN>
+</DIV>
+<P>
+<DIV class="figure">
+<img src="images/flash/check_noalt_summary.png" alt="" class="border"><BR>
+<SPAN>図2. テキスト情報のないボタン (GUI サマリービュー)</SPAN>
+</DIV>
+<P>
+<DIV class="figure">
+<IMG src="images/flash/check_noalt_outline.png" alt="" class="border-nopad"><BR>
+<SPAN>図3. テキスト情報のないボタン (GUI アウトラインビュー)</SPAN>
+</DIV>
+
+<H3 id="animationControl">2. アニメーションの制御</H3>
+<UL class="space">
+<li><b>GUI サマリー</b>ビューまたは <b>GUI アウトライン</b>ビューで、アニメーションオブジェクトがスクリーンリーダでは読上げられないことを確認します。
+<li>点滅などの視覚的なチェック項目に関しては、<b>ブラウザ</b>ビューで目視で確認します。
+</UL>
+
+<H3 id="siteInfo">3. サイト構造に関する情報の提供</H3>
+<UL class="space">
+<li><b>GUI サマリー</b>ビューまたは <b>GUI アウトライン</b>ビューで、サイトの構造や状態に関する説明テキストが与えられているかを確認します。
+<LI>スクロール、あるいは操作によりアプリケーション画面が変化した場合は、いずれかのビューで 「<B>最新の状態に更新する</B>」 を実行して、再度確認します。
+<LI>必要に応じて <b>GUI サマリー</b>ビューの 「<B>全体を読み上げる</B>」 機能を使用して、合成音声による聞き取りやすさを確認します。
+</UL>
+
+<H3 id="keyboardOP">4. キーボードのみでの操作の保証</H3>
+<UL>
+<li><b>ブラウザ</b>ビューまたは通常のブラウザで、キーボードのみで （マウス等を使用しないで）すべての操作が可能であることを確認します。
+</UL>
+
+<H3 id="voiceControl">5. 音声読み上げ順序の制御</H3>
+<UL class="space">
+<li><b>GUI サマリー</b>ビューで、読み上げ順序が適切であることを確認します。ビューのテキストの内容および順序は、MSAA を使用するスクリーンリーダが読み上げるテキストをシミュレートしています。
+<LI>スクロール、あるいは操作によりアプリケーション画面が変化した場合は、「<B>最新の状態に更新する</B>」を実行して、再度確認します。
+<LI>必要に応じて 「<B>全体を読み上げる</B>」 機能を使用して、実際の読み上げイメージを確認します。また合成音声による聞き取りやすさを確認します。
+</UL>
+
+<H3 id="componentAcc">6. コンポーネントのアクセシビリティの有効化</H3>
+<UL class="space">
+<li><b>Flash アウトライン</b>ビューでコンポーネントオブジェクトを探します。
+ビューの各エントリを選択すると、<B>GUI プロパティ</B>ビューに詳細が表示されます。
+プロパティ名 isUIComponent の値が true になっているものがコンポーネントオブジェクトです (図4)。
+コンポーネントを探す時は、以下のヒントを参考にしてください。
+
+<ul>
+<li>Flash 制作時に付けたインスタンス名が分かっている場合は、<b>Flash アウトライン</b>ビューでその名前を持つインスタンスを探します。
+<li>インスタンス名が分からない場合は、エントリを選択した時に<b>ブラウザ</b>ビュー上でハイライトされる位置を参考にインスタンスを探します。
+</ul>
+<li>コンポーネントに role が正しく割り当てられていることを確認します。
+コンポーネントの種類 (クラス) は、className プロパティの値に対応します。図4 の例では、CheckBox クラスであることがわかります。
+<B>GUI プロパティ</B>ビューで accInfo プロパティが存在し、その下の role プロパティ値がクラスと対応していることを確認して下さい。
+図5 は正しく role がセットされている例です。
+role が正しくセットされている場合には <b>Flash アウトライン</b>ビューでのアイコンも変化します。
+アクセシビリティが考慮されていないコンポーネントの場合、図6 のように一般のボタンを表すアイコンが表示されていますが。
+考慮されている場合は、図7 のようにコンポーネントの種類に合わせたアイコンが表示されます。
+</UL>
+
+<DIV class="figure">
+<IMG src="images/flash/check_isui.jpg" alt="" class="border"><BR>
+<SPAN>図4. コンポーネントの GUI プロパティ</SPAN>
+</DIV>
+<P>
+<DIV class="figure">
+<IMG src="images/flash/check_isui2.png" alt="" class="border"><BR>
+<SPAN>図5. コンポーネントにroleがセットされているか確認する</SPAN>
+</DIV>
+<P>
+<DIV class="figure">
+<IMG src="images/flash/check_component_bad.jpg" alt="" class="border"><BR>
+<SPAN>図6. アクセシビリティを考慮していないコンポーネントの Flash アウトラインビュー上の表示</SPAN>
+</DIV>
+<P>
+<DIV class="figure">
+<IMG src="images/flash/check_component_good.jpg" alt="" class="border"><BR>
+<SPAN>図7. アクセシビリティを考慮したコンポーネントの Flash アウトラインビュー上の表示</SPAN>
+</DIV>
+
+<H3 id="caption">7. キャプションの提供</H3>
+<UL>
+<li><b>ブラウザ</b>ビューまたは通常のブラウザで、キャプションが適切に提供されていることを確認します。
+</UL>
+
+<H3 id="color">8. 色の使用に関する注意</H3>
+
+<ul class="space">
+<li>このチェックのみ、「<b>HTML アクセシビリティモード</b>」 の 「<b>ロービジョン</b>」タブ で行います。
+ロービジョンシミュレーションに関する詳細は、関連項目を参照してください。
+
+<li><b>ロービジョンシミュレーション</b>でのチェック結果を参考に、情報を色のみで伝達していないことや、弱視のユーザへの配慮がなされていることを確認します。
+<LI>スクロール、あるいは操作によりアプリケーション画面が変化した場合には 再度チェックを実行します。
+</UL>
+
+<H1 class="related">関連項目</H1>
+<UL class="related">
+<LI><A href="workspaceFlash.html">Flash アクセシビリティモードの構成</A>
+<LI><A href="viewsFlash.html">Flash アクセシビリティモード設定パネル</A>
+<LI><A href="checkLv.html">「ロービジョン」タブ でウェブページのアクセシビリティやユーザビリティをチェックする</A>
+
+
+<P>
+<A href="index.html">インデックスに戻る</A>
+<hr>
+<DIV class="logo"><IMG src="images/logo.gif" alt=""></DIV>
+</P>
+
+<p class="trademark">
+Adobe, Adobeロゴ, PostScript, PostScriptロゴは、Adobe Systems Incorporatedの米国およびその他の国における登録商標または商標。
+</p>
+
+
+</BODY>
+</HTML>

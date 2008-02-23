@@ -1,0 +1,113 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML lang="ja">
+<HEAD>
+<META http-equiv="Content-Type" CONTENT="text/html; charset=SHIFT_JIS">
+<META http-equiv="Content-Style-Type" content="text/css">
+<meta name="copyright" content="Copyright (c) IBM Corporation and others 2007. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page." >
+<TITLE>GUI アクセシビリティモードの詳細</TITLE>
+<LINK href="aDesigner.css" rel="stylesheet" type="text/css" class="head">
+</HEAD>
+<BODY>
+<H1>GUI アクセシビリティモード設定パネル</H1>
+
+<ul>
+<li><a href="#guiSettings">GUI アクセシビリティ設定</a>
+<li><a href="#voiceSettings">音声設定</a>
+<li><a href="#sapiSettings">SAPI 設定</a>
+<li><a href="#eventFilter">GUI イベントフィルター設定</a>
+</ul>
+
+<H2 id="guiSettings">GUI アクセシビリティ設定</H2>
+<P>
+GUI アクセシビリティモードにおける画面表示を設定するパネルです（図1）。
+</P>
+<DIV class="figure">
+<IMG src="images/gui/guiSettings.png" alt=""><BR>
+<SPAN>図1. GUIアクセシビリティ設定パネル</SPAN>
+</DIV>
+
+各項目の詳細は、以下のとおりです。 
+
+<DL>
+<DT>GUI サマリー/フォント:</DT>
+<DD><b>GUI サマリー</b>ビューで使用するフォントのサイズ、スタイルを設定します。</DD>
+<DT>GUI イベント/フォント:</DT>
+<DD><b>GUI イベント</b>ビューで使用するフォントのサイズ、スタイルを設定します。</DD>
+<DT>透明ウィンドウを使用して視覚化を行う:</DT>
+<DD>このチェックボックスをオンにすると、透明なウィンドウを画面全体に表示してハイライト表示やアイコン表示を行います。
+<br><b>注:</b> スクリーンリーダ使用中は、この設定をオフにしておくことをお勧めします。</DD>
+<DT>ツールウィンドウを常に最上位に表示する:</DT>
+<DD>このチェックボックスをオンにすると、aDesigner を外部アプリケーションより上位に表示します。この機能は、対象ウィンドウメニューの「常に最上位に表示する」と同じ機能です。
+<br><b>注:</b> スクリーンリーダ使用中は、この設定をオフにしておくことをお勧めします。</DD>
+</DL>
+
+
+<H2 id="voiceSettings">音声設定</H2>
+<P>
+音声出力の基本設定を行う設定パネルです（図2）。使用する音声合成エンジン、および、音声出力速度の設定を行います。音声合成エンジンごとに異なる設定に関しては、それぞれの音声合成エンジンの設定パネルを利用します。
+</P>
+<DIV class="figure">
+<IMG src="images/gui/voiceSettings.png" alt=""><BR>
+<SPAN>図2. 音声設定パネル</SPAN>
+</DIV>
+各項目の詳細は、以下のとおりです。 
+<DL>
+<DT>TTS エンジン:</DT>
+<DD>音声合成 (Text-To-Speech) エンジンを選択します。</DD>
+<DT>速度:</DT>
+<DD>音声再生速度を設定します。スライダを左に動かすと遅くなり、右に動かすと速くなります。実際の音声再生速度は音声合成エンジンによって異なります。</DD>
+<DT>テスト:</DT>
+<DD>設定した音声再生速度を確認するためのテスト音声を再生します。TTS エンジンを切り替えた場合は、先に 「<B>適用</B>」 ボタンを選択してから 「<B>テスト</B>」 ボタンを選択します。</DD>
+</DL></DL>
+
+<H2 id="sapiSettings">SAPI 設定</H2>
+<P>
+aDesigner には、Microsoft&#174; Speech API (SAPI) 5.0 対応の音声合成エンジンを利用して音声出力を行う機能が含まれています。音声合成エンジンそのものは aDesigner には含まれていませんので別途入手してください。
+</P>
+<DIV class="figure">
+<IMG src="images/gui/sapiSettings.png" alt=""><BR>
+<SPAN>図3. SAPI 設定パネル</SPAN>
+</DIV>
+各項目の詳細は、以下のとおりです。 
+<DL>
+<DT>音声:</DT>
+<DD>使用する音声の名前を選択します。</DD>
+<DT>オーディオ再生デバイス:</DT>
+<DD>音声出力を行うオーディオ再生デバイスを選択します。</DD>
+<DT>テスト:</DT>
+<DD>設定を確認するためのテスト音声を再生します。</DD>
+</DL></DL>
+
+<H2 id="eventFilter">GUI イベントフィルター設定</H2>
+<P>
+<b>GUI イベント</b>ビューで表示される内容を設定するためのダイアログです（図4）。<b>GUI イベント</b>ビューのコンテキストメニュー (Ctrl+F10) から 「<b>フィルター</b>」 メニューから開きます。
+</P>
+<DIV class="figure">
+<IMG src="images/gui/eventFilter.png" alt=""><BR>
+<SPAN>図4. GUI イベントフィルター設定パネル</SPAN>
+</DIV>
+各項目の詳細は、以下のとおりです。 
+<DL>
+<DT>表示するイベント:</DT>
+<DD>どのイベントを監視して <b>GUI イベント</b>ビューに表示するかを指定します。起動時には EVEN_OBJECT_FOCUS が選択されており、フォーカス移動を表示するようになっています。</DD>
+<DT>イベントの詳細を表示する:</DT>
+<DD>このチェックボックスをオンにすると、テキスト情報に加えてイベント番号、accName、accRole, accState 情報を表示します。</DD>
+</DL></DL>
+
+
+<H1 class="related">関連項目</H1>
+<UL class="related">
+<LI><A href="workspaceGui.html">GUI アクセシビリティモードの構成</A>
+</UL>
+
+<P>
+<A href="index.html">インデックスに戻る</A>
+<hr>
+<DIV class="logo"><IMG src="images/logo.gif" alt=""></DIV>
+</P>
+
+<P class="trademark">
+Microsoft, Windows, Windows NT および Windowsロゴは Microsoft Corporationの米国およびその他の国における商標。
+</P>
+</BODY>
+</HTML>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?NLS TYPE="org.eclipse.help.toc"?>
+<!--
+ Copyright (c) 2006, 2008 IBM Corporation and others.
+ All rights reserved. This program and the accompanying materials
+ are made available under the terms of the Eclipse Public License v1.0
+ which accompanies this distribution, and is available at
+ http://www.eclipse.org/legal/epl-v10.html
+
+ Contributors:
+     IBM Corporation - initial API and implementation
+-->
+<toc label="aDesignerガイド" topic="docs/index.html">
+	<topic label="aDesignerについて" href="docs/about.html">
+		<topic label="HTML アクセシビリティモードの概要" href="docs/overview.html"/>
+		<topic label="HTML アクセシビリティモードの構成" href="docs/workspace.html"/>
+		<topic label="二つの障害視覚化" href="docs/modes.html"/>
+		<topic label="OpenDocument アクセシビリティモードの概要" href="docs/overviewOdf.html"/>
+		<topic label="OpenDocument アクセシビリティモードの構成" href="docs/workspaceOdf.html"/>
+		<topic label="GUI アクセシビリティモードの概要" href="docs/overviewGui.html"/>
+		<topic label="GUI アクセシビリティモードの構成" href="docs/workspaceGui.html"/>
+		<topic label="Flash アクセシビリティモードの概要" href="docs/overviewFlash.html"/>
+		<topic label="Flash アクセシビリティモードの構成" href="docs/workspaceFlash.html"/>
+	</topic>
+	
+	<topic label="aDesignerの使い方" href="docs/usingdesigner.html">
+		<topic label="aDesigner のモードを変更する" href="docs/changeMode.html"/>
+		<topic label="HTML アクセシビリティモード" href="docs/usingHtmlMode.html">
+			<topic label="音声インターフェースユーザーのアクセシビリティやユーザビリティをチェックする" href="docs/checkBlind.html"/>
+			<topic label="ロービジョンユーザのアクセシビリティやユーザビリティをチェックする" href="docs/checkLv.html"/>			
+	　		<topic label="「音声ユーザビリティ視覚化」 で検出されるアクセシビリティ、およびユーザビリティの問題点" href="docs/problemsBlind.html"/>
+			<topic label="「ロービジョンシミュレーション」で検出されるアクセシビリティ、およびユーザビリティの問題点" href="docs/problemsLv.html"/>
+			<topic label="Web アクセシビリティ・ガイドラインへの準拠" href="docs/compliance.html"/>
+		</topic>
+		<topic label="OpenDocument アクセシビリティモード" href="docs/usingOdfMode.html">
+			<topic label="OpenDocument アクセシビリティモードのインストールガイド" href="docs/odf/install.html"/>		
+			<topic label="音声インターフェースユーザーのアクセシビリティやユーザビリティをチェックする" href="docs/checkOdfBlind.html"/>
+			<topic label="ロービジョンユーザーのアクセシビリティやユーザビリティをチェックする" href="docs/checkOdfLv.html"/>
+			<topic label="会議室でのスライドショーの見え方をチェックする" href="docs/checkOdfPresentation.html"/>
+			<topic label="OpenDocument のアクセシビリティチェックリスト" href="docs/odf/guideline.html"/>
+		</topic>
+		<topic label="「GUI アクセシビリティモード」 でアプリケーションのアクセシビリティをチェックする" href="docs/checkGui.html"/>
+		<topic label="「Flash アクセシビリティモード」 で Flash コンテンツを含むウェブページのアクセシビリティをチェックする" href="docs/checkFlash.html"/>
+	</topic>
+	
+	<topic label="各部の詳細" href="docs/reference.html">
+		<topic label="メニュー、ボタン、チェックボックス、アイコンの説明" href="docs/menusIcons.html"/>
+		<topic label="音声ユーザビリティ" href="docs/lineViewBlind.html"/>
+		<topic label="ロービジョン" href="docs/lineViewLv.html"/>
+		<topic label="音声ユーザビリティ視覚化 設定パネル" href="docs/parametersBlind.html"/>
+		<topic label="ロービジョン シミュレーション 設定パネル" href="docs/parametersLv.html"/>
+		<topic label="ID/AccessKey/Class/CSS Inspector (確認) パネル" href="docs/elementCss.html"/>
+		<topic label="HTML 文書表示パネル" href="docs/sourceViewer.html"/>
+		<topic label="OpenDocument アクセシビリティモード設定パネル" href="docs/viewsOdf.html"/>		
+		<topic label="GUI アクセシビリティモード設定パネル" href="docs/viewsGui.html"/>
+		<topic label="Flash アクセシビリティモード設定パネル" href="docs/viewsFlash.html"/>
+	</topic>
+	
+	<topic label="特記事項" href="notices.html" /> 
+	
+</toc>

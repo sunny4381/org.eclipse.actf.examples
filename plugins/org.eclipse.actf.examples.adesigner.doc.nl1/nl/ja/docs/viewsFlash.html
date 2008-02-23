@@ -1,0 +1,81 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML lang="ja">
+<HEAD>
+<META http-equiv="Content-Type" CONTENT="text/html; charset=SHIFT_JIS">
+<META http-equiv="Content-Style-Type" content="text/css">
+<meta name="copyright" content="Copyright (c) IBM Corporation and others 2007. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page." >
+<TITLE>Flash アクセシビリティモード設定パネル</TITLE>
+<LINK href="aDesigner.css" rel="stylesheet" type="text/css" class="head">
+</HEAD>
+<BODY>
+<H1>Flash アクセシビリティモード設定パネル</H1>
+<H2 id="flashdom">Flash プロキシ設定</h2>
+<P>
+<b>Flash アウトライン</b>ビューを表示するための、プロキシの動作を設定するパネルです (図1)。
+</P>
+<DIV class="figure">
+<IMG src="images/flash/pref_proxy.png" alt=""><BR>
+<SPAN>図1. Flash プロキシ設定パネル</SPAN>
+</DIV>
+
+各項目の詳細は、以下のとおりです。
+
+<h3>HTTP プロキシの設定</h3>
+
+<DL>
+<DT>HTTP プロキシ適用:</DT>
+<DD>どのHTTP通信にプロキシを適用するかを設定します。
+<UL style="margin-top: 20px;">
+<LI><b>無し</b>: すべての HTTP 通信にプロキシを適用しません。この場合 <b>Flash アウトライン</b>ビューは使用できません。
+<LI><b>このセッションのみ</b>: aDesigner に関する通信にのみプロキシを適用します。
+<LI><b>システム全体</b>: すべての HTTP 通信に対してプロキシを適用します (例えば aDesigner 以外のブラウザでウェブページを閲覧する場合にも適用)。
+</UL>
+</DD>
+
+<DT>タイムアウト (秒):</DT>
+<DD>プロキシ使用時のコネクションタイムアウト時間を、非負の整数で指定します。デフォルト値は30(秒)です。
+<DT>対象となる SWF の最低バージョン:</DT>
+<DD>非負の整数を指定します。指定したバージョンより古い Flash コンテンツに対しては、通信を可能にするための処理を行いません。デフォルト値は5です。バージョン5未満のコンテンツでは ActionScript の機能が限られているため、aDesigner の機能では内部状態を取得することができません。
+</DL>
+
+<h3>インターネットキャッシュの削除</h3>
+
+<p>aDesigner で <b>Flash アウトライン</b>ビューを正しく動作させるためには、ページを閲覧する前にインターネットキャッシュを削除する必要があります。
+ただし、キャッシュを削除するとブラウザのパフォーマンスに影響を与えますので、ここで aDesigner 起動時にインターネットキャッシュを削除するかどうかを選択します。
+<UL>
+<LI><b>確認せずに削除する</b>: 起動時に確認ダイアログを表示せずにキャッシュを削除します。
+<LI><b>削除する前に確認する</b>: 起動時にキャッシュを削除するか問い合わせる確認ダイアログが表示されます (図2)。
+<LI><b>常に削除しない</b>: 起動時にキャッシュを削除しません。この場合、<b>Flash アウトライン</b>ビューを正しく動作させるためには、以下のいずれかの手順で明示的にキャッシュを削除する必要があります。
+<ul>
+<li>メニューから <b>「ファイル」 &gt; 「インターネットキャッシュを削除」</b> を選択します。
+<li>インターネットオプションから削除します。 (以下の手順は Internet Explorer 6 の場合です)
+  <OL>
+  <LI>Internet Explorer で 「<b>ツール</b>」 &gt; 「<b>インターネットオプション</b>」 を選択します。または、システムのコントロールパネルから 「<b>インターネット オプション</b>」 を選択します。
+  <LI>「<b>全般</b>」 タブの中の<b>インターネット一時ファイル</b>項目にある 「<b>ファイルの削除</b>」 ボタンを選択します。
+  <LI>「[Temporary Internet files] フォルダのすべてのファイルを削除しますか?」 というダイアログが表示されたら、「<b>OK</b>」 ボタンを選択します。
+  <LI><b>インターネットオプション</b>設定パネルに戻ったら、「<b>OK</b>」 ボタンを選択して閉じます。
+  </OL>
+</ul>
+</UL>
+</p>
+
+<DIV class="figure">
+<IMG src="images/flash/cachedelete.png" alt=""><BR>
+<SPAN>図2. キャッシュ削除の確認ダイアログ</SPAN>
+</DIV>
+
+<H1 class="related">関連項目</H1>
+<UL class="related">
+<LI><A href="workspaceFlash.html">Flash アクセシビリティモードの構成</A>
+<LI><A href="checkFlash.html">「Flash アクセシビリティモード」 で Flash コンテンツを含むウェブページのアクセシビリティをチェックする</A>
+</UL>
+
+<P>
+<A href="index.html">インデックスに戻る</A>
+<hr>
+<DIV class="logo"><IMG src="images/logo.gif" alt=""></DIV>
+</P>
+
+
+</BODY>
+</HTML>

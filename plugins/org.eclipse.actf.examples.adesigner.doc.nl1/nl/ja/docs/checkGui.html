@@ -1,0 +1,102 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML lang="ja">
+<HEAD>
+<META http-equiv="Content-Type" CONTENT="text/html; charset=SHIFT_JIS">
+<META http-equiv="Content-Style-Type" content="text/css">
+<meta name="copyright" content="Copyright (c) IBM Corporation and others 2007. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page." >
+<TITLE>「GUI アクセシビリティモード」 でアプリケーションのアクセシビリティをチェックする</TITLE>
+<LINK href="aDesigner.css" rel="stylesheet" type="text/css" class="head">
+</HEAD>
+<BODY>
+<H1 id="guiCheck">「GUI アクセシビリティモード」 でアプリケーションのアクセシビリティをチェックする</H1>
+<P>
+GUI アクセシビリティモードでは、コンピュータ上に表示されている任意の Windows&#174; アプリケーションのアクセシビリティをチェックすることができます。また、ウェブページに埋め込まれている Flash 等の ActiveX コントロールのアクセシビリティをチェックすることもできます。
+</P>
+<P>
+チェックは、以下の手順で行います:
+</P>
+
+<OL class="space">
+<LI>GUI アクセシビリティモードに切り替える:
+  <OL>
+  <LI>メニューから 「<B>ファイル</B>」 &gt; 「<B>モード選択</B>」 を選択して 「<B>モード選択</B>」 ダイアログを表示します。
+  <LI><B>GUI アクセシビリティ</B>モードを選択してOKボタンを選択してください。
+  </OL>
+<LI>チェック対象となるウェブページ、あるいはアプリケーションウィンドウを選択する:
+  <BR>「<B>対象ウィンドウ</B>」 メニューでチェックするアプリケーションを選択します。
+  <UL>
+  <LI><B>外部ブラウザ</B>サブメニューから外部ウェブブラウザウィンドウを選択すると、ウェブページがチェック対象になります。
+  <LI><B>外部ウィンドウ</B>サブメニューからその他の Windows&#174; アプリケーションウィンドウを選択すると、Windows&#174; アプリケーション全体がチェック対象になります。
+  </UL>
+<LI>アクセシビリティチェックが自動的に実行されます。各ビューに結果が表示されるまでお待ちください。
+<LI>アクセシビリティ自動チェック結果の確認:
+<BR><B>GUI レポート</B>ビューにアクセシビリティ自動チェックの結果が表示されます。表示される問題点については<A href="#guiProblems">GUI アクセシビリティモードで検出される問題点</A>を参照してください。
+  <UL>
+  <LI>表示されるエラーの種類（エラー、警告、情報）を変更したい場合は、ビューメニュー(Ctrl+F10)で変更することができます。
+  <LI>エラー表示行を選択すると、エラーの場所が<b>ブラウザ</b>ビューで点滅すると共に <b>GUI アウトライン</b>ビュー上で選択され、どこにエラーがあるのかを確認することができます。
+  </UL>
+<LI>目視によるアクセシビリティ確認:
+  <BR>まず、<B>GUI サマリー</B>ビューとアプリケーション画面を対比して、アプリケーション操作に必要なテキスト情報が適切に提供されているかどうかをチェックします。
+    テキスト情報が欠落している、あるいは、逆に冗長過ぎると視覚障害者がスクリーンリーダを使ってアプリケーションを操作することが困難になります。
+  <BR>次に、GUI サマリーに表示されているテキストの並びが適切なものかチェックしてください、テキストの並びはスクリーンリーダを利用した場合の読み上げ順序に対応しています。
+  <UL>
+  <LI>スクロール、あるいは操作によりアプリケーション画面が変化した場合は 「<B>最新の状態に更新する</B>」 を実行して再度確認します。
+  <LI>画面領域外の情報を表示するには 「<B>領域外項目を表示する</B>」 をオンにします。
+  <LI>必要に応じて 「<B>全体を読み上げる</B>」 機能を使用し、合成音声による聞き取りやすさを確認します。
+  <LI>必要に応じて <B>GUI アウトライン</B>ビューや、<B>GUI プロパティ</B>ビューを参照しながら問題の原因を解析してください。
+  </UL>
+<LI>以上のチェックによって得られた情報をもとに、アプリケーションやウェブページの問題点に対処し、再び GUI アクセシビリティチェックを実行します。
+</OL>
+
+<H2 id="guiProblems">GUI アクセシビリティモードで検出される問題点</H2>
+<P>
+<b>GUI レポート</b>ビューは、視覚障害者がスクリーンリーダを使用してアプリケーションを利用する上で、一般的に問題となる部分を自動的にチェックし、「エラー」、「警告」、「情報」 の3段階に分類して表示します。
+</P>
+
+<H3 style="font-size: medium"><IMG src="images/gui/error_tsk.gif" align="middle" alt="">エラー: 深刻な問題点</H3>
+
+<ul class="space">
+<li><b>ボタンに ALT テキストがありません:</b><br>
+プッシュボタンとして機能するオブジェクトに、代替テキストが提供されていない
+<li><b>フォームのコントロールに ALT テキストがありません:</b><br>
+コンボボックスのようなフォーム入力オブジェクトに、代替テキストが提供されていない
+<li><b>リンクにテキストがありません:</b><br>
+他のページやオブジェクトに対するリンクに、テキストが含まれていない
+<li><b>クリック可能な項目に ALT テキストがありません:</b><br>
+その他の選択/実行可能なオブジェクトに、代替テキストが提供されていない
+</ul>
+
+<H3 style="font-size: medium"><IMG src="images/gui/warn_tsk.gif" align="middle" alt="">警告: 一般的な問題点</H3>
+
+<ul class="space">
+<li><b>グラフィックに ALT テキストがありません:</b><br>
+選択/実行不可能な画像オブジェクトに、代替テキストが提供されていない<li><b>クリック不能な項目に ALT テキストがありません:</b><br>
+その他の選択/実行不可能なオブジェクトに、代替テキストが提供されていない
+<li><b>フレームにタイトルがありません:</b><br>
+フレームのタイトルにテキストが含まれていない
+</ul>
+
+<H3 style="font-size: medium"><IMG src="images/gui/info_tsk.gif" align="middle" alt="">情報: 軽微な問題点</H3>
+
+<ul class="space">
+<li><b>テーブルにキャプションがありません:</b><br>
+テーブルのキャプションが提供されていない
+</ul>
+
+
+<H1 class="related">関連項目</H1>
+<UL class="related">
+<LI><A href="workspaceGui.html">GUI アクセシビリティモードの構成</A>
+</UL>
+
+<P>
+<A href="index.html">インデックスに戻る</A>
+<hr>
+<DIV class="logo"><IMG src="images/logo.gif" alt=""></DIV>
+</P>
+
+<P class="trademark">
+Microsoft, Windows, Windows NT および Windowsロゴは Microsoft Corporationの米国およびその他の国における商標。
+</P>
+</BODY>
+</HTML>

@@ -1,0 +1,246 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML lang="ja">
+<HEAD>
+<META http-equiv="Content-Type" CONTENT="text/html; charset=SHIFT_JIS">
+<META http-equiv="Content-Style-Type" content="text/css">
+<meta name="copyright" content="Copyright (c) IBM Corporation and others 2007. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page." >
+<TITLE>GUI アクセシビリティモードの構成</TITLE>
+<LINK href="aDesigner.css" rel="stylesheet" type="text/css" class="head">
+</HEAD>
+<BODY>
+
+<H1>GUI アクセシビリティモードの構成</H1>
+
+<ul>
+<li><a href="#switchMode">モード切替</a>
+<li><a href="#targetMenu">対象ウィンドウメニュー</a>
+<li><a href="#guiSummary">GUI サマリービュー</a>
+<li><a href="#guiReport">GUI レポートビュー</a>
+<li><a href="#guiOutline">GUI アウトラインビュー</a>
+<li><a href="#guiProperty">GUI プロパティビュー</a>
+<li><a href="#guiEvent">GUI イベントビュー</a>
+<li><a href="#guiList">GUI 一覧ビュー</a>
+</ul>
+
+<H2 id="switchMode">モード切替</H2>
+<P>
+メニューから 「<b>ファイル」 &gt; 「モード選択</b>」 を選択し、「モード選択」 ダイアログを表示します。「<b>GUI アクセシビリティ</b>」 を選択して、「<b>OK</b>」 ボタンを選択します。
+</P>
+<DIV class="figure">
+<IMG src="images/gui/switchMode.png" alt=""><BR>
+<SPAN>図1. モード選択ダイアログ</SPAN>
+</DIV>
+<P>
+GUI アクセシビリティモードでは、<A href="#targetMenu">対象ウィンドウメニュー</A>、<A href="#guiSummary"><b>GUI サマリー</b>ビュー</A>、<A href="#guiOutline"><b>GUI アウトライン</b>ビュー</A>、<A href="#guiProperty"><b>GUI プロパティ</b>ビュー</A>、<A href="#guiEvent"><b>GUI イベント</b>ビュー</A>、<A href="#guiReport"><b>GUIリポート</b>ビュー</A>、<A href="#guiList"><b>GUI 一覧</b>ビュー</A>が表示されます。
+</P>
+
+<H2 id="targetMenu">対象ウィンドウメニュー</H2>
+<P>
+GUI アクセシビリティをチェックするためには、まず、どの Windows&#174; アプリケーションのアクセシビリティをチェックするかを、メニューの 「<b>対象ウィンドウ</b>」 で指定します。
+</P>
+<DL>対象ウィンドウメニューには、以下の3種類のアプリケーションウィンドウが分類表示されます。アクセシビリティチェックを行う対象ウィンドウを、メニューから選択してください。<DL>
+<DT>(ブラウザビューのタイトル)</DT>
+<DD>aDesigner の<b>ブラウザ</b>ビューで表示されているウェブページのタイトルが表示されます。選択すると<b>ブラウザ</b>ビューの GUI アクセシビリティチェックを行います。</DD>
+<DT>外部ブラウザ</DT>
+<DD>外部のウェブブラウザ (Microsoft&#174; Internet Explorer および Mozilla Firefox) の一覧がサブメニューに表示されます。選択したブラウザのウェブページの GUI アクセシビリティチェックを行います。</DD>
+<DT>外部ウィンドウ</DT>
+<DD>その他の Windows&#174; アプリケーションの一覧がサブメニューに表示されます。選択すると Windows&#174; アプリケーション全体の GUI アクセシビリティチェックを行います。</DD>
+</DL></DL>
+<DIV class="figure">
+<IMG src="images/gui/targetMenu.png" alt=""><BR>
+<SPAN>図2. 対象ウィンドウメニュー</SPAN>
+</DIV>
+<H3 style="font-size: medium">関連機能</H3>
+<DL><DL>
+<DT>常に最上位に表示する:</DT>
+<DD>aDesigner を外部アプリケーションより上位に表示します。</DD>
+<DT>自動的に内部ブラウザを隠す:</DT>
+<DD>aDesigner の<b>ブラウザ</b>ビューでウェブページが開かれている場合、外部アプリケーションチェック時に自動的に<b>ブラウザ</b>ビューを隠し、画面を有効利用します。</DD>
+</DL></DL>
+<P>
+対象ウィンドウを選択すると各ビューが自動的に更新されます。<b>GUI サマリー</b>ビューが表示されるまでしばらくお待ちください。
+</P>
+<DIV class="figure">
+<IMG src="images/gui/guiMode.png" alt="" width="800	"><BR>
+<SPAN>図3. GUI アクセシビリティモード</SPAN>
+</DIV>
+<P>
+準備ができたら、以下のビューを使用してアプリケーションの GUI アクセシビリティをチェックすることができます。
+</P>
+
+<H2 id="guiSummary">GUI サマリービュー</H2>
+<P>
+<b>GUI サマリー</b>ビューは、アプリケーションに含まれるテキスト情報の一覧を表示します。このビューを利用すると、視覚障害者がスクリーンリーダで読み上げ可能な情報を一目で確認することができます。
+さらに、読み上げ機能を利用することで、アプリケーションをスクリーンリーダで読み上げた場合の聞き取りやすさを耳で確認することが可能です。<BR>
+(<b>注: </b>Microsoft&#174; Speech API 5.0 対応の音声合成エンジンが必要です。)
+</P>
+<DIV class="figure">
+<IMG src="images/gui/guiSummary.png" alt=""><BR>
+<SPAN>図4. GUI サマリービュー</SPAN>
+</DIV>
+
+<H3 style="font-size: medium">メニューの説明</H3>
+<DL><DL>
+<DT><IMG src="images/gui/refresh.gif" align="middle" alt=""> 最新の状態に更新する (Shift+F10)</DT>
+<DD>表示内容を更新して最新の状態にします。</DD>
+<DT><IMG src="images/gui/speak.gif" align="middle" alt=""> 全体を読み上げる (Shift+F10)</DT>
+<DD>表示内容全体を読み上げます。</DD>
+<DT><IMG src="images/gui/stop.gif" align="middle" alt=""> 読み上げを停止する (Shift+F10)</DT>
+<DD>読み上げを停止します。</DD>
+<DT>領域外項目を表示する (Ctrl+F10)</DT>
+<DD>画面上に表示されていない内容も表示します。</DD>
+<DT>Flash 項目のみ表示する (Ctrl+F10)</DT>
+<DD>Flash アプリケーションの GUI アクセシビリティチェックを行います。</DD>
+<DT>設定 (Ctrl+F10)</DT>
+<DD><A href="viewsGui.html#guiSettings">GUI アクセシビリティ設定パネル</A>を表示します。</DD>
+<DT>この行から読み上げを開始する (Shift+F10)</DT>
+<DD>現在のカーソル行から読み上げを開始します。</DD>
+</DL></DL>
+
+<H2 id="guiReport">GUI レポートビュー</H2>
+<P>
+アプリケーションのアクセシビリティ問題を自動的にチェックして、問題点を一覧表示します。
+MSAA の各種プロパティをチェックすることにより、視覚障害者にとって必要な代替テキストが定義されているかどうかを調査し、必要に応じてエラー、警告または情報表示を行います。
+<BR>自動チェック内容の詳細は、<A href="checkGui.html#guiProblems">「GUI アクセシビリティモードで検出される問題点」</A> を参照してください。
+</P>
+<DIV class="figure">
+<IMG src="images/gui/guiReport.png" alt=""><BR>
+<SPAN>図5. GUI レポートビュー</SPAN>
+</DIV>
+<H3 style="font-size: medium">メニューの説明</H3>
+<DL><DL>
+<DT><IMG src="images/gui/refresh.gif" align="middle" alt=""> 最新の状態に更新する (Shift+F10)</DT>
+<DD>表示内容を更新して最新の状態にします。</DD>
+<DT><IMG src="images/gui/overlay.gif" align="middle" alt=""> レポートアイコンを画面上に表示する</DT>
+<DD>エラー箇所をアプリケーション画面上に重ね合わせて表示します。</DD>
+<DT>エラーレポートを表示する (Ctrl+F10)</DT>
+<DD>エラーを表示します。</DD>
+<DT>警告レポートを表示する (Ctrl+F10)</DT>
+<DD>警告を表示します。</DD>
+<DT>情報レポートを表示する (Ctrl+F10)</DT>
+<DD>情報を表示します。</DD>
+</DL></DL>
+
+<H2 id="guiOutline">GUI アウトラインビュー</H2>
+<P>
+<b>GUI アウトライン</b>ビューは、アプリケーションが提供する MSAA オブジェクトをツリー形式で表示します。このビューを利用することで MSAA オブジェクトの構造を確認することができます。
+</P>
+<DIV class="figure">
+<IMG src="images/gui/guiOutline.png" alt=""><BR>
+<SPAN>図6. GUI アウトラインビュー</SPAN>
+</DIV>
+<H3 style="font-size: medium">メニューの説明</H3>
+<DL><DL>
+<DT><IMG src="images/gui/expandall.gif" align="middle" alt=""> すべて展開する</DT>
+<DD>ツリー全体を展開表示します。すべて展開されるまでには時間がかかることがあります。</DD>
+<DT><IMG src="images/gui/collapseall.gif" align="middle" alt=""> すべて省略する</DT>
+<DD>展開されているツリーをすべて省略表示します。</DD>
+<DT><IMG src="images/gui/refresh.gif" align="middle" alt=""> 最新の状態に更新する (Shift+F10)</DT>
+<DD>表示内容を更新して最新の状態にします。</DD>
+<DT><IMG src="images/gui/checker.gif" align="middle" alt=""> GUI レポートへジャンプする (Shift+F10)</DT>
+<DD>GUI アクセシビリティチェックを実行し、<b>GUI レポート</b>ビューに移動します。</DD>
+<DT><IMG src="images/gui/overlay.gif" align="middle" alt=""> アイコンを画面上に表示する</DT>
+<DD>選択項目の兄弟子孫アイコンを、アプリケーション画面上に重ね合わせて表示します。</DD>
+<DT>領域外項目を表示する (Ctrl+F10)</DT>
+<DD>画面上に表示されていない内容も表示します。</DD>
+<DT>Flash 項目のみ表示する (Ctrl+F10)</DT>
+<DD>Flash アプリケーションの GUI アクセシビリティチェックを行います。</DD>
+<DT>この下をすべて展開する (Shift+F10)</DT>
+<DD>選択しているオブジェクト全体を展開表示します。すべて展開されるまでには時間がかかることがあります。</DD>
+</DL></DL>
+
+<H2 id="guiProperty">GUI プロパティビュー</H2>
+<P>
+<b>GUI プロパティ</b>ビューは、GUI アウトラインで選択されているオブジェクトの詳細な情報を表示します。
+また、このビューは MSAA (IAccessible) インターフェースの詳細情報に加えて IAccessible2 インターフェースの詳細情報を表示します。
+アプリケーション開発者がこのビューを利用することで、アクセシビリティの問題点をより詳細に解析することができます。
+</P>
+<DL><b>GUI プロパティ</b>ビューには以下の情報が表示されます。<DL>
+<DT>IAccessible</DT>
+<DD>MSAA インターフェースのプロパティが表示されます。</DD>
+<DT>IAccessible2</DT>
+<DD>オブジェクトが IAccessible2 インターフェースをサポートしている場合に、IAccessible2 インターフェースのプロパティが表示されます。また、以下の IAccessible2 関連インターフェースをサポートしている場合には、それぞれのインターフェースのプロパティが表示されます。</DD>
+<UL>
+<LI>IAccessibleAction
+<LI>IAccessibleApplication
+<LI>IAccessibleComponent
+<LI>IAccessibleEditableText
+<LI>IAccessibleHyperlink
+<LI>IAccessibleHypertext
+<LI>IAccessibleImage
+<LI>IAccessibleTable
+<LI>IAccessibleText
+<LI>IAccessibleValue
+</UL>
+</DL></DL>
+<DIV class="figure">
+<IMG src="images/gui/guiProperty.png" alt=""><BR>
+<SPAN>図7. GUI プロパティビュー</SPAN>
+</DIV>
+<H3 style="font-size: medium">メニューの説明</H3>
+<DL><DL>
+<DT><IMG src="images/gui/refresh.gif" align="middle" alt=""> 最新の状態に更新する (Shift+F10)</DT>
+<DD>表示内容を更新して最新の状態にします。</DD>
+<DT>nullプロパティを表示する (Ctrl+F10)</DT>
+<DD>値が null のプロパティを表示します。</DD>
+<DT>値の変化を色分け表示する(Ctrl+F10)</DT>
+<DD>前回の表示と値が変化した場合、青色で表示します。 </DD>
+<DT>コピー (Shift+F10)</DT>
+<DD>選択行テキストをクリップボードにコピーします。</DD>
+<DT>メソッドを起動 (Shift+F10)</DT>
+<DD>一部のメソッドを起動します。必要に応じてパラメータ入力ダイアログが表示されます。</DD>
+</DL></DL>
+
+<H2 id="guiEvent">GUI イベントビュー</H2>
+<P>
+<b>GUI イベント</b>ビューは、アプリケーションから発生した MSAA/IAccessible2 イベントを表示します。
+イベントメッセージ読み上げをオンにすると、オブジェクトのテキスト情報の音声読み上げを行います。イベントをスクリーンリーダで読み上げた場合の、聞き取りやすさを耳で確認することが可能です。<BR>
+(<b>注: </b>Microsoft&#174; Speech API 5.0 対応の音声合成エンジンが必要です。)
+</P>
+<DIV class="figure">
+<IMG src="images/gui/guiEvent.png" alt=""><BR>
+<SPAN>図7. GUI イベントビュー</SPAN>
+</DIV>
+<H3 style="font-size: medium">メニューの説明</H3>
+<DL><DL>
+<DT><IMG src="images/gui/clear.gif" align="middle" alt=""> クリア (Shift+F10)</DT>
+<DD>イベントログを消去します。</DD>
+<DT>フィルター (Ctrl+F10)</DT>
+<DD><A href="viewsGui.html#eventFilter">GUI イベントフィルター設定パネル</A>を表示します。</DD>
+<DT>イベントメッセージを読み上げる (Ctrl+F10)</DT>
+<DD>イベントが発生したタイミングでオブジェクトのテキスト情報を読み上げます。</DD>
+<DT>設定 (Ctrl+F10)</DT>
+<DD><A href="viewsGui.html#guiSettings">GUI アクセシビリティ設定パネル</A>を表示します。</DD>
+</DL></DL>
+
+<H2 id="guiList">GUI 一覧ビュー</H2>
+<P>
+<b>GUI 一覧</b>ビューは、<b>GUI アウトライン</b>ビューで選択されたオブジェクトの兄弟オブジェクトをリスト表示します。
+</P>
+<DIV class="figure">
+<IMG src="images/gui/guiList.png" alt=""><BR>
+<SPAN>図8. GUI 一覧ビュー</SPAN>
+</DIV>
+<H3 style="font-size: medium">メニューの説明</H3>
+<DL><DL>
+<DT><IMG src="images/gui/refresh.gif" align="middle" alt=""> 最新の状態に更新する (Shift+F10)</DT>
+<DD>表示内容を更新して最新の状態にします。</DD>
+</DL></DL>
+
+<H1 class="related">関連項目</H1>
+<UL class="related">
+<LI><A href="checkGui.html">「GUI アクセシビリティモード」 でアプリケーションのアクセシビリティをチェックする</A>
+<LI><A href="viewsGui.html">GUI アクセシビリティモード設定パネル</A>
+</UL>
+
+<P>
+<A href="index.html">インデックスに戻る</A>
+<hr>
+<DIV class="logo"><IMG src="images/logo.gif" alt=""></DIV>
+</P>
+
+<P class="trademark">
+Microsoft, Windows, Windows NT および Windowsロゴは Microsoft Corporationの米国およびその他の国における商標。
+</P>
+</BODY>
+</HTML>

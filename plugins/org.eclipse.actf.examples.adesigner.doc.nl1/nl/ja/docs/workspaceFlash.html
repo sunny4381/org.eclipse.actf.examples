@@ -1,0 +1,224 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML lang="ja">
+<HEAD>
+<META http-equiv="Content-Type" CONTENT="text/html; charset=SHIFT_JIS">
+<META http-equiv="Content-Style-Type" content="text/css">
+<meta name="copyright" content="Copyright (c) IBM Corporation and others 2007. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page." >
+<TITLE>Flash アクセシビリティモードの構成</TITLE>
+<LINK href="aDesigner.css" rel="stylesheet" type="text/css" class="head">
+</HEAD>
+<BODY>
+<H1>Flash アクセシビリティモードの構成</H1>
+
+<ul>
+<li><a href="#modeChange">モード切替</a>
+<li><a href="#flashdomView">Flash アウトラインビュー</a>
+<li><a href="#guiprop">GUI プロパティビューの表示内容</a>
+<li><a href="#flashdomLogview">Flash プロキシ ログビュー</a>
+</ul>
+
+<H2 id="modeChange">モード切替</H2>
+<P>
+メニューから <b>「ファイル」 &gt; 「モード選択...」</b> を選択し、「モード選択」 ダイアログを表示します。「<b>Flash アクセシビリティ</b>」 を選択して、「<b>OK</b>」 ボタンを選択します。
+</P>
+<DIV class="figure">
+<IMG src="images/flash/mode.png" alt=""><BR>
+<SPAN>図1. モード選択ダイアログ</SPAN>
+</DIV>
+<P>
+Flash アクセシビリティモードでは<a href="workspace.html#browserView"><b>ブラウザ</b>ビュー</a>に加えて、GUI アクセシビリティモードと同様、<a href="workspaceGui.html#guiSummary"><b>GUI サマリー</b>ビュー</a>、<a href="workspaceGui.html#guiOutline"><b>GUI アウトライン</b>ビュー</a>、<a href="workspaceGui.html#guiProperty"><b>GUI プロパティ</b>ビュー</a>、<a href="workspaceGui.html#guiEvent"><b>GUI イベント</b>ビュー</a>、<a href="workspaceGui.html#guiReport"><b>GUI レポート</b>ビュー</a>、<a href="workspaceGui.html#guiList"><b>GUI 一覧</b>ビュー</a>が表示されます (図2)。ただし <b>GUI プロパティ</b>ビューに表示される情報は異なります。詳細については各セクションをご覧ください。本モードではそれに加えて、<a href="#flashdomView"><b>Flash アウトライン</b>ビュー</a>、および <a href="#flashdomLogview"><b>Flash プロキシ ログ</b>ビュー</a>が表示されます。
+</P>
+<DIV class="figure">
+<IMG src="images/flash/ui.jpg" alt=""><BR>
+<SPAN>図2. Flash アクセシビリティモードのユーザインタフェース</SPAN>
+</DIV>
+
+<H2 id="flashdomView">Flash アウトラインビュー</H2>
+<P>
+中段右側にあるのが <b>Flash アウトライン</b>ビューです (図3)。Flash の実行時内部構造が表示されます。
+</p>
+<H3 id="proxy">プロキシによる内部構造の取得</H3>
+<P>
+Flash コンテンツの内部では、オブジェクトの移動/変形、表示/非表示の制御などを行うために ActionScript と呼ばれるスクリプト言語を使用しています。これは ECMAScript (俗に言う JavaScript) をベースとした言語です。このビューでは ActionScript から見たオブジェクトの木構造を表示します。ここにはオブジェクトの種類、値、コンテンツ制作者が付けたインスタンス名などが実際の親子関係を維持して表示されています。これらの情報を用いて、制作者が効率よくコンテンツを修正し、アクセシビリティを高めることができます。
+</P>
+<P>
+通常、Flash コンテンツの制作者が明示的に許可しない限り、外部からコンテンツの内部構造にアクセスすることは不可能ですが、aDesigner では内部で動作するプロキシを介して Flash コンテンツを取得することにより、アクセスを可能にしています。
+</P>
+<P id="typeof">
+ビューの各エントリは 「[ テキスト情報 ] 名前(種類)」 の形式で表示されます。名前は制作者がオブジェクトに付けたインスタンス名や、オブジェクトのフィールド名/メソッド名で、ActionScript でそのオブジェクトを指すときに用いられます。種類はエントリの種類を表し、ActionScript の typeof 演算子の返り値です。これには、以下の種類があります。
+これらの意味については Flash のマニュアル 「ActionScript リファレンスガイド」 を参照してください。エントリのアイコンは同様にオブジェクトの種類を表します。
+<UL>
+<li>string
+<li>movieclip
+<li>object
+<li>number
+<li>boolean
+<li>function
+</UL>
+また、オブジェクトが持つテキスト情報は 「 [ 」 および 「 ] 」 に囲まれて表示されます。
+</P>
+<p>
+各エントリを選択すると、<b>GUI プロパティ</b>ビューにオブジェクトのより詳しい内容が表示されます。詳細は、次の <a href="#guiprop">「GUI プロパティビューの表示内容」</a> をご覧ください。
+</p>
+<DIV class="figure">
+<IMG src="images/flash/flashdom.png" alt=""><BR>
+<SPAN>図3. Flash アウトラインビュー</SPAN>
+</DIV>
+
+<H4>メニューの説明</H4>
+
+<DL>
+<DT><IMG src="images/gui/refresh.gif" align="middle" alt=""> 最新の状態に更新する (Shift+F10)</DT>
+<DD>表示内容を更新して、最新の状態にします。</DD>
+<DT>有益な情報のみを表示する (Ctrl+F10)</DT>
+<DD>画面に表示されない (種類が number や string, function, boolean) プロパティ/メソッドなどを非表示にします。画面に表示されるオブジェクトの親子関係だけを見たい場合に有用です。</DD>
+<DT>視覚構造を表示する (Ctrl+F10)</DT>
+<DD>オブジェクト作成時の論理的な親子関係ではなくて、視覚的なオブジェクトの包含関係に基づいた木構造を表示します。</DD>
+<DT>Windowless フラッシュを検索する (デバッグ用) (Ctrl+F10)</DT>
+<DD>Flash コンテンツをウェブページに埋め込む際に、wmode プロパティを opaque ではなく transparent に指定すると、スクリーンリーダ (および MSAA) からコンテンツにアクセスできなくなります。このオプションをオンにすると、transparent の場合でも Flash アウトラインを表示します。オフの場合は表示しません。</DD>
+<DT>すべての情報を表示する (デバッグ用) (Ctrl+F10)</DT>
+<DD>Flash の内部変数を含め、すべてのプロパティ/メソッドを表示します。さらにオブジェクトに循環参照が存在する場合でも枝刈りをせず、そのまま見かけ上の親子関係でツリーを表示します。
+<BR><B>注：</B>このオプションがオンの時に 「<b>すべて展開する</b>」 を実行すると、無限ループに陥る可能性があります。</DD>
+<DT>Flash プロキシ設定 (Ctrl+F10)</DT>
+<DD><a href="viewsFlash.html#flashdom">Flash プロキシ設定パネル</a>を表示します。</DD>
+</DL>
+
+<H2 id="guiprop">GUI プロパティビューの表示内容</H2>
+<P>
+<b>Flash アウトライン</b>ビューでエントリを選択すると下段右にある <b>GUI プロパティ</b>ビューにその詳細が表示されますが (図4)、
+Flash アクセシビリティモードでは、ビューに表示される内容が GUI アクセシビリティモードの場合とは異なります。
+また、エントリの種類によって表示されるプロパティが異なります。主なプロパティ名とその意味は以下のとおりです。
+
+</P>
+<DIV class="figure">
+<IMG src="images/flash/guiprop.png" alt=""><BR>
+<SPAN>図4. GUIプロパティビュー</SPAN>
+</DIV>
+
+<DL>
+<DT>wmode</DT>
+<DD>(トップレベルのエントリのみ) ウェブページに埋め込まれる際に指定されたwmodeプロパティの値。</DD>
+<DT>type</DT>
+<DD>オブジェクトの種類 (型)。ActionScript の typeof 演算子による返り値。どのような値があるかは、前述の<a href="#typeof">こちら</a>を参照してください。</DD>
+<DT>className</DT>
+<DD>type の値が object の場合に、どのクラスのインスタンスであるかが表示されます。例えば、ボタンなら &quot;Button&quot;、テキストフィールドなら &quot;TextField&quot;、配列なら &quot;Array&quot; が表示されます。</DD>
+<DT>objName</DT>
+<DD>オブジェクトの見かけのフルパス名。変数への代入などにより、オブジェクトへの参照を作成した場合には、真のフルパス名 (target プロパティ値) と異なることがあります。
+<BR>例: <code>_level0.button1.b1txt</code></DD>
+<DT>target</DT>
+<DD>オブジェクトの真のフルパス名。オブジェクトの target プロパティ値です。このオブジェクトが、ルートオブジェクトからどのような順番で作られたかを表します。
+<BR>例: <code>_level0.button1.container.button</code></DD>
+<DT>depth</DT>
+<DD>オブジェクトの存在するレイヤー。オブジェクトの getDepth メソッドの返り値です。数値が大きいほどオブジェクトは前面に表示されます。</DD>
+<DT>currentFrame</DT>
+<DD>オブジェクトの存在するフレーム。</DD>
+<DT>Location</DT>
+<DD>オブジェクトの位置とサイズ。aDesigner は、この値を元にして<b>ブラウザ</b>ビューにハイライトの長方形を描画します。ボタンオブジェクト (type が object で、className が Button であるオブジェクト) の場合は、画面に実際に表示される位置とずれることがあります。</DD>
+<DT>value</DT>
+<DD>オブジェクトの値。オブジェクトの type が number、string、および boolean である場合に表示されます。</DD>
+<DT>isUIComponent</DT>
+<DD>オブジェクトが &quot;コンポーネント&quot; である場合には true が表示されます。コンポーネントについては Flash のマニュアルを参照してください。</DD>
+<DT>isOpaqueObject</DT>
+<DD>オブジェクトが子を持つが、それを無視して単一のオブジェクトとみなせる場合に true が表示されます。
+aDesigner が Flash アウトラインにおいて探索を行う場合、この値が true のオブジェクトの子孫は探索しません。</DD>
+<DT>isInputable</DT>
+<DD>このオブジェクトが入力可能である場合 true が表示されます。例えば、テキストボックス、チェックボックスなどは入力可能であるとみなされます。</DD>
+<DT>accInfo</DT>
+<DD>アクセシビリティ情報。オブジェクトの子である _accProps インスタンスおよび _accImpl インスタンスの内容が表示されます。
+_accProps に関しての詳細は、Flash のマニュアルを参照してください。
+_accImpl に関しての詳細は、Flash 8 開発環境に付属のソース (LabelAccImpl.asなど) を参照してください。
+accInfo の子プロパティには以下のものがあります。
+<DL>
+<DT>name</DT>
+<DD>スクリーンリーダによって読み上げられるテキスト情報。</DD>
+<DT>description</DT>
+<DD>オブジェクトのより長い説明。</DD>
+<DT>silent</DT>
+<DD>false の場合、スクリーンリーダから &quot;見えない&quot; オブジェクトになります。</DD>
+<DT>forceSimple</DT>
+<DD>true の場合、このオブジェクトの子孫はスクリーンリーダから見えません。</DD>
+<DT>shortcut</DT>
+<DD>ショートカットキーを表す文字列。
+<BR>例: Control+A</DD>
+<DT>role</DT>
+<DD>オブジェクトの MSAA role を表す文字列。
+<BR>例: チェックボックス</DD>
+<DT>state</DT>
+<DD>オブジェクトの MSAA state を表す文字列。
+<BR>例: チェックされています。</DD>
+<DT>defaultAction</DT>
+<DD>オブジェクトの MSAA default action を表す文字列。
+<BR>例: Check</DD>
+</DL>
+</DD>
+</DL>
+<p>
+その他のユーザインタフェースについては、<a href="workspaceGui.html#guiProperty">「GUI プロパティビュー」</a>を参照してください。
+</p>
+
+<H2 id="flashdomLogview">Flash プロキシ ログビュー</H2>
+<P>
+<b>Flash プロキシ ログ</b>ビューは、下部右側に表示されます (図5)。
+起動時の状態では <b>GUI プロパティ</b>ビューが選択されているため背面に隠れています。
+<a href="#proxy">前述</a>したように、aDesigner は Flash コンテンツの内部構造にアクセスするため、
+内部的にプロキシを動作させ、そのプロキシを介して Flash コンテンツを取得します。
+プロキシは目的のコンテンツの内部構造にアクセスするための処理を行います。
+ビューにはプロキシのそれらの動作に関するログメッセージが表示されます。
+</P>
+
+<P>
+1つのエントリがプロキシの1つのログメッセージに対応します。
+各エントリは、メッセージ、ID、ソース、時刻から構成されています。
+<DL>
+<DT>メッセージ</DT>
+<DD>プロキシの出力したログメッセージ。</DD>
+<DT>ID</DT>
+<DD>プロキシがその時点で処理している Flash コンテンツの ID。プロキシは並列に複数の Flash コンテンツを処理します。ログメッセージがどのコンテンツを処理しているスレッドのものかを判別するため、コンテンツに一意に割り当てられた ID が表示されます。プロキシ全体の動作に関するメッセージには ID が付きません。</DD>
+<DT>ソース</DT>
+<DD>ログを出力した、プロキシの Java&#8482; クラス。</DD>
+<DT>時刻</DT>
+<DD>ログが出力された時刻。</DD>
+</DL>
+</P>
+
+<p>
+ログにはアイコンの付かないトレースログ、<img
+ src="images/gui/info_tsk.gif" align="middle" alt="アルファベットのI">のアイコンで示される情報ログ、<img
+ src="images/gui/warn_tsk.gif" align="middle" alt="びっくりマーク">のアイコンで示される警告ログ、および<img
+ src="images/gui/error_tsk.gif" align="middle" alt="バツマーク">のアイコンで示されるエラーログの4種類があります。トレースログは初期状態では表示されません。
+</p>
+
+<DIV class="figure">
+<IMG src="images/flash/domlog.png" alt=""><BR>
+<SPAN>図5. Flash プロキシ ログビュー</SPAN>
+</DIV>
+
+<H3 class="menudesc">メニューの説明</H3>
+
+<DL>
+<DT><IMG src="images/gui/clear.gif" align="middle" alt=""> クリア (Shift+F10)</DT>
+<DD>イベントログを消去します。</DD>
+<DT>トレースログを表示する (Ctrl+F10)</DT>
+<DD>プロキシの詳細な動作に関するトレースログを表示します。主にプロキシのデバッグ時に使用します。</DD>
+<DT>設定 (Ctrl+F10)</DT>
+<DD><a href="viewsFlash.html#flashdom">Flash プロキシ設定パネル</a>を表示します。</DD>
+</DL>
+
+<H1 class="related">関連項目</H1>
+<UL class="related">
+<LI><A href="workspace.html">aDesigner HTML アクセシビリティモードの構成</A></LI>
+<LI><A href="workspaceGui.html">GUI アクセシビリティモードの構成</A></LI>
+<LI><A href="checkFlash.html">「Flash アクセシビリティモード」 で Flash コンテンツを含むウェブページのアクセシビリティをチェックする</A></LI>
+</UL>
+
+<P>
+<A href="index.html">インデックスに戻る</A>
+<hr>
+<DIV class="logo"><IMG src="images/logo.gif" alt=""></DIV>
+</P>
+
+<p class="trademark">
+JavaおよびすべてのJava関連の商標およびロゴは Sun Microsystems, Inc.の米国およびその他の国における商標。
+</p>
+</BODY>
+</HTML>

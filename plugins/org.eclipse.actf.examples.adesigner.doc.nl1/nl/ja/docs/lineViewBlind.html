@@ -1,0 +1,115 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML lang="ja">
+<HEAD>
+<META http-equiv="Content-Type" CONTENT="text/html; charset=SHIFT_JIS">
+<META http-equiv="Content-Style-Type" content="text/css">
+<meta name="copyright" content="Copyright (c) IBM Corporation and others 2007. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page." >
+<TITLE>詳細レポートの個別表示（音声ユーザビリティ）</TITLE>
+<LINK href="aDesigner.css" rel="stylesheet" type="text/css" class="head">
+</HEAD>
+<BODY>
+<H1>詳細レポートの個別表示（音声ユーザビリティ）</H1>
+
+<UL>
+<LI><a href="#displayInfo">表示される情報</a>
+<LI><a href="#operation">操作</a>
+</UL>
+
+<H2 id="displayInfo">表示される情報</H2>
+<P>
+詳細レポートの個別表示には、aDesigner で検出された問題点一つずつ列挙されます。
+音声ユーザビリティ視覚化時には下記の情報が表示されます:
+</P>
+<UL class="space">
+<LI><B>問題点の種類:</B> 問題点の種類を表すアイコンには、それぞれの以下のような意味があります: 
+
+<div style="margin-bottom:20px;margin-top:15px">
+<table border=1><tr><td>
+<IMG src="images/I_Star.gif" alt="星."> </td><td>このアイコンは他のアイコンと併用されます。
+このアイコンが表示されている行を選択すると、<b>視覚化</b>ビュー上でその問題点に対応する要素がハイライトされます。
+</td></tr></table>
+</div>
+
+<div style="margin-bottom:20px">
+<table border=1>
+<tr><td><IMG src="images/ErrC.gif" alt="Cという赤いアイコン."> </td>
+<td>アクセシビリティ・ガイドラインへの準拠に関する問題点で、<U>修正が必要</U>なものです。</td></tr>
+<tr><td><IMG src="images/WarnC.gif" alt="Cという黄色いアイコン."> </td>
+<td>アクセシビリティ・ガイドラインへの準拠に関する問題かもしれません。<U>ユーザによる確認が必要</U>です。</td></tr>
+<tr><td><IMG src="images/InfoC.gif" alt="Cという青いアイコン."> </td>
+<td>アクセシビリティ・ガイドラインへの準拠に関する<U>情報</U>です。</td></tr>
+</table>
+</div>
+
+<div style="margin-bottom:20px">
+<table border=1>
+<tr><td><IMG src="images/ErrL.gif" alt="Lという赤いアイコン."></td>
+<td>ユーザビリティ (Listenability) に関する問題点で、<U>修正が必要</U>なものです。</td></tr>
+<tr><td><IMG src="images/WarnL.gif" alt="Lという黄色いアイコン."></td> 
+<td>ユーザビリティ (Listenability) に関する問題かもしれません。<U>ユーザによる確認が必要</U>です。</td></tr>
+<tr><td><IMG src="images/InfoL.gif" alt="Lという青いアイコン."></td>
+<td>ユーザビリティ (Listenability) に関する<U>情報</U>です。</td></tr>
+</table>
+</div>
+
+<div style="margin-bottom:10px">
+<table border=1><tr><td>
+<tr><td><IMG src="images/ErrN.gif" alt="Nという赤いアイコン."></td>
+<td>ユーザビリティ(Navigability)に関する問題点で、<U>修正が必要</U>なものです。</td></tr>
+<tr><td><IMG src="images/WarnN.gif" alt="Nという黄色いアイコン."></td>
+<td>ユーザビリティ(Navigability)に関する問題かもしれません。<U>ユーザによる確認が必要</U>です。</td></tr>
+<tr><td><IMG src="images/InfoN.gif" alt="Nという青いアイコン."></td>
+<td>ユーザビリティ(Navigability)に関する<U>情報</U>です。</td></tr></table>
+</div>
+
+<P>
+<B>(注)</B> 問題点が評価に影響を与える場合には、減点される数値がアイコンと共に表示されます。  
+</P>
+
+<LI><B>対応するアクセシビリティ・ガイドラインのチェック項目:</B> 問題点に対応するアクセシビリティ・ガイドラインのチェック項目が表示されます。
+使用するガイドラインは、以下に挙げる4種類のアクセシビリティ・ガイドラインや標準の中から自由に選択できます。
+アクセシビリティ・ガイドラインを選択するには、メニューの 「<B>ウィンドウ</B>」 &gt; 「<B>設定</B>」  から設定パネルを開き、「<B>ガイドラインチェッカー 設定</B>」 でチェックボックスにチェックを入れます。
+  <UL class="nospace">
+  <LI>WCAG
+  <LI>Section 508
+  <LI>JIS X8341-3
+  <LI>IBM Web アクセシビリティチェックリスト
+  </UL>
+<LI><B>行番号: </B>対応する要素が存在する HTML 内の行番号が表示されます。
+この項目はオプショナルです。メニューの 「<B>ウィンドウ</B>」 &gt; 「<B>設定</B>」  から設定パネルを開き、「<B>ガイドラインチェッカー 設定</B>」 の中の 「行番号をエラーレポートに追加」 チェックボックスをオンにすると表示されます。
+
+<LI><B>エラーの内容: </B>エラーの内容が簡潔に記述されます。
+</UL>
+
+<H2 id="operation">操作</H2>
+<P>
+行を選択すると、対応する要素が<b>視覚化</b>ビュー上でハイライトされます。
+右クリックするか、行が選択された状態で 「Shift+F10」 キーを押すと、コンテキストメニューが表示されます。
+音声ユーザビリティ視覚化時には、コンテキストメニューから以下の4つの項目が利用できます。
+</P>
+<UL class="space">
+<LI><B>選択の解除</B>: 個別表示における現在の選択が解除されます。これは、<b>シミュレーション／視覚化</b>ビューにおけるハイライトを消す時に使用することができます。
+<LI><B>ガイドラインを見る</B>: 選択されているエラーに対応した各ガイドラインのチェック項目を別ウィンドウに表示します。
+<LI><B>エラーの内容を見る</B>: 個別表示における「エラーの内容」の項目がポップアップ・ウィンドウに表示されます。「エラーの内容」が長すぎてaDesignerの画面では表示しきれない場合に便利です。
+<LI><B>ソースHTML を見る</B>: <A href="sourceViewer.html">HTML 文書表示パネル</A>を開きます。開いた HTML 文書表示パネル上で、選択されているエラーに該当する HTML 要素がハイライトされています。これにより、HTML 文書内のどこを直せばよいかがすぐにわかります。
+</UL>
+
+<H1 class="related">関連項目</H1>
+<UL class="related">
+<LI><A href="workspace.html">aDesigner の構成</A>
+<LI><A href="checkBlind.html">「音声ユーザビリティ」タブ でウェブページのアクセシビリティやユーザビリティをチェックする</A>
+<LI><A href="problemsBlind.html">「音声ユーザビリティ視覚化」 で検出されるアクセシビリティ、およびユーザビリティの問題点</A>
+<LI><A href="compliance.html">Web アクセシビリティ・ガイドラインへの準拠</A>
+<LI><A href="menusIcons.html">メニュー、ボタン、チェックボックス、アイコンの説明</A>
+<LI><A href="sourceViewer.html">HTML文書表示パネル</A>
+</UL>
+
+<P>
+<A href="index.html">インデックスに戻る</A>
+<hr>
+<DIV class="logo"><IMG src="images/logo.gif" alt=""></DIV>
+</P>
+
+
+</BODY>
+</HTML>

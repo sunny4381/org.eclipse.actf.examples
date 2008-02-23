@@ -1,0 +1,398 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML lang="ja">
+<HEAD>
+<META http-equiv="Content-Type" CONTENT="text/html; charset=SHIFT_JIS">
+<META http-equiv="Content-Style-Type" content="text/css">
+<meta name="copyright" content="Copyright (c) IBM Corporation and others 2007. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page." >
+<TITLE>ODFアクセシビリティチェックリスト　（ODF1.0, 1.1に対応）</TITLE>
+<LINK href="../aDesigner.css" rel="stylesheet" type="text/css" class="head"/>
+</HEAD>
+<BODY>
+<H1>ODF アクセシビリティチェックリスト　（ODF1.0, 1.1に対応）</H1>
+<p>
+このチェックリストはODF 1.0 または 1.1 の文書をアクセシブルにするためのチェックリストです。このチェックリストでは以下のガイドラインを参照しています。
+<UL class="nobullet">
+<H2>ODF 1.0 Specification</H2>
+<LI>ODF 1.0 は2005年5月1日に標準化団体OASISの標準として認定されました。
+また、<a href="http://www.iso.org/iso/en/CatalogueDetailPage.CatalogueDetail?CSNUMBER=43485&scopelist=PROGRAMME">ISO, IECの標準(ISO/IEC26300:2006)</a>としても認定されました。
+<a href="http://www.oasis-open.org/committees/tc_home.php?wg_abbrev=office#odf10">ODF 1.0 の仕様</a>は、OASIS ODF Technical Committeeのページから参照することができます。</LI>
+<H2>ODF 1.1 Specification</H2>
+<LI>ODF 1.1は2007年2月2日に標準化団体OASISの標準として認定されました。このバージョンにおいては、いくつかのアクセシビリティに関する機能が追加されました。
+<a href="http://www.oasis-open.org/committees/tc_home.php?wg_abbrev=office#odf11">ODF 1.1 の仕様</a>は、OASIS ODF Technical Committeeのページから参照することができます。</LI>
+<H2>Accessibility Guidelines for Implementations of OpenDocument Format v1.1 (ODF Implementation Guideline)</H2>
+<LI>この文書は、ODF 1.1に対応したアプリケーションの開発者のためのガイドラインです。<a href='http://www.oasis-open.org/committees/tc_home.php?wg_abbrev=office-accessibility'>OASIS ODF Accessibility Subcommitteeのページ</a>から参照することができます。</LI>
+</UL>
+ODFのガイドライン以外に、以下のWebアクセシビリティガイドラインについても、各チェック項目が対応する記述を参照しています。
+<UL class="nobullet">
+<H2>WCAG 1.0</H2>
+<LI>W3C Web Accessibility Initiativeによって公開されているWebアクセシビリティガイドラインです。</LI>
+<H2>Section 508</H2>
+<LI>アメリカ合衆国の法律で、連邦政府が調達する製品、提供する情報や、サービスが障害者にとってもアクセスできるものであることを義務づけています。</LI>
+<H2>IBM Web Accessibility Checklist</H2>
+<LI>IBMが公開しているWebコンテンツをアクセシブルにするためのチェックリストです。</LI>
+</UL>
+</p>
+<H2>画像に関するチェック項目</H2>
+<UL class="nobullet">
+<H2 id="1.1" name="1.1">Guideline 1.1</H2>
+<LI>画像に対しては、代替テキストまたはキャプションを設定してください（意味の無い画像である場合には代替テキストとして、スペース文字を設定してください）。</LI>
+<H4>注意</H4>
+現在の OpenOffice.org では、キャプションと画像を関連付ける機能はサポートされていません。
+代替テキストを設定して、対処してください。 <BR/>
+また現在の OpenOffice.org Calc, Impress では、画像に対する代替テキストの機能が提供されていないため、
+OpenDocument Spreadsheet (ODS), OpenDocument Presentation (ODP) ファイルに対しては、この問題は修正できません。
+<H3>関連のあるガイドライン</H3>
+<UL class="nobullet">
+<LI>ODF 1.1 Specification, 9.2.15 Common Drawing Shape Attributes</LI>
+<LI>ODF 1.1 Specification, 9.2.20 Title and Description</LI>
+<LI>ODF Implementation Guideline, 3.2 Provision of alternative text versions of document content.</LI>
+<LI><A href='http://www.w3.org/TR/WAI-WEBCONTENT/wai-pageauth.html#tech-text-equivalent'>WCAG 1.0 1.1</A></LI>
+<LI><A href='http://www.access-board.gov/sec508/guide/1194.22.htm#(a)'>Section 508 (a)</A></LI>
+<LI><A href='http://www-03.ibm.com/able/guidelines/web/webimages.html'>IBM Guideline 1</A></LI>
+</UL>
+<H4>OpenOffice.org Writer での修正方法 (代替テキストの追加)</H4>
+<p>
+OpenOffice.org Writer では、画像をダブルクリックすることにより画像のプロパティダイアログが表示されます。
+画像のプロパティダイアログの”オプション”タブを選択し、”次候補の名前”に代替テキストを設定してください。
+</p>
+<H4>注意</H4>
+現在の OpenOffice.org では、空白の代替テキストはサポートされていません。意味の無い画像である場合には、スペース文字を設定してください。
+<H4>IBM Lotus&reg; Symphony<sup>TM</sup> での修正方法 (代替テキストの追加)</H4>
+<p>
+IBM Lotus&reg; Symphony<sup>TM</sup> では、画像を選択し、右クリックメニューの”Graphic Properties”を選択することで、画像のプロパティダイアログが表示されます。
+画像のプロパティダイアログの”Alternative Text”タブを選択し、”Alternative Text”に代替テキストを設定してください。
+</p>
+<H4>注意</H4>
+現在の IBM Lotus&reg; Symphony<sup>TM</sup> では、空白の代替テキストはサポートされていません。意味の無い画像である場合には、スペース文字を設定してください。
+<H4>IBM Lotus&reg; Symphony<sup>TM</sup> での修正方法 (キャプションの追加)</H4>
+<p>
+IBM Lotus&reg; Symphony<sup>TM</sup> では、画像を選択し、右クリックメニューの”Add Caption”を選択することで、キャプションを設定することができます。
+</p>
+<H2 id="1.2" name="1.2">Guideline 1.2 (ODF 1.1以降が対象)</H2>
+<LI>複雑な画像を用いている場合には、詳細な説明文を設定することを検討してください。</LI>
+<H3>関連のあるガイドライン</H3>
+<UL class="nobullet">
+<LI>ODF 1.1 Specification, 9.2.20 Title and Description</LI>
+<LI>ODF Implementation Guideline, 3.2 Provision of alternative text versions of document content.</LI>
+<LI><A href='http://www.w3.org/TR/WAI-WEBCONTENT/wai-pageauth.html#tech-text-equivalent'>WCAG 1.0 1.1</A></LI>
+<LI><A href='http://www.access-board.gov/sec508/guide/1194.22.htm#(a)'>Section 508 (a)</A></LI>
+<LI><A href='http://www-03.ibm.com/able/guidelines/web/webgraphs.html#ldesc'>IBM Guideline 3</A></LI>
+</UL>
+<H4>IBM Lotus&reg; Symphony<sup>TM</sup> での修正方法</H4>
+<p>
+IBM Lotus&reg; Symphony<sup>TM</sup> では、画像を選択し、右クリックメニューの”Graphic Properties”を選択することで、画像のプロパティダイアログが表示されます。
+画像のプロパティダイアログの”Alternative Text”タブを選択し、”Long Description”に説明文を設定してください。
+</p>
+<H4>注意</H4>
+現在の IBM Lotus&reg; Symphony<sup>TM</sup> では、空白の説明文はサポートされていません。説明文が必要ない場合には、スペース文字を設定してください。
+</UL>
+
+<H2>テーブルに関するチェック項目</H2>
+<UL class="nobullet">
+<H2 id="2.1" name="2.1">Guideline 2.1</H2>
+<LI>テーブルに対しては、テーブルヘッダーを設定してください。</LI>
+<H3>関連のあるガイドライン</H3>
+<UL class="nobullet">
+<LI>ODF Implementation Guideline, 3.1.6 Table navigation.</LI>
+<LI><A href='http://www.w3.org/TR/WAI-WEBCONTENT/wai-pageauth.html#tech-table-headers'>WCAG 1.0 5.1</A></LI>
+<LI><A href='http://www.access-board.gov/sec508/guide/1194.22.htm#(g)'>Section 508 (g)</A></LI>
+<LI><A href='http://www-03.ibm.com/able/guidelines/web/webtableheaders.html'>IBM Guideline 10</A></LI>
+</UL>
+<H4>OpenOffice.org での修正方法</H4>
+<p>
+OpenOffice.org では、テーブルの中で右クリック後、メニューの”表”を選択することで、表の書式ダイアログが表示されます。
+表の書式ダイアログの”体裁”タブで、"ヘディングを繰り返す"のチェックボックスをオンにすることで、表のヘッダーを設定することができます。
+</p>
+<H4>IBM Lotus&reg; Symphony<sup>TM</sup> での修正方法</H4>
+<p>
+IBM Lotus&reg; Symphony<sup>TM</sup> では、テーブルの中で右クリック後、メニューの”Table Properties”を選択することで、表の書式ダイアログが表示されます。
+Table Properties ダイアログの”Rows and Columns”タブで、"Column header" または "Row label" のチェックボックスをオンにすることで、表のヘッダーを設定することができます。
+</p>
+<H2 id="2.2" name="2.2">Guideline 2.2</H2>
+<LI>テーブルに対しては、キャプションを設定することを検討してください。</LI>
+<H4>注意</H4>
+現在のODFでは、テーブルとキャプションを関連づける機能はサポートされていません。テーブルとキャプションの間に文章を挿入しないようにしてください。
+<H3>関連のあるガイドライン</H3>
+<UL class="nobullet">
+<LI><A href='http://www.access-board.gov/sec508/guide/1194.22.htm#(g)'>Section 508 (g)</A></LI>
+<LI><A href='http://www-03.ibm.com/able/guidelines/web/webtableheaders.html'>IBM Guideline 10</A></LI>
+</UL>
+<H4>OpenOffice.org での修正方法</H4>
+<p>
+OpenOffice.org では、テーブルの中で右クリック後、メニューの”図表番号”を選択することで、キャプションを設定することができます。
+</p>
+<H4>IBM Lotus&reg; Symphony<sup>TM</sup> での修正方法</H4>
+<p>
+IBM Lotus&reg; Symphony<sup>TM</sup> では、テーブルの中で右クリック後、メニューの”Add Caption”を選択することで、キャプションを設定することができます。
+</p>
+</UL>
+
+<H2>イメージマップに関するチェック項目</H2>
+<UL class="nobullet">
+<H2 id="3.1" name="3.1">Guideline 3.1</H2>
+<LI>イメージマップに対しては、代替テキストを設定してください。</LI>
+<H3>関連のあるガイドライン</H3>
+<UL class="nobullet">
+<LI>ODF 1.1 Specification, 9.3.10 Client Side Image Maps</LI>
+<LI>ODF Implementation Guideline, 3.2.1 Image maps.</LI>
+<LI><A href='http://www.w3.org/TR/WAI-WEBCONTENT/wai-pageauth.html#tech-text-equivalent'>WCAG 1.0 1.1</A></LI>
+<LI><A href='http://www.access-board.gov/sec508/guide/1194.22.htm#(a)'>Section 508 (a)</A></LI>
+<LI><A href='http://www-03.ibm.com/able/guidelines/web/webmaps.html'>IBM Guideline 2</A></LI>
+</UL>
+<H4>OpenOffice.orgでの修正方法</H4>
+<p>
+OpenOffice.org では、画像を選択して右クリック後、メニューの”イメージマップ”を選択することで、イメージマップエディタを表示することができます。
+イメージマップエディタで、編集するイメージマップエリアを選択し、"テキスト"に代替テキストを設定してください。
+</p>
+<H2 id="3.2" name="3.2">Guideline 3.2 (ODF 1.1以降が対象)</H2>
+<LI>イメージマップに複雑な画像を用いている場合には、詳細な説明文を設定することを検討してください。</LI>
+<H3>関連のあるガイドライン</H3>
+<UL class="nobullet">
+<LI>ODF 1.1 Specification, 9.3.10 Client Side Image Maps</LI>
+<LI>ODF Implementation Guideline, 3.2.1 Image maps.</LI>
+<LI><A href='http://www.w3.org/TR/WAI-WEBCONTENT/wai-pageauth.html#tech-text-equivalent'>WCAG 1.0 1.1</A></LI>
+<LI><A href='http://www.access-board.gov/sec508/guide/1194.22.htm#(a)'>Section 508 (a)</A></LI>
+<LI><A href='http://www-03.ibm.com/able/guidelines/web/webmaps.html'>IBM Guideline 2</A></LI>
+</UL>
+</UL>
+
+<H2>グラフィックオブジェクトに関するチェック項目</H2>
+<UL class="nobullet">
+<H2 id="4.1" name="4.1">Guideline 4.1 (ODF 1.1以降が対象)</H2>
+<LI>グラフィックオブジェクトに対しては、代替テキストを設定してください（意味の無いグラフィックオブジェクトである場合には代替テキストとして、空のテキストを設定してください）。</LI>
+<H3>関連のあるガイドライン</H3>
+<UL class="nobullet">
+<LI>ODF 1.1 Specification, 9.2.20 Title and Description</LI>
+<LI>ODF Implementation Guideline, 3.2 Provision of alternative text versions of document content.</LI>
+<LI><A href='http://www.w3.org/TR/WAI-WEBCONTENT/wai-pageauth.html#tech-text-equivalent'>WCAG 1.0 1.1</A></LI>
+<LI><A href='http://www.access-board.gov/sec508/guide/1194.22.htm#(a)'>Section 508 (a)</A></LI>
+<LI><A href='http://www-03.ibm.com/able/guidelines/web/webimages.html'>IBM Guideline 1</A></LI>
+</UL>
+<H4>IBM Lotus&reg; Symphony<sup>TM</sup> での修正方法</H4>
+<p>
+IBM Lotus&reg; Symphony<sup>TM</sup> では、グラフィックオブジェクトを選択し、右クリックメニューの"Shape Properties"を選択することにより、グラフィックオブジェクトのプロパティダイアログが表示されます。
+グラフィックオブジェクトのプロパティダイアログの”Alternative Text”タブを選択し、”Alternative Text”に代替テキストを設定してください。
+</p>
+<H4>注意</H4>
+現在の IBM Lotus&reg; Symphony<sup>TM</sup> では、空白の代替テキストはサポートされていません。意味の無い画像である場合には、スペース文字を設定してください。
+<H2 id="4.2" name="4.2">Guideline 4.2 (ODF 1.1以降が対象)</H2>
+<LI>複雑なグラフィックオブジェクトを用いている場合には、詳細な説明文を設定することを検討してください。</LI>
+<H3>関連のあるガイドライン</H3>
+<UL class="nobullet">
+<LI>ODF 1.1 Specification, 9.2.20 Title and Description</LI>
+<LI>ODF Implementation Guideline, 3.2 Provision of alternative text versions of document content.</LI>
+<LI><A href='http://www.w3.org/TR/WAI-WEBCONTENT/wai-pageauth.html#tech-text-equivalent'>WCAG 1.0 1.1</A></LI>
+<LI><A href='http://www.access-board.gov/sec508/guide/1194.22.htm#(a)'>Section 508 (a)</A></LI>
+<LI><A href='http://www-03.ibm.com/able/guidelines/web/webgraphs.html#ldesc'>IBM Guideline 3</A></LI>
+</UL>
+<H4>IBM Lotus&reg; Symphony<sup>TM</sup> での修正方法</H4>
+<p>
+IBM Lotus&reg; Symphony<sup>TM</sup> では、グラフィックオブジェクトを選択し、右クリックメニューの”Shape Properties”を選択することで、グラフィックオブジェクトのプロパティダイアログが表示されます。
+グラフィックオブジェクトのプロパティダイアログの”Alternative Text”タブを選択し、”Long Description”に説明文を設定してください。
+</p>
+<H4>注意</H4>
+現在の IBM Lotus&reg; Symphony<sup>TM</sup> では、空白の説明文はサポートされていません。説明文が必要ない場合には、スペース文字を設定してください。
+</UL>
+
+<H2>リンクに関するチェック項目</H2>
+<UL class="nobullet">
+<H2 id="5.1" name="5.1">Guideline 5.1 (ODF 1.1以降が対象)</H2>
+<LI>リンクに対しては、ヒントテキストによって、リンク先に関する説明文を設定してください。</LI>
+<H3>関連のあるガイドライン</H3>
+<UL class="nobullet">
+<LI>ODF 1.1 Specification, 5.1.4 Hyperlinks</LI>
+<LI><A href='http://www.w3.org/TR/WAI-WEBCONTENT/wai-pageauth.html#tech-meaningful-links'>WCAG 1.0 13.1</A></LI>
+</UL>
+<H4>IBM Lotus&reg; Symphony<sup>TM</sup> での修正方法</H4>
+<p>
+IBM Lotus&reg; Symphony<sup>TM</sup> では、リンクテキストを選択し、メニューの"Create" > "Hyperlink"を選択してください。
+Hyperlink ダイアログの"Description"にリンク先に関する説明文を設定してください。
+</p>
+</UL>
+
+<H2>オブジェクトに関するチェック項目</H2>
+<UL class="nobullet">
+<H2 id="6.1" name="6.1">Guideline 6.1</H2>
+<LI>オブジェクトに対しては、代替テキストまたはキャプションを設定してください（意味の無いオブジェクトである場合には代替テキストとして、スペース文字を設定してください）。</LI>
+<H4>注意</H4>
+現在の OpenOffice.org では、キャプションとオブジェクトを関連付ける機能はサポートされていません。
+代替テキストを設定して、対処してください。 <BR/>
+また現在の OpenOffice.org Calc, Impress では、オブジェクトに対する代替テキストの機能が提供されていないため、
+OpenDocument Spreadsheet (ODS), OpenDocument Presentation (ODP) ファイルに対しては、この問題は修正できません。
+<H3>関連のあるガイドライン</H3>
+<UL class="nobullet">
+<LI>ODF 1.1 Specification, 9.2.15 Common Drawing Shape Attributes</LI>
+<LI>ODF 1.1 Specification, 9.2.20 Title and Description</LI>
+<LI>ODF Implementation Guideline, 3.2 Provision of alternative text versions of document content.</LI>
+<LI><A href='http://www.w3.org/TR/WAI-WEBCONTENT/wai-pageauth.html#tech-text-equivalent'>WCAG 1.0 1.1</A></LI>
+<LI><A href='http://www.access-board.gov/sec508/guide/1194.22.htm#(a)'>Section 508 (a)</A></LI>
+<LI><A href='http://www-03.ibm.com/able/guidelines/web/webimages.html'>IBM Guideline 1</A></LI>
+</UL>
+<H4>OpenOffice.org Writer での修正方法 (代替テキストの追加)</H4>
+<p>
+OpenOffice.org では、オブジェクトをダブルクリックすることによりオブジェクトのプロパティダイアログが表示されます。
+オブジェクトのプロパティダイアログの”オプション”タブを選択し、”自候補の名前”に代替テキストを設定してください。
+</p>
+<H4>注意</H4>
+現在のOpenOffice.orgでは、空白の代替テキストはサポートされていません。意味の無いオブジェクトである場合には、スペース文字を設定してください。
+<H4>IBM Lotus&reg; Symphony<sup>TM</sup> での修正方法 (代替テキストの追加)</H4>
+<p>
+IBM Lotus&reg; Symphony<sup>TM</sup> では、オブジェクトを選択し、右クリックメニューの”OLE Object Properties”を選択することで、オブジェクトのプロパティダイアログが表示されます。
+オブジェクトのプロパティダイアログの”Alternative Text”タブを選択し、”Alternative Text”に代替テキストを設定してください。
+</p>
+<H4>注意</H4>
+現在の IBM Lotus&reg; Symphony<sup>TM</sup> では、空白の代替テキストはサポートされていません。意味の無いオブジェクトである場合には、スペース文字を設定してください。
+<H4>IBM Lotus&reg; Symphony<sup>TM</sup> での修正方法 (キャプションの追加)</H4>
+<p>
+IBM Lotus&reg; Symphony<sup>TM</sup> では、オブジェクトを選択し、右クリックメニューの”Add Caption”を選択することで、キャプションを設定することができます。
+</p>
+<H2 id="6.2" name="6.2">Guideline 6.2 (ODF 1.1以降が対象)</H2>
+<LI>複雑なオブジェクトを用いている場合には、詳細な説明文を設定することを検討してください。</LI>
+<H3>関連のあるガイドライン</H3>
+<UL class="nobullet">
+<LI>ODF 1.1 Specification, 9.2.20 Title and Description</LI>
+<LI>ODF Implementation Guideline, 3.2 Provision of alternative text versions of document content.</LI>
+<LI><A href='http://www.w3.org/TR/WAI-WEBCONTENT/wai-pageauth.html#tech-text-equivalent'>WCAG 1.0 1.1</A></LI>
+<LI><A href='http://www.access-board.gov/sec508/guide/1194.22.htm#(a)'>Section 508 (a)</A></LI>
+<LI><A href='http://www-03.ibm.com/able/guidelines/web/webgraphs.html#ldesc'>IBM Guideline 3</A></LI>
+</UL>
+<H4>IBM Lotus&reg; Symphony<sup>TM</sup> での修正方法</H4>
+<p>
+IBM Lotus&reg; Symphony<sup>TM</sup> では、オブジェクトを選択し、右クリックメニューの”OLE Object Properties”を選択することで、オブジェクトのプロパティダイアログが表示されます。
+オブジェクトのプロパティダイアログの”Alternative Text”タブを選択し、”Long Description”に説明文を設定してください。
+</p>
+<H4>注意</H4>
+現在の IBM Lotus&reg; Symphony<sup>TM</sup> では、空白の説明文はサポートされていません。説明文が必要ない場合には、スペース文字を設定してください。
+</UL>
+
+<H2>フォームに関するチェック項目</H2>
+<UL class="nobullet">
+<H2 id="7.1" name="7.1">Guideline 7.1</H2>
+<LI>フォームコントロールに対しては、ラベルを設定してください。</LI>
+<H3>関連のあるガイドライン</H3>
+<UL class="nobullet">
+<LI>ODF 1.1 Specification, 11.5.9 Label</LI>
+<LI><A href='http://www.w3.org/TR/WAI-WEBCONTENT/wai-pageauth.html#tech-associate-labels'>WCAG 1.0 12.4</A></LI>
+<LI><A href='http://www.access-board.gov/sec508/guide/1194.22.htm#(n)'>Section 508 (n)</A></LI>
+<LI><A href='http://www-03.ibm.com/able/guidelines/web/webforms.html'>IBM Guideline 7</A></LI>
+</UL>
+<H4>OpenOffice.org での修正方法</H4>
+<p>
+OpenOffice.org では、フォームコントロールを選択して右クリック後、メニューの”コントロール”を選択することで、属性ダイアログを表示することができます。
+属性ダイアログの”全般”タブを選択し、”ラベルフィールド”項目のボタンをクリックすることで、ラベルフィールドの選択ダイアログを表示することができます。
+Label Field Selectionダイアログで、ラベルフィールドを選択することにより、フォームコントロールにラベルを設定することができます。
+</p>
+<H4>IBM Lotus&reg; Symphony<sup>TM</sup> での修正方法</H4>
+<p>
+IBM Lotus&reg; Symphony<sup>TM</sup> では、フォームコントロールを選択して右クリック後、メニューの”Control”を選択することで、属性ダイアログを表示することができます。
+属性ダイアログの”General”タブを選択し、”Label Field”項目のボタンをクリックすることで、ラベルフィールドの選択ダイアログを表示することができます。
+ラベルフィールドの選択ダイアログで、ラベルフィールドを選択することにより、フォームコントロールにラベルを設定することができます。
+</p>
+</UL>
+
+<H2>ナビゲーションオーダーに関するチェック項目</H2>
+<UL class="nobullet">
+<H2 id="8.1" name="8.1">Guideline 8.1 (ODF 1.1以降が対象)</H2>
+<LI>プレゼンテーションスライド中のオブジェクトに対して、ナビゲーションオーダーが正しく設定されているか確認してください。</LI>
+<H3>関連のあるガイドライン</H3>
+<UL class="nobullet">
+<LI>ODF 1.1 Specification, 9.1.4 Drawing Pages</LI>
+<LI><A href='http://www.w3.org/TR/WCAG10-TECHS/#tech-tab-order'>WCAG 1.0 9.4</A></LI>
+</UL>
+<H4>IBM Lotus&reg; Symphony<sup>TM</sup> での修正方法</H4>
+<p>
+IBM Lotus&reg; Symphony<sup>TM</sup> では、メニューの "Presentation" > "Object Navigation Order" を選択することで、ナビゲーションオーダーを設定するダイアログを表示することができます。
+"Object Navigation Order"ダイアログで、オブジェクトの順番を 並び替えることによって、ナビゲーションオーダーを設定することができます。
+</p>
+<H2 id="8.2" name="8.2">Checkpoint 8.2</H2>
+<LI>フォームコントロールに対して、ナビゲーションオーダーが正しく設定されているか確認してください</LI>
+<H3>関連のあるガイドライン</H3>
+<UL class="nobullet">
+<LI>ODF 1.1 Specification, 11.5.15 Tab Index</LI>
+<LI><A href='http://www.w3.org/TR/WCAG10-TECHS/#tech-tab-order'>WCAG 1.0 9.4</A></LI>
+<LI><A href='http://www-03.ibm.com/able/guidelines/web/webforms.html'>IBM Guideline 7</A></LI>
+</UL>
+<H4>OpenOffice.orgでの修正方法</H4>
+<p>
+OpenOffice.org では、フォームコントロールを選択して右クリック後、メニューの”コントロール”を選択することで、属性ダイアログを表示することができます。
+属性ダイアログの”全般”タブを選択し、”タブの順序”項目のボタンをクリックすることで、タブの順序ダイアログを表示することができます。
+タブの順序ダイアログで、コントロールの順番を並び替えることによって、ナビゲーションオーダーを設定することができます。
+</p>
+<H4>IBM Lotus&reg; Symphony<sup>TM</sup> での修正方法</H4>
+<p>
+IBM Lotus&reg; Symphony<sup>TM</sup> では、フォームコントロールを選択して右クリック後、メニューの”Control”を選択することで、属性ダイアログを表示することができます。
+属性ダイアログの”General”タブを選択し、”Order”項目のリストボックスの数値を設定することでナビゲーションオーダーを設定することができます。
+</p>
+<H2 id="8.3" name="8.3">Checkpoint 8.3</H2>
+<LI>フォームコントロールに対して、タブストップ機能を有効にすることを検討してください</LI>
+<H3>関連のあるガイドライン</H3>
+<UL class="nobullet">
+<LI>ODF 1.1 Specification, 11.5.16 Tab Stop</LI>
+<LI><A href='http://www.w3.org/TR/WCAG10-TECHS/#tech-tab-order'>WCAG 1.0 9.4</A></LI>
+<LI><A href='http://www-03.ibm.com/able/guidelines/web/webforms.html'>IBM Guideline 7</A></LI>
+</UL>
+<H4>OpenOffice.org での修正方法</H4>
+<p>
+OpenOffice.org では、フォームコントロールを選択して右クリック後、メニューの”コントロール”を選択することで、属性ダイアログを表示することができます。
+属性ダイアログの”全般”タブを選択し、”タブストップ”リストボックスの値を”はい”に設定することで、タブストップ機能を有効にすることができます。
+</p>
+<H4>IBM Lotus&reg; Symphony<sup>TM</sup> での修正方法</H4>
+<p>
+IBM Lotus&reg; Symphony<sup>TM</sup> では、フォームコントロールを選択して右クリック後、メニューの”Control”を選択することで、属性ダイアログを表示することができます。
+属性ダイアログの”General”タブを選択し、”Tabstop”リストボックスの値を”Yes”に設定することで、タブストップ機能を有効にすることができます。
+</p>
+</UL>
+
+<!--
+<H2>ODF の仕様の準拠に関するチェック項目</H2>
+<UL class="nobullet">
+<H2 id="9.1" name="9.1">Guideline 9.1</H2>
+<LI>ODF 1.0 として保存されているファイルに対して、ODF 1.1 の機能が使われています。</LI>
+<H3>関連のあるガイドライン</H3>
+<UL class="nobullet">
+<LI>ODF 1.1 Specification, 2.1.2 Document Root Attributes</LI>
+</UL>
+<H4>OpenOffice.org 2.3.0 での修正方法</H4>
+<p>
+OpenOffice.org 2.3.0 で作成したファイルは、ODF 1.0 として保存されていますが、ODF 1.1 の機能が一部使われています。
+以下の機能が使用されていないか確認してください。
+<H5>OpenOffice.org 2.3.0 Calc での画像に対する説明文の機能</H5>
+画像を選択して右クリック後、メニューの"Description"を選択することで、"Description"ダイアログを表示することができます。
+このダイアログの"Title"の項目は、ODF 1.1 の機能なので入力しないでください。
+<H5>OpenOffice.org 2.3.0 Impress での画像や、ドローイングオブジェクトに対する説明文の機能</H5>
+画像またはドローイングオブジェクトを選択して右クリック後、メニューの"Description"を選択することで、"Description"ダイアログを表示することができます。
+このダイアログの"Title"の項目は、ODF 1.1 の機能なので入力しないでください。
+</p>
+</UL>
+-->
+<H2>ODF の仕様の準拠に関するチェック項目</H2>
+<UL class="nobullet">
+<H2 id="9.1" name="9.1">Guideline 9.1</H2>
+<LI>ODF 1.1 の機能が使われていますが、ODF のバージョンが 1.0 として保存されています。aDesignerでは、ODF 1.1 のファイルとしてアクセシビリティチェックを行います。</LI>
+<H3>関連のあるガイドライン</H3>
+<UL class="nobullet">
+<LI>ODF 1.1 Specification, 2.1.2 Document Root Attributes</LI>
+</UL>
+<H4>注意</H4>
+<p>
+OpenOffice.org 2.3.0 と IBM Lotus&reg; Symphony<sup>TM</sup> Beta 1 では、ODF 1.1 の機能を使用していますが、ODFのバージョンが 1.0 として保存されます。
+</p>
+</UL>
+
+<H1 class="related">関連項目</H1>
+<UL class="related">
+<LI><A href="../workspaceOdf.html">OpenDocument アクセシビリティモードの構成</A>
+<LI><A href="install.html">OpenDocument アクセシビリティモードのインストールガイド</A>
+<LI><A href="../checkOdfBlind.html">「OpenDocument アクセシビリティモード」で音声ブラウザユーザーにとってのアクセシビリティやユーザビリティをチェックする</A>
+<LI><A href="../checkOdfLv.html">「OpenDocument アクセシビリティモード」でロービジョンユーザーにとってのアクセシビリティやユーザビリティをチェックする</A>
+<LI><A href="../checkOdfPresentation.html">「OpenDocument アクセシビリティモード」で会議室でのスライドショーの見え方をチェックする</A>
+</UL>
+
+<P>
+<A href="../index.html">インデックスに戻る</A>
+<hr>
+<DIV class="logo"><IMG src="../images/logo.gif" alt=""></DIV>
+</P>
+
+</BODY>
+</HTML>
