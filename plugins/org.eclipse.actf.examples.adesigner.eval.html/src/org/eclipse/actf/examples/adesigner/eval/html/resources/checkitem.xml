@@ -1,0 +1,1662 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+ Copyright (c) 2005, 2008 IBM Corporation and others.
+ All rights reserved. This program and the accompanying materials
+ are made available under the terms of the Eclipse Public License v1.0
+ which accompanies this distribution, and is available at
+ http://www.eclipse.org/legal/epl-v10.html
+
+ Contributors:
+     IBM Corporation - initial API and implementation
+-->
+<checker-config>
+  <checkitem id="C_0.0" type="error" >
+   <guideline>
+    <gItem name="WCAG" id="1.1" />
+    <gItem name="Section508" id="a" />
+    <gItem name="JIS" id="5.4(e)" />
+    <gItem name="IBMGuideline" id="6" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" score="2" />
+    <mItem name="Listenability" score="2" />
+   </metrics>
+   <description>
+    <desc>Provide ALT attribute for each APPLET</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_0.1" type="info" >
+   <guideline>
+    <gItem name="WCAG" id="1.1" />
+    <gItem name="Section508" id="a" />
+    <gItem name="JIS" id="5.4(e)" />
+    <gItem name="IBMGuideline" id="6" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>Consider to provide alternative text or image within each APPLET</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_0.2" type="error" >
+   <guideline>
+    <gItem name="WCAG" id="1.1" />
+    <gItem name="Section508" id="a" />
+    <gItem name="JIS" id="5.4(e)" />
+    <gItem name="IBMGuideline" id="6" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" score="2" />
+   </metrics>
+   <description>
+    <desc>Provide ALT attribute and alternative text or image within each APPLET</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_1.1" type="error" >
+   <guideline>
+    <gItem name="WCAG" id="1.1" />
+    <gItem name="Section508" id="a" />
+    <gItem name="JIS" id="5.4(e)" />
+    <gItem name="IBMGuideline" id="6" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" score="2" />
+    <mItem name="Listenability" score="2" />
+   </metrics>
+   <description>
+    <desc>Provide alternative text or image for each OBJECT</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_10.0" type="info" >
+   <guideline>
+    <gItem name="WCAG" id="3.2" />
+    <gItem name="JIS" id="5.1(a)" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>Make sure your document is valid according to the formal published grammars.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_12.0" type="warning" >
+   <guideline>
+    <gItem name="WCAG" id="3.3" />
+    <gItem name="JIS" id="5.2(b)" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>Use style sheets to control layout and presentation wherever possible.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_12.1" type="warning" >
+   <guideline>
+    <gItem name="WCAG" id="3.3" />
+    <gItem name="JIS" id="5.2(b)" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>If this table is used for layout only, use style sheets to control layout wherever possible.</desc>
+   </description>
+  </checkitem>
+    <checkitem id="C_12.2" type="warning" >
+   <guideline>
+    <gItem name="WCAG" id="3.3" />
+    <gItem name="JIS" id="5.2(b)" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>If this table is used for layout only, use style sheets to control layout wherever possible.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_13.0" type="warning" >
+   <guideline>
+    <gItem name="WCAG" id="3.4" />
+    <gItem name="JIS" id="5.6(a)" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>Use relative sizing and positioning (% values) rather than absolute (pixels).</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_14.0" type="error" >
+   <guideline>
+    <gItem name="WCAG" id="3.5" />
+    <gItem name="JIS" id="5.2(a)" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" score="2" />
+    <mItem name="Navigability" score="2" />
+   </metrics>
+   <description>
+    <desc>Nest headings properly.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_15.0" type="info" >
+   <guideline>
+    <gItem name="WCAG" id="3.5" />
+    <gItem name="JIS" id="5.2(a)" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>Make sure header elements are not used as bold text.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_16.0" type="info" >
+   <guideline>
+    <gItem name="WCAG" id="3.6" />
+    <gItem name="JIS" id="5.2(a)" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>Use list elements only for actual lists, not for formatting.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_16.1" type="warning" >
+   <guideline>
+    <gItem name="WCAG" id="3.6" />
+    <gItem name="JIS" id="5.2(a)" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>Tag UL or OL without tag LI.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_16.2" type="warning" >
+   <guideline>
+    <gItem name="WCAG" id="3.6" />
+    <gItem name="JIS" id="5.2(a)" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>Tag LI without tag UL or OL.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_17.0" type="info" >
+   <guideline>
+    <gItem name="WCAG" id="3.7" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>Make sure BLOCKQUOTE is used only for quotations, not for indentation.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_18.0" type="warning" >
+   <guideline>
+    <gItem name="WCAG" id="3.7" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>Use BLOCKQUOTE elements for long text blocks.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_18.1" type="warning" >
+   <guideline>
+    <gItem name="WCAG" id="3.7" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>Use Q elements for short text blocks.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_18.2" type="error" >
+   <guideline>
+    <gItem name="WCAG" id="3.7" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" score="2" />
+   </metrics>
+   <description>
+    <desc>Please provide the URI of the source of the quotation as CITE attribute.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_19.0" type="info" >
+   <guideline>
+    <gItem name="WCAG" id="4.1" />
+    <gItem name="JIS" id="5.9(a)" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>Identify any changes in the language used in the document.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_2.0" type="error" >
+   <guideline>
+    <gItem name="WCAG" id="1.1" />
+    <gItem name="Section508" id="e" />
+    <gItem name="JIS" id="5.4(b)" />
+    <gItem name="IBMGuideline" id="2" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" score="2" />
+   </metrics>
+   <description>
+    <desc>If this submit button is being used with an image map, provide separate submit buttons for each active region.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_2.1" type="warning" >
+   <guideline>
+    <gItem name="WCAG" id="1.2" />
+    <gItem name="Section508" id="e" />
+    <gItem name="JIS" id="5.4(b)" />
+    <gItem name="IBMGuideline" id="2" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>Are there text links that duplicate all server-side image map hot spots?</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_2.2" type="warning" >
+   <guideline>
+    <gItem name="WCAG" id="9.1" />
+    <gItem name="Section508" id="f" />
+    <gItem name="JIS" id="5.4(b)" />
+    <gItem name="IBMGuideline" id="2" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>If possible, use a client-side image map instead of a server-side image map.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_20.0" type="info" >
+   <guideline>
+    <gItem name="WCAG" id="4.2" />
+    <gItem name="JIS" id="5.9(c)" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>Use the ABBR and ACRONYM elements to denote and expand any abbreviations and acronyms that are present.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_200.0" type="warning" >
+   <guideline>
+    <gItem name="WCAG" id="6.3" />
+    <gItem name="Section508" id="l" />
+    <gItem name="JIS" id="5.4(e)" />
+    <gItem name="IBMGuideline" id="6" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>This page has a link which might not be able to use without scripts.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_200.1" type="error" >
+   <guideline>
+    <gItem name="WCAG" id="6.3" />
+    <gItem name="Section508" id="l" />
+    <gItem name="JIS" id="5.4(e)" />
+    <gItem name="IBMGuideline" id="6" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" score="2" />
+    <mItem name="Listenability" score="5" />
+    <mItem name="Navigability" score="15" />
+   </metrics>
+   <description>
+    <desc>This page has more than ten links which might not be able to use without scripts. Please consider providing alternative links.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_201.0" type="warning" >
+   <guideline>
+    <gItem name="WCAG" id="6.3" />
+    <gItem name="JIS" id="5.4(e)" />
+    <gItem name="IBMGuideline" id="6" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>This page has some invisible elements in initial state. Please confirm that it is accessible without scripts, or there are accessible alternatives in the page.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_201.1" type="warning" >
+   <guideline>
+    <gItem name="WCAG" id="6.3" />
+    <gItem name="JIS" id="5.4(e)" />
+    <gItem name="IBMGuideline" id="6" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>This page has an invisible link in initial state. Please confirm that it is accessible without scripts, or there is an accessible alternative link in the page.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_21.0" type="error" >
+   <guideline>
+    <gItem name="WCAG" id="4.3" />
+    <gItem name="JIS" id="5.9(a)" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" score="2" />
+    <mItem name="Listenability" score="5" />
+   </metrics>
+   <description>
+    <desc>Identify the language of the text (e.g. &amp;lt;html lang="en"&amp;gt;).</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_22.0" type="info" >
+   <guideline>
+    <gItem name="WCAG" id="5.3" />
+    <gItem name="JIS" id="5.2(d)" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>Avoid using tables to format text documents into columns unless the table can be linearized.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_23.0" type="warning" >
+   <guideline>
+    <gItem name="WCAG" id="5.4" />
+    <gItem name="JIS" id="5.2(d)" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>If this table is used for layout only, do not use TH tag to achieve formatting effects.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_25.0" type="info" >
+   <guideline>
+    <gItem name="WCAG" id="5.5" />
+    <gItem name="JIS" id="5.2(c)" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>If this is a data table (not used for layout only), provide CAPTION and SUMMARY.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_25.1" type="info" >
+   <guideline>
+    <gItem name="WCAG" id="5.5" />
+    <gItem name="JIS" id="5.2(c)" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>If this is a data table (not used for layout only), provide CAPTION.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_25.2" type="info" >
+   <guideline>
+    <gItem name="WCAG" id="5.5" />
+    <gItem name="JIS" id="5.2(c)" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>If this is a data table (not used for layout only), provide SUMMARY.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_26.0" type="warning" >
+   <guideline>
+    <gItem name="WCAG" id="5.6" />
+    <gItem name="JIS" id="5.2(c)" />
+   </guideline>
+   <metrics>
+    <mItem name="Listenability" score="2" />
+   </metrics>
+   <description>
+    <desc>If row or column labels are long, use abbreviations.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_27.0" type="warning" >
+   <guideline>
+    <gItem name="WCAG" id="6.2" />
+    <gItem name="IBMGuideline" id="9" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>Each FRAME must reference an HTML file.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_28.0" type="info" >
+   <guideline>
+    <gItem name="WCAG" id="6.3" />
+    <gItem name="Section508" id="l" />
+    <gItem name="JIS" id="5.4(e)" />
+    <gItem name="IBMGuideline" id="6" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>Provide alternative content for each SCRIPT that conveys important information or functionality.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_29.0" type="info" >
+   <guideline>
+    <gItem name="WCAG" id="6.3" />
+    <gItem name="JIS" id="5.4(e)" />
+    <gItem name="IBMGuideline" id="6" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>Make sure pages are still usable if programmatic objects do not function.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_29.1" type="info" >
+   <guideline>
+    <gItem name="WCAG" id="6.3" />
+    <gItem name="JIS" id="5.4(e)" />
+    <gItem name="IBMGuideline" id="6" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>Make sure pages are still usable if javascript do not function.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_29.2" type="info" >
+   <guideline>
+    <gItem name="WCAG" id="6.3" />
+    <gItem name="JIS" id="5.4(e)" />
+    <gItem name="IBMGuideline" id="6" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>Make sure pages are still usable if programmatic objects do not function.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_3.0" type="error" >
+   <guideline>
+    <gItem name="WCAG" id="1.1" />
+    <gItem name="JIS" id="5.4(a)" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" score="2" />
+   </metrics>
+   <description>
+    <desc>Do you have a descriptive (D) link in addition to LONGDESC?</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_30.0" type="info" >
+   <guideline>
+    <gItem name="WCAG" id="6.4" />
+    <gItem name="JIS" id="5.3(a)" />
+    <gItem name="IBMGuideline" id="5" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+    <mItem name="Navigability" />
+   </metrics>
+   <description>
+    <desc>If objects or applets use event handlers, make sure they do not depend on input devices.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_31.0" type="error" >
+   <guideline>
+    <gItem name="WCAG" id="6.5" />
+    <gItem name="JIS" id="5.2(f)" />
+    <gItem name="IBMGuideline" id="9" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" score="10" />
+    <mItem name="Listenability" score="5" />
+    <mItem name="Navigability" score="15" />
+   </metrics>
+   <description>
+    <desc>Provide a NOFRAMES when using FRAMEs.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_32.0" type="warning" >
+   <guideline>
+    <gItem name="WCAG" id="7.1" />
+    <gItem name="Section508" id="j" />
+    <gItem name="JIS" id="5.8(b)" />
+    <gItem name="IBMGuideline" id="13" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>Make sure that the page does not cause the screen to flicker rapidly.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_33.0" type="error" >
+   <guideline>
+    <gItem name="WCAG" id="7.2" />
+    <gItem name="JIS" id="5.8(a)" />
+    <gItem name="IBMGuideline" id="13" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" score="2" />
+   </metrics>
+   <description>
+    <desc>Avoid blinking text created with the BLINK element.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_34.0" type="error" >
+   <guideline>
+    <gItem name="WCAG" id="7.3" />
+    <gItem name="JIS" id="5.1(b)" />
+    <gItem name="IBMGuideline" id="13" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" score="2" />
+   </metrics>
+   <description>
+    <desc>Avoid scrolling text created with the MARQUEE element.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_35.0" type="info" >
+   <guideline>
+    <gItem name="WCAG" id="7.3" />
+    <gItem name="JIS" id="5.8(a)" />
+    <gItem name="IBMGuideline" id="13" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>If this GIF image is animated, make sure it does not contain fast or distracting motion.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_36.0" type="error" >
+   <guideline>
+    <gItem name="WCAG" id="7.4" />
+    <gItem name="JIS" id="5.3(e)" />
+    <gItem name="IBMGuideline" id="14" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" score="2" />
+    <mItem name="Listenability" score="5" />
+   </metrics>
+   <description>
+    <desc>Do not create periodically auto-refreshing pages. (Avoid use of &amp;lt;META HTTP-EQUIV="Refresh" &amp;gt;)</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_36.1" type="error" >
+   <guideline>
+    <gItem name="WCAG" id="7.5" />
+    <gItem name="JIS" id="5.3(e)" />
+    <gItem name="IBMGuideline" id="14" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" score="2" />
+    <mItem name="Listenability" score="5" />
+   </metrics>
+   <description>
+    <desc>Do not use markup to redirect pages automatically. (Avoid use of &amp;lt;META HTTP-EQUIV="Refresh" &amp;gt;)</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_38.0" type="warning" >
+   <guideline>
+    <gItem name="WCAG" id="9.3" />
+    <gItem name="JIS" id="5.3(a)" />
+    <gItem name="IBMGuideline" id="5" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+    <mItem name="Navigability" />
+   </metrics>
+   <description>
+    <desc>Make sure event handlers do not require the use of a mouse.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_39.0" type="info" >
+   <guideline>
+    <gItem name="WCAG" id="9.4" />
+    <gItem name="Section508" id="n" />
+    <gItem name="JIS" id="5.3(a)" />
+    <gItem name="IBMGuideline" id="7" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>Consider specifying a logical tab order among FORM controls, links and objects.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_4.0" type="info" >
+   <guideline>
+    <gItem name="WCAG" id="1.1" />
+    <gItem name="Section508" id="a" />
+    <gItem name="JIS" id="5.4(a)" />
+    <gItem name="IBMGuideline" id="3" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>If an image conveys important information beyond what is in its alternative text, provide an extended description.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_40.0" type="info" >
+   <guideline>
+    <gItem name="WCAG" id="9.5" />
+    <gItem name="IBMGuideline" id="5" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>Consider adding keyboard shortcuts (AccessKey) to important links.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_41.0" type="info" >
+   <guideline>
+    <gItem name="WCAG" id="9.5" />
+    <gItem name="Section508" id="n" />
+    <gItem name="IBMGuideline" id="7" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>Consider furnishing keyboard shortcuts (AccessKey) for FORM elements.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_42.0" type="warning" >
+   <guideline>
+    <gItem name="WCAG" id="10.1" />
+    <gItem name="JIS" id="5.3(e)" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>Is the user made aware that there will be pop-up windows or changes in the active window?</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_43.0" type="warning" >
+   <guideline>
+    <gItem name="WCAG" id="10.1" />
+    <gItem name="JIS" id="5.3(e)" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>If scripts create pop-up windows or change the active window, make sure that the user is aware that this is happening.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_45.0" type="info" >
+   <guideline>
+    <gItem name="WCAG" id="10.4" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>Include default place-holding characters in edit boxes and text areas.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_45.1" type="error" >
+   <guideline>
+    <gItem name="WCAG" id="10.4" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" score="2" />
+   </metrics>
+   <description>
+    <desc>Set default value for radio buttons or select boxes.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_46.0" type="warning" >
+   <guideline>
+    <gItem name="WCAG" id="10.5" />
+    <gItem name="JIS" id="5.3(g)" />
+   </guideline>
+   <metrics>
+    <mItem name="Navigability" score="2" />
+   </metrics>
+   <description>
+    <desc>Include non-link, printable characters between adjacent links.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_47.0" type="info" >
+   <guideline>
+    <gItem name="WCAG" id="11.1" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>Use the latest technology specification available whenever possible.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_48.0" type="warning" >
+   <guideline>
+    <gItem name="WCAG" id="11.2" />
+    <gItem name="JIS" id="5.1(a)" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>Avoid use of obsolete language features if possible.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_48.1" type="warning" >
+   <guideline>
+    <gItem name="WCAG" id="11.2" />
+    <gItem name="JIS" id="5.1(a)" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>Avoid use of obsolete language features if possible. (Use OBJECT instead.)</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_48.2" type="warning" >
+   <guideline>
+    <gItem name="WCAG" id="11.2" />
+    <gItem name="JIS" id="5.1(a)" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>Avoid use of obsolete language features if possible. (Use style sheets for these formatting effects.)</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_48.3" type="warning" >
+   <guideline>
+    <gItem name="WCAG" id="11.2" />
+    <gItem name="JIS" id="5.1(a)" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>Avoid use of obsolete language features if possible. (Use other list elements such as UL or OL, and use style sheets to refine the formatting.)</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_48.4" type="warning" >
+   <guideline>
+    <gItem name="WCAG" id="11.2" />
+    <gItem name="JIS" id="5.1(a)" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>Avoid use of obsolete language features if possible. (Use an INPUT element within a FORM.)</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_48.5" type="warning" >
+   <guideline>
+    <gItem name="WCAG" id="11.2" />
+    <gItem name="JIS" id="5.1(a)" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>Avoid use of obsolete language features if possible. (Use the PRE element.)</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_49.0" type="info" >
+   <guideline>
+    <gItem name="WCAG" id="11.3" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>Do you allow users to customize their experience of the Web page?</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_5.0" type="info" >
+   <guideline>
+    <gItem name="WCAG" id="1.1" />
+    <gItem name="Section508" id="a" />
+    <gItem name="Section508" id="b" />
+    <gItem name="JIS" id="5.4(c)" />
+    <gItem name="IBMGuideline" id="4" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>Do all audio files have transcripts?</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_5.1" type="info" >
+   <guideline>
+    <gItem name="WCAG" id="1.1" />
+    <gItem name="Section508" id="a" />
+    <gItem name="Section508" id="b" />
+    <gItem name="JIS" id="5.4(d)" />
+    <gItem name="IBMGuideline" id="4" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>Is there a synchronized textual transcript for the audio in videos?</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_5.2" type="info" >
+   <guideline>
+    <gItem name="WCAG" id="1.3" />
+    <gItem name="Section508" id="a" />
+    <gItem name="Section508" id="b" />
+    <gItem name="JIS" id="5.4(d)" />
+    <gItem name="IBMGuideline" id="4" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>Provide an auditory description of the visual track for multimedia presentations.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_5.3" type="info" >
+   <guideline>
+    <gItem name="WCAG" id="1.4" />
+    <gItem name="Section508" id="b" />
+    <gItem name="JIS" id="5.4(d)" />
+    <gItem name="IBMGuideline" id="4" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>Synchronize equivalent alternatives with multimedia presentations.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_50.0" type="info" >
+   <guideline>
+    <gItem name="WCAG" id="11.4" />
+    <gItem name="Section508" id="k" />
+    <gItem name="IBMGuideline" id="15" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>If you can't make a page accessible, provide an alternate accessible version.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_51.0" type="error" >
+   <guideline>
+    <gItem name="WCAG" id="12.1" />
+    <gItem name="Section508" id="i" />
+    <gItem name="JIS" id="5.2(f)" />
+    <gItem name="IBMGuideline" id="9" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" score="10" />
+    <mItem name="Listenability" score="5" />
+    <mItem name="Navigability" score="15" />
+   </metrics>
+   <description>
+    <desc>Provide a readable TITLE attribute for a FRAME.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_51.1" type="error" >
+   <guideline>
+    <gItem name="WCAG" id="12.1" />
+    <gItem name="Section508" id="i" />
+    <gItem name="JIS" id="5.2(f)" />
+    <gItem name="IBMGuideline" id="9" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" score="1" />
+    <mItem name="Listenability" score="2" />
+   </metrics>
+   <description>
+    <desc>No TITLE for an IFRAME.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_52.0" type="info" >
+   <guideline>
+    <gItem name="WCAG" id="12.2" />
+    <gItem name="JIS" id="5.2(f)" />
+    <gItem name="IBMGuideline" id="9" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>Add a description to a FRAME if the TITLE does not describe its contents.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_52.1" type="info" >
+   <guideline>
+    <gItem name="WCAG" id="12.2" />
+    <gItem name="JIS" id="5.2(f)" />
+    <gItem name="IBMGuideline" id="9" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>Add a description to an IFRAME if the TITLE does not describe its contents.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_53.1" type="warning" >
+   <guideline>
+    <gItem name="WCAG" id="12.3" />
+    <gItem name="JIS" id="5.3(b)" />
+    <gItem name="IBMGuideline" id="7" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+    <mItem name="Navigability" score="2" />
+   </metrics>
+   <description>
+    <desc>Consider grouping long lists of selections into a hierarchy by using OPTGROUP. (Over 10 items.)</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_54.0" type="info" >
+   <guideline>
+    <gItem name="WCAG" id="12.3" />
+    <gItem name="Section508" id="n" />
+    <gItem name="JIS" id="5.3(b)" />
+    <gItem name="IBMGuideline" id="7" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>If there are logical groupings of FORM controls, use FIELDSET for each group.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_54.1" type="warning" >
+   <guideline>
+    <gItem name="WCAG" id="12.3" />
+    <gItem name="Section508" id="n" />
+    <gItem name="JIS" id="5.3(b)" />
+    <gItem name="IBMGuideline" id="7" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>If there are logical groupings of FORM controls, use FIELDSET with LEGEND for each group.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_55.0" type="info" >
+   <guideline>
+    <gItem name="WCAG" id="12.3" />
+    <gItem name="JIS" id="5.2(a)" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>Group related elements when possible.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_56.1" type="info" >
+   <guideline>
+    <gItem name="WCAG" id="13.1" />
+    <gItem name="JIS" id="5.3(g)" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>Make sure that all link text make sense when read out of context.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_57.0" type="info" >
+   <guideline>
+    <gItem name="WCAG" id="13.1" />
+    <gItem name="JIS" id="5.3(g)" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>Add a descriptive title to links when needed.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_57.1" type="warning" >
+   <guideline>
+    <gItem name="WCAG" id="13.1" />
+    <gItem name="JIS" id="5.3(g)" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>Link text and title seem too short.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_57.2" type="warning" >
+   <guideline>
+    <gItem name="WCAG" id="13.1" />
+    <gItem name="JIS" id="5.3(g)" />
+   </guideline>
+   <metrics>
+    <mItem name="Listenability" />
+   </metrics>
+   <description>
+    <desc>This link is not accessible since there is no readable text.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_58.0" type="warning" >
+   <guideline>
+    <gItem name="WCAG" id="13.1" />
+    <gItem name="JIS" id="5.3(g)" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>Do not use the same link text more than once when the links point to different URLs.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_59.1" type="info" >
+   <guideline>
+    <gItem name="WCAG" id="13.2" />
+    <gItem name="JIS" id="5.2(g)" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>As appropriate, use Keywords and Description META elements in the header. (Use metadata to add computer-understandable information about the page.)</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_59.2" type="info" >
+   <guideline>
+    <gItem name="WCAG" id="13.2" />
+    <gItem name="JIS" id="5.2(g)" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>As appropriate, use the ADDRESS element in the header. (Use metadata to add computer-understandable information about the page.)</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_59.3" type="info" >
+   <guideline>
+    <gItem name="WCAG" id="13.2" />
+    <gItem name="JIS" id="5.2(g)" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>As appropriate, use RDF in the header. (Use metadata to add computer-understandable information about the page.)</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_6.0" type="error" >
+   <guideline>
+    <gItem name="WCAG" id="1.1" />
+    <gItem name="Section508" id="a" />
+    <gItem name="IBMGuideline" id="3" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" score="2" />
+   </metrics>
+   <description>
+    <desc>If this text block is ASCII art, consider replacing it with an accessible image.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_60.0" type="error" >
+   <guideline>
+    <gItem name="WCAG" id="13.2" />
+    <gItem name="JIS" id="5.2(e)" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" score="2" />
+    <mItem name="Listenability" score="5" />
+   </metrics>
+   <description>
+    <desc>Include a document TITLE.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_61.0" type="info" >
+   <guideline>
+    <gItem name="WCAG" id="13.3" />
+    <gItem name="JIS" id="5.3(f)" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>Provide information about the general layout of a site (e.g., a site map or table of contents).</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_62.0" type="info" >
+   <guideline>
+    <gItem name="WCAG" id="13.4" />
+    <gItem name="JIS" id="5.3(f)" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>Consider to use navigation mechanisms in a consistent manner.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_63.0" type="info" >
+   <guideline>
+    <gItem name="WCAG" id="13.5" />
+    <gItem name="JIS" id="5.2(f)" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>Consider to provide navigation bars to highlight and give access to the navigation mechanism. </desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_64.0" type="info" >
+   <guideline>
+    <gItem name="WCAG" id="13.6" />
+    <gItem name="JIS" id="5.2(a)" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>If there are logical groups of links, have they been identified?</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_65.0" type="info" >
+   <guideline>
+    <gItem name="WCAG" id="13.6" />
+    <gItem name="JIS" id="5.3(h)" />
+    <gItem name="IBMGuideline" id="8" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>If you have grouped links, is there a link at the beginning to bypass the group?</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_66.0" type="info" >
+   <guideline>
+    <gItem name="WCAG" id="13.7" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>If search functions are provided, provide different types of searches for different skill levels and preferences.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_67.0" type="info" >
+   <guideline>
+    <gItem name="WCAG" id="13.8" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>Provide distinguishing information at the beginning of paragraphs, headings, lists, etc.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_68.0" type="info" >
+   <guideline>
+    <gItem name="WCAG" id="13.9" />
+    <gItem name="JIS" id="5.2(g)" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>If this document is part of a collection, use REL or REV within LINK. (Or provide metadata, such as RDF or a bundled archive.)</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_68.1" type="info" >
+   <guideline>
+    <gItem name="WCAG" id="13.9" />
+    <gItem name="JIS" id="5.2(g)" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>If this document is part of a collection, provide metadata that identifies this document's location in the collection. (Use RDF in the header.)</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_69.0" type="warning" >
+   <guideline>
+    <gItem name="WCAG" id="13.10" />
+    <gItem name="IBMGuideline" id="8" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>If this text block is ASCII art, provide a means to skip over it.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_7.0" type="warning" >
+   <guideline>
+    <gItem name="WCAG" id="1.5" />
+    <gItem name="JIS" id="5.4(b)" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>Client-side image map contains a link not presented elsewhere on the page.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_70.0" type="info" >
+   <guideline>
+    <gItem name="WCAG" id="14.1" />
+    <gItem name="JIS" id="5.9(b)" />
+    <gItem name="JIS" id="5.9(c)" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>Consider to use simple and direct language.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_71.0" type="info" >
+   <guideline>
+    <gItem name="WCAG" id="14.2" />
+    <gItem name="JIS" id="5.9(f)" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>Where appropriate, use icons or graphics to facilitate comprehension of the page. And, provide accessible alternative texts for them.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_72.0" type="info" >
+   <guideline>
+    <gItem name="WCAG" id="14.3" />
+    <gItem name="JIS" id="5.3(f)" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>Is the style of presentation consistent for all pages?</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_73.0" type="info" >
+   <guideline>
+    <gItem name="Section508" id="m" />
+    <gItem name="IBMGuideline" id="6" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>Make sure there is a link to download accessible plugins.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_74.0" type="info" >
+   <guideline>
+    <gItem name="Section508" id="p" />
+    <gItem name="JIS" id="5.3(c)" />
+    <gItem name="JIS" id="5.3(d)" />
+    <gItem name="IBMGuideline" id="14" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>If a timed response is required, the user shall be alerted and given sufficient time to indicate more time is required. </desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_74.1" type="warning" >
+   <guideline>
+    <gItem name="Section508" id="p" />
+    <gItem name="JIS" id="5.3(c)" />
+    <gItem name="JIS" id="5.3(d)" />
+    <gItem name="IBMGuideline" id="14" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>This page uses timed redirects or refreshes. Give the user a notification and a chance to extend the timeout.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_74.2" type="info" >
+   <guideline>
+    <gItem name="Section508" id="p" />
+    <gItem name="JIS" id="5.3(c)" />
+    <gItem name="JIS" id="5.3(d)" />
+    <gItem name="IBMGuideline" id="14" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>If a timed response is required in processing FORMs, the user shall be alerted and given sufficient time to indicate more time is required. </desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_75.0" type="warning" >
+   <guideline>
+    <gItem name="WCAG" id="5.1" />
+    <gItem name="Section508" id="g" />
+    <gItem name="JIS" id="5.2(c)" />
+    <gItem name="IBMGuideline" id="10" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>If this is a data table, provide headers (TH), summary, and caption for the table. For layout tables, use style sheets to control layout.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_76.0" type="warning" >
+   <guideline>
+    <gItem name="WCAG" id="5.2" />
+    <gItem name="Section508" id="h" />
+    <gItem name="JIS" id="5.2(c)" />
+    <gItem name="IBMGuideline" id="10" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>If a table has two or more rows or columns that serve as headers, use structural markup (e.g. AXIS and SCOPE) to identify their hierarchy and relationship.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_76.1" type="info" >
+   <guideline>
+    <gItem name="WCAG" id="5.2" />
+    <gItem name="Section508" id="h" />
+    <gItem name="JIS" id="5.2(c)" />
+    <gItem name="IBMGuideline" id="10" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>There are some combined table cells (COLSPAN/ROWSPAN). Use structural markup (e.g. AXIS and SCOPE) to identify their hierarchy and relationship. If possible, avoid using COLSPAN/ROWSPAN in data table.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_77.0" type="info" >
+   <guideline>
+    <gItem name="WCAG" id="6.1" />
+    <gItem name="Section508" id="d" />
+    <gItem name="JIS" id="5.2(b)" />
+    <gItem name="IBMGuideline" id="11" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>When an HTML document is rendered without associated style sheets, it must still be readable and usable.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_77.1" type="info" >
+   <guideline>
+    <gItem name="WCAG" id="6.1" />
+    <gItem name="Section508" id="d" />
+    <gItem name="JIS" id="5.2(b)" />
+    <gItem name="IBMGuideline" id="11" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>When an HTML document is rendered without associated style sheets, it must still be readable and usable.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_77.2" type="info" >
+   <guideline>
+    <gItem name="WCAG" id="6.1" />
+    <gItem name="Section508" id="d" />
+    <gItem name="JIS" id="5.2(b)" />
+    <gItem name="IBMGuideline" id="11" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>When an HTML document is rendered without associated style sheets, it must still be readable and usable.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_78.2" type="info" >
+   <guideline>
+    <gItem name="WCAG" id="10.2" />
+    <gItem name="Section508" id="n" />
+    <gItem name="JIS" id="5.3(b)" />
+    <gItem name="IBMGuideline" id="7" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>Make sure that instruction (or sample) of edit box is placed before the edit box.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_79.0" type="warning" >
+   <guideline>
+    <gItem name="WCAG" id="12.4" />
+    <gItem name="Section508" id="n" />
+    <gItem name="JIS" id="5.3(b)" />
+    <gItem name="IBMGuideline" id="7" />
+   </guideline>
+   <metrics>
+    <mItem name="Navigability" />
+   </metrics>
+   <description>
+    <desc>Explicitly associate FORM controls and their labels with the LABEL element.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_79.1" type="warning" >
+   <guideline>
+    <gItem name="WCAG" id="10.2" />
+    <gItem name="Section508" id="n" />
+    <gItem name="JIS" id="5.3(b)" />
+    <gItem name="IBMGuideline" id="7" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>Make sure that LABEL of FORM control is properly placed.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_8.0" type="info" >
+   <guideline>
+    <gItem name="WCAG" id="2.1" />
+    <gItem name="Section508" id="c" />
+    <gItem name="JIS" id="5.5(a)" />
+    <gItem name="IBMGuideline" id="12" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>If you use color to convey information, make sure the information is also represented another way.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_80.0" type="error" >
+   <guideline>
+    <gItem name="WCAG" id="1.1" />
+    <gItem name="JIS" id="5.4(a)" />
+    <gItem name="IBMGuideline" id="1" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" score="2" />
+    <mItem name="Listenability" score="2" />
+   </metrics>
+   <description>
+    <desc>ALT text contains over 150 characters, consider providing a separate description.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_81.0" type="info" >
+   <guideline>
+    <gItem name="JIS" id="5.3(g)" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>Make sure that links have enough size and are easily distinguishable.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_82.0" type="info" >
+   <guideline>
+    <gItem name="JIS" id="5.3(i)" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>Make sure that users can return to previous step.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_83.0" type="info" >
+   <guideline>
+    <gItem name="JIS" id="5.5(b)" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>If you use content's shape or position to convey information, make sure the information is also represented another way.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_84.0" type="info" >
+   <guideline>
+    <gItem name="JIS" id="5.6(b)" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>Confirm that fonts in the page are clear and easy-to-read (e.g. Gothic font).</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_85.0" type="error" >
+   <guideline>
+    <gItem name="JIS" id="5.7(a)" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" score="2" />
+   </metrics>
+   <description>
+    <desc>If possible, do not play back sound automatically.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_86.0" type="info" >
+   <guideline>
+    <gItem name="JIS" id="5.7(b)" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>If possible, provide controles (such as volume control) for multimedia contents.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_87.0" type="info" >
+   <guideline>
+    <gItem name="JIS" id="5.9(d)" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>Make sure that the difficult Chinese characters have kana printed alongside.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_88.0" type="error" >
+   <guideline>
+    <gItem name="JIS" id="5.9(a)" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" score="2" />
+    <mItem name="Listenability" score="5" />
+   </metrics>
+   <description>
+    <desc>Identify the default charset of the document. (Use '&amp;lt;meta http-equiv="Content-Type" content="text/html; charset=xxx" /&amp;gt;'.)</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_89.0" type="error" >
+   <metrics>
+    <mItem name="Listenability" score="90" />
+    <mItem name="Navigability" score="90" />
+   </metrics>
+   <description>
+    <desc>This page has no readable text. Please provide some text information.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_89.1" type="error" >
+   <guideline>
+    <gItem name="WCAG" id="1.1" />
+    <gItem name="Section508" id="a" />
+    <gItem name="JIS" id="5.4(a)" />
+    <gItem name="IBMGuideline" id="1" />
+   </guideline>
+   <metrics>    
+    <mItem name="Listenability" score="40" />
+   </metrics>
+   <description>
+    <desc>This page has several images, but there is very little readable text. Please consider providing more alternative text.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_89.2" type="error" >
+   <metrics>
+    <mItem name="Listenability" score="40" />
+   </metrics>
+   <description>
+    <desc>This page has very little readable text. Please consider providing more text information.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_9.0" type="info" >
+   <guideline>
+    <gItem name="WCAG" id="3.1" />
+    <gItem name="JIS" id="5.1(a)" />
+   </guideline>
+   <metrics>
+    <mItem name="Compliance" />
+   </metrics>
+   <description>
+    <desc>Where it's possible to mark up content (for example mathematical equations) instead of using images, use a markup language (such as MathML).</desc>
+   </description>
+  </checkitem>
+</checker-config>
