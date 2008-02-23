@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?pde version="3.1"?>
+
+<product name="aDesigner" id="org.eclipse.actf.examples.adesigner.aDesigner32" application="org.eclipse.actf.examples.adesigner.org.eclipse.actf.examples.adesigner.ADesignerApplication" useFeatures="true">
+
+   <aboutInfo>
+      <image path="/org.eclipse.actf.examples.adesigner/about.gif"/>
+      <text>
+         %About.Text
+      </text>
+   </aboutInfo>
+
+   <configIni use="default"/>
+
+   <launcherArgs>
+      <vmArgs>-Xmx512m</vmArgs>
+   </launcherArgs>
+
+   <windowImages i32="/org.eclipse.actf.examples.adesigner/icons/excla_32.png"/>
+
+   <splash
+      location="org.eclipse.actf.examples.adesigner"
+      startupProgressRect="0,318,500,12"
+      startupMessageRect="10,203,500,20"
+      startupForegroundColor="000000" />
+   <launcher name="aDesigner">
+      <solaris/>
+      <win useIco="true">
+         <ico path="/org.eclipse.actf.examples.adesigner/icons/aDesigner.ico"/>
+         <bmp/>
+      </win>
+   </launcher>
+
+
+   <plugins>
+   </plugins>
+
+   <features>
+      <feature id="org.eclipse.actf.examples.adesigner" version="0.0.1"/>
+      <feature id="org.eclipse.actf.examples.adesigner.nls" version="0.0.1"/>
+   </features>
+
+</product>

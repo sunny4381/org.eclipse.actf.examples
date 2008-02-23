@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+   <extension
+         id="org.eclipse.actf.examples.adesigner.ADesignerApplication"
+         point="org.eclipse.core.runtime.applications">
+      <application>
+         <run
+               class="org.eclipse.actf.examples.adesigner.ADesignerApplication">
+         </run>
+      </application>
+   </extension>
+  <extension
+        point="org.eclipse.ui.preferencePages">
+     <page
+           class="org.eclipse.actf.examples.adesigner.ui.preferences.GeneralPreferencePage"
+           id="org.eclipse.actf.examples.adesigner.ui.preferences.GeneralPreferencePage"
+           name="%adesigner.preferences.general.title"/>
+  </extension>
+   <extension
+         point="org.eclipse.ui.perspectives">
+      <perspective
+            class="org.eclipse.actf.examples.adesigner.ui.perspectives.HTMLPerspective"
+            icon="icons/perspectives/html.png"
+            id="org.eclipse.actf.examples.adesigner.ui.perspectives.HTMLPerspective"
+            name="%adesigner.HTMLPerspective.name"/>
+      <perspective
+            class="org.eclipse.actf.examples.adesigner.ui.perspectives.ODFPerspective"
+            icon="icons/perspectives/odf.png"
+            id="org.eclipse.actf.examples.adesigner.ui.perspectives.ODFPerspective"
+            name="%adesigner.ODFPerspective.name"/>
+      <perspective
+            class="org.eclipse.actf.examples.adesigner.ui.perspectives.FlashPerspective"
+            icon="icons/perspectives/flash.png"
+            id="org.eclipse.actf.examples.adesigner.ui.perspectives.FlashPerspective"
+            name="%adesigner.FlashPerspective.name"/>
+      <perspective
+            class="org.eclipse.actf.examples.adesigner.ui.perspectives.GUIPerspective"
+            icon="icons/perspectives/msaa_ia2.png"
+            id="org.eclipse.actf.examples.adesigner.ui.perspectives.GUIPerspective"
+            name="%adesigner.GUIPerspective.name"/>
+   </extension>
+   <extension
+         id="aDesigner32"
+         point="org.eclipse.core.runtime.products">
+      <product
+            application="org.eclipse.actf.examples.adesigner.org.eclipse.actf.examples.adesigner.ADesignerApplication"
+            name="aDesigner">
+         <property
+               name="windowImages"
+               value="icons/excla_32.png"/>
+         <property
+               name="startupProgressRect"
+               value="0,318,500,12"/>
+         <property
+               name="aboutImage"
+               value="about.gif"/>
+         <property
+               name="startupForegroundColor"
+               value="000000"/>
+         <property
+               name="startupMessageRect"
+               value="10,203,500,20"/>
+         <property
+               name="aboutText"
+               value="%About.Text"/>
+      </product>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer class="org.eclipse.actf.examples.adesigner.ui.preferences.PreferenceInitializer"/>
+   </extension>
+      <extension
+            point="org.eclipse.ui.actionSets">
+         <actionSet
+               id="org.eclipse.actf.examples.adesigner.ui.actionSet"
+               label="aDesignerClientActionSet"
+               visible="true">
+            <action
+                  class="org.eclipse.actf.examples.adesigner.ui.actions.OpenAction"
+                  id="org.eclipse.actf.examples.adesigner.ui.actions.OpenAction"
+                  definitionId="org.eclipse.actf.examples.adesigner.actions.OpenAction"
+                  label="%adesigner.action.open"
+                  menubarPath="file/fileGroup"
+                  style="push"/>
+            <action
+                  class="org.eclipse.actf.examples.adesigner.ui.actions.SwitchModeAction"
+                  id="org.eclipse.actf.examples.adesigner.ui.actions.SwitchModeAction"
+                  label="%adesigner.action.switchmode"
+                  menubarPath="file/modeGroup"
+                  style="push"/>
+         </actionSet>
+         <actionSet
+               id="org.eclipse.actf.examples.adesigner.actionSet1"
+               label="org.eclipse.actf.examples.adesigner.vizActionSet">
+			<action
+         	class="org.eclipse.actf.examples.adesigner.ui.actions.SimulationAction"
+         	id="org.eclipse.actf.examples.adesigner.actions.vizLowvision"
+         	definitionId="org.eclipse.actf.examples.adesigner.actions.vizLowvision"
+         	label="%adesigner.action.lowvision"
+         	menubarPath="visualization/"
+         	style="push"/>
+			<action
+         	class="org.eclipse.actf.examples.adesigner.ui.actions.VisualizeAction"
+         	id="org.eclipse.actf.examples.adesigner.actions.vizBlind"
+         	definitionId="org.eclipse.actf.examples.adesigner.actions.vizBlind"
+         	label="%adesigner.action.visualize"
+         	menubarPath="visualization/"
+         	style="push"/>
+         </actionSet>
+         <actionSet
+               id="org.eclipse.actf.examples.adesigner.actionSet2"
+               label="org.eclipse.actf.examples.adesigner.presentationActionSet">
+            <action
+         	class="org.eclipse.actf.examples.adesigner.ui.actions.PresenAuditoriumAction"
+         	id="org.eclipse.actf.examples.adesigner.actions.presenAuditorium"
+         	definitionId="org.eclipse.actf.examples.adesigner.actions.presenAuditorium"
+         	label="%adesigner.action.presen.auditorium"
+         	menubarPath="visualization/"
+         	style="push"/>
+            <action
+         	class="org.eclipse.actf.examples.adesigner.ui.actions.PresenLargeAction"
+         	id="org.eclipse.actf.examples.adesigner.actions.presenLarge"
+         	definitionId="org.eclipse.actf.examples.adesigner.actions.presenLarge"
+         	label="%adesigner.action.presen.large"
+         	menubarPath="visualization/"
+         	style="push"/>
+            <action
+         	class="org.eclipse.actf.examples.adesigner.ui.actions.PresenSmallAction"
+         	id="org.eclipse.actf.examples.adesigner.actions.presenSmall"
+         	definitionId="org.eclipse.actf.examples.adesigner.actions.presenSmall"
+         	label="%adesigner.action.presen.small"
+         	menubarPath="visualization/"
+         	style="push"/>               
+         </actionSet>
+      </extension>
+      
+   <extension point="org.eclipse.actf.visualization.gui.targetWindowData">
+      <dataSourceProvider class="org.eclipse.actf.examples.adesigner.extension.ADesignerTargetWindowDataProvider"/>
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension targetID="org.eclipse.actf.examples.adesigner.ui.perspectives.HTMLPerspective">
+         <actionSet id="org.eclipse.actf.examples.adesigner.actionSet1"/>
+      </perspectiveExtension>
+      <perspectiveExtension targetID="org.eclipse.actf.examples.adesigner.ui.perspectives.ODFPerspective">
+         <actionSet id="org.eclipse.actf.examples.adesigner.actionSet1"/>
+         <actionSet id="org.eclipse.actf.examples.adesigner.actionSet2"/>
+      </perspectiveExtension>
+      <perspectiveExtension targetID="org.eclipse.actf.examples.adesigner.ui.perspectives.FlashPerspective">
+         <actionSet id="org.eclipse.actf.visualization.gui.actionSet"/>
+         <actionSet id="org.eclipse.actf.model.flash.proxy.actionSet"/>
+         <view
+               closeable="false"
+               id="org.eclipse.actf.model.flash.proxy.views.ProxyLogView"
+               relationship="stack"
+               relative="org.eclipse.actf.visualization.gui.msaa.checker.MSAAProblemsView"/>
+      </perspectiveExtension>
+      <perspectiveExtension targetID="org.eclipse.actf.examples.adesigner.ui.perspectives.GUIPerspective">
+         <actionSet id="org.eclipse.actf.visualization.gui.actionSet"/>
+      </perspectiveExtension>
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            id="org.eclipse.actf.examples.adesigner.actions.OpenAction"
+            name="%adesigner.action.open"/>
+      <command
+            id="org.eclipse.actf.examples.adesigner.actions.vizBlind"
+            name="%adesigner.action.visualize"/>
+      <command
+            id="org.eclipse.actf.examples.adesigner.actions.vizLowvision"
+            name="%adesigner.action.lowvision"/>
+      <command
+            id="org.eclipse.actf.examples.adesigner.actions.presenAuditorium"
+            name="%adesigner.action.presen.auditorium"/>
+      <command
+            id="org.eclipse.actf.examples.adesigner.actions.presenLarge"
+            name="%adesigner.action.presen.large"/>
+      <command
+            id="org.eclipse.actf.examples.adesigner.actions.presenSmall"
+            name="%adesigner.action.presen.small"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.bindings">
+      <key
+            commandId="org.eclipse.actf.examples.adesigner.actions.OpenAction"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="CTRL+O"/>
+      <key
+            commandId="org.eclipse.actf.examples.adesigner.actions.vizBlind"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="CTRL+SHIFT+B"/>
+      <key
+            commandId="org.eclipse.actf.examples.adesigner.actions.vizLowvision"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="CTRL+SHIFT+O"/>
+      <key
+            commandId="org.eclipse.actf.examples.adesigner.actions.presenAuditorium"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="CTRL+SHIFT+A"/>
+      <key
+            commandId="org.eclipse.actf.examples.adesigner.actions.presenLarge"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="CTRL+SHIFT+G"/>
+      <key
+            commandId="org.eclipse.actf.examples.adesigner.actions.presenSmall"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="CTRL+SHIFT+M"/>
+   </extension>
+
+</plugin>

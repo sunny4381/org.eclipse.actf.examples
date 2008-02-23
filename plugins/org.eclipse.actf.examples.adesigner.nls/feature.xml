@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="org.eclipse.actf.examples.adesigner.nls"
+      label="Eclipse ACTF Example aDesigner Client NLS (Incubation)"
+      version="0.0.1"
+      provider-name="Eclipse.org">
+
+   <description>
+      %description
+   </description>
+
+   <copyright>
+      %copyright
+   </copyright>
+
+   <license url="license.html">
+      %license
+   </license>
+
+   <includes
+         id="org.eclipse.rcp.nls1"
+         version="0.0.0"/>
+
+   <plugin
+         id="org.eclipse.help.webapp.nl1"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         fragment="true"/>
+
+   <plugin
+         id="org.eclipse.help.base.nl1"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         fragment="true"/>
+
+   <plugin
+         id="org.eclipse.help.appserver.nl1"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         fragment="true"/>
+
+   <plugin
+         id="org.eclipse.core.variables.nl1"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         fragment="true"/>
+
+   <plugin
+         id="org.eclipse.tomcat.nl1"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         fragment="true"/>
+
+   <plugin
+         id="org.eclipse.ui.forms.nl1"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         fragment="true"/>
+
+   <plugin
+         id="org.eclipse.help.ui.nl1"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         fragment="true"/>
+
+   <plugin
+         id="org.eclipse.actf.examples.adesigner.doc.nl1"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         fragment="true"/>
+
+</feature>
