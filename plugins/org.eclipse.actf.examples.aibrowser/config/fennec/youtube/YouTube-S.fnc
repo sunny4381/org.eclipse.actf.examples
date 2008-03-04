@@ -21,36 +21,10 @@
     <!-- creation data or something -->
   </meta>
 
-  <attach loc:idrefs="searchDiv">
+  <attach loc:idrefs="search-form">
 	<h1/>
 	<altText>Search</altText>
   </attach>
-
-  <node>
-	<h1/>
-	<altText>Navigation Links</altText>
-	<node loc:path="id('hpSideContent')/DIV[2]/DIV[@class=contentBox]/DIV[1]/DIV[2]">
-	  <altText><ref loc:path="."/></altText>
-	  <attach loc:path="id('hpSideContent')/DIV[2]/DIV[@class=contentBox]/child::*[2]">
-	  </attach>
-	  <attach loc:path="id('hpSideContent')/DIV[2]/DIV[@class=contentBox]/child::*[4]">
-		<node loc:path=".//IMG"><altText>Help</altText></node>
-	  </attach>
-	</node>
-	
-	<attach loc:idrefs="utilDiv">
-	  <node loc:idrefs="iconMail"><altText>mail</altText></node>
-	</attach>
-
-	<attach loc:idrefs="gNavDiv">
-	  <node loc:path="id('gNavDiv')/DIV[1]/H3[1]">
-		<h-/>
-	  </node>
-	  <node loc:path=".//IMG">
-		<altText> </altText>
-	  </node>
-	</attach>
-  </node>
 
   <node loc:idrefs="active_sharing" flq:top="true" flq:base="_level0.instance1">
 	<h1/>
@@ -138,7 +112,7 @@
 	</attach>
   </node>
 
-  <attach loc:idrefs="footerDiv">
+  <attach loc:idrefs="footer">
 	<h1/>
 	<altText>Footer</altText>
   </attach>

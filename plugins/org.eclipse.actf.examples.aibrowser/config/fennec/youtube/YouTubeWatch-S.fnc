@@ -31,7 +31,7 @@
     <node flq:targets="pause_button"><altText>Pause</altText></node>
     <node flq:targets="stop_button"><altText>Stop</altText></node>
   </node>
-  <attach loc:idrefs="searchDiv">
+  <attach loc:idrefs="search-form">
 	<altText>Search</altText>
 	<h1/>
   </attach>
@@ -143,29 +143,7 @@
 	<node loc:path=".//IMG"><altText/></node>
   </attach>
 
-
-
-
-  <node>
-	<h1/>
-	<altText>Navigation Links</altText>
-	
-	<attach loc:idrefs="utilDiv">
-	  <node loc:idrefs="iconMail"><altText>mail</altText></node>
-	</attach>
-
-	<attach loc:idrefs="gNavDiv">
-	  <node loc:path="id('gNavDiv')/DIV[1]/H3[1]">
-		<h-/>
-	  </node>
-	  <node loc:path=".//IMG">
-		<altText> </altText>
-	  </node>
-	</attach>
-  </node>
-
-
-  <attach loc:idrefs="footerDiv">
+  <attach loc:idrefs="footer">
 	<h1/>
 	<altText>Footer</altText>
   </attach>

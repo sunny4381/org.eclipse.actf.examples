@@ -29,7 +29,7 @@
     <node flq:targets="pause_button"><altText>一時停止</altText></node>
     <node flq:targets="stop_button"><altText>停止</altText></node>
   </node>
-  <attach loc:idrefs="searchDiv">
+  <attach loc:idrefs="search-form">
 	<altText>検索</altText>
 	<h1/>
   </attach>
@@ -139,29 +139,7 @@
 	<node loc:path=".//IMG"><altText/></node>
   </attach>
 
-
-
-
-  <node>
-	<h1/>
-	<altText>ナビゲーションリンク</altText>
-	
-	<attach loc:idrefs="utilDiv">
-	  <node loc:idrefs="iconMail"><altText>メール</altText></node>
-	</attach>
-
-	<attach loc:idrefs="gNavDiv">
-	  <node loc:path="id('gNavDiv')/DIV[1]/H3[1]">
-		<h-/>
-	  </node>
-	  <node loc:path=".//IMG">
-		<altText> </altText>
-	  </node>
-	</attach>
-  </node>
-
-
-  <attach loc:idrefs="footerDiv">
+  <attach loc:idrefs="footer">
 	<h1/>
 	<altText>フッター</altText>
   </attach>
