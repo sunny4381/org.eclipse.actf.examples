@@ -29,26 +29,29 @@
           <altText>Change to <ref xmlns="urn:nvm3" xmlns:nvml="urn:nvm3" xmlns:x2="http://www.w3.org/TR/xhtml2" xmlns:wairole="http://www.w3.org/2005/01/wai-rdf/GUIRoleTaxonomy#" xmlns:state="http://www.w3.org/2005/07/aaa" loc:path="."/></altText>
       </node>
 	</node>
-	<node loc:path="id('mainContent')//DIV[contains(@class,'vlentry')]">
+	<node loc:path="id('mainContent')//DIV[contains(@class,'vlentry')]//DIV[@class='vlshortTitle']//A[1]">
 	  <h2/>
-	  <altText><ref loc:path=".//DIV[@class='vlshortTitle']"/></altText>
-	  <node loc:path=".//DIV[@class='vldesc']/SPAN">
-		<altText><ref loc:path="."/></altText>
-	  </node>
-	  <node loc:path=".//DIV[@class='vlfacets']//DIV[@class='vladded']/text()">
-		<altText>Added <ref loc:path="."/></altText>
-	  </node>
-	  <node loc:path=".//DIV[@class='vlfacets']//SPAN[@class='vlfrom']/A[1]">
-		<altText>From <ref loc:path="."/></altText>
-	  </node>
-	  <node loc:path=".//DIV[@class='vlfacets']/text()[1]">
-		<altText>Views <ref loc:path="."/></altText>
-	  </node>
-	  <node loc:path=".//DIV[@class='vlfacets']//DIV[@class='runtime']">
-		<altText>Time <ref loc:path="."/></altText>
-	  </node>
-	  <node loc:path=".//DIV[@class='vlfacets']//DIV[@class='vlcategory']/A[1]">
-		<altText>More in <ref loc:path="."/></altText>
+	  <altText><ref loc:path="ancestor::DIV[@class='vlshortTitle']"/></altText>
+	  <node loc:path="ancestor::DIV[contains(@class,'vlentry')]">
+	    <altText>detailed information</altText>
+  	    <node loc:path=".//DIV[@class='vldesc']/SPAN">
+		  <altText><ref loc:path="."/></altText>
+	    </node>
+	    <node loc:path=".//DIV[@class='vlfacets']//DIV[@class='vladded']/text()">
+		  <altText>Added <ref loc:path="."/></altText>
+	    </node>
+	    <node loc:path=".//DIV[@class='vlfacets']//SPAN[@class='vlfrom']/A[1]">
+		  <altText>From <ref loc:path="."/></altText>
+	    </node>
+	    <node loc:path=".//DIV[@class='vlfacets']/text()[1]">
+		  <altText>Views <ref loc:path="."/></altText>
+	    </node>
+	    <node loc:path=".//DIV[@class='vlfacets']//DIV[@class='runtime']">
+		  <altText>Time <ref loc:path="."/></altText>
+	    </node>
+	    <node loc:path=".//DIV[@class='vlfacets']//DIV[@class='vlcategory']/A[1]">
+		  <altText>More in <ref loc:path="."/></altText>
+	    </node>
 	  </node>
 	</node>
 	<attach loc:path="id('mainContent')/following-sibling::DIV[@class='searchFooterBox']"/>

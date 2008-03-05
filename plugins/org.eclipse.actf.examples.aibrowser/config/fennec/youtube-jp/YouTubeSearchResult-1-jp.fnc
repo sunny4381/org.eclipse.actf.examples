@@ -25,26 +25,29 @@
 	  <altText>表示順<ref loc:path=".//TD[@class='search-sort']//SPAN[@class='sort-by-selected']"/></altText>
 	  <node loc:path=".//TD[@class='search-sort']//A"><altText>Change to <ref xmlns="urn:nvm3" xmlns:nvml="urn:nvm3" xmlns:x2="http://www.w3.org/TR/xhtml2" xmlns:wairole="http://www.w3.org/2005/01/wai-rdf/GUIRoleTaxonomy#" xmlns:state="http://www.w3.org/2005/07/aaa" loc:path="."/></altText></node>
 	</node>
-	<node loc:path="id('mainContent')//DIV[contains(@class,'vlentry')]">
+	<node loc:path="id('mainContent')//DIV[contains(@class,'vlentry')]//DIV[@class='vlshortTitle']//A[1]">
 	  <h2/>
-	  <altText><ref loc:path=".//DIV[@class='vlshortTitle']"/></altText>
-	  <node loc:path=".//DIV[@class='vldesc']/SPAN">
-		<altText><ref loc:path="."/></altText>
-	  </node>
-	  <node loc:path=".//DIV[@class='vlfacets']/text()[1]">
-		<altText>再生回数 <ref loc:path="."/></altText>
-	  </node>
-	  <node loc:path=".//DIV[@class='vlfacets']//SPAN[@class='vlfrom']/A[1]">
-		<altText>投稿者 <ref loc:path="."/></altText>
-	  </node>
-	  <node loc:path=".//DIV[@class='vlfacets']//DIV[@class='vladded']/text()">
-		<altText>投稿日 <ref loc:path="."/></altText>
-	  </node>
-	  <node loc:path=".//DIV[@class='vlfacets']//DIV[@class='runtime']">
-		<altText>時間 <ref loc:path="."/></altText>
-	  </node>
-	  <node loc:path=".//DIV[@class='vlfacets']//DIV[@class='vlcategory']/A[1]">
-		<altText>他の動画 <ref loc:path="."/></altText>
+	  <altText><ref loc:path="ancestor::DIV[@class='vlshortTitle']"/></altText>
+	  <node loc:path="ancestor::DIV[contains(@class,'vlentry')]">
+	    <altText>詳細情報</altText>
+   	    <node loc:path=".//DIV[@class='vldesc']/SPAN">
+		  <altText><ref loc:path="."/></altText>
+	    </node>
+	    <node loc:path=".//DIV[@class='vlfacets']/text()[1]">
+		  <altText>再生回数 <ref loc:path="."/></altText>
+	    </node>
+	    <node loc:path=".//DIV[@class='vlfacets']//SPAN[@class='vlfrom']/A[1]">
+		  <altText>投稿者 <ref loc:path="."/></altText>
+	    </node>
+	    <node loc:path=".//DIV[@class='vlfacets']//DIV[@class='vladded']/text()">
+		  <altText>投稿日 <ref loc:path="."/></altText>
+	    </node>
+	    <node loc:path=".//DIV[@class='vlfacets']//DIV[@class='runtime']">
+		  <altText>時間 <ref loc:path="."/></altText>
+	    </node>
+	    <node loc:path=".//DIV[@class='vlfacets']//DIV[@class='vlcategory']/A[1]">
+		  <altText>他の動画 <ref loc:path="."/></altText>
+	    </node>
 	  </node>
 	</node>
 
