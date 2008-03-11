@@ -67,6 +67,14 @@
          <property
                name="startupMessageRect"
                value="10,250,480,20"/>
+         <property
+               name="appName"
+               value="aiBrowser for Multimedia">
+         </property>
+         <property
+               name="preferenceCustomization"
+               value="plugin_customization.ini">
+         </property>
       </product>
    </extension>
    <extension

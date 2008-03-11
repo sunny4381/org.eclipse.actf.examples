@@ -33,7 +33,7 @@ public class EclipseLauncher extends Thread {
             System.setSecurityManager(null);
 
             synchronized (this) {
-                eclipseMain.run(args);
+                eclipseMain.main(args);
                 // int r = eclipseMain.run(args);
                 // System.err.println("Result: " + r);
                 // launched = true;

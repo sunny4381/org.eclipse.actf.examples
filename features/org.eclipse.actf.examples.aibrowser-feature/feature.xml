@@ -22,50 +22,15 @@
          version="0.0.0"/>
 
    <requires>
-      <import plugin="org.eclipse.ui" version="3.2.0" match="compatible"/>
       <import plugin="org.eclipse.core.runtime" version="3.1.0" match="compatible"/>
-      <import plugin="org.eclipse.swt"/>
-      <import plugin="org.eclipse.osgi"/>
-      <import plugin="org.apache.lucene" version="1.4.3" match="compatible"/>
-      <import plugin="org.eclipse.help" version="3.1.0" match="compatible"/>
-      <import plugin="org.eclipse.help.appserver" version="3.1.0" match="compatible"/>
       <import plugin="org.eclipse.core.runtime" version="3.2.0" match="compatible"/>
       <import plugin="org.eclipse.help" version="3.2.0" match="compatible"/>
-      <import plugin="org.eclipse.jface" version="3.2.0" match="compatible"/>
-      <import plugin="org.eclipse.help.base" version="3.1.0" match="compatible"/>
-      <import plugin="org.eclipse.ui.forms" version="3.2.0" match="compatible"/>
-      <import plugin="org.eclipse.actf.accservice.swtbridge"/>
+      <import plugin="org.eclipse.ui" version="3.2.0" match="compatible"/>
+      <import plugin="org.eclipse.swt"/>
    </requires>
 
    <plugin
          id="org.eclipse.actf.model.flash.bridge"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
-         id="org.eclipse.help"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.help.appserver"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.help.base"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.apache.lucene"
          download-size="0"
          install-size="0"
          version="0.0.0"/>
@@ -76,32 +41,6 @@
          install-size="0"
          version="0.0.0"
          unpack="false"/>
-
-   <plugin
-         id="org.eclipse.ui.forms"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.help.ui"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.tomcat"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
-         id="org.eclipse.help.webapp"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
 
    <plugin
          id="org.eclipse.actf.accservice.swtbridge"

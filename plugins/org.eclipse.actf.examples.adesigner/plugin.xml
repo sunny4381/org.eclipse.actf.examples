@@ -64,6 +64,14 @@
          <property
                name="aboutText"
                value="%About.Text"/>
+         <property
+               name="appName"
+               value="aDesigner">
+         </property>
+         <property
+               name="preferenceCustomization"
+               value="plugin_customization.ini">
+         </property>
       </product>
    </extension>
    <extension

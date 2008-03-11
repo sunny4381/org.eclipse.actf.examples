@@ -5,6 +5,7 @@ Bundle-SymbolicName: org.eclipse.actf.examples.aibrowser.launcher
 Bundle-Version: 0.0.1
 Bundle-Activator: org.eclipse.actf.examples.aibrowser.launcher.Activator
 Bundle-Localization: plugin
-Require-Bundle: org.eclipse.core.runtime
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.equinox.launcher
 Eclipse-LazyStart: true
 Bundle-Vendor: Eclipse.org
