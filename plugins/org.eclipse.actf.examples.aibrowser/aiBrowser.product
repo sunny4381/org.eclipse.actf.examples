@@ -32,7 +32,6 @@
       </win>
    </launcher>
 
-
    <plugins>
       <plugin id="com.ibm.accessibility.abrowser.client"/>
       <plugin id="com.ibm.accessibility.abrowser.dombycom"/>
@@ -81,7 +80,6 @@
 
    <features>
       <feature id="org.eclipse.actf.examples.aibrowser" version="0.0.1"/>
-      <feature id="org.eclipse.actf.examples.aibrowser.nls" version="0.0.1"/>
    </features>
 
 </product>
