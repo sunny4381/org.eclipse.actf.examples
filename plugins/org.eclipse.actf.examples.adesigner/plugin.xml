@@ -41,40 +41,6 @@
             name="%adesigner.GUIPerspective.name"/>
    </extension>
    <extension
-         id="aDesigner32"
-         point="org.eclipse.core.runtime.products">
-      <product
-            application="org.eclipse.actf.examples.adesigner.org.eclipse.actf.examples.adesigner.ADesignerApplication"
-            name="aDesigner">
-         <property
-               name="windowImages"
-               value="icons/excla_32.png"/>
-         <property
-               name="startupProgressRect"
-               value="0,318,500,12"/>
-         <property
-               name="aboutImage"
-               value="about.gif"/>
-         <property
-               name="startupForegroundColor"
-               value="000000"/>
-         <property
-               name="startupMessageRect"
-               value="10,203,500,20"/>
-         <property
-               name="aboutText"
-               value="%About.Text"/>
-         <property
-               name="appName"
-               value="aDesigner">
-         </property>
-         <property
-               name="preferenceCustomization"
-               value="plugin_customization.ini">
-         </property>
-      </product>
-   </extension>
-   <extension
          point="org.eclipse.core.runtime.preferences">
       <initializer class="org.eclipse.actf.examples.adesigner.ui.preferences.PreferenceInitializer"/>
    </extension>
@@ -217,6 +183,46 @@
             commandId="org.eclipse.actf.examples.adesigner.actions.presenSmall"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="CTRL+SHIFT+M"/>
+   </extension>
+   <extension
+         id="aDesigner"
+         point="org.eclipse.core.runtime.products">
+      <product
+            application="org.eclipse.actf.examples.adesigner.org.eclipse.actf.examples.adesigner.ADesignerApplication"
+            name="aDesigner">
+         <property
+               name="windowImages"
+               value="icons/excla_32.png">
+         </property>
+         <property
+               name="aboutText"
+               value="%About.Text">
+         </property>
+         <property
+               name="aboutImage"
+               value="about.gif">
+         </property>
+         <property
+               name="startupForegroundColor"
+               value="000000">
+         </property>
+         <property
+               name="startupProgressRect"
+               value="0,318,500,12">
+         </property>
+         <property
+               name="startupMessageRect"
+               value="10,203,500,20">
+         </property>
+         <property
+               name="preferenceCustomization"
+               value="plugin_customization.ini">
+         </property>
+         <property
+               name="appName"
+               value="aDesigner">
+         </property>
+      </product>
    </extension>
 
 </plugin>
