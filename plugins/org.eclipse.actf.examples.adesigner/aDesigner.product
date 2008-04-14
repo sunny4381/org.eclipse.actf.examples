@@ -31,13 +31,11 @@
       </win>
    </launcher>
 
-
    <plugins>
    </plugins>
 
    <features>
       <feature id="org.eclipse.actf.examples.adesigner" version="0.0.1"/>
-      <feature id="org.eclipse.actf.examples.adesigner.nls" version="0.0.1"/>
    </features>
 
 </product>
