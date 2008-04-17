@@ -6,10 +6,11 @@ Bundle-Version: 0.0.1
 Bundle-Activator: org.eclipse.actf.examples.aibrowser.ClientPlugin
 Bundle-Vendor: Eclipse.org
 Bundle-Localization: plugin
-Require-Bundle: org.eclipse.actf.model.flash.proxy,
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.ui,
+ org.eclipse.actf.model.flash.proxy,
  org.eclipse.actf.common,
  org.eclipse.actf.ai.xmlstore,
  org.eclipse.actf.ai.navigator,
- org.eclipse.core.runtime,
- org.eclipse.ui
+ org.eclipse.actf.util.win32
 Eclipse-LazyStart: true
