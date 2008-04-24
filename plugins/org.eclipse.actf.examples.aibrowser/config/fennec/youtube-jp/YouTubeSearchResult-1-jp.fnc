@@ -9,8 +9,8 @@
  Contributors:
      IBM Corporation - initial API and implementation
 -->
-<fennec xmlns:nvm3="urn:nvm3" xmlns:f="http://www.ibm.com/xmlns/prod/aiBrowser/fennec" xmlns:loc="http://www.ibm.com/xmlns/prod/aiBrowser/fennec/xml-query" xmlns:flq="http://www.ibm.com/xmlns/prod/aiBrowser/fennec/flash-query" xmlns="http://www.ibm.com/xmlns/prod/aiBrowser/fennec">
-  <meta xmlns="http://www.ibm.com/xmlns/prod/AcTF/aiBrowser/selector/1.0" xmlns:nvml="urn:nvm3" xmlns:x2="http://www.w3.org/TR/xhtml2" xmlns:wairole="http://www.w3.org/2005/01/wai-rdf/GUIRoleTaxonomy#" xmlns:state="http://www.w3.org/2005/07/aaa">
+<fennec xmlns:f="http://www.ibm.com/xmlns/prod/aiBrowser/fennec" xmlns:loc="http://www.ibm.com/xmlns/prod/aiBrowser/fennec/xml-query" xmlns:flq="http://www.ibm.com/xmlns/prod/aiBrowser/fennec/flash-query" xmlns="http://www.ibm.com/xmlns/prod/aiBrowser/fennec">
+  <meta xmlns="http://www.ibm.com/xmlns/prod/AcTF/aiBrowser/selector/1.0" xmlns:x2="http://www.w3.org/TR/xhtml2" xmlns:wairole="http://www.w3.org/2005/01/wai-rdf/GUIRoleTaxonomy#" xmlns:state="http://www.w3.org/2005/07/aaa">
     <documentation>Simplified You Tube (Search Result) </documentation>
     <targetSite uri="http://jp.youtube.com/result*"/>
     <!-- creation data or something -->
@@ -23,7 +23,7 @@
 	<node loc:idrefs="search-options-container">
 	  <h2/>
 	  <altText>表示順<ref loc:path=".//TD[@class='search-sort']//SPAN[@class='sort-by-selected']"/></altText>
-	  <node loc:path=".//TD[@class='search-sort']//A"><altText>Change to <ref xmlns="urn:nvm3" xmlns:nvml="urn:nvm3" xmlns:x2="http://www.w3.org/TR/xhtml2" xmlns:wairole="http://www.w3.org/2005/01/wai-rdf/GUIRoleTaxonomy#" xmlns:state="http://www.w3.org/2005/07/aaa" loc:path="."/></altText></node>
+	  <node loc:path=".//TD[@class='search-sort']//A"><altText>Change to <ref xmlns="http://www.ibm.com/xmlns/prod/aiBrowser/fennec" xmlns:x2="http://www.w3.org/TR/xhtml2" xmlns:wairole="http://www.w3.org/2005/01/wai-rdf/GUIRoleTaxonomy#" xmlns:state="http://www.w3.org/2005/07/aaa" loc:path="."/></altText></node>
 	</node>
 	<node loc:path="id('mainContent')//DIV[contains(@class,'vlentry')]//DIV[@class='vlshortTitle']//A[1]">
 	  <h2/>

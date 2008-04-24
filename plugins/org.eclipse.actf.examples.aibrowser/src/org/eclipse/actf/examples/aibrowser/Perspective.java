@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.actf.examples.aibrowser;
 
-import org.eclipse.actf.ai.navigator.views.NavigatorTreeView;
+import org.eclipse.actf.ai.navigator.NavigatorPlugin;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
 
@@ -22,8 +22,8 @@ public class Perspective implements IPerspectiveFactory {
     public void createInitialLayout(IPageLayout layout) {
         String editorArea = layout.getEditorArea();
         layout.setEditorAreaVisible(true);
-        layout.addStandaloneView(NavigatorTreeView.ID, true, IPageLayout.LEFT, 0.2f, editorArea);
-        layout.getViewLayout(NavigatorTreeView.ID).setCloseable(false);
+        layout.addStandaloneView(NavigatorPlugin.NAVIGATOR_TREE_VIEW_ID, true, IPageLayout.LEFT, 0.2f, editorArea);
+        layout.getViewLayout(NavigatorPlugin.NAVIGATOR_TREE_VIEW_ID).setCloseable(false);
         // layout.addStandaloneView(WebBrowserView.ID, true, IPageLayout.LEFT, 0.7f, editorArea);
         // layout.getViewLayout(WebBrowserView.ID).setCloseable(false);
         // layout.addStandaloneView(SampleView.ID, true, IPageLayout.LEFT, 0.2f, editorArea);

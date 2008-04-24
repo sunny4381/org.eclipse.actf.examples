@@ -9,7 +9,7 @@
  Contributors:
      IBM Corporation - initial API and implementation
 -->
-<fennec xmlns:nvm3="urn:nvm3" 
+<fennec 
 	xmlns:f="http://www.ibm.com/xmlns/prod/aiBrowser/fennec" 
 	xmlns:loc="http://www.ibm.com/xmlns/prod/aiBrowser/fennec/xml-query" 
 	xmlns:flq="http://www.ibm.com/xmlns/prod/aiBrowser/fennec/flash-query" 
@@ -75,7 +75,7 @@
 	<node loc:idrefs="ticker" flq:top="true" flq:base="_level0">
 	  <h2/>
 	  <altText>ただいま放送中の番組</altText>
-	  <node flq:targets="tick_txt_box.tick_txt"><altText><ref xmlns="urn:nvm3" xmlns:nvml="urn:nvm3" xmlns:x2="http://www.w3.org/TR/xhtml2" xmlns:wairole="http://www.w3.org/2005/01/wai-rdf/GUIRoleTaxonomy#" xmlns:state="http://www.w3.org/2005/07/aaa" flq:targets="."/></altText></node>
+	  <node flq:targets="tick_txt_box.tick_txt"><altText><ref xmlns="http://www.ibm.com/xmlns/prod/aiBrowser/fennec" xmlns:x2="http://www.w3.org/TR/xhtml2" xmlns:wairole="http://www.w3.org/2005/01/wai-rdf/GUIRoleTaxonomy#" xmlns:state="http://www.w3.org/2005/07/aaa" flq:targets="."/></altText></node>
 	</node>
 	<node loc:idrefs="nhk_online" flq:top="true" flq:base="_level0">
 	  <h2/>
@@ -122,10 +122,10 @@
 	<node loc:idrefs="rsscontent">
 	  <h2/>
 	  <altText><ref loc:path="./H2[1]"/></altText>
-	  <node loc:path="./P[1]/A[1]"><altText><ref xmlns="urn:nvm3" xmlns:nvml="urn:nvm3" xmlns:x2="http://www.w3.org/TR/xhtml2" xmlns:wairole="http://www.w3.org/2005/01/wai-rdf/GUIRoleTaxonomy#" xmlns:state="http://www.w3.org/2005/07/aaa" loc:path="."/></altText></node>
+	  <node loc:path="./P[1]/A[1]"><altText><ref xmlns="http://www.ibm.com/xmlns/prod/aiBrowser/fennec" xmlns:x2="http://www.w3.org/TR/xhtml2" xmlns:wairole="http://www.w3.org/2005/01/wai-rdf/GUIRoleTaxonomy#" xmlns:state="http://www.w3.org/2005/07/aaa" loc:path="."/></altText></node>
 	  <node loc:path="./UL/LI/A[1]">
 		<altText><ref loc:path="."/></altText>
-		<node loc:path="./following::A[1]"><altText><ref xmlns="urn:nvm3" xmlns:nvml="urn:nvm3" xmlns:x2="http://www.w3.org/TR/xhtml2" xmlns:wairole="http://www.w3.org/2005/01/wai-rdf/GUIRoleTaxonomy#" xmlns:state="http://www.w3.org/2005/07/aaa" loc:path="."/></altText></node>
+		<node loc:path="./following::A[1]"><altText><ref xmlns="http://www.ibm.com/xmlns/prod/aiBrowser/fennec" xmlns:x2="http://www.w3.org/TR/xhtml2" xmlns:wairole="http://www.w3.org/2005/01/wai-rdf/GUIRoleTaxonomy#" xmlns:state="http://www.w3.org/2005/07/aaa" loc:path="."/></altText></node>
 	  </node>
 	</node>
 
@@ -149,12 +149,12 @@
 	<altText>フッター</altText>
 	<node loc:idrefs="institution receive about">
 	  <altText><ref loc:path="./H2[1]"/></altText>
-	  <node loc:path="./UL/LI/A[1]"><altText><ref xmlns="urn:nvm3" xmlns:nvml="urn:nvm3" xmlns:x2="http://www.w3.org/TR/xhtml2" xmlns:wairole="http://www.w3.org/2005/01/wai-rdf/GUIRoleTaxonomy#" xmlns:state="http://www.w3.org/2005/07/aaa" loc:path="."/></altText></node>
+	  <node loc:path="./UL/LI/A[1]"><altText><ref xmlns="http://www.ibm.com/xmlns/prod/aiBrowser/fennec" xmlns:x2="http://www.w3.org/TR/xhtml2" xmlns:wairole="http://www.w3.org/2005/01/wai-rdf/GUIRoleTaxonomy#" xmlns:state="http://www.w3.org/2005/07/aaa" loc:path="."/></altText></node>
 	</node>
 	<node loc:idrefs="plugin">
 	  <altText><ref loc:path="./P[1]"/></altText>
-	  <node loc:path="./DIV[1]/P[1]/A[1]"><altText><ref xmlns="urn:nvm3" xmlns:nvml="urn:nvm3" xmlns:x2="http://www.w3.org/TR/xhtml2" xmlns:wairole="http://www.w3.org/2005/01/wai-rdf/GUIRoleTaxonomy#" xmlns:state="http://www.w3.org/2005/07/aaa" loc:path="."/></altText></node>
+	  <node loc:path="./DIV[1]/P[1]/A[1]"><altText><ref xmlns="http://www.ibm.com/xmlns/prod/aiBrowser/fennec" xmlns:x2="http://www.w3.org/TR/xhtml2" xmlns:wairole="http://www.w3.org/2005/01/wai-rdf/GUIRoleTaxonomy#" xmlns:state="http://www.w3.org/2005/07/aaa" loc:path="."/></altText></node>
 	</node>
-	<node loc:path="id('footer')/P[2]"><altText><ref xmlns="urn:nvm3" xmlns:nvml="urn:nvm3" xmlns:x2="http://www.w3.org/TR/xhtml2" xmlns:wairole="http://www.w3.org/2005/01/wai-rdf/GUIRoleTaxonomy#" xmlns:state="http://www.w3.org/2005/07/aaa" loc:path="."/></altText></node>
+	<node loc:path="id('footer')/P[2]"><altText><ref xmlns="http://www.ibm.com/xmlns/prod/aiBrowser/fennec" xmlns:x2="http://www.w3.org/TR/xhtml2" xmlns:wairole="http://www.w3.org/2005/01/wai-rdf/GUIRoleTaxonomy#" xmlns:state="http://www.w3.org/2005/07/aaa" loc:path="."/></altText></node>
   </node>
 </fennec>

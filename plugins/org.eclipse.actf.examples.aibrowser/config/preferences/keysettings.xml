@@ -127,7 +127,7 @@
   
   <Functions menu="navigate" menuGroup="etc">
 	<forceRestart><key>VK_F4</key></forceRestart>
-	<selectNextNVM3><key>VK_N CTRL_MASK ALT_MASK</key></selectNextNVM3>
+	<selectNextFennec><key>VK_N CTRL_MASK ALT_MASK</key></selectNextFennec>
 	<toggleDescriptionEnable><key>VK_A CTRL_MASK ALT_MASK</key></toggleDescriptionEnable>
   </Functions>
   

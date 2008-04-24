@@ -9,8 +9,8 @@
  Contributors:
      IBM Corporation - initial API and implementation
 -->
-<fennec xmlns:nvm3="urn:nvm3" xmlns:f="http://www.ibm.com/xmlns/prod/aiBrowser/fennec" xmlns:loc="http://www.ibm.com/xmlns/prod/aiBrowser/fennec/xml-query" xmlns:flq="http://www.ibm.com/xmlns/prod/aiBrowser/fennec/flash-query" xmlns="http://www.ibm.com/xmlns/prod/aiBrowser/fennec">
-  <meta xmlns="http://www.ibm.com/xmlns/prod/AcTF/aiBrowser/selector/1.0" xmlns:nvml="urn:nvm3" xmlns:x2="http://www.w3.org/TR/xhtml2" xmlns:wairole="http://www.w3.org/2005/01/wai-rdf/GUIRoleTaxonomy#" xmlns:state="http://www.w3.org/2005/07/aaa">
+<fennec xmlns:f="http://www.ibm.com/xmlns/prod/aiBrowser/fennec" xmlns:loc="http://www.ibm.com/xmlns/prod/aiBrowser/fennec/xml-query" xmlns:flq="http://www.ibm.com/xmlns/prod/aiBrowser/fennec/flash-query" xmlns="http://www.ibm.com/xmlns/prod/aiBrowser/fennec">
+  <meta xmlns="http://www.ibm.com/xmlns/prod/AcTF/aiBrowser/selector/1.0" xmlns:x2="http://www.w3.org/TR/xhtml2" xmlns:wairole="http://www.w3.org/2005/01/wai-rdf/GUIRoleTaxonomy#" xmlns:state="http://www.w3.org/2005/07/aaa">
 	<documentation>Adobe Livecycle</documentation>
 	<targetSite uri="http://www.adobe.com/products/livecycle/"/>
 	<!-- creation data or something -->
@@ -35,7 +35,7 @@
 		  <attach loc:path="following-sibling::DD[count(preceding-sibling::DT)=2]">
 		  </attach>
 		</node>
-		<node loc:path="../DL[1]/DT[3]"><altText><ref xmlns="urn:nvm3" xmlns:nvml="urn:nvm3" xmlns:x2="http://www.w3.org/TR/xhtml2" xmlns:wairole="http://www.w3.org/2005/01/wai-rdf/GUIRoleTaxonomy#" xmlns:state="http://www.w3.org/2005/07/aaa" loc:path="."/></altText></node>
+		<node loc:path="../DL[1]/DT[3]"><altText><ref xmlns="http://www.ibm.com/xmlns/prod/aiBrowser/fennec" xmlns:x2="http://www.w3.org/TR/xhtml2" xmlns:wairole="http://www.w3.org/2005/01/wai-rdf/GUIRoleTaxonomy#" xmlns:state="http://www.w3.org/2005/07/aaa" loc:path="."/></altText></node>
 		<node loc:path="../UL">
 		  <attach loc:path="child::LI">
 		  </attach>		
@@ -49,7 +49,7 @@
 	  <h1/>
 	  <altText>Search Bar</altText>
 	  <node loc:path="./P[1]/INPUT[2]"><altText/></node>
-	  <node loc:path="./P[1]/BUTTON[1]"><altText><ref xmlns="urn:nvm3" xmlns:nvml="urn:nvm3" xmlns:x2="http://www.w3.org/TR/xhtml2" xmlns:wairole="http://www.w3.org/2005/01/wai-rdf/GUIRoleTaxonomy#" xmlns:state="http://www.w3.org/2005/07/aaa" loc:path="."/></altText></node>
+	  <node loc:path="./P[1]/BUTTON[1]"><altText><ref xmlns="http://www.ibm.com/xmlns/prod/aiBrowser/fennec" xmlns:x2="http://www.w3.org/TR/xhtml2" xmlns:wairole="http://www.w3.org/2005/01/wai-rdf/GUIRoleTaxonomy#" xmlns:state="http://www.w3.org/2005/07/aaa" loc:path="."/></altText></node>
 	</node>
 
 	<!-- (3) USER MENU -->
@@ -67,7 +67,7 @@
 	  <node flq:targets="btn1_mc btn2_mc btn3_mc btn4_mc">
 		<altText><ref flq:targets=".btnText_tf"/></altText>
 	  </node>
-	  <node flq:targets="videoEnd_mc.replay_mc"><altText><ref xmlns="urn:nvm3" xmlns:nvml="urn:nvm3" xmlns:x2="http://www.w3.org/TR/xhtml2" xmlns:wairole="http://www.w3.org/2005/01/wai-rdf/GUIRoleTaxonomy#" xmlns:state="http://www.w3.org/2005/07/aaa" flq:targets=".replay_tf"/></altText></node>
+	  <node flq:targets="videoEnd_mc.replay_mc"><altText><ref xmlns="http://www.ibm.com/xmlns/prod/aiBrowser/fennec" xmlns:x2="http://www.w3.org/TR/xhtml2" xmlns:wairole="http://www.w3.org/2005/01/wai-rdf/GUIRoleTaxonomy#" xmlns:state="http://www.w3.org/2005/07/aaa" flq:targets=".replay_tf"/></altText></node>
 	</node>
 	
 	<!-- (5) TEXT 1 -->

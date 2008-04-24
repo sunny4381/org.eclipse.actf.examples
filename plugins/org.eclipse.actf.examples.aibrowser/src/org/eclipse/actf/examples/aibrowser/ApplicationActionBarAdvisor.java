@@ -153,7 +153,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
         // StatusLineContributionItem statusModeItem = new StatusLineContributionItem("mode");
         // statusLine.add(statusModeItem);
         
-        ModeContribution mc = new ModeContribution(ModeContribution.MODE_CONTRIBUTION_ID);
+        ModeContribution mc = new ModeContribution();
         statusLine.add(mc);
         
         ProgressContribution pc = new ProgressContribution(ProgressContribution.PROGRESS_CONTRIBUTION_ID);

@@ -9,7 +9,7 @@
  Contributors:
      IBM Corporation - initial API and implementation
 -->
-<fennec xmlns:nvm3="urn:nvm3" 
+<fennec 
 	xmlns:f="http://www.ibm.com/xmlns/prod/aiBrowser/fennec" 
 	xmlns:loc="http://www.ibm.com/xmlns/prod/aiBrowser/fennec/xml-query" 
 	xmlns:flq="http://www.ibm.com/xmlns/prod/aiBrowser/fennec/flash-query" 
