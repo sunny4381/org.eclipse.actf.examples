@@ -12,7 +12,7 @@
 package org.eclipse.actf.examples.adesigner.ui.actions;
 
 import org.eclipse.actf.examples.adesigner.ui.dialogs.URLOpenDialog;
-import org.eclipse.actf.model.ModelServiceUtils;
+import org.eclipse.actf.model.ui.util.ModelServiceUtils;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.IWorkbenchWindow;
