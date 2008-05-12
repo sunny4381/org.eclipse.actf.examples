@@ -15,7 +15,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import org.eclipse.actf.examples.adesigner.eval.odf.preferences.OdfCheckerPreferenceConstants;
-import org.eclipse.actf.model.IModelService;
+import org.eclipse.actf.model.ui.IModelService;
 import org.eclipse.actf.visualization.eval.ICheckTarget;
 import org.eclipse.actf.visualization.eval.IChecker;
 import org.eclipse.actf.visualization.eval.guideline.EvaluationItem;

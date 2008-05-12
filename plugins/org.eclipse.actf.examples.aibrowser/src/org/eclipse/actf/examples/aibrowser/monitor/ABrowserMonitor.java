@@ -10,8 +10,8 @@
  *******************************************************************************/
 package org.eclipse.actf.examples.aibrowser.monitor;
 
-import org.eclipse.actf.model.ModelServiceUtils;
 import org.eclipse.actf.model.flash.proxy.ProxyPlugin;
+import org.eclipse.actf.model.ui.util.ModelServiceUtils;
 import org.eclipse.actf.util.win32.COPYDATASTRUCT;
 import org.eclipse.actf.util.win32.WMCMonitor;
 import org.eclipse.swt.widgets.Display;

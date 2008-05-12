@@ -6,4 +6,5 @@ Bundle-Version: 0.0.1
 Bundle-Vendor: Eclipse.org
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.actf.common,
+ org.eclipse.actf.model.ui,
  org.eclipse.actf.visualization.eval

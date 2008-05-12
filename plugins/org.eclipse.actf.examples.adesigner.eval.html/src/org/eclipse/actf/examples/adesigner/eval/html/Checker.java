@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.eclipse.actf.examples.adesigner.eval.html.internal.CheckEngine;
-import org.eclipse.actf.model.IModelService;
+import org.eclipse.actf.model.ui.IModelService;
 import org.eclipse.actf.visualization.eval.ICheckTarget;
 import org.eclipse.actf.visualization.eval.IEvaluationItem;
 import org.eclipse.actf.visualization.eval.IHtmlCheckTarget;
