@@ -13,7 +13,7 @@
 package org.eclipse.actf.examples.adesigner;
 
 import org.eclipse.actf.model.ui.editor.actions.FavoritesMenu;
-import org.eclipse.actf.util.ui.ProgressContribution;
+import org.eclipse.actf.ui.util.ProgressContribution;
 import org.eclipse.jface.action.GroupMarker;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IStatusLineManager;

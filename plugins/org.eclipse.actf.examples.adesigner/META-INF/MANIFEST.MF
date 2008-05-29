@@ -30,7 +30,8 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.actf.examples.adesigner.eval.html,
  org.eclipse.actf.examples.adesigner.eval.odf,
  org.eclipse.actf.examples.adesigner.doc,
- org.eclipse.actf.visualization.blind;visibility:=reexport
+ org.eclipse.actf.visualization.blind;visibility:=reexport,
+ org.eclipse.actf.ui
 Eclipse-LazyStart: true
 Bundle-ClassPath: runtimes/adesigner_client.jar
 Export-Package: org.eclipse.actf.examples.adesigner,

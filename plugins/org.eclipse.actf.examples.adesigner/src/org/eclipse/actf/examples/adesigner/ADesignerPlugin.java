@@ -15,8 +15,8 @@ import java.io.File;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
+import org.eclipse.actf.ui.util.AbstractUIPluginACTF;
 import org.eclipse.actf.util.DebugPrintUtil;
-import org.eclipse.actf.util.ui.AbstractUIPluginACTF;
 import org.eclipse.core.runtime.Platform;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;

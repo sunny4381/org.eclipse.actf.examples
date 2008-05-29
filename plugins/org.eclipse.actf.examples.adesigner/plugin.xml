@@ -13,6 +13,7 @@
   <extension
         point="org.eclipse.ui.preferencePages">
      <page
+           category="org.eclipse.actf.ui.preferences.RootPreferencePage"
            class="org.eclipse.actf.examples.adesigner.ui.preferences.GeneralPreferencePage"
            id="org.eclipse.actf.examples.adesigner.ui.preferences.GeneralPreferencePage"
            name="%adesigner.preferences.general.title"/>

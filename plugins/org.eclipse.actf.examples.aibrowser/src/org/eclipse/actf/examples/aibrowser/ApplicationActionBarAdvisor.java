@@ -13,7 +13,7 @@ package org.eclipse.actf.examples.aibrowser;
 import org.eclipse.actf.ai.navigator.NavigatorPlugin;
 import org.eclipse.actf.ai.navigator.ui.ModeContribution;
 import org.eclipse.actf.model.ui.editor.actions.FavoritesMenu;
-import org.eclipse.actf.util.ui.ProgressContribution;
+import org.eclipse.actf.ui.util.ProgressContribution;
 import org.eclipse.jface.action.ICoolBarManager;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IStatusLineManager;

@@ -11,6 +11,7 @@
    <extension
          point="org.eclipse.ui.preferencePages">
       <page
+            category="org.eclipse.actf.ui.preferences.RootPreferencePage"
             class="org.eclipse.actf.examples.adesigner.eval.odf.preferences.OdfCheckerPreferencePage"
             id="org.eclipse.actf.examples.adesigner.eval.odf.preferences.OdfCheckerPreferencePage"
             name="%ODFCheckerPreferencePage.name"/>
