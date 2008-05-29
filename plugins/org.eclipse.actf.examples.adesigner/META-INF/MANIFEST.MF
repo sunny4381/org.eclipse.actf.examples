@@ -8,7 +8,7 @@ Bundle-Vendor: Eclipse.org
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- org.eclipse.actf.common;visibility:=reexport,
+ org.eclipse.actf.core;visibility:=reexport,
  org.eclipse.actf.model.flash.proxy;visibility:=reexport,
  org.eclipse.actf.ai.voice,
  org.eclipse.actf.model.dom.html,

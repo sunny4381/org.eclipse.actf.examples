@@ -11,7 +11,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.actf.ui,
  org.eclipse.actf.model.ui,
  org.eclipse.actf.model.flash.proxy,
- org.eclipse.actf.common,
+ org.eclipse.actf.core,
  org.eclipse.actf.ai.xmlstore,
  org.eclipse.actf.ai.navigator,
  org.eclipse.actf.util.win32
