@@ -110,10 +110,10 @@ Useful to display only the relationships between the displayed objects.</DD>
 instead of the actual parent-child relationships when the objects were created.</DD>
 
 <DT>Scan Windowless Flash (Debug Mode) (Ctrl+F10)</DT>
-<DD>If embedded Flash content has the <b>wmode</b> property set to <b>transparent</b>, 
-rather than <b>opaque</b>, then screen readers cannot access that content. 
-Turning this option &quot;on&quot; shows the content even if <b>transparent</b> is specified. 
-Setting it to &quot;off&quot; shows only the opaque content.</DD>
+<DD>If embedded Flash content has the <b>wmode</b> property set to <b>transparent</b> or <b>opaque</b>
+rather than <b>window</b> (or without <b>wmode</b> property), then screen readers cannot access that content. 
+Turning this option &quot;on&quot; tries to find the Flash content even if <b>transparent</b> or <b>opaque</b> is specified.
+This scan takes a long time. Setting it to &quot;off&quot; shows the Flash content without scan.</DD>
 
 <DT>Show All Information (Debug Mode) (Ctrl+F10)</DT>
 <DD>All entities are shown, such as objects, properties, and methods and including the internal variables Flash uses. 
