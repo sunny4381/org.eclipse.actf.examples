@@ -37,7 +37,7 @@ function DetectJaws(hMSI)
     STRING installFlag;
 begin
     result = RegDBSetDefaultRoot(HKEY_LOCAL_MACHINE);
-   	if (RegDBQueryKeyCount(JAWS_REGROOT, REGDB_KEYS) > 1) then
+   	if (RegDBQueryKeyCount(JAWS_REGROOT, REGDB_KEYS) > 0) then
 	    result = MsiSetProperty(hMSI, "JAWSINSTALLED", "True"); 
 	    result = 1024;
 		MsiGetProperty(hMSI, "JAWSINSTALLED", installFlag, result);
