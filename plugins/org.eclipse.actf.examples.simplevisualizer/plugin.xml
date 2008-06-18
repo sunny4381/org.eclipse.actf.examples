@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+   <extension
+         id="SimpleVisualizerApplication"
+         point="org.eclipse.core.runtime.applications">
+      <application>
+         <run
+               class="org.eclipse.actf.examples.simplevisualizer.SimpleVisualizerApplication">
+         </run>
+      </application>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectives">
+      <perspective
+            class="org.eclipse.actf.examples.simplevisualizer.ui.perspectives.HTMLPerspective"
+            icon="icons/perspectives/html.png"
+            id="org.eclipse.actf.examples.simplevisualizer.ui.perspectives.HTMLPerspective"
+            name="%simplevizualizer.HTMLPerspective.name"/>
+   </extension>
+      <extension
+            point="org.eclipse.ui.actionSets">
+         <actionSet
+               id="org.eclipse.actf.examples.simplevizualizer.ui.actionSet"
+               label="simplevizualizerClientActionSet"
+               visible="true">
+            <action
+                  class="org.eclipse.actf.examples.simplevisualizer.ui.actions.OpenAction"
+                  id="org.eclipse.actf.examples.simplevizualizer.ui.actions.OpenAction"
+                  definitionId="org.eclipse.actf.examples.simplevizualizer.actions.OpenAction"
+                  label="%simplevizualizer.action.open"
+                  menubarPath="file/fileGroup"
+                  style="push"/>
+         </actionSet>
+      </extension>
+         
+   
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            id="org.eclipse.actf.examples.simplevizualizer.actions.OpenAction"
+            name="%simplevizualizer.action.open"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.bindings">
+      <key
+            commandId="org.eclipse.actf.examples.simplevizualizer.actions.OpenAction"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="CTRL+O"/>
+   </extension>
+   <extension
+         id="SimpleVisualizer"
+         point="org.eclipse.core.runtime.products">
+      <product
+            application="org.eclipse.actf.examples.simplevisualizer.SimpleVisualizerApplication"
+            name="Simple Visualizer">
+         <property
+               name="appName"
+               value="Simple Visualizer">
+         </property>
+         <property
+               name="aboutImage"
+               value="about.gif">
+         </property>
+         <property
+               name="aboutText"
+               value="%About.Text">
+         </property>
+         <property
+               name="windowImages"
+               value="icons/excla_32.png">
+         </property>
+      </product>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            class="org.eclipse.actf.examples.simplevisualizer.ui.views.SimpleVisualizerView"
+            id="org.eclipse.actf.examples.simplevisualizer.ui.views.SimpleVisualizerView"
+            name="Simple Visualizer View">
+      </view>
+   </extension>
+
+</plugin>

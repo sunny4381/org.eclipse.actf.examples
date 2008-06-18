@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?pde version="3.1"?>
+
+<product name="Simple Visualizer" id="org.eclipse.actf.examples.simplevisualizer.SimpleVisualizer" application="org.eclipse.actf.examples.simplevisualizer.SimpleVisualizerApplication" useFeatures="true">
+
+   <aboutInfo>
+      <image path="/org.eclipse.actf.examples.simplevisualizer/about.gif"/>
+      <text>
+         %About.Text
+      </text>
+   </aboutInfo>
+
+   <configIni use="default"/>
+
+   <launcherArgs>
+      <vmArgs>-Xmx256m</vmArgs>
+      <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts</vmArgsMac>
+   </launcherArgs>
+
+   <windowImages i32="/org.eclipse.actf.examples.simplevisualizer/icons/excla_32.png"/>
+
+
+   <launcher>
+      <solaris/>
+      <win useIco="true">
+         <ico path="/org.eclipse.actf.examples.simplevisualizer/icons/actf.ico"/>
+         <bmp/>
+      </win>
+   </launcher>
+
+
+   <vm>
+   </vm>
+
+   <plugins>
+   </plugins>
+
+   <features>
+      <feature id="org.eclipse.actf.examples.simplevisualizer" version="0.0.1"/>
+   </features>
+
+</product>
