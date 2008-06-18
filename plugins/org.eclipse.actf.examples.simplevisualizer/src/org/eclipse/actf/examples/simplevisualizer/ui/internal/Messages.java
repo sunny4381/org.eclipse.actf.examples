@@ -9,7 +9,7 @@
  *    Kentarou FUKUDA - initial API and implementation
  *******************************************************************************/
 
-package org.eclipse.actf.examples.simplevisualizer.internal;
+package org.eclipse.actf.examples.simplevisualizer.ui.internal;
 
 import org.eclipse.osgi.util.NLS;
 

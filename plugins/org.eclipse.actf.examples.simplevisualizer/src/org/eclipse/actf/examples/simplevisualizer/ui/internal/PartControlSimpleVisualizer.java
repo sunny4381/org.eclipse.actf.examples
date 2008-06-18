@@ -102,7 +102,7 @@ public class PartControlSimpleVisualizer implements IVisualizationConst {
 
 	private void prepareActions() {
 
-		overlayAction = new Action("Visualize (overlay)",
+		overlayAction = new Action("Visualize (live DOM)",
 				SimpleVisualizerPlugin.imageDescriptorFromPlugin(
 						SimpleVisualizerPlugin.PLUGIN_ID,
 						"/icons/action16/overlay16.gif")) {
@@ -111,7 +111,7 @@ public class PartControlSimpleVisualizer implements IVisualizationConst {
 			}
 		};
 
-		visualizeAction = new Action("Visualize (screenshot)",
+		visualizeAction = new Action("Visualize (original DOM)",
 				SimpleVisualizerPlugin.imageDescriptorFromPlugin(
 						SimpleVisualizerPlugin.PLUGIN_ID,
 						"/icons/action16/simulation16.gif")) {
@@ -165,7 +165,7 @@ public class PartControlSimpleVisualizer implements IVisualizationConst {
 		this.vizCanvas.setLayoutData(gridData);
 	}
 
-	public void doVisualize(boolean doOverlay) {
+	public void doVisualize(boolean flag) {
 		if (isInVisualize) {
 			return;
 		}
@@ -192,49 +192,52 @@ public class PartControlSimpleVisualizer implements IVisualizationConst {
 		imgCreator.getScreenImageAsBMP(screenshotFile, true);
 		Image baseImage = new Image(shell.getDisplay(), screenshotFile);
 
-		if (doOverlay) {
-			vizView.setStatusMessage("Processing overlay.");
+		vizView.setStatusMessage("Processing overlay.");
 
-			// prepare overlay image data (rainbow)
-			Rectangle size = baseImage.getBounds();
-			int[][] overlayPixels = new int[size.height][size.width];
-			for (int y = 0; y < size.height; y++) {
-				int i = (y / 50) % 7;
-				int color;
-				switch (i) {
-				case 0:
-					color = 0x3D1AED;
-					break;
-				case 1:
-					color = 0x4CB7FF;
-					break;
-				case 2:
-					color = 0x00D4FF;
-					break;
-				case 3:
-					color = 0x008000;
-					break;
-				case 4:
-					color = 0xD69A00;
-					break;
-				case 5:
-					color = 0x74540F;
-					break;
-				case 6:
-					color = 0xA857A7;
-					break;
-				default:
-					color = 0xFFFFFF;
-				}
-
-				for (int x = 0; x < size.width; x++) {
-					overlayPixels[y][x] = color;
-				}
+		// prepare overlay image data (rainbow)
+		Rectangle size = baseImage.getBounds();
+		int[][] overlayPixels = new int[size.height][size.width];
+		int xMax = flag ? size.width : size.height;
+		int yMax = flag ? size.height : size.width;
+		for (int y = 0; y < yMax; y++) {
+			int i = (y / 50) % 7;
+			int color;
+			switch (i) {
+			case 0:
+				color = 0x3D1AED;
+				break;
+			case 1:
+				color = 0x4CB7FF;
+				break;
+			case 2:
+				color = 0x00D4FF;
+				break;
+			case 3:
+				color = 0x008000;
+				break;
+			case 4:
+				color = 0xD69A00;
+				break;
+			case 5:
+				color = 0x74540F;
+				break;
+			case 6:
+				color = 0xA857A7;
+				break;
+			default:
+				color = 0xFFFFFF;
 			}
 
-			ImageOverlayUtil.overlay(baseImage, overlayPixels, alphaBar
-					.getAlpha());
+			for (int x = 0; x < xMax; x++) {
+				if (flag) {
+					overlayPixels[y][x] = color;
+				} else {
+					overlayPixels[x][y] = color;
+				}
+			}
 		}
+
+		ImageOverlayUtil.overlay(baseImage, overlayPixels, alphaBar.getAlpha());
 
 		// set image to canvas
 		vizCanvas.showImage(baseImage.getImageData(), modelService);
@@ -245,9 +248,9 @@ public class PartControlSimpleVisualizer implements IVisualizationConst {
 			vizView.setStatusMessage("Getting styleInfo from Live DOM.");
 
 			IWebBrowserStyleInfo style = browser.getStyleInfo();
-			ModelServiceSizeInfo size = style.getSizeInfo(true);
+			ModelServiceSizeInfo sizeInfo = style.getSizeInfo(true);
 			StringBuffer tmpSB = new StringBuffer(4096);
-			tmpSB.append("Web page size: [" + size.toString() + "]"
+			tmpSB.append("Web page size: [" + sizeInfo.toString() + "]"
 					+ FileUtils.LINE_SEP + FileUtils.LINE_SEP);
 
 			Map<String, ICurrentStyles> styleMap = style.getCurrentStyles();
@@ -263,39 +266,59 @@ public class PartControlSimpleVisualizer implements IVisualizationConst {
 			// set styleInfo as a summary report
 			evalResult.setSummaryReportText(tmpSB.toString());
 
-			vizView.setStatusMessage("Copying Live DOM.");
-
 			try {
 				PrintWriter tmpPW = new PrintWriter(new OutputStreamWriter(
 						new FileOutputStream(reportFile), "UTF-8"));
-				Document doc = modelService.getLiveDocument();
 				tmpPW.println(REPORT_HTML_PRE);
+				DomPrintUtil dpu;
+				if (flag) {
+					vizView.setStatusMessage("Copying Live DOM.");
+					tmpPW.println("---Live DOM--- ");
+					tmpPW.println();
 
-				DomPrintUtil dpu = new DomPrintUtil(doc);
-				//Escape tag bracket('<' -> '%lt;') to print out in <pre>
-				dpu.setEscapeTagBracket(true);
-				dpu.setAttrFilter(new DomPrintUtil.AttributeFilter() {
-					public boolean acceptNode(Node element, Node attr) {
-						String name = attr.getNodeName();
-						String value = attr.getNodeValue();
-						if (value.length() == 0) {
-							if ("alt".equalsIgnoreCase(name)
-									&& element instanceof IElementEx) {
-								return (null != ((IElementEx) element)
-										.getSpecifiedAttribute("alt"));
+					Document doc = modelService.getLiveDocument();
+
+					dpu = new DomPrintUtil(doc);
+					// Escape tag bracket('<' -> '%lt;') to print out in <pre>
+					dpu.setEscapeTagBracket(true);
+					// attribute filter to remove unnecessary attributes
+					dpu.setAttrFilter(new DomPrintUtil.AttributeFilter() {
+						public boolean acceptNode(Node element, Node attr) {
+							String name = attr.getNodeName();
+							String value = attr.getNodeValue();
+							if (value.length() == 0) {
+								if ("alt".equalsIgnoreCase(name)
+										&& element instanceof IElementEx) {
+									return (null != ((IElementEx) element)
+											.getSpecifiedAttribute("alt"));
+								}
+							} else {
+								return (!("contentEditable"
+										.equalsIgnoreCase(name) || "start"
+										.equalsIgnoreCase(name)));
 							}
-						} else {
-							return (!("contentEditable".equalsIgnoreCase(name) || "start"
-									.equalsIgnoreCase(name)));
+							return false;
 						}
-						return false;
-					}
-				});
+					});
 
-				// TODO recover DOCTYPE
-				// DOCTYPE is handled as a Comment node (first/last 2 chars are
-				// lost) in IE.
-				
+					// TODO recover DOCTYPE
+					// DOCTYPE is handled as a Comment node (first/last 2
+					// chars are
+					// lost) in IE.
+
+				} else {
+					vizView.setStatusMessage("Parsing and copying source DOM.");
+
+					tmpPW.println("---Source DOM--- ");
+					tmpPW.println();
+
+					Document doc = modelService.getDocument();
+					dpu = new DomPrintUtil(doc);
+					// Escape tag bracket('<' -> '%lt;') to print out in <pre>
+					dpu.setEscapeTagBracket(true);
+					System.out.println(doc);
+				}
+
 				tmpPW.println(dpu.toXMLString());
 
 				tmpPW.println(REPORT_HTML_POST);
