@@ -31,11 +31,15 @@
       </win>
    </launcher>
 
+
+   <vm>
+   </vm>
+
    <plugins>
    </plugins>
 
    <features>
-      <feature id="org.eclipse.actf.examples.adesigner" version="0.0.1"/>
+      <feature id="org.eclipse.actf.examples.adesigner" version="0.0.1.qualifier"/>
    </features>
 
 </product>

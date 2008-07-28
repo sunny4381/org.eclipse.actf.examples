@@ -19,7 +19,6 @@
 
    <windowImages i32="/org.eclipse.actf.examples.simplevisualizer/icons/excla_32.png"/>
 
-
    <launcher>
       <solaris/>
       <win useIco="true">
@@ -28,7 +27,6 @@
       </win>
    </launcher>
 
-
    <vm>
    </vm>
 
@@ -36,7 +34,7 @@
    </plugins>
 
    <features>
-      <feature id="org.eclipse.actf.examples.simplevisualizer" version="0.0.1"/>
+      <feature id="org.eclipse.actf.examples.simplevisualizer" version="0.0.1.qualifier"/>
    </features>
 
 </product>
