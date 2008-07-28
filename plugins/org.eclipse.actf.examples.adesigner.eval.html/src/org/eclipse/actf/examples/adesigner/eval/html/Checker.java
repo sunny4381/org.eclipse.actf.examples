@@ -13,9 +13,7 @@ package org.eclipse.actf.examples.adesigner.eval.html;
 
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 import org.eclipse.actf.examples.adesigner.eval.html.internal.CheckEngine;
 import org.eclipse.actf.model.ui.IModelService;
@@ -34,8 +32,7 @@ public class Checker implements IHtmlChecker, IGuidelineSlectionChangedListener 
 
 	private HashSet<String> mimeSet = new HashSet<String>();
 
-	private GuidelineHolder guidelineHolder = GuidelineHolder
-			.getInstance();
+	private GuidelineHolder guidelineHolder = GuidelineHolder.getInstance();
 
 	private boolean checkItems[];
 
@@ -61,10 +58,7 @@ public class Checker implements IHtmlChecker, IGuidelineSlectionChangedListener 
 		Arrays.fill(checkItems, false);
 		enabled = false;
 
-		Set itemSet = guidelineHolder.getMatchedCheckitemSet();
-
-		for (Iterator i = itemSet.iterator(); i.hasNext();) {
-			IEvaluationItem cItem = (IEvaluationItem) i.next();
+		for (IEvaluationItem cItem : guidelineHolder.getMatchedCheckitemSet()) {
 			// System.out.println(cItem.getId());
 			String id = cItem.getId();
 			if (id.matches(CHECK_ITEM_PATTERN)) {
@@ -112,7 +106,8 @@ public class Checker implements IHtmlChecker, IGuidelineSlectionChangedListener 
 	}
 
 	public List<IProblemItem> checkHtml(IHtmlCheckTarget checkTarget) {
-		CheckEngine engine = new CheckEngine(checkTarget.getHtmlEvalUtil(), checkItems);
+		CheckEngine engine = new CheckEngine(checkTarget.getHtmlEvalUtil(),
+				checkItems);
 		return (engine.check());
 
 	}

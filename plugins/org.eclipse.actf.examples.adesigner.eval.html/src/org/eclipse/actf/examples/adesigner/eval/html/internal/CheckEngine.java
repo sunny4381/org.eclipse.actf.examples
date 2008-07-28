@@ -11,6 +11,7 @@
 
 package org.eclipse.actf.examples.adesigner.eval.html.internal;
 
+import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashSet;
@@ -32,6 +33,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.html.HTMLImageElement;
 
+@SuppressWarnings("unused")
 public class CheckEngine extends HtmlTagUtil {
 
 	// use org.w3c.dom.traversal, XPath
@@ -61,7 +63,23 @@ public class CheckEngine extends HtmlTagUtil {
 		for (int i = 0; i < ASCII_ART_CHAR.length; i++) {
 			artCharSet.add(ASCII_ART_CHAR[i]);
 		}
+	}
 
+	private static Method[] checkMethods;
+
+	static {
+		Method[] tmpM = CheckEngine.class.getDeclaredMethods();
+		checkMethods = new Method[100];// TODO
+		for (Method m : tmpM) {
+			String name = m.getName();
+			if (name.startsWith("item_")) {
+				try {
+					int itemNum = Integer.parseInt(name.substring(5));
+					checkMethods[itemNum] = m;
+				} catch (Exception e) {
+				}
+			}
+		}
 	}
 
 	private static final String[] AUDIO_FILE_EXTENSION = {
@@ -70,13 +88,15 @@ public class CheckEngine extends HtmlTagUtil {
 	private static final String[] MULTIMEDIA_FILE_EXTENSION = {
 			"avi", "ram", "rm", "asf", "wm", "wmx", "wmv", "asx", "mpeg", "mpg" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$
 
+	private Set<String> blockEleSet = HtmlTagUtil.getBlockElementSet();
+
 	private Document target;
 
 	private Document resultDoc;
 
 	private URL baseUrl;
 
-	private Map document2IdMap;
+	private Map<Node, Integer> document2IdMap;
 
 	// private Vector html2ViewMapData;
 
@@ -119,8 +139,6 @@ public class CheckEngine extends HtmlTagUtil {
 	private Element[] bottom_notdata_tables;
 
 	private Element[] headings;
-
-	private Set blockEleSet;
 
 	private double invalidLinkRatio;
 
@@ -174,14 +192,9 @@ public class CheckEngine extends HtmlTagUtil {
 		frame_elements = edu.getFrame_elements();
 		iframe_elements = edu.getIframe_elements();
 		object_elements = edu.getObject_elements();
-		blockEleSet = HtmlTagUtil.getBlockElementSet();
-
-		// artCharSet = new HashSet();
-		// for (int i = 0; i < ASCII_ART_CHAR.length; i++) {
-		// artCharSet.add(new Character(ASCII_ART_CHAR[i]));
-		// }
 
 		headings = edu.getHeadings();
+
 	}
 
 	public Vector<IProblemItem> check() {
@@ -189,205 +202,21 @@ public class CheckEngine extends HtmlTagUtil {
 		checkDomDifference();
 
 		validateHtml();
+
+		Object[] tmpO = null;
+		for (int i = 0; i < items.length; i++) {
+			if (items[i] && null != checkMethods[i]) {
+				try {
+					checkMethods[i].invoke(this, tmpO);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
 		// always
-		item_89();
-
-		if (items[0])
-			item_0();
-		if (items[1])
-			item_1();
-		if (items[2])
-			item_2();
-
-		//	
-		if (items[80])
-			item_80();
-		//
-
-		if (items[3])
-			item_3();
-		if (items[4])
-			item_4();
-		if (items[5])
-			item_5();
-		if (items[6])
-			item_6();
-		if (items[7])
-			item_7();
-		if (items[8])
-			item_8();
-		if (items[9])
-			item_9();
-		if (items[10])
-			item_10();
-
-		if (items[12])
-			item_12();
-		if (items[13])
-			item_13();
-		if (items[14])
-			item_14();
-		if (items[15])
-			item_15();
-		if (items[16])
-			item_16();
-		if (items[17])
-			item_17();
-		if (items[18])
-			item_18();
-		if (items[19])
-			item_19();
-		if (items[20])
-			item_20();
-
-		if (items[21])
-			item_21();
-		//
-		if (items[88])
-			item_88();
-		//
-		if (items[75])
-			item_75();
-		if (items[76])
-			item_76();
-		//
-
-		if (items[22])
-			item_22();
-		if (items[23])
-			item_23();
-		if (items[25])
-			item_25();
-		if (items[26])
-			item_26();
-
-		//			
-		if (items[77])
-			item_77();
-		//	
-
-		if (items[27])
-			item_27();
-		if (items[28])
-			item_28();
-		if (items[29])
-			item_29();
-		if (items[30])
-			item_30();
-
-		if (items[31])
-			item_31();
-		if (items[32])
-			item_32();
-		if (items[33])
-			item_33();
-		if (items[34])
-			item_34();
-		if (items[35])
-			item_35();
-		if (items[36])
-			item_36();
-
-		if (items[38])
-			item_38();
-		if (items[39])
-			item_39();
-		if (items[40])
-			item_40();
-		if (items[41])
-			item_41();
-		if (items[42])
-			item_42();
-		if (items[43])
-			item_43();
-
-		if (items[45])
-			item_45();
-		if (items[46])
-			item_46();
-		if (items[47])
-			item_47();
-		if (items[48])
-			item_48();
-		if (items[49])
-			item_49();
-
-		if (items[50])
-			item_50();
-		if (items[51])
-			item_51();
-		if (items[52])
-			item_52();
-		if (items[53])
-			item_53();
-		if (items[54])
-			item_54();
-		if (items[55])
-			item_55();
-
-		//
-		if (items[79])
-			item_79();
-		//
-
-		if (items[56])
-			item_56();
-		if (items[57])
-			item_57();
-
-		if (items[58])
-			item_58();
-		if (items[59])
-			item_59();
-		if (items[60])
-			item_60();
-
-		if (items[61])
-			item_61();
-		if (items[62])
-			item_62();
-		if (items[63])
-			item_63();
-		if (items[64])
-			item_64();
-		if (items[65])
-			item_65();
-		if (items[66])
-			item_66();
-		if (items[67])
-			item_67();
-		if (items[68])
-			item_68();
-		if (items[69])
-			item_69();
-		if (items[70])
-			item_70();
-
-		if (items[71])
-			item_71();
-		if (items[72])
-			item_72();
-		if (items[73])
-			item_73();
-		if (items[74])
-			item_74();
-		if (items[78])
-			item_78();
-
-		if (items[81])
-			item_81();
-		if (items[82])
-			item_82();
-		if (items[83])
-			item_83();
-		if (items[84])
-			item_84();
-		if (items[85])
-			item_85();
-		if (items[86])
-			item_86();
-		if (items[87])
-			item_87();
+		if (items.length < 90 || !items[89]) {
+			item_89();
+		}
 
 		edu.getPageData().setInvalidLinkRatio(invalidLinkRatio);
 
@@ -617,7 +446,7 @@ public class CheckEngine extends HtmlTagUtil {
 					break;
 				}
 			}
-		} 
+		}
 	}
 
 	private void item_6() {
@@ -1055,7 +884,7 @@ public class CheckEngine extends HtmlTagUtil {
 				addCheckerProblem("C_23.0", tNode); //$NON-NLS-1$
 			}
 
-			//bottom table check(layout / not)
+			// bottom table check(layout / not)
 
 		}
 	}
@@ -1845,7 +1674,7 @@ public class CheckEngine extends HtmlTagUtil {
 	}
 
 	private void item_57() {
-		//need more detailed check
+		// need more detailed check
 		Element el = null;
 		int errorCount = 0;
 		int exceptCount = 0;
@@ -1906,8 +1735,8 @@ public class CheckEngine extends HtmlTagUtil {
 													+ "\")", el);
 
 									try {
-										String id = ((Integer) document2IdMap
-												.get(el)).toString();
+										String id = document2IdMap.get(el)
+												.toString();
 										Element tmpE = resultDoc
 												.getElementById("id" + id);
 										if (tmpE.getElementsByTagName("img")
@@ -2179,7 +2008,8 @@ public class CheckEngine extends HtmlTagUtil {
 	}
 
 	private void item_66() {
-		// need to check descendant text (or href txt) contains "search","go", etc.
+		// need to check descendant text (or href txt) contains "search","go",
+		// etc.
 		// exist text box / text area
 
 		NodeList nl = target.getElementsByTagName("form"); //$NON-NLS-1$
@@ -2399,7 +2229,7 @@ public class CheckEngine extends HtmlTagUtil {
 			}
 
 			// need to check structure (axis, scope)
-			
+
 			boolean bHasRowColSpan = false;
 			NodeList thNl = el.getElementsByTagName("th");
 			int thLen = thNl.getLength();
@@ -2526,7 +2356,7 @@ public class CheckEngine extends HtmlTagUtil {
 		NodeList labelNl = target.getElementsByTagName("label");
 		for (int i = 0; i < length; i++) {
 			Element fEl = (Element) nl.item(i);
-			Vector fcVector = getFormControl(fEl);
+			Vector<Element> fcVector = getFormControl(fEl);
 			int labelLen = labelNl.getLength();
 			for (int j = 0; j < fcVector.size(); j++) {
 				boolean bHasLabel = false;
@@ -2806,9 +2636,9 @@ public class CheckEngine extends HtmlTagUtil {
 			}
 		}
 
-		Set notExistSet = edu.getNotExistHrefSet();
-		for (Iterator i = notExistSet.iterator(); i.hasNext();) {
-			addCheckerProblem("C_200.0", " (href=" + i.next() + ")");
+		Set<String> notExistSet = edu.getNotExistHrefSet();
+		for (String href : notExistSet) {
+			addCheckerProblem("C_200.0", " (href=" + href + ")");
 		}
 		if (notExistSet.size() > 10) {
 			addCheckerProblem("C_200.1");
@@ -2872,7 +2702,7 @@ public class CheckEngine extends HtmlTagUtil {
 		}
 	}
 
-	private Vector getFormControl(Element formEl) {
+	private Vector<Element> getFormControl(Element formEl) {
 		Vector<Element> fcVector = new Vector<Element>();
 		NodeList nl = formEl.getElementsByTagName("input"); //$NON-NLS-1$
 		int length = nl.getLength();
