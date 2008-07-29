@@ -19,7 +19,6 @@ import java.util.Map;
 
 import org.eclipse.actf.examples.simplevisualizer.SimpleVisualizerPlugin;
 import org.eclipse.actf.mediator.Mediator;
-import org.eclipse.actf.model.dom.dombycom.IElementEx;
 import org.eclipse.actf.model.ui.IModelService;
 import org.eclipse.actf.model.ui.ModelServiceImageCreator;
 import org.eclipse.actf.model.ui.ModelServiceSizeInfo;
@@ -49,6 +48,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 public class PartControlSimpleVisualizer implements IVisualizationConst {
@@ -283,21 +283,9 @@ public class PartControlSimpleVisualizer implements IVisualizationConst {
 					dpu.setEscapeTagBracket(true);
 					// attribute filter to remove unnecessary attributes
 					dpu.setAttrFilter(new DomPrintUtil.AttributeFilter() {
-						public boolean acceptNode(Node element, Node attr) {
+						public boolean acceptNode(Element element, Node attr) {
 							String name = attr.getNodeName();
-							String value = attr.getNodeValue();
-							if (value.length() == 0) {
-								if ("alt".equalsIgnoreCase(name)
-										&& element instanceof IElementEx) {
-									return (null != ((IElementEx) element)
-											.getSpecifiedAttribute("alt"));
-								}
-							} else {
-								return (!("contentEditable"
-										.equalsIgnoreCase(name) || "start"
-										.equalsIgnoreCase(name)));
-							}
-							return false;
+							return element.hasAttribute(name);
 						}
 					});
 
