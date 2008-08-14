@@ -10,25 +10,34 @@
  *******************************************************************************/
 package org.eclipse.actf.examples.adesigner;
 
+import org.eclipse.actf.examples.adesigner.ui.perspectives.HTMLPerspective;
 import org.eclipse.actf.examples.adesigner.ui.preferences.IPreferenceConstants;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 import org.eclipse.ui.application.WorkbenchAdvisor;
 import org.eclipse.ui.application.WorkbenchWindowAdvisor;
 
-
 public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
 
-    public WorkbenchWindowAdvisor createWorkbenchWindowAdvisor(IWorkbenchWindowConfigurer configurer) {
-        return new ApplicationWorkbenchWindowAdvisor(configurer);
-    }
+	public WorkbenchWindowAdvisor createWorkbenchWindowAdvisor(
+			IWorkbenchWindowConfigurer configurer) {
+		return new ApplicationWorkbenchWindowAdvisor(configurer);
+	}
 
-    public String getInitialWindowPerspectiveId() {
-        if (ADesignerPlugin.getPerspectiveID() == null) {
-            return ADesignerPlugin.getDefault().getPluginPreferences().getString(
-                    IPreferenceConstants.SELECTED_MODE_PERSPECTIVE_ID);
-        }else{
-            return ADesignerPlugin.getPerspectiveID();
-        }
-    }
+	public String getInitialWindowPerspectiveId() {
+		if (ADesignerPlugin.getPerspectiveID() == null) {
+			return ADesignerPlugin.getDefault().getPluginPreferences()
+					.getString(
+							IPreferenceConstants.SELECTED_MODE_PERSPECTIVE_ID);
+		} else {
+			String pID = ADesignerPlugin.getPerspectiveID();
+			if (PlatformUI.getWorkbench().getPerspectiveRegistry()
+					.findPerspectiveWithId(pID) != null) {
+				return pID;
+			}else{
+				return HTMLPerspective.ID;
+			}
+		}
+	}
 
 }
