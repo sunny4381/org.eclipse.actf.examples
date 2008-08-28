@@ -130,7 +130,7 @@
                closeable="false"
                id="org.eclipse.actf.model.flash.proxy.views.ProxyLogView"
                relationship="stack"
-               relative="org.eclipse.actf.visualization.gui.msaa.checker.MSAAProblemsView"/>
+               relative="org.eclipse.actf.visualization.gui.ui.views.MSAAProblemsView"/>
       </perspectiveExtension>
       <perspectiveExtension targetID="org.eclipse.actf.examples.adesigner.ui.perspectives.GUIPerspective">
          <actionSet id="org.eclipse.actf.visualization.gui.actionSet"/>

@@ -11,12 +11,7 @@
 
 package org.eclipse.actf.examples.adesigner.ui.perspectives;
 
-import org.eclipse.actf.visualization.gui.msaa.checker.MSAAProblemsView;
-import org.eclipse.actf.visualization.gui.ui.views.JAWSTextView;
-import org.eclipse.actf.visualization.gui.ui.views.MSAAEventView;
-import org.eclipse.actf.visualization.gui.ui.views.MSAAListView;
-import org.eclipse.actf.visualization.gui.ui.views.MSAAOutlineView;
-import org.eclipse.actf.visualization.gui.ui.views.MSAAPropertiesView;
+import org.eclipse.actf.visualization.gui.IGuiViewIDs;
 import org.eclipse.ui.IFolderLayout;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
@@ -37,18 +32,18 @@ public class GUIPerspective implements IPerspectiveFactory {
         IFolderLayout outlineFolder = layout.createFolder("adesigner.outline.folder", IPageLayout.RIGHT, 1f, editorArea);        
         IFolderLayout propertyFolder = layout.createFolder("adesigner.property.folder", IPageLayout.RIGHT,  0.5f, "adesigner.outline.folder");
         try {
-            reportFolder.addView(MSAAEventView.ID);
-            rightReportFolder.addView(MSAAProblemsView.ID);
-            rightReportFolder.addView(MSAAListView.ID);
-            outlineFolder.addView(MSAAOutlineView.ID);
-            jawsFolder.addView(JAWSTextView.ID);
-            propertyFolder.addView(MSAAPropertiesView.ID);
-            layout.getViewLayout(MSAAEventView.ID).setCloseable(false);
-            layout.getViewLayout(MSAAProblemsView.ID).setCloseable(false);
-            layout.getViewLayout(MSAAListView.ID).setCloseable(false);
-            layout.getViewLayout(MSAAOutlineView.ID).setCloseable(false);
-            layout.getViewLayout(JAWSTextView.ID).setCloseable(false);
-            layout.getViewLayout(MSAAPropertiesView.ID).setCloseable(false);
+            reportFolder.addView(IGuiViewIDs.ID_EVENTVIEW);
+            rightReportFolder.addView(IGuiViewIDs.ID_REPORTVIEW);
+            rightReportFolder.addView(IGuiViewIDs.ID_SIBLINGSVIEW);
+            outlineFolder.addView(IGuiViewIDs.ID_OUTLINEVIEW);
+            jawsFolder.addView(IGuiViewIDs.ID_SUMMARYVIEW);
+            propertyFolder.addView(IGuiViewIDs.ID_PROPERTIESVIEW);
+            layout.getViewLayout(IGuiViewIDs.ID_EVENTVIEW).setCloseable(false);
+            layout.getViewLayout(IGuiViewIDs.ID_REPORTVIEW).setCloseable(false);
+            layout.getViewLayout(IGuiViewIDs.ID_SIBLINGSVIEW).setCloseable(false);
+            layout.getViewLayout(IGuiViewIDs.ID_OUTLINEVIEW).setCloseable(false);
+            layout.getViewLayout(IGuiViewIDs.ID_SUMMARYVIEW).setCloseable(false);
+            layout.getViewLayout(IGuiViewIDs.ID_PROPERTIESVIEW).setCloseable(false);
         }
         catch( Exception e ) {
         }        

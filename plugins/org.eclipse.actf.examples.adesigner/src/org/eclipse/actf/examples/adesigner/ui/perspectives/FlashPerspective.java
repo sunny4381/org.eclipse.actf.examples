@@ -12,13 +12,7 @@
 package org.eclipse.actf.examples.adesigner.ui.perspectives;
 
 import org.eclipse.actf.model.flash.proxy.ProxyPlugin;
-import org.eclipse.actf.visualization.flash.ui.views.FlashDOMView;
-import org.eclipse.actf.visualization.gui.msaa.checker.MSAAProblemsView;
-import org.eclipse.actf.visualization.gui.ui.views.JAWSTextView;
-import org.eclipse.actf.visualization.gui.ui.views.MSAAEventView;
-import org.eclipse.actf.visualization.gui.ui.views.MSAAListView;
-import org.eclipse.actf.visualization.gui.ui.views.MSAAOutlineView;
-import org.eclipse.actf.visualization.gui.ui.views.MSAAPropertiesView;
+import org.eclipse.actf.visualization.gui.IGuiViewIDs;
 import org.eclipse.ui.IFolderLayout;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveDescriptor;
@@ -49,21 +43,21 @@ public class FlashPerspective implements IPerspectiveFactory {
         IFolderLayout flashDomFolder = layout.createFolder("adesigner.flash.flashdom.folder",
                 IPageLayout.BOTTOM, 0.5f, "adesigner.flash.outline.folder");
 
-        reportFolder.addView(MSAAEventView.ID);
-        rightReportFolder.addView(MSAAPropertiesView.ID);
-        rightReportFolder.addView(MSAAProblemsView.ID);
-        rightReportFolder.addView(MSAAListView.ID);
-        simulatorFolder.addView(JAWSTextView.ID);
-        outlineFolder.addView(MSAAOutlineView.ID);
-        flashDomFolder.addView(FlashDOMView.ID);
+        reportFolder.addView(IGuiViewIDs.ID_EVENTVIEW);
+        rightReportFolder.addView(IGuiViewIDs.ID_PROPERTIESVIEW);
+        rightReportFolder.addView(IGuiViewIDs.ID_REPORTVIEW);
+        rightReportFolder.addView(IGuiViewIDs.ID_SIBLINGSVIEW);
+        simulatorFolder.addView(IGuiViewIDs.ID_SUMMARYVIEW);
+        outlineFolder.addView(IGuiViewIDs.ID_OUTLINEVIEW);
+        flashDomFolder.addView(IGuiViewIDs.ID_FLASHDOMVIEW);
 
-        layout.getViewLayout(MSAAProblemsView.ID).setCloseable(false);
-        layout.getViewLayout(MSAAListView.ID).setCloseable(false);
-        layout.getViewLayout(MSAAPropertiesView.ID).setCloseable(false);
-        layout.getViewLayout(MSAAEventView.ID).setCloseable(false);
-        layout.getViewLayout(JAWSTextView.ID).setCloseable(false);
-        layout.getViewLayout(MSAAOutlineView.ID).setCloseable(false);
-        layout.getViewLayout(FlashDOMView.ID).setCloseable(false);
+        layout.getViewLayout(IGuiViewIDs.ID_REPORTVIEW).setCloseable(false);
+        layout.getViewLayout(IGuiViewIDs.ID_SIBLINGSVIEW).setCloseable(false);
+        layout.getViewLayout(IGuiViewIDs.ID_PROPERTIESVIEW).setCloseable(false);
+        layout.getViewLayout(IGuiViewIDs.ID_EVENTVIEW).setCloseable(false);
+        layout.getViewLayout(IGuiViewIDs.ID_SUMMARYVIEW).setCloseable(false);
+        layout.getViewLayout(IGuiViewIDs.ID_OUTLINEVIEW).setCloseable(false);
+        layout.getViewLayout(IGuiViewIDs.ID_FLASHDOMVIEW).setCloseable(false);
 
         PlatformUI.getWorkbench().getActiveWorkbenchWindow().addPerspectiveListener(
                 new PerspectiveListenerForBrowserLaunch(ID));

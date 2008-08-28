@@ -13,7 +13,7 @@ package org.eclipse.actf.examples.adesigner.extension;
 
 import org.eclipse.actf.model.ui.IModelService;
 import org.eclipse.actf.model.ui.util.ModelServiceUtils;
-import org.eclipse.actf.visualization.gui.common.TargetWindowDataProvider;
+import org.eclipse.actf.visualization.gui.TargetWindowDataProvider;
 
 public class ADesignerTargetWindowDataProvider extends TargetWindowDataProvider {
 
