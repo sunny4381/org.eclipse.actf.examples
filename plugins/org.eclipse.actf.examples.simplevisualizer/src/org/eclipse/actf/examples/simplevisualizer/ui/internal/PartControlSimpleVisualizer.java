@@ -174,7 +174,7 @@ public class PartControlSimpleVisualizer implements IVisualizationConst {
 		shell.setCursor(new Cursor(shell.getDisplay(), SWT.CURSOR_WAIT));
 
 		// remove results
-		mediator.setEvaluationResult(vizView, dummyResult);
+		mediator.setReport(vizView, dummyResult);
 		evalResult = new EvaluationResultImpl();
 		vizCanvas.clear();
 		shell.getDisplay().update();
@@ -322,7 +322,7 @@ public class PartControlSimpleVisualizer implements IVisualizationConst {
 
 		}
 
-		Mediator.getInstance().setEvaluationResult(vizView, evalResult);
+		Mediator.getInstance().setReport(vizView, evalResult);
 
 		vizView.setStatusMessage("Visualization is over.");
 		shell.setCursor(null);
