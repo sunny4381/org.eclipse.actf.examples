@@ -13,7 +13,7 @@ package org.eclipse.actf.examples.adesigner;
 import org.eclipse.actf.examples.adesigner.ui.actions.SwitchModeAction;
 import org.eclipse.actf.examples.adesigner.ui.perspectives.FlashPerspective;
 import org.eclipse.actf.examples.adesigner.ui.preferences.IPreferenceConstants;
-import org.eclipse.actf.model.flash.proxy.ProxyPlugin;
+import org.eclipse.actf.model.flash.proxy.cache.FlashCacheUtil;
 import org.eclipse.core.runtime.Preferences;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.IMenuManager;
@@ -61,12 +61,12 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
             }
         });      
 
-        ProxyPlugin.getDefault().clearCacheWithCheck();
+        FlashCacheUtil.clearCacheForStartup();
     }
     
     private void checkChache(String id){
         if(FlashPerspective.ID.equals(id)){
-            ProxyPlugin.getDefault().checkCache();
+            FlashCacheUtil.checkCache();
         }
     }
 

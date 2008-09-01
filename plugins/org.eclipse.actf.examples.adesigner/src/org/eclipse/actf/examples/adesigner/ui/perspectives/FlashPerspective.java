@@ -11,7 +11,7 @@
 
 package org.eclipse.actf.examples.adesigner.ui.perspectives;
 
-import org.eclipse.actf.model.flash.proxy.ProxyPlugin;
+import org.eclipse.actf.model.flash.proxy.cache.FlashCacheUtil;
 import org.eclipse.actf.visualization.gui.IGuiViewIDs;
 import org.eclipse.ui.IFolderLayout;
 import org.eclipse.ui.IPageLayout;
@@ -68,7 +68,7 @@ public class FlashPerspective implements IPerspectiveFactory {
                     if (((Workbench) (PlatformUI.getWorkbench())).isStarting()) {
                         //do nothing
                     } else {
-                        ProxyPlugin.getDefault().checkCache();
+                    	FlashCacheUtil.checkCache();
                     }
                 }
             }

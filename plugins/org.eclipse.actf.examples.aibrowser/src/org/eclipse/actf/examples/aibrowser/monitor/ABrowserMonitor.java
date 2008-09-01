@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.actf.examples.aibrowser.monitor;
 
-import org.eclipse.actf.model.flash.proxy.ProxyPlugin;
+import org.eclipse.actf.model.flash.proxy.cache.FlashCacheUtil;
 import org.eclipse.actf.model.ui.util.ModelServiceUtils;
 import org.eclipse.actf.util.win32.COPYDATASTRUCT;
 import org.eclipse.actf.util.win32.WMCMonitor;
@@ -86,7 +86,7 @@ public class ABrowserMonitor implements IStartup {
 		boolean background = CACHE_BACKGROUND.equals(mode);
 		boolean silent = CACHE_SILENT.equals(mode);
 		IWorkbenchWindow window = (silent||background) ? null : workbench.getActiveWorkbenchWindow();
-		ProxyPlugin.getDefault().clearCache(background,window);
+		FlashCacheUtil.clearCache(background,window);
 	}
 	
 	/*
