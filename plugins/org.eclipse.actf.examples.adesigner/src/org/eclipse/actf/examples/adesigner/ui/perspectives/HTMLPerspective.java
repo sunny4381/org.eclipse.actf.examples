@@ -11,8 +11,7 @@
 
 package org.eclipse.actf.examples.adesigner.ui.perspectives;
 
-import org.eclipse.actf.visualization.blind.ui.views.BlindView;
-import org.eclipse.actf.visualization.lowvision.ui.views.LowVisionView;
+import org.eclipse.actf.visualization.ui.IVisualizationView;
 import org.eclipse.actf.visualization.ui.report.views.DetailedReportView;
 import org.eclipse.actf.visualization.ui.report.views.SummaryReportView;
 import org.eclipse.ui.IFolderLayout;
@@ -43,10 +42,10 @@ public class HTMLPerspective implements IPerspectiveFactory {
 		IFolderLayout simulatorFolder = layout.createFolder(
 				"adesigner.html.simulator.folder",
 				IPageLayout.RIGHT, 0.5f, editorArea);
-		simulatorFolder.addView(BlindView.ID);
-		simulatorFolder.addView(LowVisionView.ID);
-		layout.getViewLayout(BlindView.ID).setCloseable(false);
-		layout.getViewLayout(LowVisionView.ID).setCloseable(false);
+		simulatorFolder.addView(IVisualizationView.ID_BLINDVIEW);
+		simulatorFolder.addView(IVisualizationView.ID_LOWVISIONVIEW);
+		layout.getViewLayout(IVisualizationView.ID_BLINDVIEW).setCloseable(false);
+		layout.getViewLayout(IVisualizationView.ID_LOWVISIONVIEW).setCloseable(false);
 
 		PlatformUI.getWorkbench().getActiveWorkbenchWindow()
 				.addPerspectiveListener(

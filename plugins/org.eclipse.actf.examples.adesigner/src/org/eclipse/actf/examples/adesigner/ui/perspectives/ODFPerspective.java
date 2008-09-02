@@ -14,9 +14,7 @@ package org.eclipse.actf.examples.adesigner.ui.perspectives;
 import org.eclipse.actf.model.ui.editors.ooo.editor.OOoEditor;
 import org.eclipse.actf.model.ui.editors.ooo.initializer.util.OOoEditorInitUtil;
 import org.eclipse.actf.model.ui.util.ModelServiceUtils;
-import org.eclipse.actf.visualization.blind.ui.views.BlindView;
-import org.eclipse.actf.visualization.lowvision.ui.views.LowVisionView;
-import org.eclipse.actf.visualization.presentation.ui.views.RoomView;
+import org.eclipse.actf.visualization.ui.IVisualizationView;
 import org.eclipse.actf.visualization.ui.report.views.DetailedReportView;
 import org.eclipse.actf.visualization.ui.report.views.SummaryReportView;
 import org.eclipse.ui.IFolderLayout;
@@ -46,13 +44,13 @@ public class ODFPerspective implements IPerspectiveFactory {
 		IFolderLayout simulatorFolder = layout.createFolder(
 				"adesigner.odf.simulator.folder", IPageLayout.RIGHT, 0.5f,
 				editorArea);
-		simulatorFolder.addView(BlindView.ID);
-		simulatorFolder.addView(LowVisionView.ID);
-		layout.getViewLayout(BlindView.ID).setCloseable(false);
-		layout.getViewLayout(LowVisionView.ID).setCloseable(false);
+		simulatorFolder.addView(IVisualizationView.ID_BLINDVIEW);
+		simulatorFolder.addView(IVisualizationView.ID_LOWVISIONVIEW);
+		layout.getViewLayout(IVisualizationView.ID_BLINDVIEW).setCloseable(false);
+		layout.getViewLayout(IVisualizationView.ID_LOWVISIONVIEW).setCloseable(false);
 		// Add Room Simulator view
-		simulatorFolder.addView(RoomView.ID);
-		layout.getViewLayout(RoomView.ID).setCloseable(false);
+		simulatorFolder.addView(IVisualizationView.ID_PRESENTATIONVIEW);
+		layout.getViewLayout(IVisualizationView.ID_PRESENTATIONVIEW).setCloseable(false);
 
 		PlatformUI.getWorkbench().getActiveWorkbenchWindow()
 				.addPerspectiveListener(new IPerspectiveListener() {

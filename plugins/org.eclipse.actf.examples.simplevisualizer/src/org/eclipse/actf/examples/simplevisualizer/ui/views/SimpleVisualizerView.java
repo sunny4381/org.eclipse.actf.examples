@@ -113,4 +113,8 @@ public class SimpleVisualizerView extends ViewPart implements IVisualizationView
 	public void reportGeneratorChanged(MediatorEvent event) {
 	}
 
+	public void setVisualizeMode(int mode) {
+		//do nothing
+	}
+
 }

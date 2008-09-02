@@ -10,7 +10,8 @@
  *******************************************************************************/
 package org.eclipse.actf.examples.adesigner.ui.actions;
 
-import org.eclipse.actf.visualization.presentation.ui.views.RoomView;
+import org.eclipse.actf.visualization.presentation.IPresentationVisualizationModes;
+import org.eclipse.actf.visualization.ui.IVisualizationView;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.IViewPart;
@@ -32,11 +33,10 @@ public class PresenAuditoriumAction implements IWorkbenchWindowActionDelegate {
 	public void run(IAction action) {
 		try {
 			IViewPart viewPart = this._window.getActivePage().showView(
-					RoomView.ID);
-			// TODO use IVisualization
+					IVisualizationView.ID_PRESENTATIONVIEW);
 			if (viewPart != null) {
-				RoomView roomView = ((RoomView) viewPart);
-				roomView.setVisualizeMode(RoomView.ROOM_AUDITORIUM);
+				IVisualizationView roomView = ((IVisualizationView) viewPart);
+				roomView.setVisualizeMode(IPresentationVisualizationModes.AUDITORIUM);
 				roomView.doVisualize();
 			}
 
