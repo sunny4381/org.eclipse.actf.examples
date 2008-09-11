@@ -128,7 +128,7 @@
          <actionSet id="org.eclipse.actf.model.flash.proxy.actionSet"/>
          <view
                closeable="false"
-               id="org.eclipse.actf.model.flash.proxy.views.ProxyLogView"
+               id="org.eclipse.actf.model.internal.flash.proxy.ui.views.ProxyLogView"
                relationship="stack"
                relative="org.eclipse.actf.visualization.gui.ui.views.MSAAProblemsView"/>
       </perspectiveExtension>
