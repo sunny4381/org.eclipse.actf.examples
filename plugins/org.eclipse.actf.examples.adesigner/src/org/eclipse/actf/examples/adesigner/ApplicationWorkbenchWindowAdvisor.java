@@ -13,7 +13,7 @@ package org.eclipse.actf.examples.adesigner;
 import org.eclipse.actf.examples.adesigner.ui.actions.SwitchModeAction;
 import org.eclipse.actf.examples.adesigner.ui.perspectives.FlashPerspective;
 import org.eclipse.actf.examples.adesigner.ui.preferences.IPreferenceConstants;
-import org.eclipse.actf.model.flash.proxy.cache.FlashCacheUtil;
+import org.eclipse.actf.model.flash.proxy.FlashCacheUtil;
 import org.eclipse.core.runtime.Preferences;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.IMenuManager;

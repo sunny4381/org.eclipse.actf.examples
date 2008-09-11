@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.actf.examples.aibrowser;
 
-import org.eclipse.actf.model.flash.proxy.cache.FlashCacheUtil;
+import org.eclipse.actf.model.flash.proxy.FlashCacheUtil;
 import org.eclipse.actf.model.ui.util.ModelServiceUtils;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.IMenuManager;
