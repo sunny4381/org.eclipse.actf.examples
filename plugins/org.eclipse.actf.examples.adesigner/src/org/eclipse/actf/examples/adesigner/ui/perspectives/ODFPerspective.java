@@ -11,7 +11,7 @@
 
 package org.eclipse.actf.examples.adesigner.ui.perspectives;
 
-import org.eclipse.actf.model.ui.editors.ooo.editor.OOoEditor;
+import org.eclipse.actf.model.ui.editors.ooo.OOoEditor;
 import org.eclipse.actf.model.ui.editors.ooo.initializer.util.OOoEditorInitUtil;
 import org.eclipse.actf.model.ui.util.ModelServiceUtils;
 import org.eclipse.actf.visualization.ui.IVisualizationView;
