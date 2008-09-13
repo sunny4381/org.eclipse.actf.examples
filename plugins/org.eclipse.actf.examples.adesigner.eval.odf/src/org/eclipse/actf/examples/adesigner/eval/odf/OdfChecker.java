@@ -18,7 +18,7 @@ import org.eclipse.actf.examples.adesigner.eval.odf.preferences.OdfCheckerPrefer
 import org.eclipse.actf.model.ui.IModelService;
 import org.eclipse.actf.visualization.eval.ICheckTarget;
 import org.eclipse.actf.visualization.eval.IChecker;
-import org.eclipse.actf.visualization.eval.guideline.EvaluationItem;
+import org.eclipse.actf.visualization.eval.IEvaluationItem;
 import org.eclipse.actf.visualization.eval.guideline.GuidelineHolder;
 import org.eclipse.actf.visualization.eval.problem.IProblemItem;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -54,8 +54,8 @@ public class OdfChecker implements IChecker {
 
 	public boolean isEnabled() {
 		// TODO
-		EvaluationItem tmpItem = GuidelineHolder.getInstance()
-				.getCheckItem("O_999000001");
+		IEvaluationItem tmpItem = GuidelineHolder.getInstance()
+				.getEvaluationItem("O_999000001");
 		return (tmpItem != null && GuidelineHolder.getInstance()
 				.isMatchedCheckItem(tmpItem));
 	}
