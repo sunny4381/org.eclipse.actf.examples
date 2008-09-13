@@ -11,7 +11,7 @@
 
 package org.eclipse.actf.examples.simplevisualizer.ui.perspectives;
 
-import org.eclipse.actf.model.ui.editors.ie.editor.WebBrowserEditor;
+import org.eclipse.actf.model.ui.editors.ie.WebBrowserEditor;
 import org.eclipse.actf.model.ui.util.ModelServiceUtils;
 import org.eclipse.ui.IPerspectiveDescriptor;
 import org.eclipse.ui.IPerspectiveListener;
