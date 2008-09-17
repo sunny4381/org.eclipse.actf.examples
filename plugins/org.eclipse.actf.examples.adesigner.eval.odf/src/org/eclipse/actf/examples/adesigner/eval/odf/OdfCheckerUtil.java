@@ -59,17 +59,155 @@ import org.eclipse.actf.model.dom.odf.table.TableElement;
 import org.eclipse.actf.model.dom.odf.text.AElement;
 import org.eclipse.actf.model.dom.odf.text.TextConstants;
 import org.eclipse.actf.model.dom.odf.text.TrackedChangesElement;
-import org.eclipse.actf.util.xpath.XPathUtil;
+import org.eclipse.actf.util.xpath.XPathService;
+import org.eclipse.actf.util.xpath.XPathServiceFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-
 public class OdfCheckerUtil {
 	private static OdfCheckerUtil instance = null;
 
 	private double odfVersion = -1.0;
+
+	private XPathService xpathService = XPathServiceFactory.newService();
+
+	private Object exp1 = xpathService.compile(".//*[namespace-uri()='"
+			+ DrawConstants.DRAW_NAMESPACE_URI + "' and local-name()='"
+			+ DrawConstants.ELEMENT_FRAME + "']" + "/*[1][(namespace-uri()='"
+			+ DrawConstants.DRAW_NAMESPACE_URI + "' and local-name()='"
+			+ DrawConstants.ELEMENT_OBJECT + "') or (namespace-uri()='"
+			+ DrawConstants.DRAW_NAMESPACE_URI + "' and local-name()='"
+			+ DrawConstants.ELEMENT_OBJECT_OLE + "')]");
+
+	private Object exp2 = xpathService.compile(".//*[namespace-uri()='"
+			+ DrawConstants.DRAW_NAMESPACE_URI + "' and local-name()='"
+			+ DrawConstants.ELEMENT_FRAME + "']" + "/*[1][(namespace-uri()='"
+			+ DrawConstants.DRAW_NAMESPACE_URI + "' and local-name()='"
+			+ DrawConstants.ELEMENT_OBJECT + "') or (namespace-uri()='"
+			+ DrawConstants.DRAW_NAMESPACE_URI + "' and local-name()='"
+			+ DrawConstants.ELEMENT_OBJECT_OLE + "')]");
+
+	private Object exp3 = xpathService.compile(".//*[namespace-uri()='"
+			+ DrawConstants.DRAW_NAMESPACE_URI + "' and local-name()='"
+			+ DrawConstants.ELEMENT_FRAME + "']" + "/*[1][namespace-uri()='"
+			+ DrawConstants.DRAW_NAMESPACE_URI + "' and local-name()='"
+			+ DrawConstants.ELEMENT_IMAGE + "']");
+
+	private Object exp4 = xpathService.compile(".//*[namespace-uri()='"
+			+ DrawConstants.DRAW_NAMESPACE_URI + "' and local-name()='"
+			+ DrawConstants.ELEMENT_FRAME + "']" + "/*[1][namespace-uri()='"
+			+ DrawConstants.DRAW_NAMESPACE_URI + "' and local-name()='"
+			+ DrawConstants.ELEMENT_IMAGE + "']");
+
+	private Object exp5 = xpathService
+			.compile("./descendant::*[(namespace-uri()='"
+					+ TableConstants.TABLE_NAMESPACE_URI
+					+ "' and local-name()='"
+					+ TableConstants.ELEMENT_TABLE_CELL + "')]"
+					+ "/*[(namespace-uri()='"
+					+ DrawConstants.DRAW_NAMESPACE_URI + "' and local-name()='"
+					+ DrawConstants.ELEMENT_RECT + "') or"
+					+ "(namespace-uri()='" + DrawConstants.DRAW_NAMESPACE_URI
+					+ "' and local-name()='" + DrawConstants.ELEMENT_LINE
+					+ "') or" + "(namespace-uri()='"
+					+ DrawConstants.DRAW_NAMESPACE_URI + "' and local-name()='"
+					+ DrawConstants.ELEMENT_POLYLINE + "') or"
+					+ "(namespace-uri()='" + DrawConstants.DRAW_NAMESPACE_URI
+					+ "' and local-name()='" + DrawConstants.ELEMENT_POLYGON
+					+ "') or" + "(namespace-uri()='"
+					+ DrawConstants.DRAW_NAMESPACE_URI + "' and local-name()='"
+					+ DrawConstants.ELEMENT_REGULAR_POLYGON + "') or"
+					+ "(namespace-uri()='" + DrawConstants.DRAW_NAMESPACE_URI
+					+ "' and local-name()='" + DrawConstants.ELEMENT_PATH
+					+ "') or" + "(namespace-uri()='"
+					+ DrawConstants.DRAW_NAMESPACE_URI + "' and local-name()='"
+					+ DrawConstants.ELEMENT_CIRCLE + "') or"
+					+ "(namespace-uri()='" + DrawConstants.DRAW_NAMESPACE_URI
+					+ "' and local-name()='" + DrawConstants.ELEMENT_ELLIPSE
+					+ "') or" + "(namespace-uri()='"
+					+ DrawConstants.DRAW_NAMESPACE_URI + "' and local-name()='"
+					+ DrawConstants.ELEMENT_G + "') or" + "(namespace-uri()='"
+					+ DrawConstants.DRAW_NAMESPACE_URI + "' and local-name()='"
+					+ DrawConstants.ELEMENT_PAGE_THUMBNAIL + "') or"
+					+ "(namespace-uri()='" + DrawConstants.DRAW_NAMESPACE_URI
+					+ "' and local-name()='" + DrawConstants.ELEMENT_MEASURE
+					+ "') or" + "(namespace-uri()='"
+					+ DrawConstants.DRAW_NAMESPACE_URI + "' and local-name()='"
+					+ DrawConstants.ELEMENT_CAPTION + "') or"
+					+ "(namespace-uri()='" + DrawConstants.DRAW_NAMESPACE_URI
+					+ "' and local-name()='" + DrawConstants.ELEMENT_CONNECTOR
+					+ "') or" + "(namespace-uri()='"
+					+ DrawConstants.DRAW_NAMESPACE_URI + "' and local-name()='"
+					+ DrawConstants.ELEMENT_CUSTOM_SHAPE + "') or"
+					+ "(namespace-uri()='" + Dr3dConstants.DR3D_NAMESPACE_URI
+					+ "' and local-name()='" + Dr3dConstants.ELEMENT_SCENE
+					+ "')]" + "[parent::*[namespace-uri()!='"
+					+ DrawConstants.DRAW_NAMESPACE_URI + "' or local-name()!='"
+					+ DrawConstants.ELEMENT_G + "']]");
+
+	private Object exp6 = xpathService.compile(".//*[(namespace-uri()!='"
+			+ TableConstants.TABLE_NAMESPACE_URI + "' or local-name()!='"
+			+ TableConstants.ELEMENT_TABLE_CELL + "')"
+			+ " and (namespace-uri()!='" + TableConstants.TABLE_NAMESPACE_URI
+			+ "' or local-name()!='"
+			+ TableConstants.ELEMENT_COVERED_TABLE_CELL + "')]"
+			+ "/*[namespace-uri()='" + TableConstants.TABLE_NAMESPACE_URI
+			+ "' and local-name()='" + TableConstants.ELEMENT_TABLE + "']");
+
+	private Object exp7 = xpathService.compile(".//*[(namespace-uri()!='"
+			+ TableConstants.TABLE_NAMESPACE_URI + "' or local-name()!='"
+			+ TableConstants.ELEMENT_TABLE_CELL + "')"
+			+ " and (namespace-uri()!='" + TableConstants.TABLE_NAMESPACE_URI
+			+ "' or local-name()!='"
+			+ TableConstants.ELEMENT_COVERED_TABLE_CELL + "')]"
+			+ "/*[namespace-uri()='" + TableConstants.TABLE_NAMESPACE_URI
+			+ "' and local-name()='" + TableConstants.ELEMENT_TABLE + "']");
+
+	private Object exp8 = xpathService
+			.compile("./descendant::*[(namespace-uri()='"
+					+ TextConstants.TEXT_NAMESPACE_URI + "' and local-name()='"
+					+ TextConstants.ELEMENT_P + "')]" + "/*[(namespace-uri()='"
+					+ DrawConstants.DRAW_NAMESPACE_URI + "' and local-name()='"
+					+ DrawConstants.ELEMENT_RECT + "') or"
+					+ "(namespace-uri()='" + DrawConstants.DRAW_NAMESPACE_URI
+					+ "' and local-name()='" + DrawConstants.ELEMENT_LINE
+					+ "') or" + "(namespace-uri()='"
+					+ DrawConstants.DRAW_NAMESPACE_URI + "' and local-name()='"
+					+ DrawConstants.ELEMENT_POLYLINE + "') or"
+					+ "(namespace-uri()='" + DrawConstants.DRAW_NAMESPACE_URI
+					+ "' and local-name()='" + DrawConstants.ELEMENT_POLYGON
+					+ "') or" + "(namespace-uri()='"
+					+ DrawConstants.DRAW_NAMESPACE_URI + "' and local-name()='"
+					+ DrawConstants.ELEMENT_REGULAR_POLYGON + "') or"
+					+ "(namespace-uri()='" + DrawConstants.DRAW_NAMESPACE_URI
+					+ "' and local-name()='" + DrawConstants.ELEMENT_PATH
+					+ "') or" + "(namespace-uri()='"
+					+ DrawConstants.DRAW_NAMESPACE_URI + "' and local-name()='"
+					+ DrawConstants.ELEMENT_CIRCLE + "') or"
+					+ "(namespace-uri()='" + DrawConstants.DRAW_NAMESPACE_URI
+					+ "' and local-name()='" + DrawConstants.ELEMENT_ELLIPSE
+					+ "') or" + "(namespace-uri()='"
+					+ DrawConstants.DRAW_NAMESPACE_URI + "' and local-name()='"
+					+ DrawConstants.ELEMENT_G + "') or" + "(namespace-uri()='"
+					+ DrawConstants.DRAW_NAMESPACE_URI + "' and local-name()='"
+					+ DrawConstants.ELEMENT_PAGE_THUMBNAIL + "') or"
+					+ "(namespace-uri()='" + DrawConstants.DRAW_NAMESPACE_URI
+					+ "' and local-name()='" + DrawConstants.ELEMENT_MEASURE
+					+ "') or" + "(namespace-uri()='"
+					+ DrawConstants.DRAW_NAMESPACE_URI + "' and local-name()='"
+					+ DrawConstants.ELEMENT_CAPTION + "') or"
+					+ "(namespace-uri()='" + DrawConstants.DRAW_NAMESPACE_URI
+					+ "' and local-name()='" + DrawConstants.ELEMENT_CONNECTOR
+					+ "') or" + "(namespace-uri()='"
+					+ DrawConstants.DRAW_NAMESPACE_URI + "' and local-name()='"
+					+ DrawConstants.ELEMENT_CUSTOM_SHAPE + "') or"
+					+ "(namespace-uri()='" + Dr3dConstants.DR3D_NAMESPACE_URI
+					+ "' and local-name()='" + Dr3dConstants.ELEMENT_SCENE
+					+ "')]" + "[parent::*[namespace-uri()!='"
+					+ DrawConstants.DRAW_NAMESPACE_URI + "' or local-name()!='"
+					+ DrawConstants.ELEMENT_G + "']]");
 
 	private OdfCheckerUtil() {
 	}
@@ -152,13 +290,7 @@ public class OdfCheckerUtil {
 	private List<ImageElement> getImageShortDescError(Element root) {
 		List<ImageElement> errorElemList = new ArrayList<ImageElement>();
 
-		NodeList nl = XPathUtil.evalXPathNodeList(root,
-				".//*[namespace-uri()='" + DrawConstants.DRAW_NAMESPACE_URI
-						+ "' and local-name()='" + DrawConstants.ELEMENT_FRAME
-						+ "']" + "/*[1][namespace-uri()='"
-						+ DrawConstants.DRAW_NAMESPACE_URI
-						+ "' and local-name()='" + DrawConstants.ELEMENT_IMAGE
-						+ "']");
+		NodeList nl = xpathService.evalForNodeList(exp4, root);
 		for (int i = 0; i < nl.getLength(); i++) {
 			ImageElement image = (ImageElement) nl.item(i);
 			if (!checkImageShortDescError(image)) {
@@ -217,13 +349,7 @@ public class OdfCheckerUtil {
 	private List<ImageElement> getImageLongDescError(Element root) {
 		List<ImageElement> errorElemList = new ArrayList<ImageElement>();
 
-		NodeList nl = XPathUtil.evalXPathNodeList(root,
-				".//*[namespace-uri()='" + DrawConstants.DRAW_NAMESPACE_URI
-						+ "' and local-name()='" + DrawConstants.ELEMENT_FRAME
-						+ "']" + "/*[1][namespace-uri()='"
-						+ DrawConstants.DRAW_NAMESPACE_URI
-						+ "' and local-name()='" + DrawConstants.ELEMENT_IMAGE
-						+ "']");
+		NodeList nl = xpathService.evalForNodeList(exp3, root);
 		for (int i = 0; i < nl.getLength(); i++) {
 			ImageElement image = (ImageElement) nl.item(i);
 			if (!checkImageLongDescError(image)) {
@@ -287,18 +413,7 @@ public class OdfCheckerUtil {
 	private List<TableElement> getTableHeaderError(Element root) {
 		List<TableElement> errorElemList = new ArrayList<TableElement>();
 
-		NodeList nl = XPathUtil.evalXPathNodeList(root,
-				".//*[(namespace-uri()!='" + TableConstants.TABLE_NAMESPACE_URI
-						+ "' or local-name()!='"
-						+ TableConstants.ELEMENT_TABLE_CELL + "')"
-						+ " and (namespace-uri()!='"
-						+ TableConstants.TABLE_NAMESPACE_URI
-						+ "' or local-name()!='"
-						+ TableConstants.ELEMENT_COVERED_TABLE_CELL + "')]"
-						+ "/*[namespace-uri()='"
-						+ TableConstants.TABLE_NAMESPACE_URI
-						+ "' and local-name()='" + TableConstants.ELEMENT_TABLE
-						+ "']");
+		NodeList nl = xpathService.evalForNodeList(exp7, root);
 		for (int i = 0; i < nl.getLength(); i++) {
 			TableElement table = (TableElement) nl.item(i);
 			if (!checkTableHeaderError(table)) {
@@ -332,18 +447,7 @@ public class OdfCheckerUtil {
 	private List<TableElement> getTableCaptionError(Element root) {
 		List<TableElement> errorElemList = new ArrayList<TableElement>();
 
-		NodeList nl = XPathUtil.evalXPathNodeList(root,
-				".//*[(namespace-uri()!='" + TableConstants.TABLE_NAMESPACE_URI
-						+ "' or local-name()!='"
-						+ TableConstants.ELEMENT_TABLE_CELL + "')"
-						+ " and (namespace-uri()!='"
-						+ TableConstants.TABLE_NAMESPACE_URI
-						+ "' or local-name()!='"
-						+ TableConstants.ELEMENT_COVERED_TABLE_CELL + "')]"
-						+ "/*[namespace-uri()='"
-						+ TableConstants.TABLE_NAMESPACE_URI
-						+ "' and local-name()='" + TableConstants.ELEMENT_TABLE
-						+ "']");
+		NodeList nl = xpathService.evalForNodeList(exp6, root);
 		for (int i = 0; i < nl.getLength(); i++) {
 			TableElement table = (TableElement) nl.item(i);
 			if (!checkTableCaptionError(table)) {
@@ -513,134 +617,11 @@ public class OdfCheckerUtil {
 	}
 
 	private NodeList getWriteDrawingObject(TextElement textElem) {
-		return XPathUtil.evalXPathNodeList(textElem,
-				"./descendant::*[(namespace-uri()='"
-						+ TextConstants.TEXT_NAMESPACE_URI
-						+ "' and local-name()='" + TextConstants.ELEMENT_P
-						+ "')]" + "/*[(namespace-uri()='"
-						+ DrawConstants.DRAW_NAMESPACE_URI
-						+ "' and local-name()='" + DrawConstants.ELEMENT_RECT
-						+ "') or" + "(namespace-uri()='"
-						+ DrawConstants.DRAW_NAMESPACE_URI
-						+ "' and local-name()='" + DrawConstants.ELEMENT_LINE
-						+ "') or" + "(namespace-uri()='"
-						+ DrawConstants.DRAW_NAMESPACE_URI
-						+ "' and local-name()='"
-						+ DrawConstants.ELEMENT_POLYLINE + "') or"
-						+ "(namespace-uri()='"
-						+ DrawConstants.DRAW_NAMESPACE_URI
-						+ "' and local-name()='"
-						+ DrawConstants.ELEMENT_POLYGON + "') or"
-						+ "(namespace-uri()='"
-						+ DrawConstants.DRAW_NAMESPACE_URI
-						+ "' and local-name()='"
-						+ DrawConstants.ELEMENT_REGULAR_POLYGON + "') or"
-						+ "(namespace-uri()='"
-						+ DrawConstants.DRAW_NAMESPACE_URI
-						+ "' and local-name()='" + DrawConstants.ELEMENT_PATH
-						+ "') or" + "(namespace-uri()='"
-						+ DrawConstants.DRAW_NAMESPACE_URI
-						+ "' and local-name()='" + DrawConstants.ELEMENT_CIRCLE
-						+ "') or" + "(namespace-uri()='"
-						+ DrawConstants.DRAW_NAMESPACE_URI
-						+ "' and local-name()='"
-						+ DrawConstants.ELEMENT_ELLIPSE + "') or"
-						+ "(namespace-uri()='"
-						+ DrawConstants.DRAW_NAMESPACE_URI
-						+ "' and local-name()='" + DrawConstants.ELEMENT_G
-						+ "') or" + "(namespace-uri()='"
-						+ DrawConstants.DRAW_NAMESPACE_URI
-						+ "' and local-name()='"
-						+ DrawConstants.ELEMENT_PAGE_THUMBNAIL + "') or"
-						+ "(namespace-uri()='"
-						+ DrawConstants.DRAW_NAMESPACE_URI
-						+ "' and local-name()='"
-						+ DrawConstants.ELEMENT_MEASURE + "') or"
-						+ "(namespace-uri()='"
-						+ DrawConstants.DRAW_NAMESPACE_URI
-						+ "' and local-name()='"
-						+ DrawConstants.ELEMENT_CAPTION + "') or"
-						+ "(namespace-uri()='"
-						+ DrawConstants.DRAW_NAMESPACE_URI
-						+ "' and local-name()='"
-						+ DrawConstants.ELEMENT_CONNECTOR + "') or"
-						+ "(namespace-uri()='"
-						+ DrawConstants.DRAW_NAMESPACE_URI
-						+ "' and local-name()='"
-						+ DrawConstants.ELEMENT_CUSTOM_SHAPE + "') or"
-						+ "(namespace-uri()='"
-						+ Dr3dConstants.DR3D_NAMESPACE_URI
-						+ "' and local-name()='" + Dr3dConstants.ELEMENT_SCENE
-						+ "')]" + "[parent::*[namespace-uri()!='"
-						+ DrawConstants.DRAW_NAMESPACE_URI
-						+ "' or local-name()!='" + DrawConstants.ELEMENT_G
-						+ "']]");
+		return xpathService.evalForNodeList(exp8, textElem);
 	}
 
 	private NodeList getSpreadsheetDrawingObject(SpreadSheetElement spreadElem) {
-		return XPathUtil.evalXPathNodeList(spreadElem,
-				"./descendant::*[(namespace-uri()='"
-						+ TableConstants.TABLE_NAMESPACE_URI
-						+ "' and local-name()='"
-						+ TableConstants.ELEMENT_TABLE_CELL + "')]"
-						+ "/*[(namespace-uri()='"
-						+ DrawConstants.DRAW_NAMESPACE_URI
-						+ "' and local-name()='" + DrawConstants.ELEMENT_RECT
-						+ "') or" + "(namespace-uri()='"
-						+ DrawConstants.DRAW_NAMESPACE_URI
-						+ "' and local-name()='" + DrawConstants.ELEMENT_LINE
-						+ "') or" + "(namespace-uri()='"
-						+ DrawConstants.DRAW_NAMESPACE_URI
-						+ "' and local-name()='"
-						+ DrawConstants.ELEMENT_POLYLINE + "') or"
-						+ "(namespace-uri()='"
-						+ DrawConstants.DRAW_NAMESPACE_URI
-						+ "' and local-name()='"
-						+ DrawConstants.ELEMENT_POLYGON + "') or"
-						+ "(namespace-uri()='"
-						+ DrawConstants.DRAW_NAMESPACE_URI
-						+ "' and local-name()='"
-						+ DrawConstants.ELEMENT_REGULAR_POLYGON + "') or"
-						+ "(namespace-uri()='"
-						+ DrawConstants.DRAW_NAMESPACE_URI
-						+ "' and local-name()='" + DrawConstants.ELEMENT_PATH
-						+ "') or" + "(namespace-uri()='"
-						+ DrawConstants.DRAW_NAMESPACE_URI
-						+ "' and local-name()='" + DrawConstants.ELEMENT_CIRCLE
-						+ "') or" + "(namespace-uri()='"
-						+ DrawConstants.DRAW_NAMESPACE_URI
-						+ "' and local-name()='"
-						+ DrawConstants.ELEMENT_ELLIPSE + "') or"
-						+ "(namespace-uri()='"
-						+ DrawConstants.DRAW_NAMESPACE_URI
-						+ "' and local-name()='" + DrawConstants.ELEMENT_G
-						+ "') or" + "(namespace-uri()='"
-						+ DrawConstants.DRAW_NAMESPACE_URI
-						+ "' and local-name()='"
-						+ DrawConstants.ELEMENT_PAGE_THUMBNAIL + "') or"
-						+ "(namespace-uri()='"
-						+ DrawConstants.DRAW_NAMESPACE_URI
-						+ "' and local-name()='"
-						+ DrawConstants.ELEMENT_MEASURE + "') or"
-						+ "(namespace-uri()='"
-						+ DrawConstants.DRAW_NAMESPACE_URI
-						+ "' and local-name()='"
-						+ DrawConstants.ELEMENT_CAPTION + "') or"
-						+ "(namespace-uri()='"
-						+ DrawConstants.DRAW_NAMESPACE_URI
-						+ "' and local-name()='"
-						+ DrawConstants.ELEMENT_CONNECTOR + "') or"
-						+ "(namespace-uri()='"
-						+ DrawConstants.DRAW_NAMESPACE_URI
-						+ "' and local-name()='"
-						+ DrawConstants.ELEMENT_CUSTOM_SHAPE + "') or"
-						+ "(namespace-uri()='"
-						+ Dr3dConstants.DR3D_NAMESPACE_URI
-						+ "' and local-name()='" + Dr3dConstants.ELEMENT_SCENE
-						+ "')]" + "[parent::*[namespace-uri()!='"
-						+ DrawConstants.DRAW_NAMESPACE_URI
-						+ "' or local-name()!='" + DrawConstants.ELEMENT_G
-						+ "']]");
+		return xpathService.evalForNodeList(exp5, spreadElem);
 	}
 
 	private boolean checkDrawingObjectShortDesc(DrawingObjectElement object) {
@@ -978,16 +959,7 @@ public class OdfCheckerUtil {
 			Element root) {
 		List<EmbedDrawingObjectElement> errorElemList = new ArrayList<EmbedDrawingObjectElement>();
 
-		NodeList nl = XPathUtil.evalXPathNodeList(root,
-				".//*[namespace-uri()='" + DrawConstants.DRAW_NAMESPACE_URI
-						+ "' and local-name()='" + DrawConstants.ELEMENT_FRAME
-						+ "']" + "/*[1][(namespace-uri()='"
-						+ DrawConstants.DRAW_NAMESPACE_URI
-						+ "' and local-name()='" + DrawConstants.ELEMENT_OBJECT
-						+ "') or (namespace-uri()='"
-						+ DrawConstants.DRAW_NAMESPACE_URI
-						+ "' and local-name()='"
-						+ DrawConstants.ELEMENT_OBJECT_OLE + "')]");
+		NodeList nl = xpathService.evalForNodeList(exp2, root);
 		for (int i = 0; i < nl.getLength(); i++) {
 			EmbedDrawingObjectElement object = (EmbedDrawingObjectElement) nl
 					.item(i);
@@ -1054,16 +1026,7 @@ public class OdfCheckerUtil {
 			Element root) {
 		List<EmbedDrawingObjectElement> errorElemList = new ArrayList<EmbedDrawingObjectElement>();
 
-		NodeList nl = XPathUtil.evalXPathNodeList(root,
-				".//*[namespace-uri()='" + DrawConstants.DRAW_NAMESPACE_URI
-						+ "' and local-name()='" + DrawConstants.ELEMENT_FRAME
-						+ "']" + "/*[1][(namespace-uri()='"
-						+ DrawConstants.DRAW_NAMESPACE_URI
-						+ "' and local-name()='" + DrawConstants.ELEMENT_OBJECT
-						+ "') or (namespace-uri()='"
-						+ DrawConstants.DRAW_NAMESPACE_URI
-						+ "' and local-name()='"
-						+ DrawConstants.ELEMENT_OBJECT_OLE + "')]");
+		NodeList nl = xpathService.evalForNodeList(exp1, root);
 		for (int i = 0; i < nl.getLength(); i++) {
 			EmbedDrawingObjectElement object = (EmbedDrawingObjectElement) nl
 					.item(i);
