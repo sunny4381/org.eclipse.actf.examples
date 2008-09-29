@@ -10,8 +10,8 @@
  *******************************************************************************/
 package org.eclipse.actf.examples.aibrowser;
 
-import org.eclipse.actf.ai.navigator.NavigatorPlugin;
 import org.eclipse.actf.ai.navigator.ui.ModeContribution;
+import org.eclipse.actf.ai.navigator.ui.NavigatorUIUtil;
 import org.eclipse.actf.model.ui.editor.actions.FavoritesMenu;
 import org.eclipse.actf.ui.util.ProgressContribution;
 import org.eclipse.jface.action.ICoolBarManager;
@@ -138,7 +138,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
         helpMenu.add(_aboutAction);
         menuBar.add(helpMenu);
         
-        NavigatorPlugin.menuManager = menuBar;
+        NavigatorUIUtil.menuManager = menuBar;
 
         //register(_closeAction);
         //register(_closeAllAction);

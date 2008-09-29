@@ -20,7 +20,7 @@ import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
-import org.eclipse.actf.ai.xmlstore.XMLStorePlugin;
+import org.eclipse.actf.ai.xmlstore.XMLStoreServiceUtil;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
@@ -73,7 +73,7 @@ public class ClientPlugin extends AbstractUIPlugin {
         this._context = context;
         File configDirFile = getLocalPluginDir();
         if (configDirFile == null) return;
-        XMLStorePlugin.getDefault().addSystemStore(configDirFile);
+        XMLStoreServiceUtil.addSystemStore(configDirFile);
 	}
     
     public BundleContext getContext(){
