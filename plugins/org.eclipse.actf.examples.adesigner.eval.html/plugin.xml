@@ -5,7 +5,6 @@
          point="org.eclipse.actf.visualization.eval.checkers">
       <checker
             infoprovider="org.eclipse.actf.examples.adesigner.eval.html.HtmlCheckerInfoProvider"
-            class="org.eclipse.actf.examples.adesigner.eval.html.Checker"
-            id="org.eclipse.actf.examples.adesigner.eval.html.Checker"/>
+            class="org.eclipse.actf.examples.adesigner.eval.html.Checker"/>
    </extension>
 </plugin>

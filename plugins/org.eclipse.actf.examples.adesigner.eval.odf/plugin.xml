@@ -5,8 +5,7 @@
          point="org.eclipse.actf.visualization.eval.checkers">
       <checker
       		infoprovider="org.eclipse.actf.examples.adesigner.eval.odf.OdfCheckerInfoProvider"
-            class="org.eclipse.actf.examples.adesigner.eval.odf.OdfChecker"
-            id="org.eclipse.actf.examples.adesigner.eval.odf.OdfChecker"/>
+            class="org.eclipse.actf.examples.adesigner.eval.odf.OdfChecker"/>
    </extension>
    <extension
          point="org.eclipse.ui.preferencePages">
