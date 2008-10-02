@@ -12,8 +12,6 @@
 package org.eclipse.actf.examples.adesigner.ui.perspectives;
 
 import org.eclipse.actf.visualization.ui.IVisualizationView;
-import org.eclipse.actf.visualization.ui.report.views.DetailedReportView;
-import org.eclipse.actf.visualization.ui.report.views.SummaryReportView;
 import org.eclipse.ui.IFolderLayout;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
@@ -30,10 +28,10 @@ public class HTMLPerspective implements IPerspectiveFactory {
 		IFolderLayout reportFolder = layout.createFolder(
 				"adesigner.html.report.folder",
 				IPageLayout.BOTTOM, 0.7f, editorArea);
-		reportFolder.addView(SummaryReportView.ID);
-		reportFolder.addView(DetailedReportView.ID);
-		layout.getViewLayout(SummaryReportView.ID).setCloseable(false);
-		layout.getViewLayout(DetailedReportView.ID).setCloseable(false);
+		reportFolder.addView(IVisualizationView.SUMMARY_REPORT_VIEW_ID);
+		reportFolder.addView(IVisualizationView.DETAILED_REPROT_VIEW_ID);
+		layout.getViewLayout(IVisualizationView.SUMMARY_REPORT_VIEW_ID).setCloseable(false);
+		layout.getViewLayout(IVisualizationView.DETAILED_REPROT_VIEW_ID).setCloseable(false);
 
 		// layout.addView(WebBrowserView_ID, IPageLayout.LEFT, 0.5f,
 		// editorArea);

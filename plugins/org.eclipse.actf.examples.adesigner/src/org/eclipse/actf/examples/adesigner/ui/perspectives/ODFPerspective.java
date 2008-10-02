@@ -15,8 +15,6 @@ import org.eclipse.actf.model.ui.editors.ooo.OOoEditor;
 import org.eclipse.actf.model.ui.editors.ooo.initializer.util.OOoEditorInitUtil;
 import org.eclipse.actf.model.ui.util.ModelServiceUtils;
 import org.eclipse.actf.visualization.ui.IVisualizationView;
-import org.eclipse.actf.visualization.ui.report.views.DetailedReportView;
-import org.eclipse.actf.visualization.ui.report.views.SummaryReportView;
 import org.eclipse.ui.IFolderLayout;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveDescriptor;
@@ -36,10 +34,10 @@ public class ODFPerspective implements IPerspectiveFactory {
 		IFolderLayout reportFolder = layout.createFolder(
 				"adesigner.odf.report.folder", IPageLayout.BOTTOM, 0.7f,
 				editorArea);
-		reportFolder.addView(SummaryReportView.ID);
-		reportFolder.addView(DetailedReportView.ID);
-		layout.getViewLayout(SummaryReportView.ID).setCloseable(false);
-		layout.getViewLayout(DetailedReportView.ID).setCloseable(false);
+		reportFolder.addView(IVisualizationView.SUMMARY_REPORT_VIEW_ID);
+		reportFolder.addView(IVisualizationView.DETAILED_REPROT_VIEW_ID);
+		layout.getViewLayout(IVisualizationView.SUMMARY_REPORT_VIEW_ID).setCloseable(false);
+		layout.getViewLayout(IVisualizationView.DETAILED_REPROT_VIEW_ID).setCloseable(false);
 
 		IFolderLayout simulatorFolder = layout.createFolder(
 				"adesigner.odf.simulator.folder", IPageLayout.RIGHT, 0.5f,
