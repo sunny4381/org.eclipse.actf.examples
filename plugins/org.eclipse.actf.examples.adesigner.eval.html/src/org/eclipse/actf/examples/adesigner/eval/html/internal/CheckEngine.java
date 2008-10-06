@@ -154,7 +154,7 @@ public class CheckEngine extends HtmlTagUtil {
 	public CheckEngine(HtmlEvalUtil edu, boolean[] checkItems) {
 		this.edu = edu;
 		this.target = edu.getTarget();
-		this.resultDoc = edu.getResultDoc();
+		this.resultDoc = edu.getResult();
 
 		baseUrl = edu.getBaseUrl();
 
@@ -1092,7 +1092,7 @@ public class CheckEngine extends HtmlTagUtil {
 
 	private void item_38() {
 		Element[] mouseButton = edu.getEventMouseButtonElements();
-		Element[] mouseFocus = edu.getEventMouseFocusElements();
+		Element[] mouseFocus = edu.getEventOnMouseElements();
 		// Element[] onKey = edu.getEventOnKeyElements();
 
 		HashSet<Element> tmpSet = new HashSet<Element>();
@@ -1294,7 +1294,7 @@ public class CheckEngine extends HtmlTagUtil {
 				result.add(new ProblemItemImpl("C_43.0", tmpE[i]));
 			}
 		}
-		tmpE = edu.getEventMouseFocusElements();
+		tmpE = edu.getEventOnMouseElements();
 		for (int i = 0; i < tmpE.length; i++) {
 			if (hasOpenWndEvent(tmpE[i], HtmlEvalUtil.EVENT_MOUSE_FOCUS)
 					&& tmpSet.add(tmpE[i])) {
