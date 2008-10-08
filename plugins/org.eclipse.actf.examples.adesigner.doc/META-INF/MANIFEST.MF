@@ -2,5 +2,5 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Eclipse ACTF Example aDesigner Help Plug-in (Incubation)
 Bundle-SymbolicName: org.eclipse.actf.examples.adesigner.doc;singleton:=true
-Bundle-Version: 0.0.1.qualifier
+Bundle-Version: 0.5.0.qualifier
 Bundle-Vendor: Eclipse.org

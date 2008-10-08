@@ -79,7 +79,7 @@
    </plugins>
 
    <features>
-      <feature id="org.eclipse.actf.examples.aibrowser" version="0.0.1.qualifier"/>
+      <feature id="org.eclipse.actf.examples.aibrowser" version="0.5.0.qualifier"/>
    </features>
 
 </product>
