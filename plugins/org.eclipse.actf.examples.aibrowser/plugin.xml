@@ -12,6 +12,11 @@
       </application>
    </extension>
    <extension
+         point="org.eclipse.actf.model.ui.webBrowserEventListener">
+      <listener
+            class="org.eclipse.actf.ai.navigator.impl.WebEventListener"/>
+   </extension>
+   <extension
          point="org.eclipse.ui.perspectives">
       <perspective
             name="Browser Perspective"
