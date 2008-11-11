@@ -66,10 +66,12 @@ public class CheckEngine extends HtmlTagUtil {
 	}
 
 	private static Method[] checkMethods;
+	private static Method[] mobileCheckMethods;
 
 	static {
 		Method[] tmpM = CheckEngine.class.getDeclaredMethods();
 		checkMethods = new Method[100];// TODO
+		mobileCheckMethods = new Method[100];// TODO
 		for (Method m : tmpM) {
 			String name = m.getName();
 			if (name.startsWith("item_")) {
@@ -78,6 +80,12 @@ public class CheckEngine extends HtmlTagUtil {
 					checkMethods[itemNum] = m;
 				} catch (Exception e) {
 				}
+			}else if(name.startsWith("mobile_")){
+				try {
+					int itemNum = Integer.parseInt(name.substring(7));
+					mobileCheckMethods[itemNum] = m;
+				} catch (Exception e) {
+				}				
 			}
 		}
 	}
@@ -217,7 +225,17 @@ public class CheckEngine extends HtmlTagUtil {
 		if (items.length < 90 || !items[89]) {
 			item_89();
 		}
-
+		
+		for (int i = 0; i < mobileCheckMethods.length; i++) {
+			if (null != mobileCheckMethods[i]) {
+				try {
+					mobileCheckMethods[i].invoke(this, tmpO);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		
 		edu.getPageData().setInvalidLinkRatio(invalidLinkRatio);
 
 		return (result);
@@ -2614,7 +2632,16 @@ public class CheckEngine extends HtmlTagUtil {
 		}
 
 	}
-
+	
+	
+	//Mobile Web Evaluation (from here)
+	private void mobile_1(){
+		//TODO implement evaluation		
+		addCheckerProblem("M_1");
+	}
+		
+	//Mobile Web Evaluation (end here)
+	
 	private void validateHtml() {
 		if (body_elements.length > 1) {
 			addCheckerProblem("C_1000.0");
