@@ -4,6 +4,8 @@ Bundle-Name: Eclipse ACTF HTML evaluation example Fragment (Incubation)
 Bundle-SymbolicName: org.eclipse.actf.examples.adesigner.eval.html;singleton:=true
 Bundle-Version: 0.5.0.qualifier
 Bundle-Vendor: Eclipse.org
-Require-Bundle: org.eclipse.actf.core,
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.actf.core,
  org.eclipse.actf.model.ui,
  org.eclipse.actf.visualization.eval
+Bundle-ClassPath: .

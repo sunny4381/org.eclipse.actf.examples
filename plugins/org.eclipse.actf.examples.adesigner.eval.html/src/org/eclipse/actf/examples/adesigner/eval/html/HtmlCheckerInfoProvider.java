@@ -11,10 +11,13 @@
 
 package org.eclipse.actf.examples.adesigner.eval.html;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ResourceBundle;
 
 import org.eclipse.actf.visualization.eval.ICheckerInfoProvider;
+import org.eclipse.core.runtime.Platform;
+import org.osgi.framework.Bundle;
 
 public class HtmlCheckerInfoProvider implements ICheckerInfoProvider {
 
@@ -24,12 +27,17 @@ public class HtmlCheckerInfoProvider implements ICheckerInfoProvider {
 			.getBundle(BUNDLE_NAME);
 
 	public InputStream[] getCheckItemInputStreams() {
-		InputStream is = HtmlCheckerInfoProvider.class
-				.getResourceAsStream("resources/checkitem.xml");
-		if (null != is) {
+		Bundle bundle = Platform
+				.getBundle("org.eclipse.actf.examples.adesigner.eval.html");
+
+		try {
+			InputStream is = bundle.getEntry("resources/checkitem.xml")
+					.openStream();
 			return new InputStream[] { is };
+
+		} catch (IOException e) {
+			return new InputStream[0];
 		}
-		return new InputStream[0];
 	}
 
 	public ResourceBundle getDescriptionRB() {
