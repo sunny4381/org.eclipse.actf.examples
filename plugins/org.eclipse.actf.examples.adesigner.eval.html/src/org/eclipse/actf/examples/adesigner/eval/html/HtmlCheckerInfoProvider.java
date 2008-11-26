@@ -21,7 +21,7 @@ import org.osgi.framework.Bundle;
 
 public class HtmlCheckerInfoProvider implements ICheckerInfoProvider {
 
-	private static final String BUNDLE_NAME = "org.eclipse.actf.examples.adesigner.eval.html.resources.description"; //$NON-NLS-1$
+	private static final String BUNDLE_NAME = "resources/description"; //$NON-NLS-1$
 
 	private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle
 			.getBundle(BUNDLE_NAME);
