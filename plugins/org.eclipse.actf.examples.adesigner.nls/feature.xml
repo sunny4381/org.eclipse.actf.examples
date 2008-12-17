@@ -22,20 +22,6 @@
          version="0.0.0"/>
 
    <plugin
-         id="org.eclipse.core.variables.nl1"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         fragment="true"/>
-
-   <plugin
-         id="org.eclipse.ui.forms.nl1"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         fragment="true"/>
-
-   <plugin
          id="org.eclipse.actf.examples.adesigner.doc.nl1"
          download-size="0"
          install-size="0"
@@ -124,6 +110,22 @@
 
    <plugin
          id="org.eclipse.osgi.services.nl1"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.core.variables.nl1"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         fragment="true"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.ui.forms.nl1"
          download-size="0"
          install-size="0"
          version="0.0.0"

@@ -8,4 +8,5 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.actf.core,
  org.eclipse.actf.model.ui,
  org.eclipse.actf.visualization.eval
-Bundle-ClassPath: .
+Bundle-ClassPath: evalhtml.jar,
+ .

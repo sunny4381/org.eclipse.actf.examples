@@ -32,7 +32,6 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.actf.visualization.blind;visibility:=reexport,
  org.eclipse.actf.ui
 Eclipse-LazyStart: true
-Bundle-ClassPath: runtimes/adesigner_client.jar
 Export-Package: org.eclipse.actf.examples.adesigner,
  org.eclipse.actf.examples.adesigner.ui.actions,
  org.eclipse.actf.examples.adesigner.ui.perspectives
