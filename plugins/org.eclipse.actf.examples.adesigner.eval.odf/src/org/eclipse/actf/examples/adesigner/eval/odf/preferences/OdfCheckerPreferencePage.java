@@ -32,7 +32,7 @@ public class OdfCheckerPreferencePage extends FieldEditorPreferencePage implemen
 
     protected void createFieldEditors() {
         addField(new BooleanFieldEditor(OdfCheckerPreferenceConstants.ODFPLUGIN_DETECT_VERSION, 
-                Messages.getString("ODFCheckerPreferencePage.detectVersion"),
+                Messages.ODFCheckerPreferencePage_detectVersion,
                 getFieldEditorParent()));    
     }
 }

@@ -8,27 +8,21 @@
  * Contributors:
  *    Tatsuya ISHIHARA - initial API and implementation
  *******************************************************************************/
-
 package org.eclipse.actf.examples.adesigner.eval.odf.internal;
 
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
+import org.eclipse.osgi.util.NLS;
 
+public final class Messages extends NLS {
 
+	private static final String BUNDLE_NAME = "org.eclipse.actf.examples.adesigner.eval.odf.internal.messages";//$NON-NLS-1$
 
-public class Messages {
-    private static final String BUNDLE_NAME = "messages"; //$NON-NLS-1$
+	private Messages() {
+		// Do not instantiate
+	}
 
-    private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle(BUNDLE_NAME);
+	public static String ODFCheckerPreferencePage_detectVersion;
 
-    private Messages() {
-    }
-
-    public static String getString(String key) {
-        try {
-            return RESOURCE_BUNDLE.getString(key);
-        } catch (MissingResourceException e) {
-            return '!' + key + '!';
-        }
-    }
+	static {
+		NLS.initializeMessages(BUNDLE_NAME, Messages.class);
+	}
 }
