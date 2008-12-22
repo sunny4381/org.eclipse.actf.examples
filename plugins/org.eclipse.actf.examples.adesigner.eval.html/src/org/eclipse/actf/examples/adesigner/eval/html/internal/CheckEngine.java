@@ -14,8 +14,8 @@ package org.eclipse.actf.examples.adesigner.eval.html.internal;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.MessageFormat;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
@@ -80,12 +80,12 @@ public class CheckEngine extends HtmlTagUtil {
 					checkMethods[itemNum] = m;
 				} catch (Exception e) {
 				}
-			}else if(name.startsWith("mobile_")){
+			} else if (name.startsWith("mobile_")) {
 				try {
 					int itemNum = Integer.parseInt(name.substring(7));
 					mobileCheckMethods[itemNum] = m;
 				} catch (Exception e) {
-				}				
+				}
 			}
 		}
 	}
@@ -225,7 +225,7 @@ public class CheckEngine extends HtmlTagUtil {
 		if (items.length < 90 || !items[89]) {
 			item_89();
 		}
-		
+
 		for (int i = 0; i < mobileCheckMethods.length; i++) {
 			if (null != mobileCheckMethods[i]) {
 				try {
@@ -235,7 +235,7 @@ public class CheckEngine extends HtmlTagUtil {
 				}
 			}
 		}
-		
+
 		edu.getPageData().setInvalidLinkRatio(invalidLinkRatio);
 
 		return (result);
@@ -605,11 +605,11 @@ public class CheckEngine extends HtmlTagUtil {
 			if (maxCount > 0) {
 				String str = null;
 				if (maxCount == 1) {
-					str = Messages.getString("CheckEngine.ChildTable"); //$NON-NLS-1$
+					str = Messages.CheckEngine_ChildTable;
 				} else {
-					str = Messages
-							.formatResourceString(
-									"CheckEngine.TieredChildTable", String.valueOf(maxCount)); //$NON-NLS-1$ //$NON-NLS-2$
+					str = MessageFormat.format(
+							Messages.CheckEngine_TieredChildTable, String
+									.valueOf(maxCount)); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 				addCheckerProblem("C_12.0", str, el); //$NON-NLS-1$
 			}
@@ -663,8 +663,8 @@ public class CheckEngine extends HtmlTagUtil {
 					if (curLevel - lastLevel > 1) {
 						// heading level check
 
-						String targetStr = Messages.formatResourceString(
-								"CheckEngine.Headings", new Object[] {
+						String targetStr = MessageFormat.format(
+								Messages.CheckEngine_Headings, new Object[] {
 										curLevel, lastLevel });
 						Vector<Node> tmpV = new Vector<Node>();
 						tmpV.add(headings[i - 1]);
@@ -2632,16 +2632,15 @@ public class CheckEngine extends HtmlTagUtil {
 		}
 
 	}
-	
-	
-	//Mobile Web Evaluation (from here)
-	private void mobile_1(){
-		//TODO implement evaluation		
+
+	// Mobile Web Evaluation (from here)
+	private void mobile_1() {
+		// TODO implement evaluation
 		addCheckerProblem("M_1");
 	}
-		
-	//Mobile Web Evaluation (end here)
-	
+
+	// Mobile Web Evaluation (end here)
+
 	private void validateHtml() {
 		if (body_elements.length > 1) {
 			addCheckerProblem("C_1000.0");

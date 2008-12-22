@@ -8,36 +8,23 @@
  * Contributors:
  *    Kentarou FUKUDA - initial API and implementation
  *******************************************************************************/
-
 package org.eclipse.actf.examples.adesigner.eval.html.internal;
 
-import java.text.MessageFormat;
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
+import org.eclipse.osgi.util.NLS;
 
-public class Messages {
-	private static final String BUNDLE_NAME = "org.eclipse.actf.examples.adesigner.eval.html.internal.messages"; //$NON-NLS-1$
+public final class Messages extends NLS {
 
-	private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle
-			.getBundle(BUNDLE_NAME);
+	private static final String BUNDLE_NAME = "org.eclipse.actf.examples.adesigner.eval.html.internal.messages";//$NON-NLS-1$
 
 	private Messages() {
+		// Do not instantiate
 	}
 
-	public static String getString(String key) {
-		try {
-			return RESOURCE_BUNDLE.getString(key);
-		} catch (MissingResourceException e) {
-			return '!' + key + '!';
-		}
-	}
+	public static String CheckEngine_ChildTable;
+	public static String CheckEngine_TieredChildTable;
+	public static String CheckEngine_Headings;
 
-	public static String formatResourceString(String key, Object arg) {
-		Object args[] = { arg };
-		return formatResourceString(key, args);
-	}
-
-	public static String formatResourceString(String key, Object[] args) {
-		return MessageFormat.format(getString(key), args);
+	static {
+		NLS.initializeMessages(BUNDLE_NAME, Messages.class);
 	}
 }
