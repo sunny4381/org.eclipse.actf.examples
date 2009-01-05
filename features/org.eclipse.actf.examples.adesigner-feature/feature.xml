@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.actf.examples.adesigner"
       label="Eclipse ACTF Example aDesigner feature (Incubation)"
-      version="0.5.0.qualifier"
+      version="0.7.0.qualifier"
       provider-name="Eclipse.org"
       plugin="org.eclipse.actf.examples.adesigner"
       os="win32"
