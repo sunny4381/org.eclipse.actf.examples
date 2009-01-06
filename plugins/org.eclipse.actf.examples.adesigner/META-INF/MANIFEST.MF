@@ -35,3 +35,4 @@ Eclipse-LazyStart: true
 Export-Package: org.eclipse.actf.examples.adesigner,
  org.eclipse.actf.examples.adesigner.ui.actions,
  org.eclipse.actf.examples.adesigner.ui.perspectives
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
