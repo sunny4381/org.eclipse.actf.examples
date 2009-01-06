@@ -14,7 +14,6 @@ package org.eclipse.actf.examples.adesigner.eval.html.internal;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.text.MessageFormat;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -32,6 +31,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.html.HTMLImageElement;
+
+import com.ibm.icu.text.MessageFormat;
 
 @SuppressWarnings("unused")
 public class CheckEngine extends HtmlTagUtil {
@@ -608,8 +609,8 @@ public class CheckEngine extends HtmlTagUtil {
 					str = Messages.CheckEngine_ChildTable;
 				} else {
 					str = MessageFormat.format(
-							Messages.CheckEngine_TieredChildTable, String
-									.valueOf(maxCount)); //$NON-NLS-1$ //$NON-NLS-2$
+							Messages.CheckEngine_TieredChildTable, new Object[]{String
+									.valueOf(maxCount)}); //$NON-NLS-1$ //$NON-NLS-2$
 				}
 				addCheckerProblem("C_12.0", str, el); //$NON-NLS-1$
 			}

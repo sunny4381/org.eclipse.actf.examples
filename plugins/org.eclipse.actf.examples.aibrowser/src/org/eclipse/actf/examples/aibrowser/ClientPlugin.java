@@ -15,7 +15,6 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
@@ -123,19 +122,7 @@ public class ClientPlugin extends AbstractUIPlugin {
             return "???" + key + "???";
         }
     }
-    
-    public static String formatResourceString(String key, String arg) {
-        String args[] = {arg};
         
-        return formatResourceString(key, ((String[]) (args)));
-    }
-
-    public static String formatResourceString(String key, String[] args) {
-        String pattern = getResourceString(key);
-        
-        return MessageFormat.format(pattern, (Object[])args);
-    }
-    
     private Bundle getBundle(String id) {
         Bundle[] bundles = _context.getBundles();
         for(int i = 0; i < bundles.length; i++) {
