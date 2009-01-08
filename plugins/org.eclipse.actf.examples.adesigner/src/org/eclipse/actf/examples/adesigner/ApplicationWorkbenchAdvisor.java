@@ -10,8 +10,8 @@
  *******************************************************************************/
 package org.eclipse.actf.examples.adesigner;
 
-import org.eclipse.actf.examples.adesigner.ui.perspectives.HTMLPerspective;
 import org.eclipse.actf.examples.adesigner.ui.preferences.IPreferenceConstants;
+import org.eclipse.actf.visualization.ui.IVisualizationPerspective;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 import org.eclipse.ui.application.WorkbenchAdvisor;
@@ -35,7 +35,7 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
 					.findPerspectiveWithId(pID) != null) {
 				return pID;
 			}else{
-				return HTMLPerspective.ID;
+				return IVisualizationPerspective.ID_HTML_PERSPECTIVE;
 			}
 		}
 	}

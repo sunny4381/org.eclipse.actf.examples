@@ -19,29 +19,6 @@
            name="%adesigner.preferences.general.title"/>
   </extension>
    <extension
-         point="org.eclipse.ui.perspectives">
-      <perspective
-            class="org.eclipse.actf.examples.adesigner.ui.perspectives.HTMLPerspective"
-            icon="icons/perspectives/html.png"
-            id="org.eclipse.actf.examples.adesigner.ui.perspectives.HTMLPerspective"
-            name="%adesigner.HTMLPerspective.name"/>
-      <perspective
-            class="org.eclipse.actf.examples.adesigner.ui.perspectives.ODFPerspective"
-            icon="icons/perspectives/odf.png"
-            id="org.eclipse.actf.examples.adesigner.ui.perspectives.ODFPerspective"
-            name="%adesigner.ODFPerspective.name"/>
-      <perspective
-            class="org.eclipse.actf.examples.adesigner.ui.perspectives.FlashPerspective"
-            icon="icons/perspectives/flash.png"
-            id="org.eclipse.actf.examples.adesigner.ui.perspectives.FlashPerspective"
-            name="%adesigner.FlashPerspective.name"/>
-      <perspective
-            class="org.eclipse.actf.examples.adesigner.ui.perspectives.GUIPerspective"
-            icon="icons/perspectives/msaa_ia2.png"
-            id="org.eclipse.actf.examples.adesigner.ui.perspectives.GUIPerspective"
-            name="%adesigner.GUIPerspective.name"/>
-   </extension>
-   <extension
          point="org.eclipse.core.runtime.preferences">
       <initializer class="org.eclipse.actf.examples.adesigner.ui.preferences.PreferenceInitializer"/>
    </extension>
@@ -116,14 +93,14 @@
    
    <extension
          point="org.eclipse.ui.perspectiveExtensions">
-      <perspectiveExtension targetID="org.eclipse.actf.examples.adesigner.ui.perspectives.HTMLPerspective">
+      <perspectiveExtension targetID="org.eclipse.actf.visualization.ui.perspectives.HTMLPerspective">
          <actionSet id="org.eclipse.actf.examples.adesigner.actionSet1"/>
       </perspectiveExtension>
-      <perspectiveExtension targetID="org.eclipse.actf.examples.adesigner.ui.perspectives.ODFPerspective">
+      <perspectiveExtension targetID="org.eclipse.actf.visualization.ui.perspectives.ODFPerspective">
          <actionSet id="org.eclipse.actf.examples.adesigner.actionSet1"/>
          <actionSet id="org.eclipse.actf.examples.adesigner.actionSet2"/>
       </perspectiveExtension>
-      <perspectiveExtension targetID="org.eclipse.actf.examples.adesigner.ui.perspectives.FlashPerspective">
+      <perspectiveExtension targetID="org.eclipse.actf.visualization.ui.perspectives.FlashPerspective">
          <actionSet id="org.eclipse.actf.visualization.gui.actionSet"/>
          <actionSet id="org.eclipse.actf.model.flash.proxy.actionSet"/>
          <view
@@ -132,7 +109,7 @@
                relationship="stack"
                relative="org.eclipse.actf.visualization.gui.ui.views.MSAAProblemsView"/>
       </perspectiveExtension>
-      <perspectiveExtension targetID="org.eclipse.actf.examples.adesigner.ui.perspectives.GUIPerspective">
+      <perspectiveExtension targetID="org.eclipse.actf.visualization.ui.perspectives.GUIPerspective">
          <actionSet id="org.eclipse.actf.visualization.gui.actionSet"/>
       </perspectiveExtension>
    </extension>

@@ -12,7 +12,7 @@
 package org.eclipse.actf.examples.adesigner.ui.preferences;
 
 import org.eclipse.actf.examples.adesigner.ADesignerPlugin;
-import org.eclipse.actf.examples.adesigner.ui.perspectives.HTMLPerspective;
+import org.eclipse.actf.visualization.ui.IVisualizationPerspective;
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.jface.preference.IPreferenceStore;
 
@@ -29,7 +29,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
     public void initializeDefaultPreferences() {
         IPreferenceStore store = ADesignerPlugin.getDefault().getPreferenceStore();
         store.setDefault(IPreferenceConstants.STARTUP_OPTION_ID, IPreferenceConstants.CHOICE_SHOW_MODE_DIALOG);
-        store.setDefault(IPreferenceConstants.SELECTED_MODE_PERSPECTIVE_ID, HTMLPerspective.ID);
+        store.setDefault(IPreferenceConstants.SELECTED_MODE_PERSPECTIVE_ID, IVisualizationPerspective.ID_HTML_PERSPECTIVE);
                             
     }
 
