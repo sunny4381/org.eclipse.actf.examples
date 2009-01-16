@@ -29,6 +29,7 @@ import org.eclipse.swt.events.MouseTrackAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -91,11 +92,11 @@ public class ModeSwitchDialog extends TitleAreaDialog {
 			modeNames[i] = desc.getLabel().replaceAll(" ",
 					System.getProperty("line.separator"));
 			Image tmpImg = desc.getImageDescriptor().createImage();
-//			ImageData tmpImgData = tmpImg.getImageData();
-//			modeIcons[i] = new Image(_window.getShell().getDisplay(),
-//					tmpImgData.scaledTo(tmpImgData.width * 2,
-//							tmpImgData.height * 2));
-			modeIcons[i] = tmpImg;
+			ImageData tmpImgData = tmpImg.getImageData();
+			modeIcons[i] = new Image(_window.getShell().getDisplay(),
+					tmpImgData.scaledTo(tmpImgData.width * 2,
+							tmpImgData.height * 2));
+//			modeIcons[i] = tmpImg;
 			// System.out.println(desc.getId()+":"+desc.getLabel());
 		}
 
