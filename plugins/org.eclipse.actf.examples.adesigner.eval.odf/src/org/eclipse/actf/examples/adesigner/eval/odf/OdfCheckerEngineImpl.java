@@ -17,8 +17,8 @@ import java.util.Stack;
 import java.util.Vector;
 
 import org.eclipse.actf.model.dom.odf.base.DrawingObjectElement;
+import org.eclipse.actf.model.dom.odf.base.EmbedDrawingObjectElement;
 import org.eclipse.actf.model.dom.odf.base.ODFDocument;
-import org.eclipse.actf.model.dom.odf.base.ODFElement;
 import org.eclipse.actf.model.dom.odf.draw.ControlElement;
 import org.eclipse.actf.model.dom.odf.draw.ImageElement;
 import org.eclipse.actf.model.dom.odf.draw.ImageMapAreaElement;
@@ -34,7 +34,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-
 
 public class OdfCheckerEngineImpl extends OdfCheckerEngineBase {
 
@@ -82,10 +81,9 @@ public class OdfCheckerEngineImpl extends OdfCheckerEngineBase {
 		return null;
 	}
 
-	protected void addProblems(int id, String midDesc, Vector targetV) {
-		for (Iterator iter = targetV.iterator(); iter.hasNext();) {
-			Node node = (Node) iter.next();
-			addProblem(id, node, midDesc);
+	protected void addProblems(int id, String midDesc, Vector<Node> targetV) {
+		for (Iterator<Node> iter = targetV.iterator(); iter.hasNext();) {
+			addProblem(id, iter.next(), midDesc);
 		}
 	}
 
@@ -112,19 +110,16 @@ public class OdfCheckerEngineImpl extends OdfCheckerEngineBase {
 		if (targetODF instanceof ODFDocument) {
 			double version = ((ODFDocument) targetODF).getODFVersion();
 			if (version == 1.0) {
-				List errorElemList = OdfCheckerUtil.getInstance()
-						.getODF10CompativilityError(targetODF);
+				List<DocumentContentElement> errorElemList = OdfCheckerUtil
+						.getInstance().getODF10CompativilityError(targetODF);
 				if (errorElemList.size() != 0) {
 					((ODFDocument) targetODF).setODFVersion(1.1);
-					Object errorElem = errorElemList.get(0);
-					if (errorElem instanceof DocumentContentElement) {
-						DocumentContentElement root = (DocumentContentElement) errorElem;
-						Node resultNode = findElementByODFContentID(
-								target,
-								root
-										.getAttribute(ODFConverter.OUTPUT_ATTR_ODF_CONTENT_ID));
-						addProblem(90101, resultNode, null);
-					}
+					DocumentContentElement root = errorElemList.get(0);
+					Node resultNode = findElementByODFContentID(
+							target,
+							root
+									.getAttribute(ODFConverter.OUTPUT_ATTR_ODF_CONTENT_ID));
+					addProblem(90101, resultNode, null);
 				}
 			}
 		}
@@ -181,96 +176,73 @@ public class OdfCheckerEngineImpl extends OdfCheckerEngineBase {
 	}
 
 	private void check10101() {
-		List errorElemList = OdfCheckerUtil.getInstance()
+		List<ImageElement> errorElemList = OdfCheckerUtil.getInstance()
 				.getImageShortDescError(targetODF);
 		for (int i = 0; i < errorElemList.size(); i++) {
-			Object errorElem = errorElemList.get(i);
-			if (errorElem instanceof ImageElement) {
-				ImageElement image = (ImageElement) errorElem;
-				Node resultNode = findElementByODFContentID(target, image
-						.getAttribute(ODFConverter.OUTPUT_ATTR_ODF_CONTENT_ID));
-				addProblem(10101, resultNode, null);
-			}
+			ImageElement image = errorElemList.get(i);
+			Node resultNode = findElementByODFContentID(target, image
+					.getAttribute(ODFConverter.OUTPUT_ATTR_ODF_CONTENT_ID));
+			addProblem(10101, resultNode, null);
 		}
 	}
 
 	private void check10102() {
-		List errorElemList = OdfCheckerUtil.getInstance()
+		List<ImageElement> errorElemList = OdfCheckerUtil.getInstance()
 				.getImageLongDescError(targetODF);
 		for (int i = 0; i < errorElemList.size(); i++) {
-			Object errorElem = errorElemList.get(i);
-			if (errorElem instanceof ImageElement) {
-				ImageElement image = (ImageElement) errorElem;
-				Node resultNode = findElementByODFContentID(target, image
-						.getAttribute(ODFConverter.OUTPUT_ATTR_ODF_CONTENT_ID));
-				addProblem(10102, resultNode, null);
-			}
+			ImageElement image = errorElemList.get(i);
+			Node resultNode = findElementByODFContentID(target, image
+					.getAttribute(ODFConverter.OUTPUT_ATTR_ODF_CONTENT_ID));
+			addProblem(10102, resultNode, null);
 		}
 	}
 
 	private void check20101() {
-		List errorElemList = OdfCheckerUtil.getInstance()
+		List<TableElement> errorElemList = OdfCheckerUtil.getInstance()
 				.getTableHeaderError(targetODF);
 		for (int i = 0; i < errorElemList.size(); i++) {
-			Object errorElem = errorElemList.get(i);
-			if (errorElem instanceof TableElement) {
-				TableElement table = (TableElement) errorElem;
-				Node resultNode = findElementByODFContentID(target, table
-						.getAttribute(ODFConverter.OUTPUT_ATTR_ODF_CONTENT_ID));
-				addProblem(20101, resultNode, null);
-			}
+			TableElement table = errorElemList.get(i);
+			Node resultNode = findElementByODFContentID(target, table
+					.getAttribute(ODFConverter.OUTPUT_ATTR_ODF_CONTENT_ID));
+			addProblem(20101, resultNode, null);
 		}
 	}
 
 	private void check20102() {
-		List errorElemList = OdfCheckerUtil.getInstance()
+		List<TableElement> errorElemList = OdfCheckerUtil.getInstance()
 				.getTableCaptionError(targetODF);
 		for (int i = 0; i < errorElemList.size(); i++) {
-			Object errorElem = errorElemList.get(i);
-			if (errorElem instanceof TableElement) {
-				TableElement table = (TableElement) errorElem;
-				Node resultNode = findElementByODFContentID(target, table
-						.getAttribute(ODFConverter.OUTPUT_ATTR_ODF_CONTENT_ID));
-				addProblem(20102, resultNode, null);
-			}
+			TableElement table = errorElemList.get(i);
+			Node resultNode = findElementByODFContentID(target, table
+					.getAttribute(ODFConverter.OUTPUT_ATTR_ODF_CONTENT_ID));
+			addProblem(20102, resultNode, null);
 		}
 	}
 
 	private void check30101() {
-		List errorElemList = OdfCheckerUtil.getInstance()
+		List<ImageMapAreaElement> errorElemList = OdfCheckerUtil.getInstance()
 				.getImageMapShortDescError(targetODF);
 		for (int i = 0; i < errorElemList.size(); i++) {
-			Object errorElem = errorElemList.get(i);
-			if (errorElem instanceof ImageMapAreaElement) {
-				ImageMapAreaElement imageMapArea = (ImageMapAreaElement) errorElem;
-				Node resultNode = findElementByODFContentID(
-						target,
-						imageMapArea
-								.getAttribute(ODFConverter.OUTPUT_ATTR_ODF_CONTENT_ID));
-				addProblem(30101, resultNode, null);
-			}
+			ImageMapAreaElement imageMapArea = errorElemList.get(i);
+			Node resultNode = findElementByODFContentID(target, imageMapArea
+					.getAttribute(ODFConverter.OUTPUT_ATTR_ODF_CONTENT_ID));
+			addProblem(30101, resultNode, null);
 		}
 	}
 
 	private void check30102() {
-		List errorElemList = OdfCheckerUtil.getInstance()
+		List<ImageMapAreaElement> errorElemList = OdfCheckerUtil.getInstance()
 				.getImageMapLongDescError(targetODF);
 		for (int i = 0; i < errorElemList.size(); i++) {
-			Object errorElem = errorElemList.get(i);
-			if (errorElem instanceof ImageMapAreaElement) {
-				ImageMapAreaElement imageMapArea = (ImageMapAreaElement) errorElem;
-				Node resultNode = findElementByODFContentID(
-						target,
-						imageMapArea
-								.getAttribute(ODFConverter.OUTPUT_ATTR_ODF_CONTENT_ID));
-				addProblem(30102, resultNode, null);
-			}
+			ImageMapAreaElement imageMapArea = errorElemList.get(i);
+			Node resultNode = findElementByODFContentID(target, imageMapArea
+					.getAttribute(ODFConverter.OUTPUT_ATTR_ODF_CONTENT_ID));
+			addProblem(30102, resultNode, null);
 		}
 	}
 
 	private void check40101() {
-		List<DrawingObjectElement> errorElemList = OdfCheckerUtil
-				.getInstance()
+		List<DrawingObjectElement> errorElemList = OdfCheckerUtil.getInstance()
 				.getNotGroupDrawingObjectShortDescError(targetODF);
 		errorElemList.addAll(OdfCheckerUtil.getInstance()
 				.getGroupObjectShortDescError(targetODF));
@@ -288,18 +260,13 @@ public class OdfCheckerEngineImpl extends OdfCheckerEngineBase {
 	}
 
 	private void check40102() {
-		List errorElemList = OdfCheckerUtil.getInstance()
+		List<DrawingObjectElement> errorElemList = OdfCheckerUtil.getInstance()
 				.getDrawingObjectLongDescError(targetODF);
 		for (int i = 0; i < errorElemList.size(); i++) {
-			Object errorElem = errorElemList.get(i);
-			if (errorElem instanceof DrawingObjectElement) {
-				DrawingObjectElement drawingObject = (DrawingObjectElement) errorElem;
-				Node resultNode = findElementByODFContentID(
-						target,
-						drawingObject
-								.getAttribute(ODFConverter.OUTPUT_ATTR_ODF_CONTENT_ID));
-				addProblem(40102, resultNode, null);
-			}
+			DrawingObjectElement drawingObject = errorElemList.get(i);
+			Node resultNode = findElementByODFContentID(target, drawingObject
+					.getAttribute(ODFConverter.OUTPUT_ATTR_ODF_CONTENT_ID));
+			addProblem(40102, resultNode, null);
 		}
 	}
 
@@ -307,28 +274,24 @@ public class OdfCheckerEngineImpl extends OdfCheckerEngineBase {
 	 * check item for <text:a>
 	 */
 	private void check50101() {
-		List errorElemList = OdfCheckerUtil.getInstance()
+		List<AElement> errorElemList = OdfCheckerUtil.getInstance()
 				.getLinkHintError(targetODF);
 		for (int i = 0; i < errorElemList.size(); i++) {
-			Object errorElem = errorElemList.get(i);
-			if (errorElem instanceof AElement) {
-				AElement aElem = (AElement) errorElem;
-				Node resultNode = findElementByODFContentID(target, aElem
-						.getAttribute(ODFConverter.OUTPUT_ATTR_ODF_CONTENT_ID));
-				addProblem(50101, resultNode, null);
-			}
+			AElement aElem = errorElemList.get(i);
+			Node resultNode = findElementByODFContentID(target, aElem
+					.getAttribute(ODFConverter.OUTPUT_ATTR_ODF_CONTENT_ID));
+			addProblem(50101, resultNode, null);
 		}
 	}
 
 	private void check60101() {
-		List errorElemList = OdfCheckerUtil.getInstance()
-				.getEmbedObjectShortDescError(targetODF);
+		List<EmbedDrawingObjectElement> errorElemList = OdfCheckerUtil
+				.getInstance().getEmbedObjectShortDescError(targetODF);
 		for (int i = 0; i < errorElemList.size(); i++) {
-			Object errorElem = errorElemList.get(i);
+			EmbedDrawingObjectElement errorElem = errorElemList.get(i);
 			if ((errorElem instanceof ObjectElement)
 					|| (errorElem instanceof ObjectOleElement)) {
-				ODFElement objectElem = (ODFElement) errorElem;
-				Node resultNode = findElementByODFContentID(target, objectElem
+				Node resultNode = findElementByODFContentID(target, errorElem
 						.getAttribute(ODFConverter.OUTPUT_ATTR_ODF_CONTENT_ID));
 				addProblem(60101, resultNode, null);
 			}
@@ -336,14 +299,13 @@ public class OdfCheckerEngineImpl extends OdfCheckerEngineBase {
 	}
 
 	private void check60102() {
-		List errorElemList = OdfCheckerUtil.getInstance()
-				.getEmbedObjectLongDescError(targetODF);
+		List<EmbedDrawingObjectElement> errorElemList = OdfCheckerUtil
+				.getInstance().getEmbedObjectLongDescError(targetODF);
 		for (int i = 0; i < errorElemList.size(); i++) {
-			Object errorElem = errorElemList.get(i);
+			EmbedDrawingObjectElement errorElem = errorElemList.get(i);
 			if ((errorElem instanceof ObjectElement)
 					|| (errorElem instanceof ObjectOleElement)) {
-				ODFElement objectElem = (ODFElement) errorElem;
-				Node resultNode = findElementByODFContentID(target, objectElem
+				Node resultNode = findElementByODFContentID(target, errorElem
 						.getAttribute(ODFConverter.OUTPUT_ATTR_ODF_CONTENT_ID));
 				addProblem(60102, resultNode, null);
 			}
@@ -351,58 +313,46 @@ public class OdfCheckerEngineImpl extends OdfCheckerEngineBase {
 	}
 
 	private void check70101() {
-		List errorElemList = OdfCheckerUtil.getInstance()
+		List<ControlElement> errorElemList = OdfCheckerUtil.getInstance()
 				.getFormLabelError(targetODF);
 		for (int i = 0; i < errorElemList.size(); i++) {
-			Object errorElem = errorElemList.get(i);
-			if (errorElem instanceof ControlElement) {
-				ControlElement control = (ControlElement) errorElem;
-				Node resultNode = findElementByODFContentID(target, control
-						.getAttribute(ODFConverter.OUTPUT_ATTR_ODF_CONTENT_ID));
-				addProblem(70101, resultNode, null);
-			}
+			ControlElement control = errorElemList.get(i);
+			Node resultNode = findElementByODFContentID(target, control
+					.getAttribute(ODFConverter.OUTPUT_ATTR_ODF_CONTENT_ID));
+			addProblem(70101, resultNode, null);
 		}
 	}
 
 	private void check80101() {
-		List errorElemList = OdfCheckerUtil.getInstance()
+		List<PageElement> errorElemList = OdfCheckerUtil.getInstance()
 				.getDrawNavOrderError(targetODF);
 		for (int i = 0; i < errorElemList.size(); i++) {
-			Object errorElem = errorElemList.get(i);
-			if (errorElem instanceof PageElement) {
-				PageElement page = (PageElement) errorElem;
-				Node resultNode = findElementByODFContentID(target, page
-						.getAttribute(ODFConverter.OUTPUT_ATTR_ODF_CONTENT_ID));
-				addProblem(80101, resultNode, null);
-			}
+			PageElement page = errorElemList.get(i);
+			Node resultNode = findElementByODFContentID(target, page
+					.getAttribute(ODFConverter.OUTPUT_ATTR_ODF_CONTENT_ID));
+			addProblem(80101, resultNode, null);
 		}
 	}
 
 	private void check80102() {
-		List errorElemList = OdfCheckerUtil.getInstance()
-				.getFormTabIndexError(targetODF);
+		List<DocumentContentElement> errorElemList = OdfCheckerUtil
+				.getInstance().getFormTabIndexError(targetODF);
 		for (int i = 0; i < errorElemList.size(); i++) {
-			Object errorElem = errorElemList.get(i);
-			if (errorElem instanceof DocumentContentElement) {
-				DocumentContentElement content = (DocumentContentElement) errorElem;
-				Node resultNode = findElementByODFContentID(target, content
-						.getAttribute(ODFConverter.OUTPUT_ATTR_ODF_CONTENT_ID));
-				addProblem(80102, resultNode, null);
-			}
+			DocumentContentElement content = errorElemList.get(i);
+			Node resultNode = findElementByODFContentID(target, content
+					.getAttribute(ODFConverter.OUTPUT_ATTR_ODF_CONTENT_ID));
+			addProblem(80102, resultNode, null);
 		}
 	}
 
 	private void check80103() {
-		List errorElemList = OdfCheckerUtil.getInstance()
+		List<ControlElement> errorElemList = OdfCheckerUtil.getInstance()
 				.getFormTabStopError(targetODF);
 		for (int i = 0; i < errorElemList.size(); i++) {
-			Object errorElem = errorElemList.get(i);
-			if (errorElem instanceof ControlElement) {
-				ControlElement control = (ControlElement) errorElem;
-				Node resultNode = findElementByODFContentID(target, control
-						.getAttribute(ODFConverter.OUTPUT_ATTR_ODF_CONTENT_ID));
-				addProblem(80103, resultNode, null);
-			}
+			ControlElement control = errorElemList.get(i);
+			Node resultNode = findElementByODFContentID(target, control
+					.getAttribute(ODFConverter.OUTPUT_ATTR_ODF_CONTENT_ID));
+			addProblem(80103, resultNode, null);
 		}
 	}
 }
