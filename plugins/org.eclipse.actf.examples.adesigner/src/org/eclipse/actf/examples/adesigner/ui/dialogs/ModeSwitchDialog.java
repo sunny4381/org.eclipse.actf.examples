@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 IBM Corporation and Others
+ * Copyright (c) 2006, 2009 IBM Corporation and Others
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,6 +7,7 @@
  *
  * Contributors:
  *    Norimasa HAYASHIDA - initial API and implementation
+ *    Kentarou FUKUDA - initial API and implementation
  *******************************************************************************/
 
 package org.eclipse.actf.examples.adesigner.ui.dialogs;
@@ -47,6 +48,12 @@ public class ModeSwitchDialog extends TitleAreaDialog {
 
 	private static final String MODE_SELECTED = "MODE_SELECTED";
 
+	private Image htmlImage = ADesignerPlugin.getImageDescriptor("icons/perspectives/html.png").createImage();
+	private Image flashImage = ADesignerPlugin.getImageDescriptor("icons/perspectives/flash.png").createImage();
+	private Image guiImage = ADesignerPlugin.getImageDescriptor("icons/perspectives/msaa_ia2.png").createImage();
+	private Image odfImage = ADesignerPlugin.getImageDescriptor("icons/perspectives/odf.png").createImage();
+
+	
 	private IWorkbenchWindow _window;
 
 	private String _selectedPerspectiveID = ADesignerPlugin.getDefault()
@@ -91,12 +98,28 @@ public class ModeSwitchDialog extends TitleAreaDialog {
 			modePerspectiveIDs[i] = desc.getId();
 			modeNames[i] = desc.getLabel().replaceAll(" ",
 					System.getProperty("line.separator"));
-			Image tmpImg = desc.getImageDescriptor().createImage();
-			ImageData tmpImgData = tmpImg.getImageData();
-			modeIcons[i] = new Image(_window.getShell().getDisplay(),
-					tmpImgData.scaledTo(tmpImgData.width * 2,
-							tmpImgData.height * 2));
-//			modeIcons[i] = tmpImg;
+			Image tmpImg = null;
+			if (modePerspectiveIDs[i]
+					.startsWith("org.eclipse.actf.visualization.ui.perspectives.")) {
+				if (modePerspectiveIDs[i].endsWith("HTMLPerspective")) {
+					tmpImg = htmlImage;
+				} else if (modePerspectiveIDs[i].endsWith("ODFPerspective")) {
+					tmpImg = odfImage;
+				} else if (modePerspectiveIDs[i].endsWith("FlashPerspective")) {
+					tmpImg = flashImage;
+				} else if (modePerspectiveIDs[i].endsWith("GUIPerspective")) {
+					tmpImg = guiImage;
+				}
+			}
+			if (tmpImg == null) {
+				tmpImg = desc.getImageDescriptor().createImage();
+				ImageData tmpImgData = tmpImg.getImageData();
+				modeIcons[i] = new Image(_window.getShell().getDisplay(),
+						tmpImgData.scaledTo(tmpImgData.width * 2,
+								tmpImgData.height * 2));
+			}else{
+				modeIcons[i] = tmpImg;				
+			}
 			// System.out.println(desc.getId()+":"+desc.getLabel());
 		}
 

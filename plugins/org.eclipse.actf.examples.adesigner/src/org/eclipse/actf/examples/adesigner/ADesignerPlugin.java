@@ -18,6 +18,7 @@ import java.util.ResourceBundle;
 import org.eclipse.actf.ui.util.AbstractUIPluginACTF;
 import org.eclipse.actf.util.logging.DebugPrintUtil;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 
@@ -100,4 +101,14 @@ public class ADesignerPlugin extends AbstractUIPluginACTF {
 		return getTempDirectory().getAbsolutePath() + File.separator;
 	}
 
+    /**
+     * Returns an image descriptor for the image file at the given
+     * plug-in relative path.
+     *
+     * @param path the path
+     * @return the image descriptor
+     */
+    public static ImageDescriptor getImageDescriptor(String path) {
+        return imageDescriptorFromPlugin(PLUGIN_ID, path);
+    }
 }
