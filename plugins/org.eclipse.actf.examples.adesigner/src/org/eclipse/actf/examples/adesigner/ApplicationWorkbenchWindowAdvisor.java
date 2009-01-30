@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.actf.examples.adesigner;
 
+import java.util.List;
+
 import org.eclipse.actf.examples.adesigner.ui.actions.SwitchModeAction;
 import org.eclipse.actf.examples.adesigner.ui.preferences.IPreferenceConstants;
 import org.eclipse.actf.model.flash.proxy.FlashCacheUtil;
@@ -18,6 +20,8 @@ import org.eclipse.actf.visualization.ui.IVisualizationPerspective;
 import org.eclipse.core.runtime.Preferences;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.preference.IPreferenceNode;
+import org.eclipse.jface.preference.PreferenceManager;
 import org.eclipse.ui.IPerspectiveDescriptor;
 import org.eclipse.ui.IPerspectiveListener;
 import org.eclipse.ui.IWorkbenchPage;
@@ -96,6 +100,16 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 					&& (items[i].getId().equals("org.eclipse.search.menu") || items[i]
 							.getId().equals("org.eclipse.ui.run"))) {
 				items[i].dispose();
+			}
+		}
+
+		PreferenceManager prefManager = getWindowConfigurer()
+				.getWorkbenchConfigurer().getWorkbench().getPreferenceManager();
+		for (IPreferenceNode node : prefManager.getRootSubNodes()) {
+			if ("org.eclipse.actf.ui.preferences.RootPreferencePage"
+					.equals(node.getId())) {
+				node
+						.remove("org.eclipse.actf.util.vocab.preferences.VocabPreferencePage");
 			}
 		}
 

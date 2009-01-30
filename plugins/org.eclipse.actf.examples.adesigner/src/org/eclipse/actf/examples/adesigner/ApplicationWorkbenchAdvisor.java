@@ -26,13 +26,11 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
 	}
 
 	public String getInitialWindowPerspectiveId() {
-		String pId = null;
-		if (ADesignerPlugin.getPerspectiveID() == null) {
+		String pId = ADesignerPlugin.getPerspectiveID();
+		if (pId == null) {
 			pId = ADesignerPlugin.getDefault().getPluginPreferences()
 					.getString(
 							IPreferenceConstants.SELECTED_MODE_PERSPECTIVE_ID);
-		} else {
-			pId = ADesignerPlugin.getPerspectiveID();
 		}
 		if (PlatformUI.getWorkbench().getPerspectiveRegistry()
 				.findPerspectiveWithId(pId) != null) {
