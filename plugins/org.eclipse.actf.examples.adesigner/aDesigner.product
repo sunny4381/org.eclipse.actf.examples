@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?pde version="3.1"?>
+<?pde version="3.4"?>
 
 <product name="aDesigner" id="org.eclipse.actf.examples.adesigner.aDesigner" application="org.eclipse.actf.examples.adesigner.org.eclipse.actf.examples.adesigner.ADesignerApplication" useFeatures="true">
 
@@ -10,10 +10,12 @@
       </text>
    </aboutInfo>
 
-   <configIni use="default"/>
+   <configIni use="default">
+   </configIni>
 
    <launcherArgs>
-      <vmArgs>-Xmx512m</vmArgs>
+      <vmArgs>-Xmx512m
+-Xbootclasspath/a:&quot;C:\Program Files\Java\jre6\lib\plugin.jar;C:\Program Files\Java\jre6\lib\deploy.jar;C:\Program Files\Java\jre6\lib\javaws.jar&quot;</vmArgs>
    </launcherArgs>
 
    <windowImages i32="/org.eclipse.actf.examples.adesigner/icons/excla_32.png"/>
@@ -30,7 +32,6 @@
          <bmp/>
       </win>
    </launcher>
-
 
    <vm>
    </vm>
