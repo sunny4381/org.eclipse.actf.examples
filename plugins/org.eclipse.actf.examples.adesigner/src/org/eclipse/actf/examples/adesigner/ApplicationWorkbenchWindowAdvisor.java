@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.actf.examples.adesigner;
 
-import java.util.List;
-
 import org.eclipse.actf.examples.adesigner.ui.actions.SwitchModeAction;
 import org.eclipse.actf.examples.adesigner.ui.preferences.IPreferenceConstants;
 import org.eclipse.actf.model.flash.proxy.FlashCacheUtil;
