@@ -73,6 +73,7 @@ public class OdfCheckerUtil {
 
 	private XPathService xpathService = XPathServiceFactory.newService();
 
+	@SuppressWarnings("nls")
 	private Object exp1 = xpathService.compile(".//*[namespace-uri()='"
 			+ DrawConstants.DRAW_NAMESPACE_URI + "' and local-name()='"
 			+ DrawConstants.ELEMENT_FRAME + "']" + "/*[1][(namespace-uri()='"
@@ -81,6 +82,7 @@ public class OdfCheckerUtil {
 			+ DrawConstants.DRAW_NAMESPACE_URI + "' and local-name()='"
 			+ DrawConstants.ELEMENT_OBJECT_OLE + "')]");
 
+	@SuppressWarnings("nls")
 	private Object exp2 = xpathService.compile(".//*[namespace-uri()='"
 			+ DrawConstants.DRAW_NAMESPACE_URI + "' and local-name()='"
 			+ DrawConstants.ELEMENT_FRAME + "']" + "/*[1][(namespace-uri()='"
@@ -89,18 +91,21 @@ public class OdfCheckerUtil {
 			+ DrawConstants.DRAW_NAMESPACE_URI + "' and local-name()='"
 			+ DrawConstants.ELEMENT_OBJECT_OLE + "')]");
 
+	@SuppressWarnings("nls")
 	private Object exp3 = xpathService.compile(".//*[namespace-uri()='"
 			+ DrawConstants.DRAW_NAMESPACE_URI + "' and local-name()='"
 			+ DrawConstants.ELEMENT_FRAME + "']" + "/*[1][namespace-uri()='"
 			+ DrawConstants.DRAW_NAMESPACE_URI + "' and local-name()='"
 			+ DrawConstants.ELEMENT_IMAGE + "']");
 
+	@SuppressWarnings("nls")
 	private Object exp4 = xpathService.compile(".//*[namespace-uri()='"
 			+ DrawConstants.DRAW_NAMESPACE_URI + "' and local-name()='"
 			+ DrawConstants.ELEMENT_FRAME + "']" + "/*[1][namespace-uri()='"
 			+ DrawConstants.DRAW_NAMESPACE_URI + "' and local-name()='"
 			+ DrawConstants.ELEMENT_IMAGE + "']");
 
+	@SuppressWarnings("nls")
 	private Object exp5 = xpathService
 			.compile("./descendant::*[(namespace-uri()='"
 					+ TableConstants.TABLE_NAMESPACE_URI
@@ -147,6 +152,7 @@ public class OdfCheckerUtil {
 					+ DrawConstants.DRAW_NAMESPACE_URI + "' or local-name()!='"
 					+ DrawConstants.ELEMENT_G + "']]");
 
+	@SuppressWarnings("nls")
 	private Object exp6 = xpathService.compile(".//*[(namespace-uri()!='"
 			+ TableConstants.TABLE_NAMESPACE_URI + "' or local-name()!='"
 			+ TableConstants.ELEMENT_TABLE_CELL + "')"
@@ -156,6 +162,7 @@ public class OdfCheckerUtil {
 			+ "/*[namespace-uri()='" + TableConstants.TABLE_NAMESPACE_URI
 			+ "' and local-name()='" + TableConstants.ELEMENT_TABLE + "']");
 
+	@SuppressWarnings("nls")
 	private Object exp7 = xpathService.compile(".//*[(namespace-uri()!='"
 			+ TableConstants.TABLE_NAMESPACE_URI + "' or local-name()!='"
 			+ TableConstants.ELEMENT_TABLE_CELL + "')"
@@ -165,6 +172,8 @@ public class OdfCheckerUtil {
 			+ "/*[namespace-uri()='" + TableConstants.TABLE_NAMESPACE_URI
 			+ "' and local-name()='" + TableConstants.ELEMENT_TABLE + "']");
 
+
+	@SuppressWarnings("nls")
 	private Object exp8 = xpathService
 			.compile("./descendant::*[(namespace-uri()='"
 					+ TextConstants.TEXT_NAMESPACE_URI + "' and local-name()='"

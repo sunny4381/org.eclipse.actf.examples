@@ -13,5 +13,5 @@ package org.eclipse.actf.examples.adesigner.eval.odf.preferences;
 
 
 public interface OdfCheckerPreferenceConstants {
-    String ODFPLUGIN_DETECT_VERSION = "odfPlugin.optins.detectVersion";
+    String ODFPLUGIN_DETECT_VERSION = "odfPlugin.optins.detectVersion"; //$NON-NLS-1$
 }

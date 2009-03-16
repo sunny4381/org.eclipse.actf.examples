@@ -39,9 +39,9 @@ public class CheckEngine extends HtmlTagUtil {
 
 	// use org.w3c.dom.traversal, XPath
 
-	private static final String SPACE_STR = " ";
+	private static final String SPACE_STR = " "; //$NON-NLS-1$
 
-	private static final String WINDOW_OPEN = "window.open";
+	private static final String WINDOW_OPEN = "window.open"; //$NON-NLS-1$
 
 	public static final int ITEM_COUNT = 90;
 
@@ -51,6 +51,7 @@ public class CheckEngine extends HtmlTagUtil {
 
 	private static final int TABLE_CELL_ABBR_WORDS = 10;
 
+	@SuppressWarnings("nls")
 	private static final String[] ASCII_ART_CHAR = { "\u2227", "\uff3f",
 			"\uffe3", "\uff20", "\uff0f", "\uff3c", "\u03b3", "\u03a6",
 			"\u2229", "\u222a", "\u03b9", "\uff2f", "\u2282", "\uff9f",
@@ -75,13 +76,13 @@ public class CheckEngine extends HtmlTagUtil {
 		mobileCheckMethods = new Method[100];// TODO
 		for (Method m : tmpM) {
 			String name = m.getName();
-			if (name.startsWith("item_")) {
+			if (name.startsWith("item_")) { //$NON-NLS-1$
 				try {
 					int itemNum = Integer.parseInt(name.substring(5));
 					checkMethods[itemNum] = m;
 				} catch (Exception e) {
 				}
-			} else if (name.startsWith("mobile_")) {
+			} else if (name.startsWith("mobile_")) { //$NON-NLS-1$
 				try {
 					int itemNum = Integer.parseInt(name.substring(7));
 					mobileCheckMethods[itemNum] = m;
@@ -297,7 +298,7 @@ public class CheckEngine extends HtmlTagUtil {
 
 			// justify if has alt attribute
 
-			String strAlt = el.getAttribute(ATTR_ALT); //$NON-NLS-1$
+			String strAlt = el.getAttribute(ATTR_ALT);
 			if (strAlt.length() > 0) {
 				bHasAlt = true;
 			}
@@ -309,7 +310,7 @@ public class CheckEngine extends HtmlTagUtil {
 				if (bHasText) {
 					// check alt == text??
 				} else {
-					addCheckerProblem("C_0.1", el);
+					addCheckerProblem("C_0.1", el); //$NON-NLS-1$
 				}
 
 			} else {
@@ -430,11 +431,11 @@ public class CheckEngine extends HtmlTagUtil {
 		for (int i = 0; i < img_elements.length; i++) {
 			Element el = img_elements[i];
 			if (isNormalImage(el)) {
-				if (el.hasAttribute(ATTR_ALT)) { //$NON-NLS-1$
-					String strAlt = el.getAttribute(ATTR_ALT); //$NON-NLS-1$
+				if (el.hasAttribute(ATTR_ALT)) {
+					String strAlt = el.getAttribute(ATTR_ALT);
 					if (getWordCount(strAlt) >= 3
 							|| strAlt.length() >= validate_str_len) {
-						if (!strAlt.matches("\\p{ASCII}*")
+						if (!strAlt.matches("\\p{ASCII}*") //$NON-NLS-1$
 								|| strAlt.length() > 30) {
 							addCheckerProblem("C_4.0", el); //$NON-NLS-1$
 						}
@@ -490,7 +491,7 @@ public class CheckEngine extends HtmlTagUtil {
 				} else {
 					curNode = null;
 					while ((curNode == null) && (stack.size() > 0)) {
-						curNode = (Node) stack.pop();
+						curNode = stack.pop();
 						curNode = curNode.getNextSibling();
 					}
 				}
@@ -506,8 +507,8 @@ public class CheckEngine extends HtmlTagUtil {
 			boolean bHasLink = false;
 			Element el = (Element) nl.item(i);
 			String strHref = ""; //$NON-NLS-1$
-			if (el.hasAttribute(HtmlTagUtil.ATTR_HREF)) { //$NON-NLS-1$
-				strHref = el.getAttribute(HtmlTagUtil.ATTR_HREF); //$NON-NLS-1$
+			if (el.hasAttribute(HtmlTagUtil.ATTR_HREF)) {
+				strHref = el.getAttribute(HtmlTagUtil.ATTR_HREF);
 				if (strHref.length() > 0) {
 					for (int j = 0; j < aLength; j++) {
 						// TODO use URL
@@ -594,7 +595,7 @@ public class CheckEngine extends HtmlTagUtil {
 					}
 					curNode = null;
 					while ((curNode == null) && (stack.size() > 0)) {
-						curNode = (Node) stack.pop();
+						curNode = stack.pop();
 						if ((curNode.getNodeType() == Node.ELEMENT_NODE)
 								&& curNode.getNodeName().equals("table")) { //$NON-NLS-1$
 							tableCount--;
@@ -609,8 +610,8 @@ public class CheckEngine extends HtmlTagUtil {
 					str = Messages.CheckEngine_ChildTable;
 				} else {
 					str = MessageFormat.format(
-							Messages.CheckEngine_TieredChildTable, new Object[]{String
-									.valueOf(maxCount)}); //$NON-NLS-1$ //$NON-NLS-2$
+							Messages.CheckEngine_TieredChildTable,
+							new Object[] { String.valueOf(maxCount) });
 				}
 				addCheckerProblem("C_12.0", str, el); //$NON-NLS-1$
 			}
@@ -636,7 +637,7 @@ public class CheckEngine extends HtmlTagUtil {
 				String strSize = el.getAttribute("size"); //$NON-NLS-1$
 				if (strSize != null && strSize.length() > 0) {
 					if (strSize.indexOf("+") == -1 //$NON-NLS-1$
-							&& strSize.indexOf("-") == -1) { // absolute size
+							&& strSize.indexOf("-") == -1) { // absolute size  //$NON-NLS-1$
 						// //$NON-NLS-1$
 						addCheckerProblem("C_13.0", el); //$NON-NLS-1$
 					}
@@ -670,7 +671,7 @@ public class CheckEngine extends HtmlTagUtil {
 						Vector<Node> tmpV = new Vector<Node>();
 						tmpV.add(headings[i - 1]);
 						tmpV.add(headings[i]);
-						addCheckerProblem("C_14.0", targetStr, tmpV);
+						addCheckerProblem("C_14.0", targetStr, tmpV); //$NON-NLS-1$
 					}
 				}
 				lastLevel = curLevel;
@@ -687,7 +688,7 @@ public class CheckEngine extends HtmlTagUtil {
 		}
 
 		if (targetV.size() > 0) {
-			addCheckerProblem("C_15.0", "", targetV);
+			addCheckerProblem("C_15.0", "", targetV); //$NON-NLS-1$  //$NON-NLS-2$
 		}
 	}
 
@@ -893,7 +894,7 @@ public class CheckEngine extends HtmlTagUtil {
 				} else {
 					curNode = null;
 					while ((curNode == null) && (stack.size() > 0)) {
-						curNode = (Node) stack.pop();
+						curNode = stack.pop();
 						curNode = curNode.getNextSibling();
 					}
 				}
@@ -951,7 +952,7 @@ public class CheckEngine extends HtmlTagUtil {
 	private void item_27() {
 		for (int i = 0; i < frame_elements.length; i++) {
 			Element el = frame_elements[i];
-			String strSrc = el.getAttribute(ATTR_SRC); //$NON-NLS-1$
+			String strSrc = el.getAttribute(ATTR_SRC);
 
 			if (!isHtmlFile(strSrc)) { // no-html file check
 				addCheckerProblem("C_27.0", el); //$NON-NLS-1$
@@ -1068,8 +1069,8 @@ public class CheckEngine extends HtmlTagUtil {
 	private void item_35() {
 		for (int i = 0; i < img_elements.length; i++) {
 			Element el = img_elements[i];
-			if (isNormalImage(el) && el.hasAttribute(ATTR_SRC)) { //$NON-NLS-1$
-				String strSrc = el.getAttribute(ATTR_SRC); //$NON-NLS-1$
+			if (isNormalImage(el) && el.hasAttribute(ATTR_SRC)) {
+				String strSrc = el.getAttribute(ATTR_SRC);
 				if (strSrc != null && strSrc.length() > 0) {
 					String strExt = getFileExtension(strSrc);
 					if (strExt.equalsIgnoreCase("gif")) { //$NON-NLS-1$
@@ -1123,7 +1124,7 @@ public class CheckEngine extends HtmlTagUtil {
 					|| el.hasAttribute(ATTR_ONKEYUP)) {
 				// info (confirm)
 			} else {
-				addCheckerProblem("C_38.0", el);
+				addCheckerProblem("C_38.0", el); //$NON-NLS-1$
 			}
 		}
 		for (int i = 0; i < mouseFocus.length; i++) {
@@ -1134,7 +1135,7 @@ public class CheckEngine extends HtmlTagUtil {
 						|| el.hasAttribute(ATTR_ONSELECT)) {
 					// info (confirm)
 				} else {
-					addCheckerProblem("C_38.0", el);
+					addCheckerProblem("C_38.0", el); //$NON-NLS-1$
 				}
 			}
 		}
@@ -1167,7 +1168,7 @@ public class CheckEngine extends HtmlTagUtil {
 				} else {
 					curNode = null;
 					while ((curNode == null) && (stack.size() > 0)) {
-						curNode = (Node) stack.pop();
+						curNode = stack.pop();
 						curNode = curNode.getNextSibling();
 					}
 				}
@@ -1227,7 +1228,7 @@ public class CheckEngine extends HtmlTagUtil {
 				} else {
 					curNode = null;
 					while ((curNode == null) && (stack.size() > 0)) {
-						curNode = (Node) stack.pop();
+						curNode = stack.pop();
 						curNode = curNode.getNextSibling();
 					}
 				}
@@ -1278,7 +1279,7 @@ public class CheckEngine extends HtmlTagUtil {
 				if (curChild.getNodeType() == Node.CDATA_SECTION_NODE) {
 					String strTxt = curChild.getNodeValue();
 					if (strTxt != null
-							&& strTxt.toLowerCase().indexOf(WINDOW_OPEN) >= 0) { //$NON-NLS-1$
+							&& strTxt.toLowerCase().indexOf(WINDOW_OPEN) >= 0) {
 						bHasProblem = true;
 						break;
 					}
@@ -1296,42 +1297,42 @@ public class CheckEngine extends HtmlTagUtil {
 		for (int i = 0; i < tmpE.length; i++) {
 			if (hasOpenWndEvent(tmpE[i], HtmlEvalUtil.EVENT_FOCUS)
 					&& tmpSet.add(tmpE[i])) {
-				result.add(new ProblemItemImpl("C_43.0", tmpE[i]));
+				result.add(new ProblemItemImpl("C_43.0", tmpE[i])); //$NON-NLS-1$
 			}
 		}
 		tmpE = edu.getEventLoadElements();
 		for (int i = 0; i < tmpE.length; i++) {
 			if (hasOpenWndEvent(tmpE[i], HtmlEvalUtil.EVENT_LOAD)
 					&& tmpSet.add(tmpE[i])) {
-				result.add(new ProblemItemImpl("C_43.0", tmpE[i]));
+				result.add(new ProblemItemImpl("C_43.0", tmpE[i])); //$NON-NLS-1$
 			}
 		}
 		tmpE = edu.getEventMouseButtonElements();
 		for (int i = 0; i < tmpE.length; i++) {
 			if (hasOpenWndEvent(tmpE[i], HtmlEvalUtil.EVENT_MOUSE_BUTTON)
 					&& tmpSet.add(tmpE[i])) {
-				result.add(new ProblemItemImpl("C_43.0", tmpE[i]));
+				result.add(new ProblemItemImpl("C_43.0", tmpE[i])); //$NON-NLS-1$
 			}
 		}
 		tmpE = edu.getEventOnMouseElements();
 		for (int i = 0; i < tmpE.length; i++) {
 			if (hasOpenWndEvent(tmpE[i], HtmlEvalUtil.EVENT_MOUSE_FOCUS)
 					&& tmpSet.add(tmpE[i])) {
-				result.add(new ProblemItemImpl("C_43.0", tmpE[i]));
+				result.add(new ProblemItemImpl("C_43.0", tmpE[i])); //$NON-NLS-1$
 			}
 		}
 		tmpE = edu.getEventOnKeyElements();
 		for (int i = 0; i < tmpE.length; i++) {
 			if (hasOpenWndEvent(tmpE[i], HtmlEvalUtil.EVENT_ON_KEY)
 					&& tmpSet.add(tmpE[i])) {
-				result.add(new ProblemItemImpl("C_43.0", tmpE[i]));
+				result.add(new ProblemItemImpl("C_43.0", tmpE[i])); //$NON-NLS-1$
 			}
 		}
 		tmpE = edu.getEventWindowElements();
 		for (int i = 0; i < tmpE.length; i++) {
 			if (hasOpenWndEvent(tmpE[i], HtmlEvalUtil.EVENT_WINDOW)
 					&& tmpSet.add(tmpE[i])) {
-				result.add(new ProblemItemImpl("C_43.0", tmpE[i]));
+				result.add(new ProblemItemImpl("C_43.0", tmpE[i])); //$NON-NLS-1$
 			}
 		}
 	}
@@ -1512,11 +1513,11 @@ public class CheckEngine extends HtmlTagUtil {
 						} else if (strName.equalsIgnoreCase("a")) { //$NON-NLS-1$
 							try {
 								url2 = new URL(baseUrl, ((Element) nextNode)
-										.getAttribute(HtmlTagUtil.ATTR_HREF)) //$NON-NLS-1$
+										.getAttribute(HtmlTagUtil.ATTR_HREF))
 										.toString();
 							} catch (MalformedURLException e) {
 								url2 = ((Element) nextNode)
-										.getAttribute(HtmlTagUtil.ATTR_HREF); //$NON-NLS-1$
+										.getAttribute(HtmlTagUtil.ATTR_HREF);
 							}
 							if (!url1.equals(url2)) {
 								endEl = (Element) nextNode;
@@ -1550,6 +1551,7 @@ public class CheckEngine extends HtmlTagUtil {
 		addCheckerProblem("C_47.0"); //$NON-NLS-1$
 	}
 
+	@SuppressWarnings("nls")
 	private void item_48() {
 		// Applet
 		checkObsoluteEle("C_48.1", "applet"); //$NON-NLS-1$
@@ -1597,7 +1599,7 @@ public class CheckEngine extends HtmlTagUtil {
 			Element el = iframe_elements[i];
 			if (!el.hasAttribute("title")) { //$NON-NLS-1$
 				addCheckerProblem("C_51.1", //$NON-NLS-1$
-						": src=" + el.getAttribute(ATTR_SRC), //$NON-NLS-1$ //$NON-NLS-2$
+						": src=" + el.getAttribute(ATTR_SRC), //$NON-NLS-1$ 
 						el);
 			}
 		}
@@ -1610,7 +1612,7 @@ public class CheckEngine extends HtmlTagUtil {
 			String strTitle = el.getAttribute("title"); //$NON-NLS-1$
 			if (!strTitle.equals("")) { //$NON-NLS-1$
 				String strLongdesc = el.getAttribute("longdesc"); //$NON-NLS-1$
-				if (strLongdesc == null || strLongdesc.equals("")) { // alert
+				if (strLongdesc == null || strLongdesc.equals("")) { // alert //$NON-NLS-1$
 					// about
 					// frame
 					// description
@@ -1625,7 +1627,7 @@ public class CheckEngine extends HtmlTagUtil {
 			String strTitle = el.getAttribute("title"); //$NON-NLS-1$
 			if (!strTitle.equals("")) { //$NON-NLS-1$
 				String strLongdesc = el.getAttribute("longdesc"); //$NON-NLS-1$
-				if (strLongdesc == null || strLongdesc.equals("")) { // alert
+				if (strLongdesc == null || strLongdesc.equals("")) { // alert //$NON-NLS-1$
 					// about
 					// frame
 					// description
@@ -1692,6 +1694,7 @@ public class CheckEngine extends HtmlTagUtil {
 		}
 	}
 
+	@SuppressWarnings("nls")
 	private void item_57() {
 		// need more detailed check
 		Element el = null;
@@ -1720,7 +1723,7 @@ public class CheckEngine extends HtmlTagUtil {
 							String noScriptText = getNoScriptText(el);
 
 							if ((!el.hasChildNodes() || el
-									.getElementsByTagName("img").getLength() == 0)) {
+									.getElementsByTagName("img").getLength() == 0)) { //$NON-NLS-1$
 								exceptCount++;
 								// alert
 							} else if (noScriptText.length() > 0) {
@@ -1940,8 +1943,8 @@ public class CheckEngine extends HtmlTagUtil {
 				}
 
 				if (idVec.size() > 0) {
-					addCheckerProblem("C_58.0", " (linktext=\""
-							+ strArray[i][j] + "\")", idVec);
+					addCheckerProblem("C_58.0", " (linktext=\"" //$NON-NLS-1$ //$NON-NLS-2$
+							+ strArray[i][j] + "\")", idVec); //$NON-NLS-1$
 				}
 			}
 		}
@@ -2094,7 +2097,7 @@ public class CheckEngine extends HtmlTagUtil {
 				} else {
 					curNode = null;
 					while ((curNode == null) && (stack.size() > 0)) {
-						curNode = (Node) stack.pop();
+						curNode = stack.pop();
 						curNode = curNode.getNextSibling();
 					}
 				}
@@ -2178,9 +2181,9 @@ public class CheckEngine extends HtmlTagUtil {
 			addCheckerProblem("C_74.0"); //$NON-NLS-1$
 		}
 
-		nl = target.getElementsByTagName("form");
+		nl = target.getElementsByTagName("form"); //$NON-NLS-1$
 		if (nl.getLength() > 0) {
-			addCheckerProblem("C_74.2");
+			addCheckerProblem("C_74.2"); //$NON-NLS-1$
 		}
 	}
 
@@ -2195,6 +2198,7 @@ public class CheckEngine extends HtmlTagUtil {
 		}
 	}
 
+	@SuppressWarnings("nls")
 	private void item_76() {
 		for (int i = 0; i < bottom_data_tables.length; i++) {
 			Element el = bottom_data_tables[i];
@@ -2339,7 +2343,7 @@ public class CheckEngine extends HtmlTagUtil {
 				} else {
 					curNode = null;
 					while ((curNode == null) && (stack.size() > 0)) {
-						curNode = (Node) stack.pop();
+						curNode = stack.pop();
 						curNode = curNode.getNextSibling();
 					}
 				}
@@ -2347,6 +2351,7 @@ public class CheckEngine extends HtmlTagUtil {
 		}
 	}
 
+	@SuppressWarnings("nls")
 	private void item_78() {
 		NodeList nl = target.getElementsByTagName("input");
 		int length = nl.getLength();
@@ -2372,14 +2377,14 @@ public class CheckEngine extends HtmlTagUtil {
 	private void item_79() {
 		NodeList nl = target.getElementsByTagName("form"); //$NON-NLS-1$
 		int length = nl.getLength();
-		NodeList labelNl = target.getElementsByTagName("label");
+		NodeList labelNl = target.getElementsByTagName("label"); //$NON-NLS-1$
 		for (int i = 0; i < length; i++) {
 			Element fEl = (Element) nl.item(i);
 			Vector<Element> fcVector = getFormControl(fEl);
 			int labelLen = labelNl.getLength();
 			for (int j = 0; j < fcVector.size(); j++) {
 				boolean bHasLabel = false;
-				Element el = (Element) fcVector.get(j);
+				Element el = fcVector.get(j);
 				String strid = el.getAttribute("id"); //$NON-NLS-1$
 				if (!strid.equals("")) { //$NON-NLS-1$
 					for (int k = 0; k < labelLen; k++) {
@@ -2426,7 +2431,7 @@ public class CheckEngine extends HtmlTagUtil {
 			while (curNode != null) {
 				if (curNode.getNodeType() == Node.ELEMENT_NODE) {
 					Element el = (Element) curNode;
-					String strAlt = el.getAttribute(ATTR_ALT); //$NON-NLS-1$
+					String strAlt = el.getAttribute(ATTR_ALT);
 					if (strAlt != null && strAlt.length() > 150) {
 						// alt text length check
 						addCheckerProblem("C_80.0", el); //$NON-NLS-1$
@@ -2441,7 +2446,7 @@ public class CheckEngine extends HtmlTagUtil {
 				} else {
 					curNode = null;
 					while ((curNode == null) && (stack.size() > 0)) {
-						curNode = (Node) stack.pop();
+						curNode = stack.pop();
 						curNode = curNode.getNextSibling();
 					}
 				}
@@ -2451,29 +2456,29 @@ public class CheckEngine extends HtmlTagUtil {
 
 	private void item_81() {
 		if (hasAwithHref) {
-			addCheckerProblem("C_81.0");
+			addCheckerProblem("C_81.0"); //$NON-NLS-1$
 		}
 	}
 
 	private void item_82() {
-		addCheckerProblem("C_82.0");
+		addCheckerProblem("C_82.0"); //$NON-NLS-1$
 	}
 
 	private void item_83() {
-		addCheckerProblem("C_83.0");
+		addCheckerProblem("C_83.0"); //$NON-NLS-1$
 	}
 
 	private void item_84() {
-		addCheckerProblem("C_84.0");
+		addCheckerProblem("C_84.0"); //$NON-NLS-1$
 	}
 
 	private void item_85() {
 		boolean bHasBgsound = false;
-		NodeList nl = target.getElementsByTagName("head");
+		NodeList nl = target.getElementsByTagName("head"); //$NON-NLS-1$
 		Element targetE = null;
 		for (int i = 0; i < nl.getLength(); i++) {
 			NodeList bgNl = ((Element) nl.item(i))
-					.getElementsByTagName("bgsound");
+					.getElementsByTagName("bgsound"); //$NON-NLS-1$
 			if (bgNl.getLength() > 0) {
 				bHasBgsound = true;
 				targetE = (Element) bgNl.item(0);
@@ -2489,7 +2494,7 @@ public class CheckEngine extends HtmlTagUtil {
 		boolean bHasMulti = false;
 		for (int i = 0; i < object_elements.length; i++) {
 			Element el = object_elements[i];
-			String str = el.getAttribute("data");
+			String str = el.getAttribute("data"); //$NON-NLS-1$
 			str = getFileExtension(str);
 			if (isAudioFileExt(str) || isMultimediaFileExt(str)) {
 				bHasMulti = true;
@@ -2498,15 +2503,15 @@ public class CheckEngine extends HtmlTagUtil {
 		}
 
 		if (!bHasMulti) {
-			NodeList nl = target.getElementsByTagName("applet");
+			NodeList nl = target.getElementsByTagName("applet"); //$NON-NLS-1$
 			int length = nl.getLength();
 			for (int i = 0; i < length; i++) {
 				Element el = (Element) nl.item(i);
-				NodeList parNl = el.getElementsByTagName("param");
+				NodeList parNl = el.getElementsByTagName("param"); //$NON-NLS-1$
 				int parLength = parNl.getLength();
 				for (int j = 0; j < parLength; j++) {
 					String str = ((Element) parNl.item(j))
-							.getAttribute("value");
+							.getAttribute("value"); //$NON-NLS-1$
 					str = getFileExtension(str);
 					if (isAudioFileExt(str) || isMultimediaFileExt(str)) {
 						bHasMulti = true;
@@ -2532,15 +2537,16 @@ public class CheckEngine extends HtmlTagUtil {
 		}
 
 		if (bHasMulti) {
-			addCheckerProblem("C_86.0");
+			addCheckerProblem("C_86.0"); //$NON-NLS-1$
 		}
 
 	}
 
 	private void item_87() {
-		addCheckerProblem("C_87.0");
+		addCheckerProblem("C_87.0"); //$NON-NLS-1$
 	}
 
+	@SuppressWarnings("nls")
 	private void item_88() {
 		String charset = "";
 		NodeList nl = target.getElementsByTagName("meta");
@@ -2581,6 +2587,7 @@ public class CheckEngine extends HtmlTagUtil {
 		}
 	}
 
+	@SuppressWarnings("nls")
 	private void item_89() {
 
 		if (body_elements.length == 1
@@ -2616,7 +2623,7 @@ public class CheckEngine extends HtmlTagUtil {
 				} else {
 					curNode = null;
 					while ((curNode == null) && (stack.size() > 0)) {
-						curNode = (Node) stack.pop();
+						curNode = stack.pop();
 						curNode = curNode.getNextSibling();
 					}
 				}
@@ -2637,19 +2644,20 @@ public class CheckEngine extends HtmlTagUtil {
 	// Mobile Web Evaluation (from here)
 	private void mobile_1() {
 		// TODO implement evaluation
-		addCheckerProblem("M_1");
+		addCheckerProblem("M_1"); //$NON-NLS-1$
 	}
 
 	// Mobile Web Evaluation (end here)
 
 	private void validateHtml() {
 		if (body_elements.length > 1) {
-			addCheckerProblem("C_1000.0");
+			addCheckerProblem("C_1000.0"); //$NON-NLS-1$
 		} else if (body_elements.length == 0) {
-			addCheckerProblem("C_1000.4");
+			addCheckerProblem("C_1000.4"); //$NON-NLS-1$
 		}
 	}
 
+	@SuppressWarnings("nls")
 	private void checkDomDifference() {
 
 		if (edu.getInvisibleElementCount() > 0) {
@@ -2697,7 +2705,7 @@ public class CheckEngine extends HtmlTagUtil {
 
 		for (int i = 0; i < targetAttrs.length; i++) {
 			String str = element.getAttribute(targetAttrs[i]);
-			if (str.toLowerCase().indexOf(WINDOW_OPEN) >= 0) { //$NON-NLS-1$
+			if (str.toLowerCase().indexOf(WINDOW_OPEN) >= 0) {
 				return true;
 			}
 		}
@@ -2716,7 +2724,7 @@ public class CheckEngine extends HtmlTagUtil {
 			Element el = (Element) nl.item(i);
 			// obsolute elemnet check
 			addCheckerProblem(problemId, // AdditionalDescription.getString("CheckEngine._(obsolete_tag___578")
-					SPACE_STR + strEle + SPACE_STR, el); //$NON-NLS-2$ //$NON-NLS-1$ //$NON-NLS-3$
+					SPACE_STR + strEle + SPACE_STR, el);
 		}
 	}
 
@@ -2879,7 +2887,7 @@ public class CheckEngine extends HtmlTagUtil {
 		}
 
 		// int realTotal = str.length();
-		String[] tmpS = str.split("\\p{Space}");
+		String[] tmpS = str.split("\\p{Space}"); //$NON-NLS-1$
 		int num = 0;
 		int total = 0;
 
@@ -2888,7 +2896,7 @@ public class CheckEngine extends HtmlTagUtil {
 			int strLength = target.length();
 			total += strLength;
 
-			target = target.replaceAll("\\p{Punct}", "");
+			target = target.replaceAll("\\p{Punct}", ""); //$NON-NLS-1$  //$NON-NLS-2$
 			num += strLength - target.length();
 
 			strLength = target.length();
@@ -3000,7 +3008,7 @@ public class CheckEngine extends HtmlTagUtil {
 			} else {
 				curNode = null;
 				while ((curNode == null) && (stack.size() > 0)) {
-					curNode = (Node) stack.pop();
+					curNode = stack.pop();
 					curNode = curNode.getNextSibling();
 				}
 			}
@@ -3017,10 +3025,10 @@ public class CheckEngine extends HtmlTagUtil {
 	}
 
 	private String getFileExtension(String strName) {
-		int iPos = strName.lastIndexOf(".");
+		int iPos = strName.lastIndexOf("."); //$NON-NLS-1$
 		if (iPos > 0) {
 			return strName.substring(iPos + 1);
 		}
-		return "";
+		return ""; //$NON-NLS-1$
 	}
 }

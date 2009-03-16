@@ -22,6 +22,8 @@ import org.w3c.dom.Node;
 
 public abstract class OdfCheckerEngineBase implements
 		OdfCheckerEngine {
+	private static final String PREFIX_O = "O_"; //$NON-NLS-1$
+
 	protected boolean detectVersion = false;
 
 	protected Document targetODF;
@@ -51,7 +53,7 @@ public abstract class OdfCheckerEngineBase implements
 	}
 
 	protected IProblemItem addProblem(int id, Node targetNode, String midDesc) {
-		IProblemItem problem = new ProblemItemImpl("O_" + id);
+		IProblemItem problem = new ProblemItemImpl(PREFIX_O + id);
 		problem.setTargetNode(targetNode);
 		problem.setTargetString(midDesc);
 		problem.setHighlightTargetNodeInfo(new HighlightTargetNodeInfo(
@@ -62,7 +64,7 @@ public abstract class OdfCheckerEngineBase implements
 
 	protected IProblemItem addProblem(int id, String midDesc,
 			Element startTarget, Element endTarget) {
-		IProblemItem problem = new ProblemItemImpl("O_" + id);
+		IProblemItem problem = new ProblemItemImpl(PREFIX_O + id);
 		problem.setTargetNode(startTarget);
 		problem.setTargetString(midDesc);
 		problem.setHighlightTargetNodeInfo(new HighlightTargetNodeInfo(
@@ -72,7 +74,7 @@ public abstract class OdfCheckerEngineBase implements
 	}
 
 	protected IProblemItem addProblem(int id, String midDesc, Vector<Node> targetV) {
-		IProblemItem problem = new ProblemItemImpl("O_" + id);
+		IProblemItem problem = new ProblemItemImpl(PREFIX_O + id);
 		problem.setTargetString(midDesc);
 		problem
 				.setHighlightTargetNodeInfo(new HighlightTargetNodeInfo(targetV));

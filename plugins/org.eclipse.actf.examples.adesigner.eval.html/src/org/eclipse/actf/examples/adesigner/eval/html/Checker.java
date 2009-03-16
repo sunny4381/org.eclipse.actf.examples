@@ -28,7 +28,7 @@ import org.eclipse.actf.visualization.eval.problem.IProblemItem;
 
 public class Checker implements IHtmlChecker, IGuidelineSlectionChangedListener {
 
-	private static final String CHECK_ITEM_PATTERN = "C_\\p{Digit}+(\\.\\p{Digit}+)?";
+	private static final String CHECK_ITEM_PATTERN = "C_\\p{Digit}+(\\.\\p{Digit}+)?"; //$NON-NLS-1$
 
 	private HashSet<String> mimeSet = new HashSet<String>();
 
@@ -63,7 +63,7 @@ public class Checker implements IHtmlChecker, IGuidelineSlectionChangedListener 
 			String id = cItem.getId();
 			if (id.matches(CHECK_ITEM_PATTERN)) {
 				id = id.substring(2);
-				int index = id.indexOf(".");
+				int index = id.indexOf(".");  //$NON-NLS-1$
 				if (index > -1) {
 					id = id.substring(0, index);
 				}

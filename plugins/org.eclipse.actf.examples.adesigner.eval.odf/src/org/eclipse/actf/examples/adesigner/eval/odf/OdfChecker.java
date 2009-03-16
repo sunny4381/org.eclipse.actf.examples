@@ -38,7 +38,7 @@ public class OdfChecker implements IChecker {
 
 	public List<IProblemItem> check(ICheckTarget checkTarget) {
 		OdfCheckerEngine checker = new OdfCheckerEngineImpl(checkTarget
-				.getTargetDocument(), checkTarget.getAdditionalDocument("html"));
+				.getTargetDocument(), checkTarget.getAdditionalDocument("html")); //$NON-NLS-1$
 		checker
 				.setDetectOdfVersion(store
 						.getBoolean(OdfCheckerPreferenceConstants.ODFPLUGIN_DETECT_VERSION));
@@ -55,7 +55,7 @@ public class OdfChecker implements IChecker {
 	public boolean isEnabled() {
 		// TODO
 		IEvaluationItem tmpItem = GuidelineHolder.getInstance()
-				.getEvaluationItem("O_999000001");
+				.getEvaluationItem("O_999000001"); //$NON-NLS-1$
 		return (tmpItem != null && GuidelineHolder.getInstance()
 				.isMatchedCheckItem(tmpItem));
 	}

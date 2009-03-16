@@ -27,13 +27,13 @@ public class OdfCheckerInfoProvider implements ICheckerInfoProvider {
 			.getBundle(BUNDLE_NAME);
 
 	private static final Bundle bundle = Platform
-			.getBundle("org.eclipse.actf.examples.adesigner.eval.odf");
+			.getBundle("org.eclipse.actf.examples.adesigner.eval.odf"); //$NON-NLS-1$
 
 	public InputStream[] getCheckItemInputStreams() {
 
 		InputStream is;
 		try {
-			is = bundle.getEntry("resources/ODFcheckitem.xml").openStream();
+			is = bundle.getEntry("resources/ODFcheckitem.xml").openStream(); //$NON-NLS-1$
 			return new InputStream[] { is };
 		} catch (IOException e) {
 		}
@@ -43,7 +43,7 @@ public class OdfCheckerInfoProvider implements ICheckerInfoProvider {
 	public InputStream[] getGuidelineInputStreams() {
 		InputStream is;
 		try {
-			is = bundle.getEntry("resources/ODFGuide.xml").openStream();
+			is = bundle.getEntry("resources/ODFGuide.xml").openStream(); //$NON-NLS-1$
 			return new InputStream[] { is };
 		} catch (IOException e) {
 		}

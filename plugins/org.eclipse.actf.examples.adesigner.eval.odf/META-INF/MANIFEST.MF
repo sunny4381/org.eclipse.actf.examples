@@ -15,6 +15,6 @@ Export-Package: org.eclipse.actf.examples.adesigner.eval.odf,
 Bundle-ClassPath: checkerodf.jar,
  .
 Bundle-Localization: plugin
-Eclipse-LazyStart: true
+Bundle-ActivationPolicy: lazy
 Bundle-Activator: org.eclipse.actf.examples.adesigner.eval.odf.OdfCheckerPlugin
 Bundle-RequiredExecutionEnvironment: J2SE-1.5

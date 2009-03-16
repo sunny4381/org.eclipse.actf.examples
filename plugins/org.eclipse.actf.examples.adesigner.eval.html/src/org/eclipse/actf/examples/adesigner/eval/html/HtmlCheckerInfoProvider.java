@@ -28,10 +28,10 @@ public class HtmlCheckerInfoProvider implements ICheckerInfoProvider {
 
 	public InputStream[] getCheckItemInputStreams() {
 		Bundle bundle = Platform
-				.getBundle("org.eclipse.actf.examples.adesigner.eval.html");
+				.getBundle("org.eclipse.actf.examples.adesigner.eval.html");  //$NON-NLS-1$
 
 		try {
-			InputStream is = bundle.getEntry("resources/checkitem.xml")
+			InputStream is = bundle.getEntry("resources/checkitem.xml")  //$NON-NLS-1$
 					.openStream();
 			return new InputStream[] { is };
 

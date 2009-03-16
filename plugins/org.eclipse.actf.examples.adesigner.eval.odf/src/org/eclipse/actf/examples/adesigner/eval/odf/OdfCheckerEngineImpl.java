@@ -49,7 +49,7 @@ public class OdfCheckerEngineImpl extends OdfCheckerEngineBase {
 
 	private Element findElementByODFContentID(Document doc, String odfContentID) {
 		if (target != null) {
-			NodeList bodyNl = target.getElementsByTagName("body");
+			NodeList bodyNl = target.getElementsByTagName("body"); //$NON-NLS-1$
 			if (bodyNl.getLength() > 0) {
 				Stack<Node> stack = new Stack<Node>();
 				Node curNode = bodyNl.item(0);
@@ -71,7 +71,7 @@ public class OdfCheckerEngineImpl extends OdfCheckerEngineBase {
 					} else {
 						curNode = null;
 						while ((curNode == null) && (stack.size() > 0)) {
-							curNode = (Node) stack.pop();
+							curNode = stack.pop();
 							curNode = curNode.getNextSibling();
 						}
 					}
