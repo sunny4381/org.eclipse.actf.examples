@@ -46,14 +46,17 @@ import org.eclipse.ui.WorkbenchException;
 
 public class ModeSwitchDialog extends TitleAreaDialog {
 
-	private static final String MODE_SELECTED = "MODE_SELECTED";
+	private static final String MODE_SELECTED = "MODE_SELECTED"; //$NON-NLS-1$
 
-	private Image htmlImage = ADesignerPlugin.getImageDescriptor("icons/perspectives/html.png").createImage();
-	private Image flashImage = ADesignerPlugin.getImageDescriptor("icons/perspectives/flash.png").createImage();
-	private Image guiImage = ADesignerPlugin.getImageDescriptor("icons/perspectives/msaa_ia2.png").createImage();
-	private Image odfImage = ADesignerPlugin.getImageDescriptor("icons/perspectives/odf.png").createImage();
+	private Image htmlImage = ADesignerPlugin.getImageDescriptor(
+			"icons/perspectives/html.png").createImage(); //$NON-NLS-1$
+	private Image flashImage = ADesignerPlugin.getImageDescriptor(
+			"icons/perspectives/flash.png").createImage(); //$NON-NLS-1$
+	private Image guiImage = ADesignerPlugin.getImageDescriptor(
+			"icons/perspectives/msaa_ia2.png").createImage(); //$NON-NLS-1$
+	private Image odfImage = ADesignerPlugin.getImageDescriptor(
+			"icons/perspectives/odf.png").createImage(); //$NON-NLS-1$
 
-	
 	private IWorkbenchWindow _window;
 
 	private String _selectedPerspectiveID = ADesignerPlugin.getDefault()
@@ -83,6 +86,7 @@ public class ModeSwitchDialog extends TitleAreaDialog {
 		return contents;
 	}
 
+	@SuppressWarnings("nls")
 	protected Control createDialogArea(Composite parent) {
 
 		Composite dialogArea = (Composite) super.createDialogArea(parent);
@@ -117,8 +121,8 @@ public class ModeSwitchDialog extends TitleAreaDialog {
 				modeIcons[i] = new Image(_window.getShell().getDisplay(),
 						tmpImgData.scaledTo(tmpImgData.width * 2,
 								tmpImgData.height * 2));
-			}else{
-				modeIcons[i] = tmpImg;				
+			} else {
+				modeIcons[i] = tmpImg;
 			}
 			// System.out.println(desc.getId()+":"+desc.getLabel());
 		}
@@ -204,7 +208,7 @@ public class ModeSwitchDialog extends TitleAreaDialog {
 		modeNameLabel.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true,
 				true));
 		// modeNameLabel.setText(modeName);
-		modeNameLabel.setText("<a>" + modeName + "</a>");
+		modeNameLabel.setText("<a>" + modeName + "</a>"); //$NON-NLS-1$ //$NON-NLS-2$
 		// modeNameLabel.setAlignment(SWT.CENTER);
 		modeNameLabel.addSelectionListener(new ModeSwitchMouseAdapter(
 				perspectiveID));
@@ -242,7 +246,7 @@ public class ModeSwitchDialog extends TitleAreaDialog {
 	protected void configureShell(Shell shell) {
 		super.configureShell(shell);
 		shell.setText(ADesignerPlugin
-				.getResourceString("adesigner.window.title"));
+				.getResourceString("adesigner.window.title")); //$NON-NLS-1$
 	}
 
 	@Override

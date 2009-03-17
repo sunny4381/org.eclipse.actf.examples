@@ -53,7 +53,7 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 		configurer.setShowMenuBar(true);
 		configurer.setShowStatusLine(true);
 		configurer.setTitle(ADesignerPlugin
-				.getResourceString("adesigner.window.title"));
+				.getResourceString("adesigner.window.title")); //$NON-NLS-1$
 
 		// Show perspective name on title
 		configurer.getWindow().addPerspectiveListener(
@@ -78,7 +78,7 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 						.getWorkbench()
 						.getHelpSystem()
 						.resolve(
-								"/org.eclipse.actf.examples.adesigner.doc/docs/index.html",
+								"/org.eclipse.actf.examples.adesigner.doc/docs/index.html", //$NON-NLS-1$
 								true));
 	}
 
@@ -88,6 +88,7 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 		}
 	}
 
+	@SuppressWarnings("nls")
 	public void postWindowOpen() {
 		// remove search and run menus
 		IMenuManager menuManager = getWindowConfigurer()

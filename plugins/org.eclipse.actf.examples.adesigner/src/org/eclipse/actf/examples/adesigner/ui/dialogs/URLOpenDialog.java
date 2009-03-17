@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2008 IBM Corporation and Others
+ * Copyright (c) 2003, 2009 IBM Corporation and Others
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -32,7 +32,7 @@ public class URLOpenDialog {
 
 	private Text _urlText;
 
-	private String _url = "";
+	private String _url = ""; //$NON-NLS-1$
 
 	private int _returnCode = 0;
 
@@ -59,7 +59,7 @@ public class URLOpenDialog {
 		composite.setLayout(layout);
 
 		Button okButton = new Button(composite, SWT.PUSH);
-		okButton.setText(IDialogConstants.OK); //$NON-NLS-1$
+		okButton.setText(IDialogConstants.OK); 
 		okButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				_returnCode = 1;
@@ -69,7 +69,7 @@ public class URLOpenDialog {
 		});
 
 		Button cancelButton = new Button(composite, SWT.PUSH);
-		cancelButton.setText(IDialogConstants.CANCEL); //$NON-NLS-1$
+		cancelButton.setText(IDialogConstants.CANCEL); 
 		cancelButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				_returnCode = 0;
@@ -78,7 +78,7 @@ public class URLOpenDialog {
 		});
 
 		Button openButton = new Button(composite, SWT.PUSH);
-		openButton.setText(IDialogConstants.BROWSE); //$NON-NLS-1$
+		openButton.setText(IDialogConstants.BROWSE); 
 		openButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				FileDialog openDialog = new FileDialog(_shell, SWT.OPEN);
@@ -111,11 +111,11 @@ public class URLOpenDialog {
 
 		// URL label
 		Label label1 = new Label(composite, SWT.NONE);
-		label1.setText("URL: ");
+		label1.setText("URL: "); //$NON-NLS-1$
 
 		// Create the TextBox
 		_urlText = new Text(composite, SWT.SINGLE | SWT.BORDER);
-		_urlText.setText("");
+		_urlText.setText(""); //$NON-NLS-1$
 
 		gridData = new GridData();
 		gridData.widthHint = 300;

@@ -24,7 +24,7 @@ import org.osgi.framework.BundleContext;
 
 
 public class ADesignerPlugin extends AbstractUIPluginACTF {
-	public static final String PLUGIN_ID = "org.eclipse.actf.examples.adesigner";
+	public static final String PLUGIN_ID = "org.eclipse.actf.examples.adesigner"; //$NON-NLS-1$
 
 	private static ADesignerPlugin plugin;
 
@@ -44,7 +44,7 @@ public class ADesignerPlugin extends AbstractUIPluginACTF {
 			// String tmpS = arg.trim().toLowerCase();
 			DebugPrintUtil.devOrDebugPrintln(arg);
 
-			if (arg.equalsIgnoreCase("-perspective")) {
+			if (arg.equalsIgnoreCase("-perspective")) { //$NON-NLS-1$
 				flag = true;
 			} else if (flag) {
 				flag = false;
@@ -74,7 +74,7 @@ public class ADesignerPlugin extends AbstractUIPluginACTF {
 		try {
 			return (null != bundle) ? bundle.getString(key) : key;
 		} catch (MissingResourceException mre) {
-			return "???" + key + "???";
+			return ""; //$NON-NLS-1$
 		}
 	}
 
