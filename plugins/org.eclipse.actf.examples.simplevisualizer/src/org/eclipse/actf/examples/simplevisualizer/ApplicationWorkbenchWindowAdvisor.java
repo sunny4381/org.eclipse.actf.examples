@@ -42,7 +42,7 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 		configurer.setShowMenuBar(true);
 		configurer.setShowStatusLine(true);
 		configurer.setTitle(SimpleVisualizerPlugin
-				.getResourceString("simplevizualizer.window.title"));
+				.getResourceString("simplevizualizer.window.title")); //$NON-NLS-1$
 	}
 
 	public void postWindowOpen() {
@@ -52,8 +52,8 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 		IContributionItem[] items = menuManager.getItems();
 		for (int i = 0; i < items.length; i++) {
 			if (null != items[i].getId()
-					&& (items[i].getId().equals("org.eclipse.search.menu") || items[i]
-							.getId().equals("org.eclipse.ui.run"))) {
+					&& (items[i].getId().equals("org.eclipse.search.menu") || items[i] //$NON-NLS-1$
+							.getId().equals("org.eclipse.ui.run"))) { //$NON-NLS-1$
 				items[i].dispose();
 			}
 		}

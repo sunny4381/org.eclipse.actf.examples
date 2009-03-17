@@ -21,7 +21,7 @@ import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 
 public class SimpleVisualizerPlugin extends AbstractUIPluginACTF {
-	public static final String PLUGIN_ID = "org.eclipse.actf.examples.simplevisualizer";
+	public static final String PLUGIN_ID = "org.eclipse.actf.examples.simplevisualizer"; //$NON-NLS-1$
 
 	private static SimpleVisualizerPlugin plugin;
 
@@ -52,7 +52,7 @@ public class SimpleVisualizerPlugin extends AbstractUIPluginACTF {
 		try {
 			return (null != bundle) ? bundle.getString(key) : key;
 		} catch (MissingResourceException mre) {
-			return "???" + key + "???";
+			return ""; //$NON-NLS-1$
 		}
 	}
 

@@ -27,7 +27,7 @@ public class HTMLPerspective implements IPerspectiveFactory {
 		layout.setEditorAreaVisible(true);
 
 		IFolderLayout reportFolder = layout.createFolder(
-				"simplevizualizer.html.report.folder",
+				"simplevizualizer.html.report.folder", //$NON-NLS-1$
 				IPageLayout.BOTTOM, 0.7f, editorArea);
 		reportFolder.addView(IVisualizationView.SUMMARY_REPORT_VIEW_ID);
 		reportFolder.addView(IVisualizationView.DETAILED_REPROT_VIEW_ID);
@@ -35,7 +35,7 @@ public class HTMLPerspective implements IPerspectiveFactory {
 		layout.getViewLayout(IVisualizationView.DETAILED_REPROT_VIEW_ID).setCloseable(false);
 
 		IFolderLayout simulatorFolder = layout.createFolder(
-				"simplevizualizer.html.simulator.folder",
+				"simplevizualizer.html.simulator.folder", //$NON-NLS-1$
 				IPageLayout.RIGHT, 0.5f, editorArea);
 		simulatorFolder.addView(SimpleVisualizerView.ID);
 		layout.getViewLayout(SimpleVisualizerView.ID).setCloseable(false);

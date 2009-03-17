@@ -31,7 +31,7 @@ public class PerspectiveListenerForBrowserLaunch implements
 		if (id.equals(perspective.getId())) {
 			if (!ModelServiceUtils.activateEditorPart(WebBrowserEditor.ID)) {
 				ModelServiceUtils
-						.launch("http://www.eclipse.org/actf",
+						.launch("http://www.eclipse.org/actf", //$NON-NLS-1$
 								WebBrowserEditor.ID);
 			}
 		}

@@ -47,9 +47,9 @@ public class AlphaValueToolbar extends Composite {
 		new Label(this, SWT.NONE).setText("alpha value:");
 
 		final Label valueL = new Label(this, SWT.CENTER);
-		valueL.setText("127");
+		valueL.setText("127"); //$NON-NLS-1$
 
-		new Label(this, SWT.NONE).setText("     0");
+		new Label(this, SWT.NONE).setText("     0"); //$NON-NLS-1$
 		alphaSlider = new Slider(this, SWT.CENTER);
 		alphaSlider.setValues(128, 0, 275, 20, 1, 25);
 		alphaSlider.addSelectionListener(new SelectionAdapter() {
@@ -66,7 +66,7 @@ public class AlphaValueToolbar extends Composite {
 		gridData.grabExcessVerticalSpace = true;
 		alphaSlider.setLayoutData(gridData);
 
-		new Label(this, SWT.NONE).setText("255");
+		new Label(this, SWT.NONE).setText("255"); //$NON-NLS-1$
 
 	}
 

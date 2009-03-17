@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Eclipse ACTF Example Simple Visualizer (Incubation)
 Bundle-SymbolicName: org.eclipse.actf.examples.simplevisualizer;singleton:=true
-Bundle-Version: 0.5.0.qualifier
+Bundle-Version: 0.7.0.qualifier
 Bundle-Activator: org.eclipse.actf.examples.simplevisualizer.SimpleVisualizerPlugin
 Bundle-Vendor: Eclipse.org
 Bundle-Localization: plugin
@@ -18,5 +18,5 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.actf.visualization.ui.report,
  org.eclipse.ui.views,
  org.eclipse.actf.util.vocab
-Eclipse-LazyStart: true
+Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5

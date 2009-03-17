@@ -78,6 +78,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 		this._closeAction = ActionFactory.CLOSE.create(window);
 	}
 
+	@SuppressWarnings("nls")
 	protected void fillMenuBar(IMenuManager menuBar) {
 
 		// File
