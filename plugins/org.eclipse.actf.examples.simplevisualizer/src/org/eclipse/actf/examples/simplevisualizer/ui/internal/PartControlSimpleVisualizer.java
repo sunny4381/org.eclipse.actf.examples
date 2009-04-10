@@ -18,6 +18,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.actf.examples.simplevisualizer.SimpleVisualizerPlugin;
+import org.eclipse.actf.examples.simplevisualizer.vicramtest.Complexity;
+import org.eclipse.actf.examples.simplevisualizer.vicramtest.Visualization;
 import org.eclipse.actf.mediator.Mediator;
 import org.eclipse.actf.model.ui.IModelService;
 import org.eclipse.actf.model.ui.ModelServiceImageCreator;
@@ -193,6 +195,13 @@ public class PartControlSimpleVisualizer implements IVisualizationConst {
 		Image baseImage = new Image(shell.getDisplay(), screenshotFile);
 
 		vizView.setStatusMessage("Processing overlay.");
+		
+		//EM - Call Visualization Code
+		//
+		Visualization.findElements();
+		int[][] redPixels = Visualization.getRedCoordinates();
+		
+		
 
 		// prepare overlay image data (rainbow)
 		Rectangle size = baseImage.getBounds();
@@ -250,6 +259,9 @@ public class PartControlSimpleVisualizer implements IVisualizationConst {
 			IWebBrowserStyleInfo style = browser.getStyleInfo();
 			ModelServiceSizeInfo sizeInfo = style.getSizeInfo(true);
 			StringBuffer tmpSB = new StringBuffer(4096);
+			//EM - Call calculate method
+			tmpSB.append(Complexity.calculate());
+			//tmpSB.append(Complexity.getTotalWords());
 			tmpSB.append("Web page size: [" + sizeInfo.toString() + "]"
 					+ FileUtils.LINE_SEP + FileUtils.LINE_SEP);
 
