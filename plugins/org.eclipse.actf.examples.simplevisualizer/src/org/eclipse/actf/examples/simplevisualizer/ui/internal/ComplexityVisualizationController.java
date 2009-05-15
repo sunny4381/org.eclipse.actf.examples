@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 IBM Corporation and Others
+ * Copyright (c) 2009 IBM Corporation, University of Manchester and Others
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,15 +7,12 @@
  *
  * Contributors:
  *    Kentarou FUKUDA - initial API and implementation
+ *    Eleni Michailidou - initial API and implementation     
  *******************************************************************************/
 package org.eclipse.actf.examples.simplevisualizer.ui.internal;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 import java.util.List;
-import java.util.Map;
 
 import org.eclipse.actf.examples.simplevisualizer.SimpleVisualizerPlugin;
 import org.eclipse.actf.examples.simplevisualizer.vicramtest.Complexity;
@@ -24,12 +21,9 @@ import org.eclipse.actf.mediator.Mediator;
 import org.eclipse.actf.model.ui.IModelService;
 import org.eclipse.actf.model.ui.ModelServiceImageCreator;
 import org.eclipse.actf.model.ui.ModelServiceSizeInfo;
-import org.eclipse.actf.model.ui.editor.browser.ICurrentStyles;
 import org.eclipse.actf.model.ui.editor.browser.IWebBrowserACTF;
 import org.eclipse.actf.model.ui.editor.browser.IWebBrowserStyleInfo;
 import org.eclipse.actf.model.ui.util.ModelServiceUtils;
-import org.eclipse.actf.util.FileUtils;
-import org.eclipse.actf.util.dom.DomPrintUtil;
 import org.eclipse.actf.visualization.IVisualizationConst;
 import org.eclipse.actf.visualization.eval.EvaluationResultImpl;
 import org.eclipse.actf.visualization.ui.IPositionSize;
@@ -49,24 +43,16 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IWorkbenchActionConstants;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 
-public class PartControlSimpleVisualizer implements IVisualizationConst {
+public class ComplexityVisualizationController implements IVisualizationConst {
 
 	private static final EvaluationResultImpl dummyResult = new EvaluationResultImpl();
-
-	private static final String REPORT_HTML_PRE = "<html><head><title>ACTF report sample</title>"
-			+ "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">"
-			+ "</head><body><pre>";
-	private static final String REPORT_HTML_POST = "</pre></body></html>";
 
 	private Shell shell;
 	private IVisualizationView vizView;
 	private VisualizationCanvas vizCanvas;
 	private AlphaValueToolbar alphaBar;
-	private Action visualizeAction, overlayAction;
+	private Action overlayAction;
 
 	private Mediator mediator = Mediator.getInstance();
 
@@ -74,7 +60,7 @@ public class PartControlSimpleVisualizer implements IVisualizationConst {
 	private EvaluationResultImpl evalResult;
 	private String screenshotFile, reportFile;
 
-	public PartControlSimpleVisualizer(IVisualizationView vizView,
+	public ComplexityVisualizationController(IVisualizationView vizView,
 			Composite parent) {
 
 		this.vizView = vizView;
@@ -104,21 +90,12 @@ public class PartControlSimpleVisualizer implements IVisualizationConst {
 
 	private void prepareActions() {
 
-		overlayAction = new Action("Visualize (live DOM)",
+		overlayAction = new Action("Complexity Visualization",
 				SimpleVisualizerPlugin.imageDescriptorFromPlugin(
 						SimpleVisualizerPlugin.PLUGIN_ID,
 						"/icons/action16/overlay16.gif")) {
 			public void run() {
-				doVisualize(true);
-			}
-		};
-
-		visualizeAction = new Action("Visualize (original DOM)",
-				SimpleVisualizerPlugin.imageDescriptorFromPlugin(
-						SimpleVisualizerPlugin.PLUGIN_ID,
-						"/icons/action16/simulation16.gif")) {
-			public void run() {
-				doVisualize(false);
+				doVisualize();
 			}
 		};
 
@@ -126,7 +103,6 @@ public class PartControlSimpleVisualizer implements IVisualizationConst {
 		// IMenuManager menuManager = bars.getMenuManager();
 		IToolBarManager toolbarManager = bars.getToolBarManager();
 		toolbarManager.add(overlayAction);
-		toolbarManager.add(visualizeAction);
 		toolbarManager
 				.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
 	}
@@ -167,7 +143,7 @@ public class PartControlSimpleVisualizer implements IVisualizationConst {
 		this.vizCanvas.setLayoutData(gridData);
 	}
 
-	public void doVisualize(boolean flag) {
+	public void doVisualize() {
 		if (isInVisualize) {
 			return;
 		}
@@ -206,43 +182,12 @@ public class PartControlSimpleVisualizer implements IVisualizationConst {
 		// prepare overlay image data (rainbow)
 		Rectangle size = baseImage.getBounds();
 		int[][] overlayPixels = new int[size.height][size.width];
-		int xMax = flag ? size.width : size.height;
-		int yMax = flag ? size.height : size.width;
-		for (int y = 0; y < yMax; y++) {
-			int i = (y / 50) % 7;
-			int color;
-			switch (i) {
-			case 0:
-				color = 0x3D1AED;
-				break;
-			case 1:
-				color = 0x4CB7FF;
-				break;
-			case 2:
-				color = 0x00D4FF;
-				break;
-			case 3:
-				color = 0x008000;
-				break;
-			case 4:
-				color = 0xD69A00;
-				break;
-			case 5:
-				color = 0x74540F;
-				break;
-			case 6:
-				color = 0xA857A7;
-				break;
-			default:
-				color = 0xFFFFFF;
-			}
+		int xMax = size.width;
+		int yMax = size.height;
 
+		for (int y = 0; y < yMax; y++) {
 			for (int x = 0; x < xMax; x++) {
-				if (flag) {
-					overlayPixels[y][x] = color;
-				} else {
-					overlayPixels[x][y] = color;
-				}
+				overlayPixels[y][x] = 0xC0C0C0;
 			}
 		}
 
@@ -251,7 +196,6 @@ public class PartControlSimpleVisualizer implements IVisualizationConst {
 		// set image to canvas
 		vizCanvas.showImage(baseImage.getImageData(), modelService);
 
-		// example: obtain DOM, curentStyle
 		if (modelService instanceof IWebBrowserACTF) {
 			IWebBrowserACTF browser = (IWebBrowserACTF) modelService;
 			vizView.setStatusMessage("Getting styleInfo from Live DOM.");
@@ -262,75 +206,11 @@ public class PartControlSimpleVisualizer implements IVisualizationConst {
 			//EM - Call calculate method
 			tmpSB.append(Complexity.calculate());
 			//tmpSB.append(Complexity.getTotalWords());
-			tmpSB.append("Web page size: [" + sizeInfo.toString() + "]"
-					+ FileUtils.LINE_SEP + FileUtils.LINE_SEP);
-
-			Map<String, ICurrentStyles> styleMap = style.getCurrentStyles();
-			for (String xpath : styleMap.keySet()) {
-				ICurrentStyles curStyle = styleMap.get(xpath);
-				tmpSB.append(xpath + " : (" + curStyle.getRectangle() + ")"
-						+ FileUtils.LINE_SEP + "  display: "
-						+ curStyle.getDisplay() + "  backgroundColor: "
-						+ curStyle.getBackgroundColor() + FileUtils.LINE_SEP
-						+ FileUtils.LINE_SEP);
-			}
 
 			// set styleInfo as a summary report
 			evalResult.setSummaryReportText(tmpSB.toString());
-
-			try {
-				PrintWriter tmpPW = new PrintWriter(new OutputStreamWriter(
-						new FileOutputStream(reportFile), "UTF-8"));
-				tmpPW.println(REPORT_HTML_PRE);
-				DomPrintUtil dpu;
-				if (flag) {
-					vizView.setStatusMessage("Copying Live DOM.");
-					tmpPW.println("---Live DOM--- ");
-					tmpPW.println();
-
-					Document doc = modelService.getLiveDocument();
-
-					dpu = new DomPrintUtil(doc);
-					// Escape tag bracket('<' -> '%lt;') to print out in <pre>
-					dpu.setEscapeTagBracket(true);
-					// attribute filter to remove unnecessary attributes
-					dpu.setAttrFilter(new DomPrintUtil.AttributeFilter() {
-						public boolean acceptNode(Element element, Node attr) {
-							String name = attr.getNodeName();
-							return element.hasAttribute(name);
-						}
-					});
-
-					// TODO recover DOCTYPE
-					// DOCTYPE is handled as a Comment node (first/last 2
-					// chars are
-					// lost) in IE.
-
-				} else {
-					vizView.setStatusMessage("Parsing and copying source DOM.");
-
-					tmpPW.println("---Source DOM--- ");
-					tmpPW.println();
-
-					Document doc = modelService.getDocument();
-					dpu = new DomPrintUtil(doc);
-					// Escape tag bracket('<' -> '%lt;') to print out in <pre>
-					dpu.setEscapeTagBracket(true);
-					System.out.println(doc);
-				}
-
-				tmpPW.println(dpu.toXMLString());
-
-				tmpPW.println(REPORT_HTML_POST);
-				tmpPW.flush();
-				tmpPW.close();
-
-				// set summary of the page as a report
-				evalResult.setSummaryReportUrl(reportFile);
-
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+			// set summary of the page as a report
+			evalResult.setSummaryReportUrl(reportFile);
 
 		}
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?pde version="3.1"?>
+<?pde version="3.4"?>
 
 <product name="Simple Visualizer" id="org.eclipse.actf.examples.simplevisualizer.SimpleVisualizer" application="org.eclipse.actf.examples.simplevisualizer.SimpleVisualizerApplication" useFeatures="true">
 
@@ -10,7 +10,8 @@
       </text>
    </aboutInfo>
 
-   <configIni use="default"/>
+   <configIni use="default">
+   </configIni>
 
    <launcherArgs>
       <vmArgs>-Xmx256m</vmArgs>
@@ -18,6 +19,7 @@
    </launcherArgs>
 
    <windowImages i32="/org.eclipse.actf.examples.simplevisualizer/icons/excla_32.png"/>
+
 
    <launcher>
       <solaris/>
@@ -27,6 +29,7 @@
       </win>
    </launcher>
 
+
    <vm>
    </vm>
 
@@ -34,7 +37,7 @@
    </plugins>
 
    <features>
-      <feature id="org.eclipse.actf.examples.simplevisualizer" version="0.5.0.qualifier"/>
+      <feature id="org.eclipse.actf.examples.simplevisualizer" version="0.7.0.qualifier"/>
    </features>
 
 </product>

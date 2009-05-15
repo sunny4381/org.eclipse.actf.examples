@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 IBM Corporation and Others
+ * Copyright (c) 2009 IBM Corporation and Others
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.actf.examples.simplevisualizer.ui.views;
 
-import org.eclipse.actf.examples.simplevisualizer.ui.internal.SimpleVisualizerController;
+import org.eclipse.actf.examples.simplevisualizer.ui.internal.ComplexityVisualizationController;
 import org.eclipse.actf.mediator.MediatorEvent;
 import org.eclipse.actf.visualization.ui.IVisualizationView;
 import org.eclipse.actf.visualization.ui.VisualizationStatusLineContributionItem;
@@ -24,17 +24,17 @@ import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.ViewPart;
 
-public class SimpleVisualizerView extends ViewPart implements IVisualizationView {
+public class ComplexityVisualizationView extends ViewPart implements IVisualizationView {
 
-	public static final String ID = SimpleVisualizerView.class.getName();
+	public static final String ID = ComplexityVisualizationView.class.getName();
 
 	private IBaseLabelProvider baseLabelProvider = new ResultTableLabelProviderLV();
 
 	private ViewerSorter viewerSorter = new ResultTableSorterLV();
 
-	private SimpleVisualizerController partControl;
+	private ComplexityVisualizationController partControl;
 
-	public SimpleVisualizerView() {
+	public ComplexityVisualizationView() {
 		super();
 	}
 
@@ -44,7 +44,7 @@ public class SimpleVisualizerView extends ViewPart implements IVisualizationView
 	}
 
 	public void createPartControl(Composite parent) {
-		partControl = new SimpleVisualizerController(this, parent);
+		partControl = new ComplexityVisualizationController(this, parent);
 	}
 
 	public void setFocus() {
@@ -94,7 +94,7 @@ public class SimpleVisualizerView extends ViewPart implements IVisualizationView
 	}
 
 	public void doVisualize() {
-		partControl.doVisualize(true);
+		partControl.doVisualize();
 	}
 
 	public void modelserviceChanged(MediatorEvent event) {
