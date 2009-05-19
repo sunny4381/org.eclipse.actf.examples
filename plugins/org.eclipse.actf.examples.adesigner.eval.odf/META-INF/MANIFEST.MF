@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Eclipse ACTF ODF evaluation example Fragment (Incubation)
+Bundle-Name: ACTF ODF evaluation example Fragment (Incubation)
 Bundle-SymbolicName: org.eclipse.actf.examples.adesigner.eval.odf;singleton:=true
 Bundle-Version: 0.7.0.qualifier
 Bundle-Vendor: Eclipse.org

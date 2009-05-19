@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Eclipse ACTF Example aDesigner Client (Incubation)
+Bundle-Name: ACTF Example aDesigner Client (Incubation)
 Bundle-SymbolicName: org.eclipse.actf.examples.adesigner;singleton:=true
 Bundle-Version: 0.7.0.qualifier
 Bundle-Activator: org.eclipse.actf.examples.adesigner.ADesignerPlugin

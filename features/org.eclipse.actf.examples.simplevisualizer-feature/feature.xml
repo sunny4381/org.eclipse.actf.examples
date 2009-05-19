@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="org.eclipse.actf.examples.simplevisualizer"
-      label="Eclipse ACTF Example Simple Visualizer feature (Incubation)"
+      label="ACTF Example Simple Visualizer feature (Incubation)"
       version="0.7.0.qualifier"
       provider-name="Eclipse.org"
       plugin="org.eclipse.actf.examples.simplevisualizer"
