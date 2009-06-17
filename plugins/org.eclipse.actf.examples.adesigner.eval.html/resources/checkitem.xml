@@ -1659,6 +1659,7 @@
     <desc>Where it's possible to mark up content (for example mathematical equations) instead of using images, use a markup language (such as MathML).</desc>
    </description>
   </checkitem>
+  <!--
   <checkitem id="M_1" type="info" >
    <guideline>
       <gItem name="MWBP" id="m1" />
@@ -1670,4 +1671,5 @@
     <desc>Example. Please write error messages into description.properties file.</desc>
    </description>
   </checkitem>
+  -->
 </checker-config>
