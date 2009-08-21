@@ -1,0 +1,22 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: ACTF Example ViCRAM (Incubation)
+Bundle-SymbolicName: org.eclipse.actf.examples.vicram;singleton:=true
+Bundle-Version: 0.7.0.qualifier
+Bundle-Activator: org.eclipse.actf.examples.simplevisualizer.SimpleVisualizerPlugin
+Bundle-Vendor: Eclipse.org
+Bundle-Localization: plugin
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.actf.core,
+ org.eclipse.actf.ui,
+ org.eclipse.actf.mediator,
+ org.eclipse.actf.visualization,
+ org.eclipse.actf.visualization.eval,
+ org.eclipse.actf.model.dom.dombycom,
+ org.eclipse.actf.model.ui.editors.ie,
+ org.eclipse.actf.visualization.ui.report,
+ org.eclipse.ui.views,
+ org.eclipse.actf.util.vocab
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: J2SE-1.5

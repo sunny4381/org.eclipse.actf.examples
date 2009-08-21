@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+   <extension
+         id="SimpleVisualizerApplication"
+         point="org.eclipse.core.runtime.applications">
+      <application>
+         <run
+               class="org.eclipse.actf.examples.simplevisualizer.SimpleVisualizerApplication">
+         </run>
+      </application>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectives">
+      <perspective
+            class="org.eclipse.actf.examples.simplevisualizer.ui.perspectives.HTMLPerspective"
+            icon="icons/perspectives/html.png"
+            id="org.eclipse.actf.examples.simplevisualizer.ui.perspectives.HTMLPerspective"
+            name="%simplevizualizer.HTMLPerspective.name"/>
+      <perspective
+            class="org.eclipse.actf.examples.simplevisualizer.ui.perspectives.ComplexityVisualizationPerspective"
+            icon="icons/perspectives/sample.gif"
+            id="org.eclipse.actf.examples.simplevisualizer.ui.perspectives.ComplexityVisualizationPerspective"
+            name="Complexity Visualization Perspective">
+      </perspective>
+   </extension>
+
+   <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension
+            targetID="org.eclipse.actf.examples.simplevisualizer.ui.perspectives.HTMLPerspective">
+         <perspectiveShortcut id="org.eclipse.actf.examples.simplevisualizer.ui.perspectives.ComplexityVisualizationPerspective"/>
+      </perspectiveExtension>
+      <perspectiveExtension
+            targetID="org.eclipse.actf.examples.simplevisualizer.ui.perspectives.ComplexityVisualizationPerspective">
+         <perspectiveShortcut id="org.eclipse.actf.examples.simplevisualizer.ui.perspectives.HTMLPerspective"/>
+         <view
+               closeable="false"
+               id="org.eclipse.actf.visualization.ui.report.views.SummaryReportView"
+               ratio="0.35f"
+               relationship="bottom"
+               relative="org.eclipse.ui.editorss"
+               visible="true">
+         </view>
+         <view
+               closeable="false"
+               id="org.eclipse.actf.visualization.ui.report.views.DetailedReportView"
+               relationship="stack"
+               relative="org.eclipse.actf.visualization.ui.report.views.SummaryReportView">
+         </view>
+         <view
+               closeable="false"
+               id="org.eclipse.actf.examples.simplevisualizer.ui.views.ComplexityVisualizationView"
+               ratio="0.5f"
+               relationship="top"
+               relative="org.eclipse.actf.visualization.ui.report.views.SummaryReportView">
+         </view>
+      </perspectiveExtension>
+   </extension>
+   
+      <extension
+            point="org.eclipse.ui.actionSets">
+         <actionSet
+               id="org.eclipse.actf.examples.simplevizualizer.ui.actionSet"
+               label="simplevizualizerClientActionSet"
+               visible="true">
+            <action
+                  class="org.eclipse.actf.examples.simplevisualizer.ui.actions.OpenAction"
+                  id="org.eclipse.actf.examples.simplevizualizer.ui.actions.OpenAction"
+                  definitionId="org.eclipse.actf.examples.simplevizualizer.actions.OpenAction"
+                  label="%simplevizualizer.action.open"
+                  menubarPath="file/fileGroup"
+                  style="push"/>
+         </actionSet>
+      </extension>
+         
+   
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            id="org.eclipse.actf.examples.simplevizualizer.actions.OpenAction"
+            name="%simplevizualizer.action.open"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.bindings">
+      <key
+            commandId="org.eclipse.actf.examples.simplevizualizer.actions.OpenAction"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="CTRL+O"/>
+   </extension>
+   <extension
+         id="ViCRAM"
+         point="org.eclipse.core.runtime.products">
+      <product
+            application="org.eclipse.actf.examples.vicram.SimpleVisualizerApplication"
+            name="Visual Complexity Rankings and Accessibility Metrics (ViCRAM)">
+         <property
+               name="windowImages"
+               value="icons/excla_32.png">
+         </property>
+         <property
+               name="aboutText"
+               value="%About.Text">
+         </property>
+         <property
+               name="aboutImage"
+               value="about.gif">
+         </property>
+         <property
+               name="appName"
+               value="Visual Complexity Rankings and Accessibility Metrics (ViCRAM)">
+         </property>
+      </product>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            category="org.eclipse.actf.visualization.ui.views"
+            class="org.eclipse.actf.examples.simplevisualizer.ui.views.SimpleVisualizerView"
+            id="org.eclipse.actf.examples.simplevisualizer.ui.views.SimpleVisualizerView"
+            name="Simple Visualizer View">
+      </view>
+      <view
+            category="org.eclipse.actf.visualization.ui.views"
+            class="org.eclipse.actf.examples.simplevisualizer.ui.views.ComplexityVisualizationView"
+            id="org.eclipse.actf.examples.simplevisualizer.ui.views.ComplexityVisualizationView"
+            name="Complexity Visualization View">
+      </view>
+   </extension>
+   <extension
+         id="vicram"
+         point="org.eclipse.core.runtime.products">
+      <product
+            application="org.eclipse.actf.examples.vicram.SimpleVisualizerApplication"
+            name="%simplevizualizer.window.title">
+      </product>
+   </extension>
+
+</plugin>
