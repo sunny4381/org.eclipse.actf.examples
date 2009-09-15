@@ -100,7 +100,7 @@
          </property>
          <property
                name="aboutImage"
-               value="/org.eclipse.actf.examples.simplevisualizer/about.gif">
+               value="about.gif">
          </property>
          <property
                name="aboutText"
@@ -108,7 +108,7 @@
          </property>
          <property
                name="windowImages"
-               value="/org.eclipse.actf.examples.simplevisualizer/icons/excla_32.png">
+               value="icons/excla_32.png">
          </property>
       </product>
    </extension>
