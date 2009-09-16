@@ -2644,7 +2644,7 @@ public class CheckEngine extends HtmlTagUtil {
 	// Mobile Web Evaluation (from here)
 	private void mobile_1() {
 		// TODO implement evaluation
-		addCheckerProblem("M_1"); //$NON-NLS-1$
+		//addCheckerProblem("M_1"); //$NON-NLS-1$
 	}
 
 	// Mobile Web Evaluation (end here)
