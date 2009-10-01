@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?pde version="3.4"?>
+<?pde version="3.5"?>
 
-<product name="aDesigner" id="org.eclipse.actf.examples.adesigner.aDesigner" application="org.eclipse.actf.examples.adesigner.org.eclipse.actf.examples.adesigner.ADesignerApplication" useFeatures="true">
+<product name="aDesigner" id="org.eclipse.actf.examples.adesigner.aDesigner" application="org.eclipse.actf.examples.adesigner.org.eclipse.actf.examples.adesigner.ADesignerApplication" version="0.7.1.qualifier" useFeatures="true" includeLaunchers="true">
 
    <aboutInfo>
       <image path="/org.eclipse.actf.examples.adesigner/about.gif"/>
@@ -14,8 +14,7 @@
    </configIni>
 
    <launcherArgs>
-      <vmArgs>-Xmx512m
--Xbootclasspath/a:&quot;C:\Program Files\Java\jre6\lib\plugin.jar;C:\Program Files\Java\jre6\lib\deploy.jar;C:\Program Files\Java\jre6\lib\javaws.jar&quot;</vmArgs>
+      <vmArgs>-Xmx512m</vmArgs>
    </launcherArgs>
 
    <windowImages i32="/org.eclipse.actf.examples.adesigner/icons/excla_32.png"/>
@@ -42,5 +41,6 @@
    <features>
       <feature id="org.eclipse.actf.examples.adesigner" version="0.7.1.qualifier"/>
    </features>
+
 
 </product>
