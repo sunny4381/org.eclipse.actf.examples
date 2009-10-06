@@ -42,7 +42,6 @@
       <import plugin="org.eclipse.help" version="3.3.0" match="compatible"/>
       <import plugin="org.eclipse.help.base" version="3.3.0" match="compatible"/>
       <import plugin="org.eclipse.ui.forms" version="3.2.0" match="compatible"/>
-      <import plugin="org.apache.ant"/>
       <import plugin="org.eclipse.equinox.common"/>
       <import plugin="org.eclipse.equinox.registry"/>
       <import plugin="org.eclipse.help.base" version="3.1.0" match="compatible"/>
