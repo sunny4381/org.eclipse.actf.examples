@@ -42,61 +42,8 @@
                   menubarPath="file/modeGroup"
                   style="push"/>
          </actionSet>
-         <actionSet
-               id="org.eclipse.actf.examples.adesigner.actionSet1"
-               label="org.eclipse.actf.examples.adesigner.vizActionSet">
-			<action
-         	class="org.eclipse.actf.examples.adesigner.ui.actions.SimulationAction"
-         	id="org.eclipse.actf.examples.adesigner.actions.vizLowvision"
-         	definitionId="org.eclipse.actf.examples.adesigner.actions.vizLowvision"
-         	label="%adesigner.action.lowvision"
-         	menubarPath="visualization/"
-         	style="push"/>
-			<action
-         	class="org.eclipse.actf.examples.adesigner.ui.actions.VisualizeAction"
-         	id="org.eclipse.actf.examples.adesigner.actions.vizBlind"
-         	definitionId="org.eclipse.actf.examples.adesigner.actions.vizBlind"
-         	label="%adesigner.action.visualize"
-         	menubarPath="visualization/"
-         	style="push"/>
-         </actionSet>
-         <actionSet
-               id="org.eclipse.actf.examples.adesigner.actionSet2"
-               label="org.eclipse.actf.examples.adesigner.presentationActionSet">
-            <action
-         	class="org.eclipse.actf.examples.adesigner.ui.actions.PresenAuditoriumAction"
-         	id="org.eclipse.actf.examples.adesigner.actions.presenAuditorium"
-         	definitionId="org.eclipse.actf.examples.adesigner.actions.presenAuditorium"
-         	label="%adesigner.action.presen.auditorium"
-         	menubarPath="visualization/"
-         	style="push"/>
-            <action
-         	class="org.eclipse.actf.examples.adesigner.ui.actions.PresenLargeAction"
-         	id="org.eclipse.actf.examples.adesigner.actions.presenLarge"
-         	definitionId="org.eclipse.actf.examples.adesigner.actions.presenLarge"
-         	label="%adesigner.action.presen.large"
-         	menubarPath="visualization/"
-         	style="push"/>
-            <action
-         	class="org.eclipse.actf.examples.adesigner.ui.actions.PresenSmallAction"
-         	id="org.eclipse.actf.examples.adesigner.actions.presenSmall"
-         	definitionId="org.eclipse.actf.examples.adesigner.actions.presenSmall"
-         	label="%adesigner.action.presen.small"
-         	menubarPath="visualization/"
-         	style="push"/>               
-         </actionSet>
       </extension>
          
-   <extension
-         point="org.eclipse.ui.perspectiveExtensions">
-      <perspectiveExtension targetID="org.eclipse.actf.visualization.ui.perspectives.HTMLPerspective">
-         <actionSet id="org.eclipse.actf.examples.adesigner.actionSet1"/>
-      </perspectiveExtension>
-      <perspectiveExtension targetID="org.eclipse.actf.visualization.ui.perspectives.ODFPerspective">
-         <actionSet id="org.eclipse.actf.examples.adesigner.actionSet1"/>
-         <actionSet id="org.eclipse.actf.examples.adesigner.actionSet2"/>
-      </perspectiveExtension>
-   </extension>
    
    <extension
          point="org.eclipse.ui.commands">
@@ -104,20 +51,11 @@
             id="org.eclipse.actf.examples.adesigner.actions.OpenAction"
             name="%adesigner.action.open"/>
       <command
-            id="org.eclipse.actf.examples.adesigner.actions.vizBlind"
+            id="org.eclipse.actf.visualization.blind.ui.actions.VisualizeAction"
             name="%adesigner.action.visualize"/>
       <command
-            id="org.eclipse.actf.examples.adesigner.actions.vizLowvision"
+            id="org.eclipse.actf.visualization.lowvision.ui.actions.SimulationAction"
             name="%adesigner.action.lowvision"/>
-      <command
-            id="org.eclipse.actf.examples.adesigner.actions.presenAuditorium"
-            name="%adesigner.action.presen.auditorium"/>
-      <command
-            id="org.eclipse.actf.examples.adesigner.actions.presenLarge"
-            name="%adesigner.action.presen.large"/>
-      <command
-            id="org.eclipse.actf.examples.adesigner.actions.presenSmall"
-            name="%adesigner.action.presen.small"/>
    </extension>
    <extension
          point="org.eclipse.ui.bindings">
@@ -126,25 +64,13 @@
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="CTRL+O"/>
       <key
-            commandId="org.eclipse.actf.examples.adesigner.actions.vizBlind"
+            commandId="org.eclipse.actf.visualization.blind.ui.actions.VisualizeAction"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="CTRL+SHIFT+B"/>
       <key
-            commandId="org.eclipse.actf.examples.adesigner.actions.vizLowvision"
+            commandId="org.eclipse.actf.visualization.lowvision.ui.actions.SimulationAction"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="CTRL+SHIFT+O"/>
-      <key
-            commandId="org.eclipse.actf.examples.adesigner.actions.presenAuditorium"
-            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-            sequence="CTRL+SHIFT+A"/>
-      <key
-            commandId="org.eclipse.actf.examples.adesigner.actions.presenLarge"
-            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-            sequence="CTRL+SHIFT+G"/>
-      <key
-            commandId="org.eclipse.actf.examples.adesigner.actions.presenSmall"
-            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-            sequence="CTRL+SHIFT+M"/>
    </extension>
    <extension
          id="aDesigner"
