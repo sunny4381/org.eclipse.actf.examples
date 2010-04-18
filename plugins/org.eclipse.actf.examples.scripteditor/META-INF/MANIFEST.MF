@@ -1,0 +1,26 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: ACTF Example ScriptEditor Client (Incubation)
+Bundle-SymbolicName: org.eclipse.actf.examples.scripteditor; singleton:=true
+Bundle-Version: 0.0.1.qualifier
+Bundle-Activator: org.eclipse.actf.examples.scripteditor.Activator
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.ui,
+ org.eclipse.actf.ui,
+ org.eclipse.actf.model.ui,
+ org.eclipse.actf.model.flash.proxy,
+ org.eclipse.actf.core,
+ org.eclipse.actf.util.win32,
+ org.eclipse.ui.views,
+ org.eclipse.actf.ai.voice,
+ org.eclipse.actf.ai.tts.protalker,
+ org.eclipse.actf.ai.tts.sapi,
+ org.eclipse.actf.model.ui.editors.ie,
+ org.eclipse.actf.model.dom.dombycom,
+ org.eclipse.actf.util.vocab,
+ org.eclipse.actf.examples.scripteditor.doc;bundle-version="0.0.1"
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-ActivationPolicy: lazy
+Bundle-localization: plugin
+Import-Package: org.eclipse.actf.model.flash
+Bundle-Vendor: Eclipse.org

@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: ACTF Example ScriptEditor Help NL1 Fragment (Incubation)
+Bundle-SymbolicName: org.eclipse.actf.examples.scripteditor.doc.nl1
+Bundle-Version: 0.0.1.qualifier
+Bundle-Vendor: Eclipse.org
+Fragment-Host: org.eclipse.actf.examples.scripteditor.doc;bundle-version="0.0.1"
