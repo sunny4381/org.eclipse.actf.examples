@@ -595,7 +595,7 @@
    <guideline>
     <gItem name="WCAG" id="7.2" />
     <gItem name="WCAG 2.0" id="2.2.2" />
-    <gItem name="JIS" id="5.8(a)" />
+    <gItem name="JIS" id="5.1(a), 5.8(a)" />
     <gItem name="IBMGuideline" id="13" />
    </guideline>
    <metrics>
@@ -608,7 +608,7 @@
   <checkitem id="C_34.0" type="error" >
    <guideline>
     <gItem name="WCAG" id="7.3" />
-    <gItem name="JIS" id="5.1(b)" />
+    <gItem name="JIS" id="5.1(a), 5.8(a)" />
     <gItem name="IBMGuideline" id="13" />
    </guideline>
    <metrics>
