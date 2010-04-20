@@ -482,6 +482,7 @@ public class EditPanelTab implements IUNIT {
 			labelVPitch = new Label(ownComposite, SWT.NONE);
 			labelVPitch.setLayoutData(labelVPitchLData);
 			labelVPitch.setText("Pitch");
+			labelVPitch.setVisible(false);
 
 			FormData labelVVolumeLData = new FormData();
 			labelVVolumeLData.left = new FormAttachment(0, 1000, 656);
@@ -489,6 +490,7 @@ public class EditPanelTab implements IUNIT {
 			labelVVolume = new Label(ownComposite, SWT.NONE);
 			labelVVolume.setLayoutData(labelVVolumeLData);
 			labelVVolume.setText("Volume");
+			labelVVolume.setVisible(false);
 
 			// Scale : each parameters
 			FormData scaleVoiceSpeedLData = new FormData();
@@ -522,6 +524,7 @@ public class EditPanelTab implements IUNIT {
 			scaleVoicePitch.setIncrement(10);
 			scaleVoicePitch.setSelection(50);
 			scaleVoicePitch.setToolTipText("50/100");
+			scaleVoicePitch.setVisible(false);
 
 			// Select Scale Listener
 			scaleVoicePitch.addSelectionListener(new ScaleSelectionAdapter());
@@ -541,6 +544,7 @@ public class EditPanelTab implements IUNIT {
 			scaleVoiceVolume.setIncrement(10);
 			scaleVoiceVolume.setSelection(50);
 			scaleVoiceVolume.setToolTipText("50/100");
+			scaleVoiceVolume.setVisible(false);
 
 			// Select Scale Listener
 			scaleVoiceVolume.addSelectionListener(new ScaleSelectionAdapter());
