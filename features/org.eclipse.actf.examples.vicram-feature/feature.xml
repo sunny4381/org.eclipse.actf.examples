@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.actf.examples.vicram"
       label="ACTF Example ViCRAM feature (Incubation)"
-      version="0.7.2.qualifier"
+      version="0.8.0.qualifier"
       provider-name="Eclipse.org"
       plugin="org.eclipse.actf.examples.vicram"
       os="win32"
