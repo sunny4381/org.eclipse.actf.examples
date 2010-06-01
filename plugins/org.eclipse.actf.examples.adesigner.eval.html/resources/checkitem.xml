@@ -976,7 +976,7 @@
   <checkitem id="C_51.0" type="error" >
    <guideline>
     <gItem name="WCAG" id="12.1" />
-    <gItem name="WCAG 2.0" id="2.4.2" />    
+    <gItem name="WCAG 2.0" id="2.4.1" />    
     <gItem name="WCAG 2.0" id="4.1.2" />
     <gItem name="Section508" id="i" />
     <gItem name="JIS" id="5.2(f)" />
@@ -994,7 +994,8 @@
   <checkitem id="C_51.1" type="error" >
    <guideline>
     <gItem name="WCAG" id="12.1" />
-    <gItem name="WCAG 2.0" id="2.4.2" />    
+    <gItem name="WCAG 2.0" id="2.4.1" />    
+    <gItem name="WCAG 2.0" id="4.1.2" />
     <gItem name="Section508" id="i" />
     <gItem name="JIS" id="5.2(f)" />
     <gItem name="IBMGuideline" id="9" />
@@ -1010,7 +1011,6 @@
   <checkitem id="C_52.0" type="info" >
    <guideline>
     <gItem name="WCAG" id="12.2" />
-    <gItem name="WCAG 2.0" id="2.4.2" />    
     <gItem name="JIS" id="5.2(f)" />
     <gItem name="IBMGuideline" id="9" />
    </guideline>
@@ -1024,7 +1024,6 @@
   <checkitem id="C_52.1" type="info" >
    <guideline>
     <gItem name="WCAG" id="12.2" />
-    <gItem name="WCAG 2.0" id="2.4.2" />    
     <gItem name="JIS" id="5.2(f)" />
     <gItem name="IBMGuideline" id="9" />
    </guideline>
