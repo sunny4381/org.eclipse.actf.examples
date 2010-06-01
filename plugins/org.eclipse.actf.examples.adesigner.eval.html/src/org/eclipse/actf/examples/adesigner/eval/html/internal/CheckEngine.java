@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2008 IBM Corporation and Others
+ * Copyright (c) 2004, 2010 IBM Corporation and Others
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -288,6 +288,15 @@ public class CheckEngine extends HtmlTagUtil {
 		return tmpCP;
 	}
 
+	private IProblemItem addCheckerProblem(String strId, String targetStr,
+			NodeList targetNL) {
+		Vector<Node> targetV = new Vector<Node>();
+		for (int i = 0; i < targetNL.getLength(); i++) {
+			targetV.add(targetNL.item(i));
+		}
+		return addCheckerProblem(strId, targetStr, targetV);
+	}
+
 	private void item_0() {
 		NodeList nl = target.getElementsByTagName("applet"); //$NON-NLS-1$
 		int length = nl.getLength();
@@ -428,6 +437,7 @@ public class CheckEngine extends HtmlTagUtil {
 
 	private void item_4() {
 		// need to refine conditions
+		Vector<Node> nodeV = new Vector<Node>();
 		for (int i = 0; i < img_elements.length; i++) {
 			Element el = img_elements[i];
 			if (isNormalImage(el)) {
@@ -437,11 +447,14 @@ public class CheckEngine extends HtmlTagUtil {
 							|| strAlt.length() >= validate_str_len) {
 						if (!strAlt.matches("\\p{ASCII}*") //$NON-NLS-1$
 								|| strAlt.length() > 30) {
-							addCheckerProblem("C_4.0", el); //$NON-NLS-1$
+							nodeV.add(el);
 						}
 					}
 				}
 			}
+		}
+		if (nodeV.size() > 0) {
+			addCheckerProblem("C_4.0", "", nodeV); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	}
 
@@ -528,6 +541,7 @@ public class CheckEngine extends HtmlTagUtil {
 	private void item_8() {
 		// TODO add color info to Description
 		NodeList nl = target.getElementsByTagName("font"); //$NON-NLS-1$
+		Vector<Node> nodeV = new Vector<Node>();
 		int length = nl.getLength();
 		for (int i = 0; i < length; i++) {
 			Element el = (Element) nl.item(i);
@@ -536,10 +550,12 @@ public class CheckEngine extends HtmlTagUtil {
 				strColor = el.getAttribute("color"); //$NON-NLS-1$
 				strBgColor = el.getAttribute("bgcolor"); //$NON-NLS-1$
 				if (!strColor.equals("") || !strBgColor.equals("")) { //$NON-NLS-1$ //$NON-NLS-2$
-					addCheckerProblem("C_8.0", el); //$NON-NLS-1$
+					nodeV.add(el);
 				}
 			}
 		}
+		addCheckerProblem("C_8.0", "", nodeV); //$NON-NLS-1$ //$NON-NLS-2$
+
 		// need to handle CSS
 	}
 
@@ -631,6 +647,7 @@ public class CheckEngine extends HtmlTagUtil {
 		// font
 		NodeList nl = target.getElementsByTagName("font"); //$NON-NLS-1$
 		int length = nl.getLength();
+		Vector<Node> nodeV = new Vector<Node>();
 		for (int i = 0; i < length; i++) {
 			Element el = (Element) nl.item(i);
 			if (el.hasAttribute("size")) { //$NON-NLS-1$
@@ -638,12 +655,16 @@ public class CheckEngine extends HtmlTagUtil {
 				if (strSize != null && strSize.length() > 0) {
 					if (strSize.indexOf("+") == -1 //$NON-NLS-1$
 							&& strSize.indexOf("-") == -1) { // absolute size  //$NON-NLS-1$
-						// //$NON-NLS-1$
-						addCheckerProblem("C_13.0", el); //$NON-NLS-1$
+						nodeV.add(el);
 					}
 				}
 			}
-		} // table
+		}
+		if (nodeV.size() > 0) {
+			addCheckerProblem("C_13.0", "", nodeV); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+
+		// table
 		checkAbsoluteSize("table"); //$NON-NLS-1$
 		// tr
 		checkAbsoluteSize("tr"); //$NON-NLS-1$
@@ -1067,6 +1088,7 @@ public class CheckEngine extends HtmlTagUtil {
 	}
 
 	private void item_35() {
+		// TODO aggregate
 		for (int i = 0; i < img_elements.length; i++) {
 			Element el = img_elements[i];
 			if (isNormalImage(el) && el.hasAttribute(ATTR_SRC)) {
@@ -1074,7 +1096,7 @@ public class CheckEngine extends HtmlTagUtil {
 				if (strSrc != null && strSrc.length() > 0) {
 					String strExt = getFileExtension(strSrc);
 					if (strExt.equalsIgnoreCase("gif")) { //$NON-NLS-1$
-						// gif image check
+						// TODO gif image check
 						addCheckerProblem("C_35.0", //$NON-NLS-1$
 								" (src=\"" + strSrc + "\")", //$NON-NLS-1$ //$NON-NLS-2$
 								el);
@@ -1115,7 +1137,10 @@ public class CheckEngine extends HtmlTagUtil {
 		Element[] mouseFocus = edu.getEventOnMouseElements();
 		// Element[] onKey = edu.getEventOnKeyElements();
 
+		// TODO update message
+
 		HashSet<Element> tmpSet = new HashSet<Element>();
+		Vector<Node> nodeV = new Vector<Node>();
 		for (int i = 0; i < mouseButton.length; i++) {
 			Element el = mouseButton[i];
 			tmpSet.add(el);
@@ -1124,9 +1149,13 @@ public class CheckEngine extends HtmlTagUtil {
 					|| el.hasAttribute(ATTR_ONKEYUP)) {
 				// info (confirm)
 			} else {
-				addCheckerProblem("C_38.0", el); //$NON-NLS-1$
+				nodeV.add(el);
 			}
 		}
+		if (nodeV.size() > 0) {
+			addCheckerProblem("C_38.0", "", nodeV); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		nodeV.clear();
 		for (int i = 0; i < mouseFocus.length; i++) {
 			Element el = mouseFocus[i];
 			if (tmpSet.add(el)) {
@@ -1135,9 +1164,12 @@ public class CheckEngine extends HtmlTagUtil {
 						|| el.hasAttribute(ATTR_ONSELECT)) {
 					// info (confirm)
 				} else {
-					addCheckerProblem("C_38.0", el); //$NON-NLS-1$
+					nodeV.add(el);
 				}
 			}
+		}
+		if (nodeV.size() > 0) {
+			addCheckerProblem("C_38.0", "", nodeV); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 
 	}
@@ -1702,6 +1734,7 @@ public class CheckEngine extends HtmlTagUtil {
 		int exceptCount = 0;
 
 		int length = aWithHref_elements.length;
+		Vector<Node> item57V = new Vector<Node>();
 		for (int i = 0; i < length; i++) {
 			el = aWithHref_elements[i];
 
@@ -1710,11 +1743,7 @@ public class CheckEngine extends HtmlTagUtil {
 				String strTitle = el.getAttribute("title"); //$NON-NLS-1$
 				if (strTitle.equals("")) { //$NON-NLS-1$
 					if (strTxt.trim().length() > 0) {
-						addCheckerProblem("C_57.0", //$NON-NLS-1$
-								" (linktext=\"" //$NON-NLS-1$
-										+ strTxt + "\", href=\"" //$NON-NLS-1$
-										+ aWithHref_hrefs[i] + "\")", //$NON-NLS-1$
-								el);
+						item57V.add(el);
 					} else {
 						// can't use link
 
@@ -1795,6 +1824,9 @@ public class CheckEngine extends HtmlTagUtil {
 							el);
 				}
 			}
+		}
+		if (item57V.size() > 0) {
+			addCheckerProblem("C_57.0", "", item57V); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 
 		// need URL check
@@ -2123,6 +2155,7 @@ public class CheckEngine extends HtmlTagUtil {
 	}
 
 	private void item_73() {
+		Vector<Node> nodeV = new Vector<Node>();
 		for (int i = 0; i < object_elements.length; i++) {
 			Element el = object_elements[i];
 			String str = el.getAttribute("data"); //$NON-NLS-1$
@@ -2130,7 +2163,7 @@ public class CheckEngine extends HtmlTagUtil {
 			if (str.equalsIgnoreCase("pdf") //$NON-NLS-1$
 					|| str.equalsIgnoreCase("ppt") //$NON-NLS-1$
 					|| isAudioFileExt(str) || isMultimediaFileExt(str)) {
-				addCheckerProblem("C_73.0", el); //$NON-NLS-1$
+				nodeV.add(el);
 			}
 		}
 		for (int i = 0; i < aWithHref_hrefs.length; i++) {
@@ -2140,7 +2173,7 @@ public class CheckEngine extends HtmlTagUtil {
 			if (str.equalsIgnoreCase("pdf") //$NON-NLS-1$
 					|| str.equalsIgnoreCase("ppt") //$NON-NLS-1$
 					|| isAudioFileExt(str) || isMultimediaFileExt(str)) {
-				addCheckerProblem("C_73.0", el); //$NON-NLS-1$
+				nodeV.add(el);
 			}
 		}
 
@@ -2156,10 +2189,12 @@ public class CheckEngine extends HtmlTagUtil {
 				if (str.equalsIgnoreCase("pdf") //$NON-NLS-1$
 						|| str.equalsIgnoreCase("ppt") //$NON-NLS-1$
 						|| isAudioFileExt(str) || isMultimediaFileExt(str)) {
-					addCheckerProblem("C_73.0", el); //$NON-NLS-1$
-					break;
+					nodeV.add(el);
 				}
 			}
+		}
+		if (nodeV.size() > 0) {
+			addCheckerProblem("C_73.0", "", nodeV); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	}
 
@@ -2306,13 +2341,11 @@ public class CheckEngine extends HtmlTagUtil {
 		}
 
 		nl = target.getElementsByTagName("style"); //$NON-NLS-1$
-		length = nl.getLength();
-		for (int i = 0; i < length; i++) {
-			addCheckerProblem("C_77.1", //$NON-NLS-1$
-					// AdditionalDescription.getString("CheckEngine._(style_tag)_495"),
-					// //$NON-NLS-1$
-					(Element) nl.item(i));
+		if (nl.getLength() > 0) {
+			addCheckerProblem("C_77.1", "", nl); //$NON-NLS-1$ //$NON-NLS-2$
 		}
+
+		Vector<Node> nodeV = new Vector<Node>();
 
 		if (body_elements.length > 0) {
 			Element bodyEl = body_elements[0];
@@ -2324,14 +2357,7 @@ public class CheckEngine extends HtmlTagUtil {
 					String strAlt = el.getAttribute("style"); //$NON-NLS-1$
 					if (!strAlt.equals("")) { //$NON-NLS-1$
 						// alert about style
-						addCheckerProblem("C_77.2", //$NON-NLS-1$
-								// AdditionalDescription.getString("CheckEngine._(style_attribute_for_tag___499")
-								// + //$NON-NLS-1$
-								SPACE_STR + curNode.getNodeName() + SPACE_STR,
-								// +
-								// AdditionalDescription.getString("CheckEngine.)_488"),
-								// //$NON-NLS-1$
-								el);
+						nodeV.add(el);
 					}
 				}
 
@@ -2348,6 +2374,9 @@ public class CheckEngine extends HtmlTagUtil {
 					}
 				}
 			}
+		}
+		if (nodeV.size() > 0) {
+			addCheckerProblem("C_77.2", "", nodeV); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	}
 
@@ -2684,6 +2713,7 @@ public class CheckEngine extends HtmlTagUtil {
 	private void checkAbsoluteSize(String strName) {
 		NodeList nl = target.getElementsByTagName(strName);
 		int length = nl.getLength();
+		Vector<Node> nodeV = new Vector<Node>();
 		for (int i = 0; i < length; i++) {
 			Element el = (Element) nl.item(i);
 			String strWidth = el.getAttribute("width"); //$NON-NLS-1$
@@ -2693,9 +2723,11 @@ public class CheckEngine extends HtmlTagUtil {
 					|| (strHeight != null && !strHeight.equals("") //$NON-NLS-1$
 					&& strHeight.indexOf("%") == -1)) { //$NON-NLS-1$
 				// absolute width or height
-				addCheckerProblem("C_13.0", el); //$NON-NLS-1$
+				nodeV.add(el);
 			}
-
+		}
+		if (nodeV.size() > 0) {
+			addCheckerProblem("C_13.0", "", nodeV);//$NON-NLS-1$ //$NON-NLS-2$
 		}
 	}
 
@@ -2719,12 +2751,8 @@ public class CheckEngine extends HtmlTagUtil {
 
 	private void checkObsoluteEle(String problemId, String strEle) {
 		NodeList nl = target.getElementsByTagName(strEle);
-		int length = nl.getLength();
-		for (int i = 0; i < length; i++) {
-			Element el = (Element) nl.item(i);
-			// obsolute elemnet check
-			addCheckerProblem(problemId, // AdditionalDescription.getString("CheckEngine._(obsolete_tag___578")
-					SPACE_STR + strEle + SPACE_STR, el);
+		if (nl.getLength() > 0) {
+			addCheckerProblem(problemId, strEle, nl);
 		}
 	}
 
