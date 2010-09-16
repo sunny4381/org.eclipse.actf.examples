@@ -144,7 +144,6 @@
     <gItem name="JIS" id="7.2.4.10" />
    </guideline>
    <metrics>
-    <mItem name="Compliance" score="2" />
     <mItem name="Navigability" score="2" />
    </metrics>
    <description>
