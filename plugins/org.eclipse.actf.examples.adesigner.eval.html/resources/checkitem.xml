@@ -330,16 +330,14 @@
     <desc>This page has a link which might not be able to use without scripts.</desc>
    </description>
   </checkitem>
-  <checkitem id="C_200.1" type="error" >
+  <checkitem id="C_200.1" type="warning" >
    <guideline>
     <gItem name="WCAG" id="6.3" />
     <gItem name="Section508" id="l" />
     <gItem name="IBMGuideline" id="6" />
    </guideline>
    <metrics>
-    <mItem name="Compliance" score="2" />
-    <mItem name="Listenability" score="5" />
-    <mItem name="Navigability" score="15" />
+    <mItem name="Navigability" />
    </metrics>
    <description>
     <desc>This page has more than ten links which might not be able to use without scripts. Please consider providing alternative links.</desc>
