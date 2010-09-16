@@ -324,7 +324,7 @@
     <gItem name="IBMGuideline" id="6" />
    </guideline>
    <metrics>
-    <mItem name="Compliance" />
+    <mItem name="Navigability" />
    </metrics>
    <description>
     <desc>This page has a link which might not be able to use without scripts.</desc>
@@ -349,7 +349,7 @@
     <gItem name="IBMGuideline" id="6" />
    </guideline>
    <metrics>
-    <mItem name="Compliance" />
+    <mItem name="Navigability" />
    </metrics>
    <description>
     <desc>This page has some invisible elements in initial state. Please confirm that it is accessible without scripts, or there are accessible alternatives in the page.</desc>
@@ -361,7 +361,7 @@
     <gItem name="IBMGuideline" id="6" />
    </guideline>
    <metrics>
-    <mItem name="Compliance" />
+    <mItem name="Navigability" />
    </metrics>
    <description>
     <desc>This page has an invisible link in initial state. Please confirm that it is accessible without scripts, or there is an accessible alternative link in the page.</desc>
