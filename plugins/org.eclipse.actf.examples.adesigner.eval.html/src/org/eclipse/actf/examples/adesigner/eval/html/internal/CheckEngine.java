@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2010 IBM Corporation and Others
+ * Copyright (c) 2004, 2011 IBM Corporation and Others
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,19 +14,28 @@ package org.eclipse.actf.examples.adesigner.eval.html.internal;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
+import org.eclipse.actf.model.dom.html.DocumentTypeUtil;
+import org.eclipse.actf.visualization.eval.IEvaluationItem;
+import org.eclipse.actf.visualization.eval.guideline.GuidelineHolder;
 import org.eclipse.actf.visualization.eval.html.HtmlEvalUtil;
 import org.eclipse.actf.visualization.eval.html.HtmlTagUtil;
 import org.eclipse.actf.visualization.eval.problem.HighlightTargetNodeInfo;
 import org.eclipse.actf.visualization.eval.problem.IProblemItem;
 import org.eclipse.actf.visualization.eval.problem.ProblemItemImpl;
+import org.eclipse.actf.visualization.eval.problem.ReportUtil;
+import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
+import org.w3c.dom.DocumentType;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -43,7 +52,7 @@ public class CheckEngine extends HtmlTagUtil {
 
 	private static final String WINDOW_OPEN = "window.open"; //$NON-NLS-1$
 
-	public static final int ITEM_COUNT = 90;
+	public static final int ITEM_COUNT = 1000;
 
 	private static final int QUOTATION_SHORT_NUM = 10;
 
@@ -72,8 +81,8 @@ public class CheckEngine extends HtmlTagUtil {
 
 	static {
 		Method[] tmpM = CheckEngine.class.getDeclaredMethods();
-		checkMethods = new Method[100];// TODO
-		mobileCheckMethods = new Method[100];// TODO
+		checkMethods = new Method[1000];// TODO
+		mobileCheckMethods = new Method[1000];// TODO
 		for (Method m : tmpM) {
 			String name = m.getName();
 			if (name.startsWith("item_")) { //$NON-NLS-1$
@@ -97,6 +106,11 @@ public class CheckEngine extends HtmlTagUtil {
 
 	private static final String[] MULTIMEDIA_FILE_EXTENSION = {
 			"avi", "ram", "rm", "asf", "wm", "wmx", "wmv", "asx", "mpeg", "mpg" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$
+
+	/**
+	 * debug flag for developers!
+	 */
+	private static final boolean DEBUG = false;
 
 	private Set<String> blockEleSet = HtmlTagUtil.getBlockElementSet();
 
@@ -152,11 +166,21 @@ public class CheckEngine extends HtmlTagUtil {
 
 	private double invalidLinkRatio;
 
+	private boolean isXHTML = false;
+
+	private List<Element> labelList;
+	private List<Element> formList;
+	private Vector<Node> formVwithText;
+	private List<Element> layoutTableList;
+	private List<Element> dataTableList;
+
 	// private int invisibleElementCount = 0;
 
 	// private String[] invisibleLinkStrings = new String[0];
 
 	private HtmlEvalUtil edu;
+
+	private String docTypeS;
 
 	/**
 	 * 
@@ -194,10 +218,23 @@ public class CheckEngine extends HtmlTagUtil {
 		img_elements = edu.getImg_elements();
 
 		table_elements = edu.getTable_elements();
+		// System.err.println(table_elements.length + " table(s)");
 		bottom_data_tables = edu.getBottom_data_tables();
 		bottom_1row1col_tables = edu.getBottom_1row1col_tables();
 		bottom_notdata_tables = edu.getBottom_notdata_tables();
 		parent_table_elements = edu.getParent_table_elements();
+		// for new JIS
+		layoutTableList = new ArrayList<Element>();
+		layoutTableList.addAll(Arrays.asList(parent_table_elements));
+		layoutTableList.addAll(Arrays.asList(bottom_1row1col_tables));
+		layoutTableList.addAll(Arrays.asList(bottom_notdata_tables));
+		// System.err.println(layoutTableList.size() + " layout table(s)");
+		dataTableList = new ArrayList<Element>();
+		dataTableList.addAll(Arrays.asList(bottom_data_tables));
+		// System.err.println(dataTableList.size() + " data table(s)");
+		assert table_elements.length == layoutTableList.size()
+				+ dataTableList.size();
+
 		body_elements = edu.getBody_elements();
 		frame_elements = edu.getFrame_elements();
 		iframe_elements = edu.getIframe_elements();
@@ -205,9 +242,28 @@ public class CheckEngine extends HtmlTagUtil {
 
 		headings = edu.getHeadings();
 
+		DocumentType docType = target.getDoctype();
+		docTypeS = DocumentTypeUtil.getOriginalID(docType);
+		if (docTypeS.indexOf("XHTML") > 0) {
+			isXHTML = true;
+		}
+
 	}
 
 	public Vector<IProblemItem> check() {
+		if (DEBUG) {
+			GuidelineHolder gh = GuidelineHolder.getInstance();
+			Set<IEvaluationItem> eSet = gh.getMatchedCheckitemSet();
+			ArrayList<IProblemItem> ar = new ArrayList<IProblemItem>();
+			for (IEvaluationItem i : eSet) {
+				ar.add(new ProblemItemImpl(i.getId()));
+			}
+			ReportUtil ru = new ReportUtil();
+			System.out.println("\"ACTF id\"," + ru.getFirstLine());
+			for (IProblemItem i : ar) {
+				System.out.println("\"" + i.getId() + "\"," + ru.getCSV(i));
+			}
+		}
 
 		checkDomDifference();
 
@@ -239,6 +295,9 @@ public class CheckEngine extends HtmlTagUtil {
 		}
 
 		edu.getPageData().setInvalidLinkRatio(invalidLinkRatio);
+
+		// For new JIS debug
+		// item_6();
 
 		return (result);
 	}
@@ -315,19 +374,11 @@ public class CheckEngine extends HtmlTagUtil {
 			String desText = getTextAltDescendant(el);
 			bHasText = (desText.length() > 0);
 
-			if (bHasAlt) {
-				if (bHasText) {
-					// check alt == text??
-				} else {
-					addCheckerProblem("C_0.1", el); //$NON-NLS-1$
-				}
+			if (!bHasAlt)
+				addCheckerProblem("C_0.0", el); //$NON-NLS-1$
+			if (!bHasText) {
+				addCheckerProblem("C_0.1", el); //$NON-NLS-1$
 
-			} else {
-				if (bHasText) {
-					addCheckerProblem("C_0.0", el); //$NON-NLS-1$
-				} else {
-					addCheckerProblem("C_0.2", el); //$NON-NLS-1$
-				}
 				// alternative link alert
 				// check descendant text or image
 				// addCheckerProblem("C_0.1", el);
@@ -341,26 +392,22 @@ public class CheckEngine extends HtmlTagUtil {
 		for (int i = 0; i < object_elements.length; i++) {
 			Element el = object_elements[i];
 
-			boolean bReported = false;
+			/*
+			 * boolean bReported = false;
+			 * 
+			 * boolean bHasTextImg = hasTextDescendant(el); if (!bHasTextImg) {
+			 * NodeList imgNl = el.getElementsByTagName("img"); //$NON-NLS-1$ if
+			 * (imgNl.getLength() > 0) { // need alt description check
+			 * bHasTextImg = true; } } if (!bHasTextImg) { // text or img check
+			 * addCheckerProblem("C_1.1", el); //$NON-NLS-1$ bReported = true; }
+			 * 
+			 * if (!bReported) { // alert // check links inside an OBJECT
+			 * element, or a description link. // addCheckerProblem("C_1.2",
+			 * el); }
+			 */
 
-			boolean bHasTextImg = hasTextDescendant(el);
-			if (!bHasTextImg) {
-				NodeList imgNl = el.getElementsByTagName("img"); //$NON-NLS-1$
-				if (imgNl.getLength() > 0) {
-					// need alt description check
-					bHasTextImg = true;
-				}
-			}
-			if (!bHasTextImg) {
-				// text or img check
+			if (getTextAltDescendant(el).trim().length() == 0) {
 				addCheckerProblem("C_1.1", el); //$NON-NLS-1$
-				bReported = true;
-			}
-
-			if (!bReported) {
-				// alert
-				// check links inside an OBJECT element, or a description link.
-				// addCheckerProblem("C_1.2", el);
 			}
 		}
 
@@ -409,10 +456,10 @@ public class CheckEngine extends HtmlTagUtil {
 	}
 
 	private void item_3() {
-		for (int i = 0; i < img_elements.length; i++) {
-			Element el = img_elements[i];
+		for (Element el : img_elements) {
 			if (el.hasAttribute("longdesc")) { //$NON-NLS-1$
 				String strLongDesc = el.getAttribute("longdesc"); //$NON-NLS-1$
+				// original aDesigner routine
 				if (strLongDesc.length() > 0) {
 					boolean isDlink = false;
 					// need to check distance
@@ -431,6 +478,8 @@ public class CheckEngine extends HtmlTagUtil {
 						addCheckerProblem("C_3.0", el); //$NON-NLS-1$
 					}
 				}
+				// For new JIS
+				addCheckerProblem("C_3.1", el); //$NON-NLS-1$
 			}
 		}
 	}
@@ -493,6 +542,7 @@ public class CheckEngine extends HtmlTagUtil {
 				if (isLeafBlockEle(curNode)
 						&& isAsciiArtString(getTextAltDescendant(curNode))) {
 					addCheckerProblem("C_6.0", (Element) curNode); //$NON-NLS-1$
+					addCheckerProblem("C_6.1", (Element) curNode); //$NON-NLS-1$
 					isArtStr = true;
 				}
 
@@ -630,8 +680,9 @@ public class CheckEngine extends HtmlTagUtil {
 							new Object[] { String.valueOf(maxCount) });
 				}
 				addCheckerProblem("C_12.0", str, el); //$NON-NLS-1$
-			}
-		}
+			} else
+				System.err.println("Unreachable code!");
+		} // end of top-most for loop
 		for (int i = 0; i < bottom_1row1col_tables.length; i++) {
 			addCheckerProblem("C_12.1", //$NON-NLS-1$
 					bottom_1row1col_tables[i]);
@@ -871,16 +922,23 @@ public class CheckEngine extends HtmlTagUtil {
 	}
 
 	private void item_21() {
-		NodeList nl = target.getElementsByTagName("html"); //$NON-NLS-1$
-		if (nl.getLength() > 0) {
-			boolean bValidLan = false;
-			Element el = (Element) nl.item(0);
-			String strLan = el.getAttribute("lang"); //$NON-NLS-1$
-			if (strLan != null && strLan.length() > 0) {
-				bValidLan = isValidLang(strLan);
-			}
-			if (!bValidLan) { // language check
-				addCheckerProblem("C_21.0", el); //$NON-NLS-1$
+		Element el = target.getDocumentElement();
+		String attName = isXHTML ? "xml:lang" : "lang";
+		String strLang = el.getAttribute(attName);
+		// System.out.println("(xml:)lang = " + strLang); // debug
+
+		if (isEmptyString(strLang)) {
+			// no lang attribute
+			addCheckerProblem("C_21.0", attName, el); //$NON-NLS-1$
+		} else {
+			// check conformance to "BCP 47"
+			LanguageTag tag = new LanguageTag(strLang, false);
+
+			if (!tag.isWellFormed()) {
+				addCheckerProblem("C_21.1", attName, el); //$NON-NLS-1$
+			} else {
+				// valid language
+				addCheckerProblem("C_21.2", attName, el); //$NON-NLS-1$
 			}
 		}
 	}
@@ -895,7 +953,14 @@ public class CheckEngine extends HtmlTagUtil {
 	private void item_23() {
 		for (int i = 0; i < parent_table_elements.length; i++) {
 			boolean bHasTh = false;
+			boolean bHasSummary = false;
+			boolean bHasCaption = false;
 			Element tNode = parent_table_elements[i];
+
+			bHasSummary = (tNode.getAttribute("summary") != null && tNode
+					.getAttribute("summary").length() > 0);
+			bHasCaption = tNode.getElementsByTagName("caption").getLength() > 0;
+
 			Stack<Node> stack = new Stack<Node>();
 			Node curNode = tNode.getFirstChild();
 			while (curNode != null) {
@@ -921,35 +986,69 @@ public class CheckEngine extends HtmlTagUtil {
 				}
 			}
 
-			if (bHasTh) { // table aleret
+			if (bHasTh || bHasCaption || bHasSummary) { // table aleret
 				addCheckerProblem("C_23.0", tNode); //$NON-NLS-1$
 			}
 
 			// bottom table check(layout / not)
-
 		}
+
+		// C_23.1/2 check. For new JIS
+		List<Element> tables = new ArrayList<Element>();
+
+		for (Element table : dataTableList) {
+			boolean added = false;
+			if (getDirectDescendantElements(table, "th").size() > 0) {
+				tables.add(table);
+				added = true;
+			}
+			if (getDirectDescendantElements(table, "caption").size() > 0) {
+				if (!added) {
+					tables.add(table);
+					added = true;
+				}
+				addCheckerProblem("C_25.3", table); //$NON-NLS-1$
+			} else {
+				addCheckerProblem("C_25.1", table); //$NON-NLS-1$
+			}
+			if (table.hasAttribute("summary")
+					&& !isEmptyString(table.getAttribute("summary"))) {
+				if (!added) {
+					tables.add(table);
+					added = true;
+				}
+				addCheckerProblem("C_25.4", table); //$NON-NLS-1$
+			} else {
+				addCheckerProblem("C_25.2", table); //$NON-NLS-1$
+			}
+		}
+
+		if (tables.size() > 0) {
+			Vector<Node> tablesV = new Vector<Node>(tables);
+			addCheckerProblem("C_23.1", "", tablesV); //$NON-NLS-1$
+		}
+
+		tables.clear();
+		for (Element table : layoutTableList) {
+			if (getDirectDescendantElements(table, "th").size() > 0) {
+				tables.add(table);
+			} else if (getDirectDescendantElements(table, "caption").size() > 0) {
+				tables.add(table);
+			} else if (table.hasAttribute("summary")
+					&& !isEmptyString(table.getAttribute("summary"))) {
+				tables.add(table);
+			}
+		}
+
+		if (tables.size() > 0) {
+			Vector<Node> tablesV = new Vector<Node>(tables);
+			addCheckerProblem("C_23.2", "", tablesV); //$NON-NLS-1$
+		}
+
 	}
 
 	private void item_25() {
-		for (int i = 0; i < bottom_data_tables.length; i++) {
-			Element el = bottom_data_tables[i];
-			if (el.getElementsByTagName("th").getLength() > 0) { //$NON-NLS-1$
-				NodeList capNl = el.getElementsByTagName("caption"); //$NON-NLS-1$
-				String strSum = el.getAttribute("summary"); //$NON-NLS-1$
-				if (capNl.getLength() == 0) {
-					if (strSum.equals("")) { //$NON-NLS-1$
-						// caption and summary alert
-						addCheckerProblem("C_25.0", el); //$NON-NLS-1$
-					} else {
-						// caption alert
-						addCheckerProblem("C_25.1", el); //$NON-NLS-1$
-					}
-				} else if (strSum.equals("")) { //$NON-NLS-1$
-					// summary alert
-					addCheckerProblem("C_25.2", el); //$NON-NLS-1$
-				}
-			}
-		}
+		// moved to item_23()!
 	}
 
 	private void item_26() {
@@ -976,7 +1075,7 @@ public class CheckEngine extends HtmlTagUtil {
 			String strSrc = el.getAttribute(ATTR_SRC);
 
 			if (!isHtmlFile(strSrc)) { // no-html file check
-				addCheckerProblem("C_27.0", el); //$NON-NLS-1$
+				addCheckerProblem("C_27.0", "(src=" + strSrc + ")", el); //$NON-NLS-1$
 			}
 		}
 
@@ -1088,7 +1187,8 @@ public class CheckEngine extends HtmlTagUtil {
 	}
 
 	private void item_35() {
-		// TODO aggregate
+		Vector<Node> gifImages = new Vector<Node>();
+
 		for (int i = 0; i < img_elements.length; i++) {
 			Element el = img_elements[i];
 			if (isNormalImage(el) && el.hasAttribute(ATTR_SRC)) {
@@ -1097,13 +1197,16 @@ public class CheckEngine extends HtmlTagUtil {
 					String strExt = getFileExtension(strSrc);
 					if (strExt.equalsIgnoreCase("gif")) { //$NON-NLS-1$
 						// TODO gif image check
-						addCheckerProblem("C_35.0", //$NON-NLS-1$
-								" (src=\"" + strSrc + "\")", //$NON-NLS-1$ //$NON-NLS-2$
-								el);
+						gifImages.add(el);
 					}
 				}
 			}
 		}
+		if (gifImages.size() > 0)
+			addCheckerProblem("C_35.0", //$NON-NLS-1$
+					// " (src=\"" + strSrc + "\")", //$NON-NLS-1$ //$NON-NLS-2$
+					"", gifImages);
+
 	}
 
 	private void item_36() {
@@ -1544,8 +1647,10 @@ public class CheckEngine extends HtmlTagUtil {
 							continue;
 						} else if (strName.equalsIgnoreCase("a")) { //$NON-NLS-1$
 							try {
-								url2 = new URL(baseUrl, ((Element) nextNode)
-										.getAttribute(HtmlTagUtil.ATTR_HREF))
+								url2 = new URL(
+										baseUrl,
+										((Element) nextNode)
+												.getAttribute(HtmlTagUtil.ATTR_HREF))
 										.toString();
 							} catch (MalformedURLException e) {
 								url2 = ((Element) nextNode)
@@ -1617,22 +1722,34 @@ public class CheckEngine extends HtmlTagUtil {
 		addCheckerProblem("C_50.0"); //$NON-NLS-1$
 	}
 
+	/**
+	 * Checks for title attributes of frame/iframe elements. Currently
+	 * C_51.2/C_51.3 are not implemented.
+	 */
 	private void item_51() {
 		for (int i = 0; i < frame_elements.length; i++) {
 			Element el = frame_elements[i];
-			String strTitle = el.getAttribute("title"); //$NON-NLS-1$
-			if (strTitle == null || strTitle.length() == 0) { // frame title
-				// check
+			if (!hasTitle(el)) {
 				addCheckerProblem("C_51.0", el); //$NON-NLS-1$
+			} else if (hasBlankTitle(el)) {
+				addCheckerProblem("C_51.4", el); //$NON-NLS-1$
+			} else {
+				addCheckerProblem("C_51.2", el); //$NON-NLS-1$
 			}
 		}
 
 		for (int i = 0; i < iframe_elements.length; i++) {
 			Element el = iframe_elements[i];
-			if (!el.hasAttribute("title")) { //$NON-NLS-1$
+			if (!hasTitle(el)) {
 				addCheckerProblem("C_51.1", //$NON-NLS-1$
 						": src=" + el.getAttribute(ATTR_SRC), //$NON-NLS-1$ 
 						el);
+			} else if (hasBlankTitle(el)) {
+				addCheckerProblem("C_51.5", //$NON-NLS-1$
+						": src=" + el.getAttribute(ATTR_SRC), //$NON-NLS-1$ 
+						el);
+			} else {
+				addCheckerProblem("C_51.3", el); //$NON-NLS-1$ 				
 			}
 		}
 	}
@@ -1675,40 +1792,55 @@ public class CheckEngine extends HtmlTagUtil {
 		int length = nl.getLength();
 		for (int i = 0; i < length; i++) {
 			// alert to group long lists of selections
-			Element el = (Element) nl.item(i);
-			NodeList optGpNl = el.getElementsByTagName("optgroup"); //$NON-NLS-1$
+			Element select = (Element) nl.item(i);
+
+			NodeList optGpNl = select.getElementsByTagName("optgroup"); //$NON-NLS-1$
 			if (optGpNl.getLength() == 0) {
-				// alert to use optgroup
-				NodeList optList = el.getElementsByTagName("option"); //$NON-NLS-1$
-				if (optList.getLength() > 10)
-					addCheckerProblem("C_53.1", el); //$NON-NLS-1$
+				addCheckerProblem("C_53.2", select); //$NON-NLS-1$
+				NodeList optList = select.getElementsByTagName("option"); //$NON-NLS-1$
+				if (optList.getLength() > 10) {
+					addCheckerProblem("C_53.1", select); //$NON-NLS-1$
+				}
 			}
 		}
 	}
 
+	/**
+	 * Fieldset and legend checking
+	 */
 	private void item_54() {
-		NodeList nl = target.getElementsByTagName("form"); //$NON-NLS-1$
-		int length = nl.getLength();
-		for (int i = 0; i < length; i++) {
-			Element el = (Element) nl.item(i);
-			if (getFormControlNum(el) <= 1)
+		if (formList == null)
+			formList = getElements(target, "form"); //$NON-NLS-1$
+		for (Element form : formList) {
+			if (getFormControlNum(form) <= 1)
 				continue;
-			NodeList fieldSetNl = el.getElementsByTagName("fieldset"); //$NON-NLS-1$
-			int fsLength = fieldSetNl.getLength();
-			if (fsLength == 0) {
-				// check to use fieldset
-				addCheckerProblem("C_54.0", el); //$NON-NLS-1$
+			List<Element> fieldsets = getElements(form, "fieldset"); //$NON-NLS-1$
+			if (fieldsets.size() == 0) {
+				addCheckerProblem("C_54.0", form); //$NON-NLS-1$
 			} else {
-				for (int j = 0; j < fsLength; j++) {
-					Element fieldSetEl = (Element) fieldSetNl.item(j);
-					NodeList legendNl = fieldSetEl
-							.getElementsByTagName("legend"); //$NON-NLS-1$
-					if (legendNl.getLength() == 0) {
-						// check to use fieldset with legend for form
-						// not always
-						addCheckerProblem("C_54.1", el); //$NON-NLS-1$
-						break;
+				for (Element fieldset : fieldsets) {
+					addCheckerProblem("C_54.2", fieldset); //$NON-NLS-1$
+					List<Element> legends = getElements(fieldset, "legend"); //$NON-NLS-1$
+					if (legends.size() == 0) {
+						addCheckerProblem("C_54.1", fieldset); //$NON-NLS-1$
+					} else {
+						for (Element e : legends)
+							addCheckerProblem("C_54.4", e); //$NON-NLS-1$
 					}
+				}
+			}
+			// C_54.3 check
+			if (fieldsets.size() >= 2) {
+				FieldsetManager map = new FieldsetManager();
+				int index = 0;
+				for (Element fieldset : fieldsets) {
+					for (Element ctrl : getRadioAndCheck(fieldset)) {
+						map.addEntry(ctrl.getAttribute("name"), ctrl, index);
+					}
+					index++;
+				}
+				for (Vector<Node> error : map.getErrorList()) {
+					addCheckerProblem("C_54.3", "", error); //$NON-NLS-1$
 				}
 			}
 		}
@@ -1735,10 +1867,20 @@ public class CheckEngine extends HtmlTagUtil {
 
 		int length = aWithHref_elements.length;
 		Vector<Node> item57V = new Vector<Node>();
+		Vector<Node> linkTitle = new Vector<Node>();
+
 		for (int i = 0; i < length; i++) {
 			el = aWithHref_elements[i];
 
 			String strTxt = aWithHref_strings[i];
+
+			if (el.hasAttribute("title")) {
+				if (hasBlankTitle(el))
+					addCheckerProblem("C_57.3", el); //$NON-NLS-1$
+				else
+					linkTitle.add(el);
+			}
+
 			if (getWordCount(strTxt) < 3 && strTxt.length() < validate_str_len) {
 				String strTitle = el.getAttribute("title"); //$NON-NLS-1$
 				if (strTitle.equals("")) { //$NON-NLS-1$
@@ -1812,22 +1954,26 @@ public class CheckEngine extends HtmlTagUtil {
 							errorCount++;
 						}
 					}
-				} else if (getWordCount(strTitle) < 3
-						&& strTitle.length() < validate_str_len) {
-					// link title check
-					// show always?
-					addCheckerProblem("C_57.1", //$NON-NLS-1$
-							" (linktext=\"" //$NON-NLS-1$
-									+ strTxt + "\", title=\"" //$NON-NLS-1$
-									+ strTitle + "\", href=\"" //$NON-NLS-1$
-									+ aWithHref_hrefs[i] + "\")", //$NON-NLS-1$
-							el);
+				} else {
+					if (getWordCount(strTitle) < 3
+							&& strTitle.length() < validate_str_len) {
+						// link title check
+						// show always?
+						addCheckerProblem("C_57.1", //$NON-NLS-1$
+								" (linktext=\"" //$NON-NLS-1$
+										+ strTxt + "\", title=\"" //$NON-NLS-1$
+										+ strTitle + "\", href=\"" //$NON-NLS-1$
+										+ aWithHref_hrefs[i] + "\")", //$NON-NLS-1$
+								el);
+					}
 				}
 			}
 		}
 		if (item57V.size() > 0) {
 			addCheckerProblem("C_57.0", "", item57V); //$NON-NLS-1$ //$NON-NLS-2$
 		}
+		if (linkTitle.size() > 0)
+			addCheckerProblem("C_57.4", "", linkTitle); //$NON-NLS-1$ //$NON-NLS-2$
 
 		// need URL check
 
@@ -2233,47 +2379,20 @@ public class CheckEngine extends HtmlTagUtil {
 		}
 	}
 
-	@SuppressWarnings("nls")
 	private void item_76() {
-		for (int i = 0; i < bottom_data_tables.length; i++) {
-			Element el = bottom_data_tables[i];
-			// if (!isDataTable(el))
-			// continue;
-			NodeList trNl = el.getElementsByTagName("tr"); //$NON-NLS-1$
-			int trLength = trNl.getLength();
+		Vector<Node> rowColTables = new Vector<Node>();
+
+		for (Element el : dataTableList) {
 			int thNum = 0;
 			boolean hasScopeAxis = false;
-			for (int j = 0; j < trLength; j++) {
-				NodeList thNl = ((Element) trNl.item(j))
-						.getElementsByTagName("th"); //$NON-NLS-1$
-				int thLength = thNl.getLength();
-				NodeList tdNl = ((Element) trNl.item(j))
-						.getElementsByTagName("td"); //$NON-NLS-1$
-				int tdLength = tdNl.getLength();
-				if (thLength > 0)
+			for (Element tr : getElements(el, "tr")) { //$NON-NLS-1$
+				List<Element> cells = getElements(tr, "th"); //$NON-NLS-1$
+				if (cells.size() > 0)
 					thNum++;
-				for (int k = 0; k < thLength; k++) {
-					if (!((Element) thNl.item(k)).getAttribute("scope") //$NON-NLS-1$
-							.equals("")) { //$NON-NLS-1$
-						hasScopeAxis = true;
-						break;
-					} else if (!((Element) thNl.item(k))
-							.getAttribute("axis").equals(//$NON-NLS-1$
-									"")) { //$NON-NLS-1$
-						hasScopeAxis = true;
-						break;
-					}
-				}
-				if (hasScopeAxis)
-					break;
-				for (int k = 0; k < tdLength; k++) {
-					if (!((Element) tdNl.item(k)).getAttribute("scope") //$NON-NLS-1$
-							.equals("")) { //$NON-NLS-1$
-						hasScopeAxis = true;
-						break;
-					} else if (!((Element) tdNl.item(k))
-							.getAttribute("axis").equals(//$NON-NLS-1$
-									"")) { //$NON-NLS-1$
+				cells.addAll(getElements(tr, "td"));
+				for (Element cell : cells) {
+					if (getAttribute(cell, "scope") != null
+							|| getAttribute(cell, "axis") != null) {
 						hasScopeAxis = true;
 						break;
 					}
@@ -2282,41 +2401,45 @@ public class CheckEngine extends HtmlTagUtil {
 					break;
 			}
 			if (!hasScopeAxis && thNum > 1) {
-				// alert: two or more rows or columns as table header
+				// TODO? alert: two or more rows or columns as table header
 				addCheckerProblem("C_76.0", el); //$NON-NLS-1$
 			}
 
-			// need to check structure (axis, scope)
+			// TODO? need to check structure (axis, scope)
 
-			boolean bHasRowColSpan = false;
-			NodeList thNl = el.getElementsByTagName("th");
-			int thLen = thNl.getLength();
-			for (int j = 0; j < thLen; j++) {
-				Element thEl = (Element) thNl.item(j);
-				if (thEl.hasAttribute("rowspan")
-						|| thEl.hasAttribute("colspan")) {
-					bHasRowColSpan = true;
-					break;
-				}
-			}
-			if (!bHasRowColSpan) {
-				NodeList tdNl = el.getElementsByTagName("td");
-				int tdLen = tdNl.getLength();
-				for (int j = 0; j < tdLen; j++) {
-					Element tdEl = (Element) tdNl.item(j);
-					if (tdEl.hasAttribute("rowspan")
-							|| tdEl.hasAttribute("colspan")) {
-						bHasRowColSpan = true;
-						break;
-					}
-				}
-			}
-
-			if (bHasRowColSpan) {
-				// has rowspan or colspan
-				addCheckerProblem("C_76.1");
+			if (hasRowColSpan(el)) {
+				// the table has rowspan and/or colspan
+				rowColTables.add(el);
 			}
 		}
+
+		if (rowColTables.size() > 0)
+			addCheckerProblem("C_76.1", "", rowColTables);
+	}
+
+	/**
+	 * Returns true if the specified table has any td or th elements which has
+	 * rowspan and/or colspan attribute. for new JIS.
+	 * 
+	 * @param table
+	 *            a leaf table element
+	 * @return a boolean value that indicates if the specified table has any td
+	 *         or th elements which has rowspan and/or colspan attribute.
+	 */
+	private boolean hasRowColSpan(Element table) {
+		boolean bHasRowColSpan = false;
+
+		for (Element cell : getElements(table, "th", "td")) {
+			String rowspan = getAttribute(cell, "rowspan");
+			String colspan = getAttribute(cell, "colspan");
+			if ((rowspan != null && Integer.parseInt(rowspan) > 1)
+					|| (colspan != null && Integer.parseInt(colspan) > 1)) {
+				bHasRowColSpan = true;
+				break;
+			}
+		}
+
+		return bHasRowColSpan;
 	}
 
 	private void item_77() {
@@ -2403,53 +2526,83 @@ public class CheckEngine extends HtmlTagUtil {
 		}
 	}
 
+	/**
+	 * Checks labels and titles for form controls
+	 */
 	private void item_79() {
-		NodeList nl = target.getElementsByTagName("form"); //$NON-NLS-1$
-		int length = nl.getLength();
-		NodeList labelNl = target.getElementsByTagName("label"); //$NON-NLS-1$
-		for (int i = 0; i < length; i++) {
-			Element fEl = (Element) nl.item(i);
-			Vector<Element> fcVector = getFormControl(fEl);
-			int labelLen = labelNl.getLength();
-			for (int j = 0; j < fcVector.size(); j++) {
-				boolean bHasLabel = false;
-				Element el = fcVector.get(j);
-				String strid = el.getAttribute("id"); //$NON-NLS-1$
-				if (!strid.equals("")) { //$NON-NLS-1$
-					for (int k = 0; k < labelLen; k++) {
-						String strFor = ((Element) labelNl.item(k))
-								.getAttribute("for"); //$NON-NLS-1$
-						if (strFor != null && strFor.equalsIgnoreCase(strid)) {
-							bHasLabel = true;
-							break;
-						}
-					}
+		if (labelList == null)
+			labelList = getElements(target, "label"); //$NON-NLS-1$
 
-				}
-				if (!bHasLabel) {
-					// form control label check
-					addCheckerProblem("C_79.0", el); //$NON-NLS-1$
-				} else {
-					String strType = getFormControlType(el);
-					boolean bRadioCheckbox = strType.indexOf("radio") >= 0 //$NON-NLS-1$
-							|| strType.indexOf("checkbox") >= 0; //$NON-NLS-1$
-					if (!hasProperLabel(el, bRadioCheckbox)) {
-						// proper label check
-						if (strType.equals("")) { //$NON-NLS-1$
-							// TYPE removed by IE
-							addCheckerProblem(
-									"C_79.1", " (input type: text)", el); //$NON-NLS-1$ //$NON-NLS-2$
-						} else {
-							addCheckerProblem("C_79.1", //$NON-NLS-1$
-									" (input type: " + strType + ")", //$NON-NLS-1$ //$NON-NLS-2$
-									el);
-						}
-					}
-
-				}
+		for (Element form : getElements(target, "form")) { //$NON-NLS-1$
+			// checks for each form element
+			for (Element el : getFormControl(form)) {
+				// checks for each input controls
+				item_79_label(el);
+				item_79_title(el);
 			}
 		}
 	}
+
+	private void item_79_label(Element ctrl) {
+		String elType = getFormControlType(ctrl);
+		Element l;
+		if ((l = hasImplicitLabel(ctrl)) != null) {
+			addCheckerProblem("C_79.2", l);
+			return;
+		}
+		if (!isLabelable(elType)) {
+			return;
+		}
+
+		String strid = ctrl.getAttribute("id"); //$NON-NLS-1$
+		boolean bHasLabel = this.hasLabel(ctrl);
+		boolean bHasTitle = this.hasTitle(ctrl);
+
+		if (!bHasLabel) {
+			addCheckerProblem("C_79.0", ctrl); //$NON-NLS-1$
+		} else {
+			// TODO highlight the label as well
+			if (!hasProperLabel(ctrl)) {
+				// in case of TYPE was removed by IE
+				addCheckerProblem(
+						"C_79.1", //$NON-NLS-1$
+						" (input type: " + (elType.equals("") ? "text" : elType) + ")", //$NON-NLS-1$ //$NON-NLS-2$
+						ctrl);
+			} else {
+				// H44 OK
+				addCheckerProblem("C_79.5", ctrl); //$NON-NLS-1$
+
+			}
+
+		}
+	}
+
+	private void item_79_title(Element ctrl) {
+		if (hasTitle(ctrl)) {
+			addCheckerProblem("C_79.4", ctrl);
+		} else {
+			if (isLabelable(getFormControlType(ctrl)) && hasLabel(ctrl))
+				return;
+			addCheckerProblem("C_79.6", ctrl);
+		}
+	}
+
+	/**
+	 * Checks whether any label attribute exists in controls temporally
+	 * implemented as separated method. For new JIS
+	 */
+	/*
+	 * private void item_79_label() { NodeList nl =
+	 * target.getElementsByTagName("form"); //$NON-NLS-1$ int length =
+	 * nl.getLength(); NodeList labelNl = target.getElementsByTagName("label");
+	 * //$NON-NLS-1$ // checks for each <form> element for (int i = 0; i <
+	 * length; i++) { Element fEl = (Element) nl.item(i); Vector<Element>
+	 * fcVector = getFormControl(fEl); int labelLen = labelNl.getLength(); //
+	 * checks for each input controls for (int j = 0; j < fcVector.size(); j++)
+	 * { Element el = fcVector.get(j); boolean bTitle = this.hasTitle(el); if
+	 * (!bTitle) { // no title for a form control System.out.println("C_79.6");
+	 * addCheckerProblem("C_79.6", el); //$NON-NLS-1$ } } } }
+	 */
 
 	private void item_80() {
 		// NodeList bodyNl = target.getElementsByTagName("body");
@@ -2627,20 +2780,22 @@ public class CheckEngine extends HtmlTagUtil {
 			while (curNode != null && strBuf.length() < valid_total_text_len) {
 				if (curNode.getNodeType() == Node.TEXT_NODE) {
 					// &#nbsp; (160)
-					strBuf.append(curNode.getNodeValue().replaceAll(
-							String.valueOf((char) 160), "").trim());
+					strBuf.append(curNode.getNodeValue()
+							.replaceAll(String.valueOf((char) 160), "").trim());
 				} else if (curNode.getNodeType() == Node.ELEMENT_NODE) {
 					Element tmpE = (Element) curNode;
 
 					// need to check element name
 
 					if (tmpE.hasAttribute(ATTR_ALT)) {
-						strBuf.append(tmpE.getAttribute(ATTR_ALT).replaceAll(
-								String.valueOf((char) 160), "").trim()); //$NON-NLS-1$
+						strBuf.append(tmpE
+								.getAttribute(ATTR_ALT)
+								.replaceAll(String.valueOf((char) 160), "").trim()); //$NON-NLS-1$
 					}
 					if (tmpE.hasAttribute("title")) {
-						strBuf.append(tmpE.getAttribute("title").replaceAll(
-								String.valueOf((char) 160), "").trim());
+						strBuf.append(tmpE.getAttribute("title")
+								.replaceAll(String.valueOf((char) 160), "")
+								.trim());
 					}
 				}
 
@@ -2670,6 +2825,261 @@ public class CheckEngine extends HtmlTagUtil {
 
 	}
 
+	// For new JIS
+	@SuppressWarnings("nls")
+	private void item_320() {
+		addCheckerProblem("C_320.0");
+	}
+
+	// For new JIS
+	@SuppressWarnings("nls")
+	private void item_321() {
+		addCheckerProblem("C_321.0");
+	}
+
+	// For new JIS
+	@SuppressWarnings("nls")
+	private void item_322() {
+		addCheckerProblem("C_322.0");
+	}
+
+	// For new JIS
+	@SuppressWarnings("nls")
+	private void item_330() {
+		addCheckerProblem("C_330.0");
+	}
+
+	// For new JIS
+	private void item_331() {
+		// System.err.println("C331");
+		Vector<Node> withoutScope = new Vector<Node>();
+		Vector<Node> invalidScope = new Vector<Node>();
+		for (Element table : dataTableList) {
+			// all data tables are leaf tables, so getElements() suffice.
+			for (Element th : getElements(table, "th")) {
+				if (!th.hasAttribute("scope"))
+					withoutScope.add(th);
+				else if (!th.getAttribute("scope").matches(
+						"row(group)?|col(group)?"))
+					invalidScope.add(th);
+			}
+		}
+		if (withoutScope.size() > 0)
+			addCheckerProblem("C_331.0", "", withoutScope);
+		if (invalidScope.size() > 0)
+			addCheckerProblem("C_331.1", "", invalidScope);
+	}
+
+	// For new JIS
+	private void item_332() {
+		// System.err.println("C332");
+		for (Element table : dataTableList) {
+			List<Element> cells = getElements(target, "th", "td");
+			for (Element cell : cells) {
+				if (cell.hasAttribute("headers")) {
+					for (String id : cell.getAttribute("headers").split(
+							"[ \t]+")) {
+						Element referred = target.getElementById(id);
+						if (referred == null) {
+							addCheckerProblem("C_332.1", "(id=" + id + ")",
+									cell);
+						} else if (!referred.getTagName().matches("td|th")) {
+							addCheckerProblem("C_332.2", referred.getTagName(),
+									cell);
+						}
+					}
+				}
+			}
+		}
+	}
+
+	// For new JIS
+	@SuppressWarnings("nls")
+	private void item_380() {
+		NodeList nl = target.getElementsByTagName("form"); //$NON-NLS-1$
+		for (int i = 0; i < nl.getLength(); i++) {
+			Element form = (Element) nl.item(i);
+			boolean hasSubmit = false;
+			NodeList inputs = form.getElementsByTagName("input");
+			for (int j = 0; j < inputs.getLength(); j++) {
+				Element input = (Element) inputs.item(j);
+				String typeS = input.getAttribute("type");
+				if ("submit".equals(typeS) || "image".equals(typeS)) {
+					hasSubmit = true;
+					break;
+				}
+			}
+			if (!hasSubmit) {
+				NodeList buttons = form.getElementsByTagName("button");
+				for (int j = 0; j < buttons.getLength(); j++) {
+					Element button = (Element) buttons.item(j);
+					String typeS = button.getAttribute("type");
+					if ("submit".equals(typeS)) {
+						hasSubmit = true;
+						break;
+					}
+				}
+			}
+			if (!hasSubmit) {
+				// System.out.println("C_380.0 NG");
+				addCheckerProblem("C_380.0", form);
+			} else {
+				// System.out.println("C_380.0 OK");
+			}
+
+		}
+	}
+
+	// For new JIS
+	@SuppressWarnings("nls")
+	private void item_381() {
+		for (Element form : getElements(target, "form")) {
+			if (form.getElementsByTagName("select").getLength() > 0)
+				addCheckerProblem("C_381.0", form);
+		}
+	}
+
+	// For new JIS
+	@SuppressWarnings("nls")
+	private void item_382() {
+		NodeList nl = null;
+		if ((nl = target.getElementsByTagName("form")).getLength() > 0) //$NON-NLS-1$
+			addCheckerProblem("C_382.0", "", nl);
+	}
+
+	// For new JIS
+	@SuppressWarnings("nls")
+	private void item_383() {
+		NodeList nl = null;
+		if ((nl = target.getElementsByTagName("form")).getLength() > 0) //$NON-NLS-1$
+			addCheckerProblem("C_383.0", "", nl);
+	}
+
+	// For new JIS
+	@SuppressWarnings("nls")
+	private void item_384() {
+		if (formVwithText == null)
+			formVwithText = getFormsWithTextinput();
+		if (formVwithText.size() > 0)
+			addCheckerProblem("C_384.0", "", formVwithText); //$NON-NLS-1$ //$NON-NLS-1$
+	}
+
+	// For new JIS
+	@SuppressWarnings("nls")
+	private void item_385() {
+		if (formVwithText == null)
+			formVwithText = getFormsWithTextinput();
+		if (formVwithText.size() > 0)
+			addCheckerProblem("C_385.0", "", formVwithText);
+	}
+
+	// For new JIS
+	@SuppressWarnings("nls")
+	private void item_386() {
+		if (formVwithText == null)
+			formVwithText = getFormsWithTextinput();
+		if (formVwithText.size() > 0)
+			addCheckerProblem("C_386.0", "", formVwithText);
+	}
+
+	// For new JIS
+	@SuppressWarnings("nls")
+	private void item_387() {
+		NodeList nl = null;
+		if ((nl = target.getElementsByTagName("form")).getLength() > 0) //$NON-NLS-1$
+			addCheckerProblem("C_387.0", "", nl);
+	}
+
+	// For new JIS
+	@SuppressWarnings("nls")
+	private void item_388() {
+		NodeList nl = null;
+		if ((nl = target.getElementsByTagName("form")).getLength() > 0) //$NON-NLS-1$
+			addCheckerProblem("C_388.0", "", nl);
+	}
+
+	// For new JIS
+	@SuppressWarnings("nls")
+	private void item_389() {
+		if (formVwithText == null)
+			formVwithText = getFormsWithTextinput();
+		if (formVwithText.size() > 0)
+			addCheckerProblem("C_389.0", "", formVwithText);
+	}
+
+	// For new JIS
+	@SuppressWarnings("nls")
+	private void item_390() {
+		if (false)
+			return; // TODO
+		NodeList nl = target.getElementsByTagName("form"); //$NON-NLS-1$
+		for (int i = 0; i < nl.getLength(); i++) {
+			Element form = (Element) nl.item(i);
+			NodeList inputs = form.getElementsByTagName("input");
+			for (int j = 0; j < inputs.getLength(); j++) {
+				Element input = (Element) inputs.item(j);
+				String typeS = input.getAttribute("type");
+				if ("text".equals(typeS) || "password".equals(typeS)) {
+					Node n = input;
+					do {
+						n = n.getNextSibling();
+					} while (n != null && !(n instanceof Element));
+					if (n != null && n instanceof Element
+							&& isButton((Element) n)) {
+						System.out.println("C_390.0 found");
+						addCheckerProblem("C_390.0", input);
+					}
+				}
+			}
+		}
+	}
+
+	// For new JIS
+	@SuppressWarnings("nls")
+	private void item_420() {
+		addCheckerProblem("C_420.0");
+	}
+
+	// For new JIS
+	@SuppressWarnings("nls")
+	private void item_421() {
+		addCheckerProblem("C_421.0");
+		addCheckerProblem("C_421.1", isXHTML ? "XHTML" : "HTML");
+	}
+
+	/**
+	 * Displays AA items
+	 */
+	private void item_500() {
+		boolean SHOW_ALWAYS = false;
+
+		// TODO check if these two items should be shown
+		if (SHOW_ALWAYS
+				|| target.getElementsByTagName("object").getLength() > 0
+				|| target.getElementsByTagName("embed").getLength() > 0
+				|| target.getElementsByTagName("applet").getLength() > 0) {
+			addCheckerProblem("C_500.0");
+			addCheckerProblem("C_500.1");
+		}
+
+		addCheckerProblem("C_500.11");
+		addCheckerProblem("C_500.12");
+		addCheckerProblem("C_500.2");
+		addCheckerProblem("C_500.3");
+
+		// TODO same as above
+		if (SHOW_ALWAYS || headings.length > 0
+				|| target.getElementsByTagName("label").getLength() > 0)
+			addCheckerProblem("C_500.4");
+
+		addCheckerProblem("C_500.5");
+		addCheckerProblem("C_500.6");
+		addCheckerProblem("C_500.7");
+		addCheckerProblem("C_500.8");
+		addCheckerProblem("C_500.9");
+		addCheckerProblem("C_500.10");
+	}
+
 	// Mobile Web Evaluation (from here)
 	private void mobile_1() {
 		// TODO implement evaluation
@@ -2681,7 +3091,8 @@ public class CheckEngine extends HtmlTagUtil {
 	private void validateHtml() {
 		if (body_elements.length > 1) {
 			addCheckerProblem("C_1000.0"); //$NON-NLS-1$
-		} else if (body_elements.length == 0) {
+		} else if (body_elements.length == 0
+				&& !docTypeS.toLowerCase().contains("frameset")) {
 			addCheckerProblem("C_1000.4"); //$NON-NLS-1$
 		}
 	}
@@ -2744,11 +3155,6 @@ public class CheckEngine extends HtmlTagUtil {
 		return false;
 	}
 
-	private boolean isValidLang(String strLang) {
-		// TODO: language check
-		return true;
-	}
-
 	private void checkObsoluteEle(String problemId, String strEle) {
 		NodeList nl = target.getElementsByTagName(strEle);
 		if (nl.getLength() > 0) {
@@ -2765,8 +3171,31 @@ public class CheckEngine extends HtmlTagUtil {
 		}
 	}
 
-	private Vector<Element> getFormControl(Element formEl) {
-		Vector<Element> fcVector = new Vector<Element>();
+	/**
+	 * Returns radio buttons and check boxes contained in the specified fieldset
+	 * element.
+	 * 
+	 * @param fieldset
+	 * @return A <code>List</code> of <code>Element</code>s.
+	 */
+	private List<Element> getRadioAndCheck(Element fieldset) {
+		List<Element> returns = new ArrayList<Element>();
+		List<Element> inputs = getElements(fieldset, "input");
+		for (Element e : inputs) {
+			if (e.getAttribute("type").toLowerCase().matches("radio|checkbox"))
+				returns.add(e);
+		}
+		return returns;
+	}
+
+	/**
+	 * Obtains input controls in the given form element.
+	 * 
+	 * @param formEl
+	 * @return a Vector of controls
+	 */
+	private List<Element> getFormControl(Element formEl) {
+		List<Element> fcVector = new ArrayList<Element>();
 		NodeList nl = formEl.getElementsByTagName("input"); //$NON-NLS-1$
 		int length = nl.getLength();
 		for (int i = 0; i < length; i++) {
@@ -2777,6 +3206,7 @@ public class CheckEngine extends HtmlTagUtil {
 					|| strType.equals("textarea") //$NON-NLS-1$
 					|| strType.equals("radio") //$NON-NLS-1$
 					|| strType.equals("checkbox") //$NON-NLS-1$
+					|| strType.equals("file") //$NON-NLS-1$ // For new JIS
 					|| strType.equals("password")) { //$NON-NLS-1$
 				fcVector.add(el);
 			}
@@ -2829,9 +3259,107 @@ public class CheckEngine extends HtmlTagUtil {
 		return iNum;
 	}
 
-	private boolean hasProperLabel(Element el, boolean bRadioCheckbox) {
+	/**
+	 * Returns true if the specified form element has any text input controls.
+	 * For new JIS.
+	 * 
+	 * @param form
+	 * @return
+	 */
+	private boolean hasTextFormControl(Element form) {
+		int iNum = 0;
+		for (Element e : getElements(form, "input")) { //$NON-NLS-1$
+			// System.err.println("[" + e.getAttribute("type") + "]");
+			if (e.getAttribute("type").toLowerCase()
+					.matches("|text(area)?|password"))
+				iNum++;
+		}
+		iNum += form.getElementsByTagName("textarea").getLength(); //$NON-NLS-1$
+		iNum += form.getElementsByTagName("html:text").getLength(); //$NON-NLS-1$
+		return (iNum > 0);
+	}
+
+	private Vector<Node> getFormsWithTextinput() {
+		Vector<Node> forms = new Vector<Node>();
+		for (Element form : getElements(target, "form")) {
+			if (hasTextFormControl(form))
+				forms.add(form);
+		}
+		return forms;
+	}
+
+	/**
+	 * Returns true if the given control type is usually used with label
+	 * elements.
+	 * 
+	 * @return
+	 */
+	private boolean isLabelable(String type) {
+		return type.matches("|text(area)?|checkbox|radio|file|password|select");
+	}
+
+	/**
+	 * For new JIS
+	 * 
+	 * @param el
+	 * @param labels
+	 * @return
+	 */
+	private boolean hasLabel(Element el) {
+		String strid = el.getAttribute("id"); //$NON-NLS-1$
+
+		if (strid.equals("")) //$NON-NLS-1$
+			return false; // no id
+
+		for (Element e : labelList) {
+			String strFor = e.getAttribute("for"); //$NON-NLS-1$
+			if (strFor != null && strFor.equalsIgnoreCase(strid)) {
+				return true; // label found
+			}
+		}
+		return false; // no label found
+	}
+
+	/**
+	 * Detects use of implicit labels. If an implicit label is used, the label
+	 * element is returned. Otherwise, null is returned. For new JIS.
+	 * 
+	 * @param el
+	 * @return label element when an implicit label is used.
+	 */
+	private Element hasImplicitLabel(Element el) {
+		// TODO to be refined so that it looks up in ascendant, not in a parent
+		Node n = el.getParentNode();
+		if (!(n instanceof Element))
+			return null;
+		Element e = (Element) n;
+		if (e.getTagName().equals("label"))
+			return e;
+		else
+			return null;
+	}
+
+	/**
+	 * Stub function, to be refined. For new JIS
+	 * 
+	 * @param title
+	 * @return
+	 */
+	private boolean isInappropriateTitle(String title) {
+		return title.matches("(?i).*untitled.*");
+	}
+
+	/**
+	 * Checks if the specified form control has a properly located label.
+	 * 
+	 * @param el
+	 * @return
+	 */
+	private boolean hasProperLabel(Element el) {
 
 		// need to consider position
+		boolean bRadioCheckbox = getFormControlType(el).matches(
+				"radio|checkbox"); //$NON-NLS-1$
 
 		Node node = el;
 		if (bRadioCheckbox) {
@@ -2957,6 +3485,7 @@ public class CheckEngine extends HtmlTagUtil {
 
 		} catch (NumberFormatException e) {
 			iWidth = 100;
+			iHeight = 100;
 		}
 		// ignore small image according to bobby
 		if (iWidth < 50 || iHeight < 50) {
@@ -3059,4 +3588,187 @@ public class CheckEngine extends HtmlTagUtil {
 		}
 		return ""; //$NON-NLS-1$
 	}
+
+	private boolean isElementVisible(Element el) {
+		// TODO function stub // For new JIS
+		return true;
+	}
+
+	// For new JIS
+	private boolean isButton(Element el) {
+		return (el.getTagName().equals("input") && (el.getAttribute("type")
+				.equals("submit") || el.getAttribute("type").equals("image")))
+				|| (el.getTagName().equals("button") && el.getAttribute("type")
+						.equals("submit"));
+	}
+
+	/**
+	 * Utility function that returns a List array instead of a NodeList array.
+	 * 
+	 * @param el
+	 * @param tagName
+	 * @return list of elements with given tag name that are descendants of the
+	 *         node.
+	 */
+	private List<Element> getElements(Node node, String tagName,
+			String... tagNames) {
+		List<Element> nodes = new ArrayList<Element>();
+		NodeList nl = null;
+		if (node instanceof Document)
+			nl = ((Document) node).getElementsByTagName(tagName);
+		else if (node instanceof Element)
+			nl = ((Element) node).getElementsByTagName(tagName);
+		for (int i = 0; i < nl.getLength(); i++) {
+			nodes.add((Element) nl.item(i));
+		}
+
+		// variable argument
+		if (tagNames.length > 0) {
+			for (int i = 0; i < tagNames.length; i++) {
+				nodes.addAll(getElements(node, tagNames[i]));
+			}
+		}
+		return nodes;
+	}
+
+	private List<Element> getDirectDescendantElements(Element element,
+			String tagName) {
+		return getDirectDescendantElements(element, tagName,
+				element.getTagName());
+	}
+
+	/**
+	 * Utility function that returns a List array instead of a NodeList array.
+	 * 
+	 * @param el
+	 * @param tagName
+	 * @return list of elements with given tag name that are direct descendants
+	 *         of the node.
+	 */
+	private List<Element> getDirectDescendantElements(Element element,
+			String tagName, String excluded) {
+		List<Element> nodes = new ArrayList<Element>();
+		NodeList children = element.getChildNodes();
+		for (int i = 0; i < children.getLength(); i++) {
+			Node n = children.item(i);
+			if (n.getNodeType() == Node.ELEMENT_NODE) {
+				Element e = (Element) n;
+				if (e.getTagName().equals(tagName))
+					nodes.add(e);
+				else if (!e.getTagName().equals(excluded))
+					nodes.addAll(getDirectDescendantElements(e, tagName,
+							excluded));
+			}
+		}
+		return nodes;
+	}
+
+	/**
+	 * Returns string for the attribute value if it is specified in the source,
+	 * otherwise this method returns null.
+	 * 
+	 * @param e
+	 * @param attr
+	 * @return attribute value string or null.
+	 */
+	// TODO consider <tag attr>, not <tag attr="value">.
+	private String getAttribute(Element e, String attr) {
+		Attr att = e.getAttributeNode(attr);
+		if (att == null)
+			return null;
+		return att.getValue();
+	}
+
+	/**
+	 * For new JIS. used in item_23(). Returns the most nearest ascendant table
+	 * element. If such table is not found (case of invalid use of caption
+	 * elements), this method returns null.
+	 */
+	private Element nearestTable(Element el) {
+		Node e = el;
+		while ((e instanceof Element)
+				&& !((Element) e).getTagName().equals("table")) {
+			e = ((Element) e).getParentNode();
+		}
+		return (e instanceof Element) ? (Element) e : null;
+	}
+
+	/**
+	 * For new JIS. Currently it is not used. It will be used from item_3().
+	 * 
+	 * @param alt
+	 * @param longdescUri
+	 * @return
+	 */
+	private boolean longdescLongerThanALT(String alt, String longdescUri) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	/**
+	 * For new JIS. Currently it is not used. It will be used from item_3().
+	 * 
+	 * @param url
+	 * @return
+	 */
+	private boolean isExistingUrl(String url) {
+		url = url.trim();
+		if (url.length() == 0)
+			return false;
+		else
+			return true; // check routine comes here
+	}
+
+	// For new JIS
+	/**
+	 * @param table
+	 */
+	private boolean hasDuplicatedCaptionAndSummary(Element table) {
+		String strSum = table.getAttribute("summary").trim(); //$NON-NLS-1$
+		NodeList capNl = table.getElementsByTagName("caption"); //$NON-NLS-1$
+		for (int i = 0; i < capNl.getLength(); i++) {
+			if (strSum.equals(HtmlTagUtil.getTextDescendant(capNl.item(i))
+					.trim()))
+				return true;
+		}
+		return false;
+	}
+
+	/**
+	 * For new JIS
+	 * 
+	 * @param table
+	 */
+	private boolean hasSummary(Element table) {
+		String strSum = table.getAttribute("summary"); //$NON-NLS-1$
+		return strSum.length() > 0;
+	}
+
+	private boolean hasCaption(Element table) {
+		return table.getElementsByTagName("caption").getLength() > 0; //$NON-NLS-1$
+	}
+
+	/**
+	 * For new JIS
+	 * 
+	 * @param el
+	 * @param labels
+	 * @return
+	 */
+	private boolean hasTitle(Element el) {
+		return el.hasAttribute("title"); //$NON-NLS-1$
+	}
+
+	private boolean hasBlankTitle(Element el) {
+		if (!el.hasAttribute("title"))
+			return true;
+		String title = el.getAttribute("title");
+		return title.matches("^[\\s\u3000]*$");
+	}
+
+	// For new JIS
+	private boolean isEmptyString(String s) {
+		return (s == null || s.length() == 0);
+	}
+
 }
