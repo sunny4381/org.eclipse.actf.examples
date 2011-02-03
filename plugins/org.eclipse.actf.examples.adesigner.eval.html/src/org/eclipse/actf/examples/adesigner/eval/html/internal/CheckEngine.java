@@ -3078,6 +3078,11 @@ public class CheckEngine extends HtmlTagUtil {
 		addCheckerProblem("C_500.8");
 		addCheckerProblem("C_500.9");
 		addCheckerProblem("C_500.10");
+
+		addCheckerProblem("C_500.13");
+		addCheckerProblem("C_500.14");
+		addCheckerProblem("C_500.15");
+		addCheckerProblem("C_500.16");
 	}
 
 	// Mobile Web Evaluation (from here)

@@ -2597,4 +2597,58 @@
     <desc>Check that except for captions and images of text, text can be resized without assistive technology up to 200 percent without loss of content or functionality.</desc>
    </description>
   </checkitem>
+  <checkitem id="C_500.13" type="info" >
+   <guideline>
+    <gItem name="WCAG 2.0" id="1.4.3" techniques="G18,G145"/>    
+    <gItem name="WCAG 2.0" id="1.4.6" techniques="G17,G18"/>    
+    <gItem name="JIS" id="7.1.4.3" techniques="G18,G145"/>
+    <gItem name="JIS" id="7.1.4.6" techniques="G17,G18"/>
+   </guideline>
+   <metrics>
+    <mItem name="Perceivable" />
+   </metrics>
+   <description>
+    <desc>Check that except for captions and images of text, text can be resized without assistive technology up to 200 percent without loss of content or functionality.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_500.14" type="info" >
+   <guideline>
+    <gItem name="WCAG 2.0" id="1.4.3" techniques="G18,G145"/>    
+    <gItem name="WCAG 2.0" id="1.4.6" techniques="G17,G18"/>    
+    <gItem name="JIS" id="7.1.4.3" techniques="G18,G145"/>
+    <gItem name="JIS" id="7.1.4.6" techniques="G17,G18"/>
+   </guideline>
+   <metrics>
+    <mItem name="Perceivable" />
+   </metrics>
+   <description>
+    <desc>Check that except for captions and images of text, text can be resized without assistive technology up to 200 percent without loss of content or functionality.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_500.15" type="info" >
+   <guideline>
+    <gItem name="WCAG 2.0" id="1.4.4" techniques="C12,C13,C14"/>    
+    <gItem name="JIS" id="7.1.4.4" techniques="C12,C13,C14"/>
+   </guideline>
+   <metrics>
+    <mItem name="Perceivable" />
+   </metrics>
+   <description>
+    <desc>Check that except for captions and images of text, text can be resized without assistive technology up to 200 percent without loss of content or functionality.</desc>
+   </description>
+  </checkitem>
+  <checkitem id="C_500.16" type="info" >
+   <guideline>
+    <gItem name="WCAG 2.0" id="1.4.3" techniques="G18,G145"/>    
+    <gItem name="WCAG 2.0" id="1.4.6" techniques="G17,G18"/>    
+    <gItem name="JIS" id="7.1.4.3" techniques="G18,G145"/>
+    <gItem name="JIS" id="7.1.4.6" techniques="G17,G18"/>
+   </guideline>
+   <metrics>
+    <mItem name="Perceivable" />
+   </metrics>
+   <description>
+    <desc>Check that except for captions and images of text, text can be resized without assistive technology up to 200 percent without loss of content or functionality.</desc>
+   </description>
+  </checkitem>
 </checker-config>
