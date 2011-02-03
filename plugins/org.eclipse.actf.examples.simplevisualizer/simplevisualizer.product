@@ -37,7 +37,7 @@
    </plugins>
 
    <features>
-      <feature id="org.eclipse.actf.examples.simplevisualizer" version="0.8.1.qualifier"/>
+      <feature id="org.eclipse.actf.examples.simplevisualizer" version="0.8.2.qualifier"/>
    </features>
 
 </product>
