@@ -2870,10 +2870,13 @@ public class CheckEngine extends HtmlTagUtil {
 				Set<String> ngWord = new TreeSet<String>();
 				ngWord.add("area");
 				TextCheckResult result = checker.checkAlt(alt, ngWord);
-				if (!result.equals(TextCheckResult.OK)
-						&& !result.equals(TextCheckResult.SPACE_SEPARATED)
-						&& !result.equals(TextCheckResult.SPACE_SEPARATED_JP)) {
-
+				if (result.equals(TextCheckResult.OK)) {
+					;
+				} else if (result.equals(TextCheckResult.SPACE_SEPARATED)
+						|| result.equals(TextCheckResult.SPACE_SEPARATED_JP)) {
+					;
+				} else if (!result.equals(TextCheckResult.BLANK)
+						|| area.hasAttribute("href")) {
 					// obtain the element replaced with the original area
 					// element
 					String id = document2IdMap.get(area).toString();
