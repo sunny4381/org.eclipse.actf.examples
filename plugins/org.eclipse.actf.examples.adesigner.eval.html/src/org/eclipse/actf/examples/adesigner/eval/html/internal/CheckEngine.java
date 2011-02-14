@@ -16,6 +16,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -24,8 +25,13 @@ import java.util.Stack;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
 import java.util.Vector;
+import java.util.regex.Pattern;
 
+import org.eclipse.actf.model.dom.dombycom.IDocumentEx;
+import org.eclipse.actf.model.dom.dombycom.IStyleSheet;
+import org.eclipse.actf.model.dom.dombycom.IStyleSheets;
 import org.eclipse.actf.model.dom.html.DocumentTypeUtil;
+import org.eclipse.actf.util.xpath.XPathServiceFactory;
 import org.eclipse.actf.visualization.engines.blind.TextCheckResult;
 import org.eclipse.actf.visualization.engines.blind.TextChecker;
 import org.eclipse.actf.visualization.eval.IEvaluationItem;
@@ -62,6 +68,21 @@ public class CheckEngine extends HtmlTagUtil {
 	private static final int TABLE_CELL_ABBR_CHARS = 30;
 
 	private static final int TABLE_CELL_ABBR_WORDS = 10;
+
+	private static final Pattern BLINK_PATTERN = Pattern.compile(
+			".*\\{[^\\}]*text-decoration(\\p{Space})*:[^;]*blink.*\\}.*",
+			Pattern.DOTALL | Pattern.CASE_INSENSITIVE);
+
+	private static final Pattern BEFORE_PATTERN = Pattern.compile(
+			".*:before(\\p{Space})*\\{[^\\}]*content(\\p{Space})*:.*\\}.*",
+			Pattern.DOTALL | Pattern.CASE_INSENSITIVE);
+
+	private static final Pattern AFTER_PATTERN = Pattern.compile(
+			".*:after(\\p{Space})*\\{[^\\}]*content(\\p{Space})*:.*\\}.*",
+			Pattern.DOTALL | Pattern.CASE_INSENSITIVE);
+
+	// not strict check
+	private String CSS_COLORS = "(aliceblue|antiquewhite|aqua|aquamarine|azure|beige|bisque|black|blanchedalmond|blue|blueviolet|brown|burlywood|cadetblue|chartreuse|chocolate|coral|cornflowerblue|cornsilk|crimson|cyan|darkblue|darkcyan|darkgoldenrod|darkgray|darkgreen|darkgrey|darkkhaki|darkmagenta|darkolivegreen|darkorange|darkorchid|darkred|darksalmon|darkseagreen|darkslateblue|darkslategray|darkslategrey|darkturquoise|darkviolet|deeppink|deepskyblue|dimgray|dimgrey|dodgerblue|firebrick|floralwhite|forestgreen|fuchsia|gainsboro|ghostwhite|gold|goldenrod|gray|green|greenyellow|grey|honeydew|hotpink|indianred|indigo|ivory|khaki|lavender|lavenderblush|lawngreen|lemonchiffon|lightblue|lightcoral|lightcyan|lightgoldenrodyellow|lightgray|lightgreen|lightgrey|lightpink|lightsalmon|lightseagreen|lightskyblue|lightslategray|lightslategrey|lightsteelblue|lightyellow|lime|limegreen|linen|magenta|maroon|mediumaquamarine|mediumblue|mediumorchid|mediumpurple|mediumseagreen|mediumslateblue|mediumspringgreen|mediumturquoise|mediumvioletred|midnightblue|mintcream|mistyrose|moccasin|navajowhite|navy|oldlace|olive|olivedrab|orange|orangered|orchid|palegoldenrod|palegreen|paleturquoise|palevioletred|papayawhip|peachpuff|peru|pink|plum|powderblue|purple|red|rosybrown|royalblue|saddlebrown|salmon|sandybrown|seagreen|seashell|sienna|silver|skyblue|slateblue|slategray|slategrey|snow|springgreen|steelblue|tan|teal|thistle|tomato|turquoise|violet|wheat|white|whitesmoke|yellow|yellowgreen|ActiveBorder|ActiveCaption|AppWorkspace|Background|ButtonFace|ButtonHighlight|ButtonShadow|ButtonText|CaptionText|GrayText|Highlight|HighlightText|InactiveBorder|InactiveCaption|InactiveCaptionText|InfoBackground|InfoText|Menu|MenuText|Scrollbar|ThreeDDarkShadow|ThreeDFace|ThreeDHighlight|ThreeDLightShadow|ThreeDShadow|Window|WindowFrame|WindowText|inherit|currentColor|rgb[a]?\\(.*\\)|hsl[a]?\\(.*\\)|#[a-f0-9]{3}|#[a-f0-9]{6})";
 
 	@SuppressWarnings("nls")
 	private static final String[] ASCII_ART_CHAR = { "\u2227", "\uff3f",
@@ -178,6 +199,8 @@ public class CheckEngine extends HtmlTagUtil {
 	private List<Element> dataTableList;
 	private TextChecker checker;
 
+	private List<Element> elementsWithStyleList;
+	private List<Element> styleElementList;
 	// private int invisibleElementCount = 0;
 
 	// private String[] invisibleLinkStrings = new String[0];
@@ -186,6 +209,8 @@ public class CheckEngine extends HtmlTagUtil {
 
 	private String docTypeS;
 
+	private IStyleSheets styleSheets;
+
 	/**
 	 * 
 	 */
@@ -193,6 +218,10 @@ public class CheckEngine extends HtmlTagUtil {
 		this.edu = edu;
 		this.target = edu.getTarget();
 		this.resultDoc = edu.getResult();
+		Document tmpD = edu.getLiveDom();
+		if (tmpD instanceof IDocumentEx) {
+			styleSheets = ((IDocumentEx) tmpD).getStyleSheets();
+		}
 
 		baseUrl = edu.getBaseUrl();
 
@@ -205,10 +234,10 @@ public class CheckEngine extends HtmlTagUtil {
 
 		this.isDBCS = edu.isDBCS();
 		if (isDBCS) {
-			validate_str_len = 5;
+			validate_str_len = 20;
 			valid_total_text_len = 50;
 		} else {
-			validate_str_len = 30;
+			validate_str_len = 50;
 			valid_total_text_len = 100;
 		}
 		result = new Vector<IProblemItem>();
@@ -243,6 +272,8 @@ public class CheckEngine extends HtmlTagUtil {
 		frame_elements = edu.getFrame_elements();
 		iframe_elements = edu.getIframe_elements();
 		object_elements = edu.getObject_elements();
+		elementsWithStyleList = edu.getElementsWithStyle();
+		styleElementList = edu.getStyleElements();
 
 		headings = edu.getHeadings();
 
@@ -275,7 +306,8 @@ public class CheckEngine extends HtmlTagUtil {
 		//
 		// checkAltTest();
 
-		checkDomDifference();
+		// not required to use for WCAG 2.0
+		// checkDomDifference();
 
 		validateHtml();
 
@@ -875,6 +907,9 @@ public class CheckEngine extends HtmlTagUtil {
 				addCheckerProblem("C_17.0", el); //$NON-NLS-1$
 			}
 		}
+		if (length > 0) {
+			addCheckerProblem("C_17.1", "", nl); //$NON-NLS-1$
+		}
 	}
 
 	private void item_18() {
@@ -1001,6 +1036,8 @@ public class CheckEngine extends HtmlTagUtil {
 
 		// C_23.1/2 check. For new JIS
 		List<Element> tables = new ArrayList<Element>();
+		Vector<Node> table_25_1 = new Vector<Node>();
+		Vector<Node> table_25_2 = new Vector<Node>();
 
 		for (Element table : dataTableList) {
 			boolean added = false;
@@ -1015,7 +1052,7 @@ public class CheckEngine extends HtmlTagUtil {
 				}
 				addCheckerProblem("C_25.3", table); //$NON-NLS-1$
 			} else {
-				addCheckerProblem("C_25.1", table); //$NON-NLS-1$
+				table_25_1.add(table);
 			}
 			if (table.hasAttribute("summary")
 					&& !isEmptyString(table.getAttribute("summary"))) {
@@ -1025,7 +1062,7 @@ public class CheckEngine extends HtmlTagUtil {
 				}
 				addCheckerProblem("C_25.4", table); //$NON-NLS-1$
 			} else {
-				addCheckerProblem("C_25.2", table); //$NON-NLS-1$
+				table_25_2.add(table);
 			}
 		}
 
@@ -1033,6 +1070,10 @@ public class CheckEngine extends HtmlTagUtil {
 			Vector<Node> tablesV = new Vector<Node>(tables);
 			addCheckerProblem("C_23.1", "", tablesV); //$NON-NLS-1$
 		}
+		if (table_25_1.size() > 0)
+			addCheckerProblem("C_25.1", null, table_25_1); //$NON-NLS-1$
+		if (table_25_2.size() > 0)
+			addCheckerProblem("C_25.2", null, table_25_2); //$NON-NLS-1$
 
 		tables.clear();
 		for (Element table : layoutTableList) {
@@ -1173,6 +1214,40 @@ public class CheckEngine extends HtmlTagUtil {
 			bHasText = hasTextDescendant(el);
 			if (bHasText) { // blink text check
 				addCheckerProblem("C_33.0", el); //$NON-NLS-1$
+			}
+		}
+
+		for (Element e : elementsWithStyleList) {
+			String style = e.getAttribute("style");
+			if (style.matches("text-decoration(\\p{Space})*:[^;]*blink.*")) {
+				addCheckerProblem("C_33.1", "style=\"" + style + "\"", e); //$NON-NLS-1$
+			}
+		}
+
+		for (Element e : styleElementList) {
+			if (e.hasChildNodes()) {
+				Node n = e.getFirstChild();
+				String style = n.getNodeValue();
+				if (style != null) {
+					if (BLINK_PATTERN.matcher(style).matches()) {
+						addCheckerProblem("C_33.2", "", e);
+					}
+				}
+			}
+		}
+
+		checkBlinkStyleSheet(styleSheets);
+	}
+
+	private void checkBlinkStyleSheet(IStyleSheets styleSheets) {
+		if (styleSheets != null) {
+			for (int i = 0; i < styleSheets.getLength(); i++) {
+				IStyleSheet ss = styleSheets.item(i);
+				if (ss.getHref().length() > 0 // avoid duplication
+						&& BLINK_PATTERN.matcher(ss.getCssText()).matches()) {
+					addCheckerProblem("C_33.2", "(" + ss.getHref() + ")");
+				}
+				checkBlinkStyleSheet(ss.getImports());
 			}
 		}
 	}
@@ -1381,6 +1456,8 @@ public class CheckEngine extends HtmlTagUtil {
 	}
 
 	private void item_42() {
+		Vector<Node> anchors = new Vector<Node>();
+
 		for (int i = 0; i < aWithHref_elements.length; i++) {
 			Element el = aWithHref_elements[i];
 			if (el.hasAttribute("target")) { //$NON-NLS-1$
@@ -1397,10 +1474,13 @@ public class CheckEngine extends HtmlTagUtil {
 					// || strTarget.equalsIgnoreCase("_top")
 					// || strTarget.equalsIgnoreCase("top"))) {
 					// popup new window alert
-					addCheckerProblem("C_42.0", el); //$NON-NLS-1$
+					anchors.add(el);
 				}
 			}
 		}
+
+		if (anchors.size() > 0)
+			addCheckerProblem("C_42.0", null, anchors); //$NON-NLS-1$
 	}
 
 	private void item_43() {
@@ -1812,6 +1892,7 @@ public class CheckEngine extends HtmlTagUtil {
 		if (formList == null)
 			formList = edu.getElementsList(target, "form"); //$NON-NLS-1$
 		Vector<Node> noFieldSetForms = new Vector<Node>();
+		Vector<Node> fieldSetForms = new Vector<Node>();
 		for (Element form : formList) {
 			if (getFormControlNum(form) <= 1)
 				continue;
@@ -1820,7 +1901,7 @@ public class CheckEngine extends HtmlTagUtil {
 				noFieldSetForms.add(form);
 			} else {
 				for (Element fieldset : fieldsets) {
-					addCheckerProblem("C_54.2", fieldset); //$NON-NLS-1$
+					fieldSetForms.add(fieldset);
 					List<Element> legends = edu.getElementsList(fieldset,
 							"legend"); //$NON-NLS-1$
 					if (legends.size() == 0) {
@@ -1848,7 +1929,8 @@ public class CheckEngine extends HtmlTagUtil {
 		}
 		if (noFieldSetForms.size() > 0)
 			addCheckerProblem("C_54.0", null, noFieldSetForms); //$NON-NLS-1$
-
+		if (fieldSetForms.size() > 0)
+			addCheckerProblem("C_54.2", null, fieldSetForms); //$NON-NLS-1$
 	}
 
 	private void item_55() {
@@ -2167,6 +2249,7 @@ public class CheckEngine extends HtmlTagUtil {
 
 	private void item_60() {
 		boolean bHasTitle = false;
+		Element firstTitle = null;
 		NodeList nl = target.getElementsByTagName("head"); //$NON-NLS-1$
 		if (nl.getLength() > 0) {
 			NodeList hdNl = ((Element) nl.item(0))
@@ -2174,11 +2257,29 @@ public class CheckEngine extends HtmlTagUtil {
 			int length = hdNl.getLength();
 			for (int i = 0; i < length; i++) {
 				Element titleEl = (Element) hdNl.item(i);
+				if (firstTitle == null)
+					firstTitle = titleEl;
 				bHasTitle = hasTextDescendant(titleEl);
 			}
 		}
 		if (!bHasTitle) { // document title check
 			result.add(new ProblemItemImpl("C_60.0")); //$NON-NLS-1$
+		} else {
+			List<String> ngPatterns = new ArrayList<String>();
+			ngPatterns.add("\u7121\u984c.*");
+			ngPatterns.add(".*untitled.*");
+			ngPatterns.add(".*no title.*");
+			ngPatterns.add(".*\\.html?");
+			ngPatterns.add("[\\p{Punct}\\d]+");
+			String title = getTextDescendant(firstTitle).toLowerCase().trim();
+
+			for (String pattern : ngPatterns) {
+				if (title.matches(pattern)) {
+					addCheckerProblem("C_60.1", title, firstTitle);
+					break;
+				}
+			}
+
 		}
 	}
 
@@ -2537,22 +2638,33 @@ public class CheckEngine extends HtmlTagUtil {
 	private void item_79() {
 		if (labelList == null)
 			labelList = edu.getElementsList(target, "label"); //$NON-NLS-1$
-
+		Vector<Node> noTitleControls = new Vector<Node>();
+		Vector<Node> noLabelControls = new Vector<Node>();
+		Vector<Node> implicitLabelControls = new Vector<Node>();
 		for (Element form : edu.getElementsList(target, "form")) { //$NON-NLS-1$
 			// checks for each form element
 			for (Element el : getFormControl(form)) {
 				// checks for each input controls
-				item_79_label(el);
-				item_79_title(el);
+				item_79_label(el, noLabelControls, implicitLabelControls);
+				if (!item_79_title(el))
+					noTitleControls.add(el);
 			}
 		}
+		if (noTitleControls.size() > 0)
+			addCheckerProblem("C_79.6", "", noTitleControls);
+		if (noLabelControls.size() > 0)
+			addCheckerProblem("C_79.0", "", noLabelControls);
+		if (implicitLabelControls.size() > 0)
+			addCheckerProblem("C_79.2", "", implicitLabelControls);
 	}
 
-	private void item_79_label(Element ctrl) {
+	private void item_79_label(Element ctrl, Vector<Node> noLabelControls,
+			Vector<Node> implicitLabelControls) {
 		String elType = getFormControlType(ctrl);
 		Element l;
 		if ((l = hasImplicitLabel(ctrl)) != null) {
-			addCheckerProblem("C_79.2", l);
+			implicitLabelControls.add(l);
+			// addCheckerProblem("C_79.2", l);
 			return;
 		}
 		if (!isLabelable(elType)) {
@@ -2564,7 +2676,8 @@ public class CheckEngine extends HtmlTagUtil {
 		boolean bHasTitle = this.hasTitle(ctrl);
 
 		if (!bHasLabel) {
-			addCheckerProblem("C_79.0", ctrl); //$NON-NLS-1$
+			noLabelControls.add(ctrl);
+			// addCheckerProblem("C_79.0", ctrl); //$NON-NLS-1$
 		} else {
 			// TODO highlight the label as well
 			if (!hasProperLabel(ctrl)) {
@@ -2578,17 +2691,24 @@ public class CheckEngine extends HtmlTagUtil {
 				addCheckerProblem("C_79.5", ctrl); //$NON-NLS-1$
 
 			}
-
 		}
 	}
 
-	private void item_79_title(Element ctrl) {
+	/**
+	 * If a control passes check, it returns true.
+	 * 
+	 * @param ctrl
+	 * @return
+	 */
+	private boolean item_79_title(Element ctrl) {
 		if (hasTitle(ctrl)) {
 			addCheckerProblem("C_79.4", ctrl);
+			return true;
 		} else {
 			if (isLabelable(getFormControlType(ctrl)) && hasLabel(ctrl))
-				return;
-			addCheckerProblem("C_79.6", ctrl);
+				return true;
+			// addCheckerProblem("C_79.6", ctrl);
+			return false;
 		}
 	}
 
@@ -2827,6 +2947,40 @@ public class CheckEngine extends HtmlTagUtil {
 
 	}
 
+	private void item_90() {
+		for (Element e : styleElementList) {
+			if (e.hasChildNodes()) {
+				Node n = e.getFirstChild();
+				String style = n.getNodeValue();
+				if (style != null) {
+					if (BEFORE_PATTERN.matcher(style).matches()){
+						addCheckerProblem("C_90.0", "", e);
+					}
+					if (AFTER_PATTERN.matcher(style).matches()){
+						addCheckerProblem("C_90.1", "", e);
+					}
+				}
+			}
+		}
+
+		checkBeforeAfter(styleSheets);
+	}
+
+	private void checkBeforeAfter(IStyleSheets styleSheets) {
+		if (styleSheets != null) {
+			for (int i = 0; i < styleSheets.getLength(); i++) {
+				IStyleSheet ss = styleSheets.item(i);
+				if (ss.getHref().length() > 0) { // avoid duplication
+					if (BEFORE_PATTERN.matcher(ss.getCssText()).matches())
+						addCheckerProblem("C_90.0", "(" + ss.getHref() + ")");
+					if (AFTER_PATTERN.matcher(ss.getCssText()).matches())
+						addCheckerProblem("C_90.1", "(" + ss.getHref() + ")");
+				}
+				checkBlinkStyleSheet(ss.getImports());
+			}
+		}
+	}
+
 	/**
 	 * ALT text check for image buttons, area elements.
 	 */
@@ -2877,11 +3031,18 @@ public class CheckEngine extends HtmlTagUtil {
 					;
 				} else if (!result.equals(TextCheckResult.BLANK)
 						|| area.hasAttribute("href")) {
-					// obtain the element replaced with the original area
-					// element
-					String id = document2IdMap.get(area).toString();
-					Element tmpE = resultDoc.getElementById("id" + id);
-					addCheckerProblem("C_300.1", alt, tmpE);
+					// TODO code refine
+					// obtain nodes that image elements corrspond to, which uses
+					// the image map that contains the targeted area element.
+					// area -> map -> image ---> corresponding span element in
+					// resultDoc
+					Element map = (Element) area.getParentNode();
+					for (Element image : HtmlTagUtil.getImgElementsFromMap(
+							target, map)) {
+						String id = document2IdMap.get(image).toString();
+						Element tmpE = resultDoc.getElementById("id" + id);
+						addCheckerProblem("C_300.1", alt, tmpE);
+					}
 				}
 			}
 		}
@@ -2893,9 +3054,9 @@ public class CheckEngine extends HtmlTagUtil {
 				Set<String> ngWord = new TreeSet<String>();
 				ngWord.add("applet");
 				ngWord.add("\u30a2\u30d7\u30ec\u30c3\u30c8"); // "applet" in
-																// Japanese
+				// Japanese
 				ngWord.add("\u30d7\u30ed\u30b0\u30e9\u30e0"); // "program" in
-																// Japanese
+				// Japanese
 				TextCheckResult result = checker.checkAlt(alt, ngWord);
 				if (!TextCheckResult.OK.equals(result)) {
 					addCheckerProblem("C_300.2", alt, applet);
@@ -3124,6 +3285,24 @@ public class CheckEngine extends HtmlTagUtil {
 		addCheckerProblem("C_421.1", isXHTML ? "XHTML" : "HTML");
 	}
 
+	// For new JIS
+	@SuppressWarnings("nls")
+	private void item_422() {
+		List<Element> accesskeys = edu.getAccessKeyElements();
+		Map<String, List<Element>> map = new HashMap<String, List<Element>>();
+		for (Element element : accesskeys) {
+			String key = element.getAttribute("accesskey");
+			if (!map.containsKey(key))
+				map.put(key, new ArrayList<Element>());
+			map.get(key).add(element);
+		}
+		for (String key : map.keySet()) {
+			if (map.get(key).size() > 1) {
+				addCheckerProblem("C_422.0", "", new Vector<Node>(map.get(key)));
+			}
+		}
+	}
+
 	/**
 	 * Displays AA items
 	 */
@@ -3179,29 +3358,29 @@ public class CheckEngine extends HtmlTagUtil {
 		}
 	}
 
-	@SuppressWarnings("nls")
-	private void checkDomDifference() {
-
-		if (edu.getInvisibleElementCount() > 0) {
-			addCheckerProblem("C_201.0");
-		}
-		String[] invisibleLinkStrings = edu.getInvisibleLinkStrings();
-		for (int i = 0; i < invisibleLinkStrings.length; i++) {
-			if (invisibleLinkStrings[i].trim().length() > 0) {
-				addCheckerProblem("C_201.1", " (href="
-						+ invisibleLinkStrings[i] + ")");
-			}
-		}
-
-		Set<String> notExistSet = edu.getNotExistHrefSet();
-		for (String href : notExistSet) {
-			addCheckerProblem("C_200.0", " (href=" + href + ")");
-		}
-		if (notExistSet.size() > 10) {
-			addCheckerProblem("C_200.1");
-		}
-
-	}
+	// @SuppressWarnings("nls")
+	// private void checkDomDifference() {
+	//
+	// if (edu.getInvisibleElementCount() > 0) {
+	// addCheckerProblem("C_201.0");
+	// }
+	// String[] invisibleLinkStrings = edu.getInvisibleLinkStrings();
+	// for (int i = 0; i < invisibleLinkStrings.length; i++) {
+	// if (invisibleLinkStrings[i].trim().length() > 0) {
+	// addCheckerProblem("C_201.1", " (href="
+	// + invisibleLinkStrings[i] + ")");
+	// }
+	// }
+	//
+	// Set<String> notExistSet = edu.getNotExistHrefSet();
+	// for (String href : notExistSet) {
+	// addCheckerProblem("C_200.0", " (href=" + href + ")");
+	// }
+	// if (notExistSet.size() > 10) {
+	// addCheckerProblem("C_200.1");
+	// }
+	//
+	// }
 
 	private void checkAbsoluteSize(String strName) {
 		NodeList nl = target.getElementsByTagName(strName);
@@ -3547,12 +3726,13 @@ public class CheckEngine extends HtmlTagUtil {
 		}
 		if (total == 0)
 			total = 1;
-		if (num > 30 && (double) num / total > 0.8) {
-			// System.out.println(str);
+		if (num > 30 && (double) num / total > 0.8)
 			return true;
-		} else {
+		else if (num > 30 && checker.isAsciiArtString(str)) // another AA
+															// checking routine
+			return true;
+		else
 			return false;
-		}
 	}
 
 	private boolean isNormalImage(Element imgEl) {

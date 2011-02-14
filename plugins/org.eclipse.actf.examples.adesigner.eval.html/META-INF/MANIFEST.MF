@@ -10,7 +10,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.actf.visualization.eval,
  com.ibm.icu,
  org.eclipse.actf.model.dom.html,
- org.eclipse.actf.visualization.engines.blind
+ org.eclipse.actf.visualization.engines.blind,
+ org.eclipse.actf.model.dom.dombycom
 Bundle-ClassPath: evalhtml.jar,
  .
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
