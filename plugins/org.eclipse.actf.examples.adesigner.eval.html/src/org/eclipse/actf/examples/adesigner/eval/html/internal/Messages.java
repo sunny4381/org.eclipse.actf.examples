@@ -23,6 +23,10 @@ public final class Messages extends NLS {
 	public static String CheckEngine_ChildTable;
 	public static String CheckEngine_TieredChildTable;
 	public static String CheckEngine_Headings;
+	public static String StyleElement;
+	public static String Selector;
+	public static String Dynamic;
+	
 
 	static {
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);
