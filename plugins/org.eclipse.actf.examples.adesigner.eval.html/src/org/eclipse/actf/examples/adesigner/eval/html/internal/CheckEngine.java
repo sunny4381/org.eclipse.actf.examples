@@ -1265,6 +1265,11 @@ public class CheckEngine extends HtmlTagUtil {
 			addCheckerProblem("C_500.0", "", tmpV);
 			addCheckerProblem("C_500.1", "", tmpV);
 
+			addCheckerProblem("C_600.1", "", tmpV);
+			addCheckerProblem("C_600.2", "", tmpV);
+			addCheckerProblem("C_600.6", "", tmpV);
+			addCheckerProblem("C_600.7", "", tmpV);
+
 			addCheckerProblem("C_600.16", "", tmpV); //$NON-NLS-1$
 		}
 		if (edu.isHasJavascript()) {
@@ -1285,6 +1290,12 @@ public class CheckEngine extends HtmlTagUtil {
 			// TODO check if these two items should be shown
 			addCheckerProblem("C_500.0", "(" + Messages.Dynamic + tmpS + ")");
 			addCheckerProblem("C_500.1", "(" + Messages.Dynamic + tmpS + ")");
+			
+			addCheckerProblem("C_600.1", "(" + Messages.Dynamic + tmpS + ")");
+			addCheckerProblem("C_600.2", "(" + Messages.Dynamic + tmpS + ")");
+			addCheckerProblem("C_600.6", "(" + Messages.Dynamic + tmpS + ")");
+			addCheckerProblem("C_600.7", "(" + Messages.Dynamic + tmpS + ")");
+
 
 			addCheckerProblem("C_600.16", "(" + Messages.Dynamic + tmpS + ")"); //$NON-NLS-1$
 		}
@@ -3388,13 +3399,18 @@ public class CheckEngine extends HtmlTagUtil {
 		// addCheckerProblem("C_500.16");
 
 		addCheckerProblem("C_600.0");
-		addCheckerProblem("C_600.1");
-		addCheckerProblem("C_600.2");
+
+		//moved into mediaCheck
+//		addCheckerProblem("C_600.1");
+//		addCheckerProblem("C_600.2");
+//		addCheckerProblem("C_600.6");
+//		addCheckerProblem("C_600.7");
+		
 		addCheckerProblem("C_600.3");
 		addCheckerProblem("C_600.4");
 		addCheckerProblem("C_600.5");
-		addCheckerProblem("C_600.6");
-		addCheckerProblem("C_600.7");
+
+
 		addCheckerProblem("C_600.8");
 		addCheckerProblem("C_600.9");
 		addCheckerProblem("C_600.10");

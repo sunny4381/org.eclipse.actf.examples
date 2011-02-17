@@ -2874,7 +2874,7 @@
             <desc>Test manually checked items for success criterion 1.1.1.</desc>
         </description>
     </checkitem>
-    <checkitem type="info" id="C_600.1">
+    <checkitem type="user" id="C_600.1">
         <guideline>
             <gItem techniques="G158,G159,G166" id="7.1.2.1" name="JIS"/>
             <gItem techniques="G158,G159,G166" id="1.2.1" name="WCAG 2.0"/>
@@ -2886,7 +2886,7 @@
             <desc>prerecorded audio-only and prerecorded video-only media</desc>
         </description>
     </checkitem>
-    <checkitem type="info" id="C_600.2">
+    <checkitem type="user" id="C_600.2">
         <guideline>
             <gItem techniques="G58,G69,H53,G78,G173,SM6,SM7,G8,SM1,SM2" id="7.1.2.3" name="JIS"/>
             <gItem techniques="G58,G69,H53,G78,G173,SM6,SM7,G8,SM1,SM2" id="1.2.3" name="WCAG 2.0"/>
@@ -2934,7 +2934,7 @@
             <desc>Check that using a contrast ratio of 3:1 with surrounding text and providing additional visual cues on focus for links or controls where color alone is used to identify them.</desc>
         </description>
     </checkitem>
-    <checkitem type="info" id="C_600.6">
+    <checkitem type="user" id="C_600.6">
         <guideline>
             <gItem techniques="G60,G170,G171" id="7.1.4.2" name="JIS"/>
             <gItem techniques="G60,G170,G171" id="1.4.2" name="WCAG 2.0"/>
@@ -2946,7 +2946,7 @@
             <desc>If any audio on a Web page plays automatically for more than 3 seconds, check that either a mechanism is available to pause or stop the audio, or a mechanism is available to control audio volume independently from the overall system volume level.</desc>
         </description>
     </checkitem>
-    <checkitem type="info" id="C_600.7">
+    <checkitem type="user" id="C_600.7">
         <guideline>
             <gItem techniques="G93,G87,SM11,SM12" id="7.1.2.2" name="JIS"/>
             <gItem techniques="G93,G87,SM11,SM12" id="1.2.2" name="WCAG 2.0"/>
