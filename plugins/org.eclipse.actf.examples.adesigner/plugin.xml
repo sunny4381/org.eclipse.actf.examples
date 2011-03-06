@@ -112,5 +112,11 @@
          </property>
       </product>
    </extension>
+   <extension
+         point="org.eclipse.actf.model.ui.browserFavorites">
+      <favorites
+            prefFile="resource/favorites.properties">
+      </favorites>
+   </extension>
 
 </plugin>
