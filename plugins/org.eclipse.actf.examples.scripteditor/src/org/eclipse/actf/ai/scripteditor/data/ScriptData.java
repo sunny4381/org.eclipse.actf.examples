@@ -873,7 +873,7 @@ public class ScriptData implements IUNIT {
 		// Make format "HH:MM:SS"
 		if (totalSec <= 0) {
 			// default
-			formTime = "00 : 00 : 00";
+			formTime = "00:00:00";
 		} else {
 			// Integer to String
 			hh = totalSec / 3600;
@@ -886,13 +886,13 @@ public class ScriptData implements IUNIT {
 				formTime = formTime + "0";
 			formTime = formTime + hh.toString();
 			// separator
-			formTime += " : ";
+			formTime += ":";
 			// MM
 			if (mm < 10)
 				formTime = formTime + "0";
 			formTime = formTime + mm.toString();
 			// separator
-			formTime += " : ";
+			formTime += ":";
 			// SS
 			if (ss < 10)
 				formTime = formTime + "0";

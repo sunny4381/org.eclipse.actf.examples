@@ -64,8 +64,15 @@
                style="push">
          </action>
          <action
+               class="org.eclipse.actf.examples.scripteditor.actions.ExportTTMLAction"
+               id="org.eclipse.actf.examples.scripteditor.ExportTTMLAction"
+               label="Export TTML"
+               menubarPath="file/impExportGroup"
+               style="push">
+         </action>
+         <action
                class="org.eclipse.actf.examples.scripteditor.actions.FileCSVExportAction"
-               id="org.eclipse.actf.examples.scripteditor.FileCSVImportAction"
+               id="org.eclipse.actf.examples.scripteditor.FileCSVExporttAction"
                label="%scripteditor.action.csv.export"
                menubarPath="file/impExportGroup"
                style="push">
