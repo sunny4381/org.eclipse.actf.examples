@@ -4,17 +4,17 @@
 <META http-equiv="Content-Type" CONTENT="text/html; charset=SHIFT_JIS">
 <META http-equiv="Content-Style-Type" content="text/css">
 <meta name="copyright" content="Copyright (c) IBM Corporation and others 2007. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page." >
-<TITLE>「音声ユーザビリティ視覚化」 で検出されるアクセシビリティおよびユーザビリティの問題点</TITLE>
+<TITLE>「アクセシビリティ検証・音声ユーザビリティ視覚化」 で検出されるアクセシビリティおよびユーザビリティの問題点</TITLE>
 <LINK href="aDesigner.css" rel="stylesheet" type="text/css" class="head">
 </HEAD>
 <BODY>
-<H1>「音声ユーザビリティ視覚化」 で検出されるアクセシビリティ、およびユーザビリティの問題点</H1>
+<H1>「アクセシビリティ検証・音声ユーザビリティ視覚化」 で検出されるアクセシビリティ、およびユーザビリティの問題点</H1>
 
 <UL>
 <LI><a href="#accessTime">到達時間</a>
 <LI><a href="#internalLink">ページ内リンク</a>
 <LI><a href="#redundantText">冗長なテキストの情報</a>
-<LI><a href="#inadequacyALT">不適切な ALT 属性</a>
+<LI><a href="#inadequacyalt">不適切な alt 属性</a>
 <LI><a href="#tableProblem">テーブルに関連する問題</a>
 <LI><a href="#accGuideline">アクセシビリティ・ガイドラインへの準拠度</a>
 </UL>
@@ -54,23 +54,23 @@ aDesigner は、リンク先が存在しないページ内リンクや、読み上げ可能なテキストがない
 <H2 id="redundantText">冗長なテキストの情報</H2>
 <P>
 aDesigner は冗長なテキストの情報を検出します。
-たとえば、&quot;電話帳&quot; という ALT 属性が与えられたアイコンの後に &quot;電話帳&quot; というテキストが繰り返され、それぞれ同じページにリンクが設定されているような場合、
+たとえば、&quot;電話帳&quot; という alt 属性が与えられたアイコンの後に &quot;電話帳&quot; というテキストが繰り返され、それぞれ同じページにリンクが設定されているような場合、
 音声ブラウザは「電話帳電話帳」と同じテキストを2回読み上げます。
 これは読み上げ時間を増大させ、ユーザビリティを低下させるとともに、ユーザーを混乱させてしまいます。
-このような場合は、アイコンの ALT 属性を空文字 (&quot;&quot;) にするのが適切です。
+このような場合は、アイコンの alt 属性を空文字 (&quot;&quot;) にするのが適切です。
 </P>
 
-<H2 id="inadequacyALT">不適切なALT属性</H2>
+<H2 id="inadequacyalt">不適切なalt属性</H2>
 <P>
-aDesigner は、画像の不適切な ALT 属性（代替テキスト）を検出します。
+aDesigner は、画像の不適切な alt 属性（代替テキスト）を検出します。
 たとえば、スペーサー画像（レイアウトを整える目的で用いられる空白の画像）に &quot;spacer&quot; という ALT 属性を与えることは不適切です。
 これは、スペーサー画像の存在がわかっても、音声ブラウザユーザーにとっては意味がなく、&quot;spacer&quot; と読み上げても単にユーザーを混乱させる効果しかないからです。
-このような場合には、アイコンの ALT 属性を空文字 (&quot;&quot;) にするのが適切です。
+このような場合には、アイコンの alt 属性を空文字 (&quot;&quot;) にするのが適切です。
 </P>
 
 <H2 id="tableProblem">テーブルに関連する問題</H2>
 <P>
-&lt;TABLE&gt;タグは表（データテーブル）を作るのにも、レイアウトを整える目的（レイアウトテーブル）にも利用されています。
+&lt;table&gt;タグは表（データテーブル）を作るのにも、レイアウトを整える目的（レイアウトテーブル）にも利用されています。
 いずれの場合にも、情報をテーブルから 「視覚的・直観的に獲得する順序」 と、音声ブラウザによる 「読み上げ順序」 が異なるケースが多く、テーブルはユーザビリティの問題を引き起こしやすいと言えます。
 aDesigner はテーブルセルを視覚化し、ウェブページ制作者がテーブル構造を把握するのを助けます。
 </P>

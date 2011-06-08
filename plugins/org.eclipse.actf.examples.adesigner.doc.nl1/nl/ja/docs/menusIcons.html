@@ -46,9 +46,9 @@ aDesigner の上部には6つのメニューがあります。
 初期設定は<B>中</B>です。
 </UL>
 
-<H3>視覚化 (Alt+Z)</H3>
+<H3>アクセシビリティ検証・視覚化 (Alt+Z)</H3>
 <UL>
-<LI><B>音声ユーザビリティ視覚化</B> (Ctrl+Shift+B): 音声ユーザビリティ視覚化と音声ブラウザユーザーにとってのアクセシビリティ・ユーザビリティのチェックを開始します。
+<LI><B>アクセシビリティ検証・音声ユーザビリティ視覚化</B> (Ctrl+Shift+B): 音声ユーザビリティ視覚化と音声ブラウザユーザーにとってのアクセシビリティ・ユーザビリティのチェックを開始します。
 <LI><B>ロービジョン シミュレーション</B> (Ctrl+Shift+O): ロービジョンシミュレーションとロービジョンユーザーにとってのアクセシビリティ・ユーザビリティのチェックを開始します。
 <li><b>プレゼンテーション 小会議室</b> (Ctrl+Shift+M): 小会議室でのプレゼンテーションの見え方をシミュレーションします．
 <li><b>プレゼンテーション 大会議室</b> (Ctrl+Shift+G): 大会議室でのプレゼンテーションの見え方をシミュレーションします．
@@ -122,9 +122,14 @@ aDesigner の上部には6つのメニューがあります。
 
 <table border=1>
 <tr>
-<td>「<B>視覚化実行</B>」</td>
+<td>「<B>アクセシビリティ検証・音声ユーザビリティ視覚化実行</B>」</td>
 <td><IMG src="images/I_Visualize.gif" alt=""></td>
 <td>音声ユーザビリティの視覚化を行い、音声ブラウザユーザーにとってのアクセシビリティとユーザビリティのチェックを開始します。</td>
+</tr>
+<tr>
+<td>「<B>アクセシビリティ検証・音声ユーザビリティ視覚化実行（音声ブラウザモード）</B>」</td>
+<td><IMG src="images/wh_16.png" alt=""></td>
+<td>音声ブラウザの出力をシミュレートした結果を表示すると共に、音声ブラウザユーザーにとってのアクセシビリティとユーザビリティのチェックを開始します。</td>
 </tr>
 <tr>
 <td>「<B>設定</B>」</td>
@@ -135,10 +140,10 @@ aDesigner の上部には6つのメニューがあります。
 <td>「<B>保存</B>」</td>
 <td><IMG src="images/I_Save.gif" alt=""></td>
 <td>チェック結果をレポートファイルに保存します。
-レポートファイルは HTML 形式ですので、通常のウェブブラウザで表示することができます。</td>
+レポートファイルはCSV形式ですので、各種アプリケーションを用いた問題点管理に利用できます。また、「HTML形式のレポートも保存」オプションを選択することで、HTML 形式のレポートも保存することが出来ます。HTML形式のレポートは、コンテンツの製作者などと情報を共有する際にも利用できます。</td>
 </tr>
 <tr>
-<td>「<B>ID/CSS</B>」</td>
+<td>「<B>ID/AccessKey/Class/CSS情報を開く</B>」</td>
 <td><IMG src="images/I_IdCss.gif" alt=""></td>
 <td><A href="elementCss.html">ID/AccessKey/Class/CSS Inspector (確認) パネル</A>を開きます。
 このパネルを使って、対象ウェブページの要素の属性情報 (ID, AccessKey, CLASS) とスタイルシート(CSS)の情報を調べることができます。</td>
@@ -159,15 +164,15 @@ aDesigner の上部には6つのメニューがあります。
 <div style="margin-bottom:20px">
 <table border=1>
 <tr>
-<td><IMG src="images/I_FaceSmile.gif" alt="Smiling face."></td>
+<td><IMG src="images/I_FaceSmile.gif" alt="笑顔のアイコン（緑）"></td>
 <td>該当するエレメントへの到達時間は30秒以内です。</td>
 </tr>
 <tr>
-<td><IMG src="images/I_FaceUsual.gif" alt="Expressionless face."></td>
+<td><IMG src="images/I_FaceUsual.gif" alt="普通の顔のアイコン（黄色）"></td>
 <td>該当するエレメントへの到達時間は31秒以上90秒（デフォルトの許容最大到達時間）以内です。</td>
 </tr>
 <tr>
-<td><IMG src="images/I_FaceSad.gif" alt="Sad face."></td>
+<td><IMG src="images/I_FaceSad.gif" alt="悲しい顔のアイコン（赤）"></td>
 <td>該当するエレメントへの到達時間が90秒を超えています。</td>
 </tr>
 </table>
@@ -185,12 +190,12 @@ aDesigner の上部には6つのメニューがあります。
 <table border=1>
 <tr>
 <td><B>リンク元アイコン</B></td>
-<td><IMG src="images/I_LinkSource.gif" alt="Start of arrow."></td>
+<td><IMG src="images/I_LinkSource.gif" alt=""></td>
 <td>リンク元アイコンを選択すると、対応するリンク先アイコンまでの間に矢印が描画されます。</td>
 </tr>
 <tr>
 <td><B>リンク先アイコン</B></td>
-<td><IMG src="images/I_LinkDestination.gif" alt="End of arrow."></td>
+<td><IMG src="images/I_LinkDestination.gif" alt=""></td>
 <td>リンク先アイコンを選択すると、対応するすべてのリンク元アイコンまでの間に矢印が描画されます。</td>
 </tr>
 </table>
@@ -280,34 +285,14 @@ W矢印は赤い円のつながりとして表現されます。
 
 <div style="margin-bottom:20px">
 <table border=1>
-<tr><td><IMG src="images/ErrC.gif" alt="Cという赤いアイコン."> </td>
-<td>アクセシビリティ・ガイドラインへの準拠に関する問題点で、<U>修正が必要</U>なものです。</td></tr>
-<tr><td><IMG src="images/WarnC.gif" alt="Cという黄色いアイコン."> </td>
-<td>アクセシビリティ・ガイドラインへの準拠に関する問題かもしれません。<U>ユーザによる確認が必要</U>です。</td></tr>
-<tr><td><IMG src="images/InfoC.gif" alt="Cという青いアイコン."> </td>
-<td>アクセシビリティ・ガイドラインへの準拠に関する<U>情報</U>です。</td></tr>
-</table>
-</div>
-
-<div style="margin-bottom:20px">
-<table border=1>
-<tr><td><IMG src="images/ErrL.gif" alt="Lという赤いアイコン."></td>
-<td>ユーザビリティ (Listenability) に関する問題点で、<U>修正が必要</U>なものです。</td></tr>
-<tr><td><IMG src="images/WarnL.gif" alt="Lという黄色いアイコン."></td> 
-<td>ユーザビリティ (Listenability) に関する問題かもしれません。<U>ユーザによる確認が必要</U>です。</td></tr>
-<tr><td><IMG src="images/InfoL.gif" alt="Lという青いアイコン."></td>
-<td>ユーザビリティ (Listenability) に関する<U>情報</U>です。</td></tr>
-</table>
-</div>
-
-<div style="margin-bottom:20px">
-<table border=1><tr><td>
-<tr><td><IMG src="images/ErrN.gif" alt="Nという赤いアイコン."></td>
-<td>ユーザビリティ(Navigability)に関する問題点で、<U>修正が必要</U>なものです。</td></tr>
-<tr><td><IMG src="images/WarnN.gif" alt="Nという黄色いアイコン."></td>
-<td>ユーザビリティ(Navigability)に関する問題かもしれません。<U>ユーザによる確認が必要</U>です。</td></tr>
-<tr><td><IMG src="images/InfoN.gif" alt="Nという青いアイコン."></td>
-<td>ユーザビリティ(Navigability)に関する<U>情報</U>です。</td></tr>
+<tr><td><IMG src="images/Err.png" alt="問題あり"> </td>
+<td>指摘箇所に問題が存在します。</td></tr>
+<tr><td><IMG src="images/Warn.png" alt="問題の可能性大."> </td>
+<td>指摘箇所に問題が存在する可能性が高い項目です。</td></tr>
+<tr><td><IMG src="images/Conf.png" alt="要判断箇所"> </td>
+<td>評価すべき箇所をツールが指摘しますが、問題を含むかどうかは人が判断する必要がある項目です。</td></tr>
+<tr><td><IMG src="images/Info.png" alt="手動確認"> </td>
+<td>ツールでは評価すべき箇所を指摘できない項目です。テスト方法にしたがって問題の有無を判断する必要があります。</td></tr>
 </table>
 </div>
 
@@ -332,13 +317,14 @@ W矢印は赤い円のつながりとして表現されます。
 
 <H4>音声ユーザビリティ</H4>
 <P>
-<B>レーダーチャート:</B> 次の3項目から成るレーダーチャートです。
+<B>レーダーチャート:</B> 次の4項目から成るレーダーチャートです。
 <UL>
-<LI>Compliance: アクセシビリティ・ガイドラインへの準拠度です。<BR>
-<LI>Navigability:  音声ブラウザを用いたナビゲーションのやりやすさに対する評価です。<BR>
-<LI>Listenability:  音声ブラウザによるウェブページの聞きやすさに対する評価です。<BR>
+<LI>知覚可能: 利用者が知覚できるかどうかに対する評価。</li>
+<LI>操作可能: 利用者が操作できるかどうかに対する評価。</li>
+<LI>理解可能: 利用者が理解できるかどうかに対する評価。</li>
+<LI>頑健性: 支援技術を含めた様々なユーザーエージェントが解釈可能かどうかに対する評価。</li>
 </UL>
-総合評価は、これらの3分野の評価に基づいて判定されます。
+総合評価は、これらの4分野の評価に基づいて判定されます。
 </P>
 
 <H4>ロービジョン</H4>
