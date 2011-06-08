@@ -59,22 +59,17 @@ If an element has both a fixed-size font problem and a small character problem, 
 In this case, the severity value becomes 50.
 </P>
 <P>
-The severity values of color-related problem are evaluated using the <A href="http://www.w3.org/TR/AERT#color-contrast">algorithm described in &quot;Techniques For Accessibility Evaluation And Repair Tools&quot;</A> issued by the World Wide Web Consortium.
-For example, if a page includes two colors, R<SUB>1</SUB>, G<SUB>1</SUB>, B<SUB>1</SUB> and R<SUB>2</SUB>, G<SUB>2</SUB>, B<SUB>2</SUB>, where each of the RGB values ranges from 0 to 255, then two types of difference values, the brightness difference and the hue difference between the two colors are calculated as follows:
-<PRE>
-The brightness difference = |(299R<SUB>1</SUB> + 587G<SUB>1</SUB> + 114B<SUB>1</SUB>)/1000 - (299R<SUB>2</SUB> + 587G<SUB>2</SUB> + 114B<SUB>2</SUB>)/1000|<BR>
-The hue difference = |R<SUB>1</SUB>-R<SUB>2</SUB>| + |G<SUB>1</SUB>-G<SUB>2</SUB>| + |B<SUB>1</SUB>-B<SUB>2</SUB>|
-</PRE>
-The threshold values are set to 125 and 500 for the brightness difference and the hue difference, respectively.
-If at least one of the difference values is greater than or equal to its corresponding threshold value, the two colors are judged to be different enough to provide good color visibility.
-Otherwise, the severity values for both brightness and hue are computed as follows:
+The severity values of color-related problem are evaluated using the definition of
+<A href="http://www.w3.org/TR/2008/REC-WCAG20-20081211/#relativeluminancedef">&quot;relative luminance&quot;</A>.
+
+The severity values are computed as follows:
 <OL>
-<LI>If a difference value is equal to its corresponding threshold value, the severity value is 0.
-<LI>If the difference value is equal to 0, the severity value is 100.
-<LI>If the difference value is intermediate between the threshold value and 0, the severity value is the corresponding fraction between 0 and 100.
+<li>If the relative luminance between foreground color and background color is more than 7, the severity value is 0.</li>
+<li>If the relative luminance is less than 3, the severity value is 100.</li>
+<li>If the relative luminance between the threshold value, the severity value is the corresponding fraction between 0 and 100.</li>
 </OL>
-The smaller of the two severity values (for brightness and hue) becomes the severity value of the problem.
 </P>
+
 <P>
 The severity values depend on the parameters you set.
 For a text element, miChecker tests its foreground and background colors in the Simulation View.
