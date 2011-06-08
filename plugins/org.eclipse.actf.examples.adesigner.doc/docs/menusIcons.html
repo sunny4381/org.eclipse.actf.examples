@@ -127,7 +127,7 @@ href="parametersBlind.html">Set the parameters dialog box (blind usability visua
 <td><B>Save</B></td>
 <td><IMG src="images/I_Save.gif" alt=""></td>
 <td>Click this button to open the Save as dialog box and save a report file.
-The report file is an HTML document and can be read by using a Web browser.</td>
+The report file is a CSV format. By selecting "Save HTML Report" option, an HTML document will be saved with CSV report.</td>
 </tr>
 <tr>
 <td><B>ID/CSS</B></td>
@@ -208,28 +208,25 @@ The column heads differ slightly depending on the active tab.
 </P>
 
 <H4><a name="blindIcon">Blind tab</a></H4>
-<UL class="icons">
-<LI><IMG src="images/I_Star.gif" alt="Star.">: This icon appears with some other icon. The corresponding element can be highlighted in the Visualization View by selecting this line.
-<LI>
-<LI><IMG src="images/ErrC.gif" alt="Character C in red.">: This is a compliance problem automatically detected by aDesigner.
-<LI><IMG src="images/WarnC.gif" alt="Character C in yellow.">: This may be a compliance problem. The user must manually check it.
-<LI><IMG src="images/InfoC.gif" alt="Character C in blue.">: This is
-an informational item. 
-<LI>
-<LI><IMG src="images/ErrL.gif" alt="Character L in red.">: This is an
-usability (listenability) problem automatically detected by aDesigner.
-<LI><IMG src="images/WarnL.gif" alt="Character L in yellow.">: This
-may be an usability (listenability) problem. The user must manually check it.
-<LI><IMG src="images/InfoL.gif" alt="Character L in blue.">: This is
-an informational item. 
-<LI>
-<LI><IMG src="images/ErrN.gif" alt="Character N in red.">: This is an
-usability (navigation) problem automatically detected by aDesigner.
-<LI><IMG src="images/WarnN.gif" alt="Character N in yellow.">: This
-may be an usability (navigation) problem. The user must manually check it.
-<LI><IMG src="images/InfoN.gif" alt="Character N in blue.">: This is
-an informational item. 
-</UL>
+<div style="margin-bottom:20px">
+<table border=1><tr><td>
+<IMG src="images/I_Star.gif" alt="Star icon"> </td><td>This icon appears with some other icon. The corresponding element can be highlighted in the Visualization View by selecting this line.
+</td></tr></table>
+</div>
+
+<div style="margin-bottom:20px">
+<table border=1>
+<tr><td><IMG src="images/Err.png" alt="Error"> </td>
+<td>This item is an accessibility problem automatically detected.</td></tr>
+<tr><td><IMG src="images/Warn.png" alt="Probably Error"> </td>
+<td>This item is probably accessibility problem.</td></tr>
+<tr><td><IMG src="images/Conf.png" alt="Need confirmation"> </td>
+<td>This item requires user confirmation.</td></tr>
+<tr><td><IMG src="images/Info.png" alt="Human check"> </td>
+<td>This item requires human check based on test procedure.</td></tr>
+</table>
+</div>
+
 
 <H4>Low vision tab</H4>
 <UL class="icons">
@@ -247,8 +244,7 @@ This area provides the target page's overall rating for accessibility and usabil
 <H4>Blind tab</H4>
 <P>
 Page rating: The radar chart shows the target page's rating in terms
-of compliance with the accessibility guidelines, navigability and
-listenability.
+of Perceivable, Operable, Understandable and Robust. 
 The overall rating is based on the number of problems found on the page.
 </P>
 
