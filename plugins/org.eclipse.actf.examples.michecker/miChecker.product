@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?pde version="3.5"?>
+
+<product name="miChecker" uid="miChecker" id="org.eclipse.actf.examples.michecker.miChecker" application="org.eclipse.actf.examples.michecker.org.eclipse.actf.examples.michecker.Application" version="1.0.0" useFeatures="true" includeLaunchers="true">
+
+   <aboutInfo>
+      <image path="/org.eclipse.actf.examples.michecker/about.gif"/>
+      <text>
+         %About.Text
+      </text>
+   </aboutInfo>
+
+   <configIni use="default">
+   </configIni>
+
+   <launcherArgs>
+      <vmArgs>-Xmx512m</vmArgs>
+   </launcherArgs>
+
+   <windowImages i32="/org.eclipse.actf.examples.michecker/icons/excla_32.png"/>
+
+
+   <launcher name="miChecker">
+      <solaris/>
+      <win useIco="true">
+         <ico path="/org.eclipse.actf.examples.michecker/icons/miChecker.ico"/>
+         <bmp/>
+      </win>
+   </launcher>
+
+
+   <vm>
+   </vm>
+
+
+   <plugins>
+   </plugins>
+
+   <features>
+      <feature id="org.eclipse.actf.examples.michecker"/>
+   </features>
+
+
+</product>

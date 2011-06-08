@@ -1,0 +1,90 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML lang="en">
+<HEAD>
+<META http-equiv="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<META http-equiv="Content-Style-Type" content="text/css">
+<meta name="copyright" content="Copyright (c) Ministry of Internal Affairs and Communications, IBM Corporation and others 2007, 2011. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page." >
+<TITLE>Line View pane (blind)</TITLE>
+<LINK href="miChecker.css" rel="stylesheet" type="text/css" class="head">
+</HEAD>
+<BODY>
+<H1>Line View pane (blind)</H1>
+
+
+<P>
+The Line View pane is a table that presents the problems for the selected categories line by line.</P>
+<H2>Provided information</H2>
+<p>For each problem, the following information is given:
+</P>
+<UL>
+<LI>Type (Icon): a visual indicator for the problem. The icons used in the Line View pane in the blind mode are as follows:
+  <UL class="icons">
+<LI><IMG src="images/I_Star.gif" alt="Star.">: This icon appears with some other icon. The corresponding element can be highlighted in the Visualization View by selecting this line.
+<LI>
+<LI><IMG src="images/ErrC.gif" alt="Character C in red.">: This is a compliance problem automatically detected by miChecker.
+<LI><IMG src="images/WarnC.gif" alt="Character C in yellow.">: This may be a compliance problem. The user must manually check it.
+<LI><IMG src="images/InfoC.gif" alt="Character C in blue.">: This is
+an informational item. 
+<LI>
+<LI><IMG src="images/ErrL.gif" alt="Character L in red.">: This is an
+usability (listenability) problem automatically detected by miChecker.
+<LI><IMG src="images/WarnL.gif" alt="Character L in yellow.">: This
+may be an usability (listenability) problem. The user must manually check it.
+<LI><IMG src="images/InfoL.gif" alt="Character L in blue.">: This is
+an informational item. 
+<LI>
+<LI><IMG src="images/ErrN.gif" alt="Character N in red.">: This is an
+usability (navigation) problem automatically detected by miChecker.
+<LI><IMG src="images/WarnN.gif" alt="Character N in yellow.">: This
+may be an usability (navigation) problem. The user must manually check it.
+<LI><IMG src="images/InfoN.gif" alt="Character N in blue.">: This is
+an informational item. 
+<LI>
+  </UL>
+If the problem affects to the evaluation metrics, the score will be shown with the icon. 
+<LI>Accessibility guidelines: The five accessibility guidelines and standards that are available for use appear to the right of the Icon column. In the Set Checker Options dialog box (opened by clicking <B>Tool</B> &gt; <B>Checker Options</B>), the guidelines and standards can be selected for miChecker to use when it checks the accessibility and usability of webpages.
+  <UL>
+  <LI>WCAG: The number of the <A href="http://www.w3.org/TR/WCAG10/">corresponding checkpoint</A> defined in the Web Content Accessibility Guidelines, which are issued by the World Wide Web Consortium.
+  <LI>[Section] 508: The <A href="http://www.section508.gov/index.cfm?FuseAction=Content&ID=12#Web">corresponding rule</A> in Section 508 of the Rehabilitation Act &sect;1194.22.
+  <LI>JIS: The corresponding checkpoint of the Japanese Industrial Standard (JIS) X8341-3.
+  <LI>IBM Web Accessibility Checklist: The number of the <A href="http://www-306.ibm.com/able/guidelines/web/accessweb.html">corresponding checkpoint</A> of the IBM Web Accessibility Checklist.
+  </UL>
+<LI>Line: The line number in the HTML document at which the problem appears.
+This will appear when the <A href="menusIcons.html#lineNumber">Line number information</A> option in the Checker Options dialog box is selected.
+<LI>Problem Description: A description of the accessibility or usability problem that will prevent blind users from accessing the page.
+</UL>
+
+<H2>Interaction</H2>
+<P>
+Left-click a line to highlight the element that corresponds to the problem in the Visualization View pane.
+Right-click a line or press Shift+F10 to open a context menu.
+<UL>
+<LI><B>Clear Selection</B>: Selecting this item clears (unselects) the currently selected problem (or problems) in the Line view.
+This is used to stop highlighting problems in the Simulation/Visualization view.
+<LI><B>View Guideline</B>: Selecting this item refers to the
+corresponding help pages of the guideline items, which appear in a separate browser window. If there are no relevant checkpoints in any guideline, this item is not available. 
+<LI><B>View Problem Description</B>: Selecting this item opens a dialog box that shows the problem description for the selected problem.
+This is useful when the problem description is too long to read in the Line View.
+<LI><B>View Source HTML</B>: Selecting this item opens the HTML source viewer in which the corresponding HTML element is highlighted.
+</UL>
+</P>
+
+<H1 class="related">Related topics</H1>
+<UL class="related">
+<LI><A href="workspace.html">Exploring the HTML Accessibility mode</A>
+<LI><A href="checkBlind.html">Checking the accessibility and usability of a document in the blind tab</A>
+<LI><A href="problemsBlind.html">Accessibility and usability problems for blind users</A>
+<LI><A href="compliance.html">Compliance and accessibility guidelines for Web content</A>
+<LI><A href="menusIcons.html">User interface menus and icons</A>
+<LI><A href="sourceViewer.html">HTML Source Viewer</A>
+</UL>
+
+<P>
+<A href="index.html">Go to Index</A>
+<hr>
+<DIV class="logo"><IMG src="images/logo.gif" alt=""></DIV>
+</P>
+
+
+</BODY>
+</HTML>
