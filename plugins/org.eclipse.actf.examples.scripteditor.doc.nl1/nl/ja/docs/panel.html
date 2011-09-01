@@ -17,21 +17,21 @@
 </p>
 <div class="h1">
 <ul>
- <li><a href="#audiopanel">音声再生パネル</a></li>
+ <li><a href="#audiopanel">タイムラインパネル</a></li>
  <li><a href="#inputpanel">音声ガイド入力パネル</a></li>
  <li><a href="#listpanel">音声ガイドリストパネル</a></li>
 </ul>
 </div>
 
 <a name="audiopanel"/>
-<h2>音声再生パネル</h2>
+<h2>タイムラインパネル</h2>
 
 <p class="h2 img">
-  <img src="img/audiopaneldetail-fix.png" width="695" height="240" alt="audiopanel wav of scripteditor"/>
+  <img src="img/audiopaneldetail-fix.png" width="695" height="240" alt="スクリプトエディターのタイムラインパネルの図"/>
 </p>
 
-<p class="caption" width="695">
-図１：音声再生パネル
+<p class="caption">
+図１：タイムラインパネル
 </p>
 
 <dl class="h2">
@@ -59,29 +59,31 @@ wavファイルで再生する場合は音符マークがつきます。
 <h2>音声ガイド入力パネル</h2>
 
 <p class="h2 img">
-  <img src="img/inputpaneldetail-left-fix.png" width="660" height="197" alt="input panel left side of scripteditor"/>
+  <img src="img/inputpaneldetail-left-fix.png" width="660" height="197" alt="音声ガイド入力パネル　左部分の図"/>
 </p>
 
-<p class="caption" width="660">
+<p class="caption">
 図２：音声ガイド入力パネル　左部分
 </p>
 
 <dl class="h2">
-  <dt>(a)パネル切り替え</dt><dd>合成音声による入力とwavの選択のパネルを切り替えます</dd>
-  <dt>(b)開始・終了時間</dt><dd>音声合成を開始するタイミングを指定します。終了時間は自動的に計算されて入ります。</dd>
-  <dt>(c)入力パネル</dt><dd>読上げたい音声ガイドをテキストで入力するためのフィールドです。</dd>
+  <dt>(a)パネル切り替えタブ</dt><dd>合成音声による入力とwavの選択のパネルを切り替えます</dd>
+  <dt>(b)開始・終了時間表示部</dt><dd>音声合成を開始するタイミングを指定します。終了時間は自動的に計算されて入ります。</dd>
+  <dt>(c)入力部</dt><dd>読上げたい音声ガイドをテキストで入力するためのフィールドです。</dd>
   <dt>(d)追加/変更・削除、キャンセルボタン</dt><dd>作成した音声ガイドを追加するときはAdd,既に存在している音声ガイドを修正する場合はAddの代わりにUpdateかDeleteボタンが表示されています。操作をやめたい場合はCancelを押下します。</dd>
-  <dt>(e)拡張音声ガイド指定</dt><dd>拡張の音声ガイドを指定する場合はここにチェックを入れます。</dd>
+  <dt>(e)拡張音声ガイド指定</dt><dd>
+  元の動画の無音部分が短く、音声ガイドがその時間には入りきらない場合に、元の動画を止めて
+　詳細な説明を入れることがあります。これを拡張音声ガイドと呼びます。拡張音声ガイドを指定したい場合は、ここにチェックを入れます。</dd>
   <dt>(f)音声ガイドの性別切り替え</dt><dd>男性音か女性音かを選べます。</dd>
   <dt>(g)合成音声の試聴</dt><dd>正しく読上げるか試聴するためのボタンです。</dd>
   <dt>(h)言語切り替え</dt><dd>音声合成の言語の切り替えを行います。現在日本語と英語のみ対応しています。</dd>
 </dl>
 
 <p class="h2 img">
-  <img src="img/inputpaneldetail-right-fix.png" width="366" height="202" alt="input panel right side of scripteditor"/>
+  <img src="img/inputpaneldetail-right-fix.png" width="366" height="202" alt="音声ガイド入力パネル　右部分の図"/>
 </p>
 
-<p class="caption" width="366">
+<p class="caption">
 図３：音声ガイド入力パネル　右部分
 </p>
 
@@ -92,26 +94,26 @@ wavファイルで再生する場合は音符マークがつきます。
 </dl>
 
 <p class="h2 img">
-  <img src="img/wavinputdetail-left-fix.png" width="660" height="197" alt="wav input panel left side of scripteditor"/>
+  <img src="img/wavinputdetail-left-fix.png" width="660" height="197" alt="音声ガイド入力パネル　wav選択パネル　左部分の図"/>
 </p>
 
-<p class="caption" width="660">
-図４：wav選択パネル　左部分
+<p class="caption">
+図４：音声ガイド入力パネル　wav選択パネル　左部分
 </p>
 
 <dl class="h2">
-  <dt>(a)開始・終了時間</dt><dd>音声合成を開始するタイミングを表示します。ここでは変更できません。</dd>  
-  <dt>(b)wavファイル選択ボタン</dt><dd>使用したいwavファイルを選択するためにこのボタンを押下します。選択のダイアログがあがります。</dd>
-  <dt>(c)wav情報表示フィールド</dt><dd>選択されたwavの情報を表示します。なお、ここのフィールドに直接ファイルをドラッグ＆ドロップしても選択状態に出来ます。    </dd>
+  <dt>(a)開始・終了時間</dt><dd>音声合成を開始するタイミングを表示します。ここは表示のみです。変更したい場合は、タイムラインパネルの再生位置の表示を移動して、変更してください。</dd>  
+  <dt>(b)wavファイル選択ボタン</dt><dd>使用したいwavファイルを選択するためにこのボタンを押下します。選択のダイアログボックスが現れます。</dd>
+  <dt>(c)wav情報表示フィールド</dt><dd>選択されたwavの情報を表示します。なお、このフィールドにファイルをドラッグ＆ドロップし入力することも出来ます。 </dd>
   <dt>(d)変更、キャンセルボタン</dt><dd>選択したwavを確定したい場合にUpdateボタンを押下します。操作をやめたい場合はCancelを押下します。</dd>
   <dt>(e)プレビューボタン</dt><dd>Play WAVにチェックを入れPreviewボタンを押下すると選択されたwavがプレビューできます。</dd>
 </dl>
 
 <p class="h2 img">
-  <img src="img/wavinputdetail-right-fix.png" width="366" height="202" alt="wav input panel right side of scripteditor"/>
+  <img src="img/wavinputdetail-right-fix.png" width="366" height="202" alt="音声ガイド入力パネル　wav選択パネル　右部分の図"/>
 </p>
 
-<p class="caption" width="366">
+<p class="caption">
 図５：wav選択パネル　右部分
 </p>
 
@@ -124,21 +126,20 @@ wavファイルで再生する場合は音符マークがつきます。
 <h2>音声ガイドのリストパネル</h2>
 
 <p class="h2 img">
-  <img src="img/listpaneldetail-fix.png" width="300" height="526" alt="wav input panel right side of scripteditor"/>
+  <img src="img/listpaneldetail-fix.png" width="300" height="526" alt="音声ガイドリストパネルの図"/>
 </p>
 
-<p class="caption" width="300">
-図７：音声ガイドリスト
+<p class="caption">
+図６：音声ガイドリストパネル
 </p>
 
 <dl class="h2">
   <dt>(a)wav表示フィールド</dt><dd>wavファイルが選択されているか否かを表示します。音符ボタンがあればwavが選択されています。</dd>
   
-  <dt>(b)拡張表示フィールド</dt><dd>拡張か通常かを表示します。Exという文字があれば拡張で音声ガイドが
-再生されます。</dd>
-  <dt>(c)開始時間</dt><dd>音声ガイドが対応する動画のどこから再生されるのか表示しています。  </dd>
+  <dt>(b)拡張表示フィールド</dt><dd>拡張か通常かを表示します。Exという文字があれば拡張で音声ガイドが再生されます。</dd>
+  <dt>(c)開始時間</dt><dd>音声ガイドが動画中のどのタイミング（時刻）に再生されるのか表示しています。  </dd>
 
-  <dt>(d)音声ガイド</dt><dd>音声ガイドの入力した内容を表示しています。</dd>
+  <dt>(d)音声ガイド</dt><dd>音声ガイドの内容が表示されます。</dd>
 </dl>
 
 

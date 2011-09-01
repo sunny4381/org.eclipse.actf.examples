@@ -1,0 +1,51 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=SHIFT_JIS">
+<meta name="copyright" content="Copyright (c) IBM Corporation and others 2009, 2011. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page.">
+<style type="text/css">
+p{margin:1ex 0}
+</style>
+<title>仮タイトル</title><!--　"仮タイトル"の部分にタイトルを書きます。動画の題名など-->
+</head>
+<body style="margin:0;padding:0;">
+
+
+<!--WMVをHTMLで再生するための記述-->
+<object id="MediaPlayer" classid="clsid:22D6F312-B0F6-11D0-94AB-0080C74C7E95" standby="Loading Windows Media Player components…"
+ type="application/x-oleobject" codebase="http://activex.microsoft.com/activex/controls/mplayer/en/nsmp2inf.cab#Version=6,4,7,1112"
+ style="float:left;width:600px;height:447px;"><!-- 動画のサイズを変更したいときに、このwidthとheightを調整してください。-->
+<param name="FileName" value="C:\TEST\001.wmv">　<!--　動画ファイルを移動した際などに変更が必要になるのは、このファイルパスです-->
+<param name="AutoStart" value="false">　　　<!--　HTMLがロードされたときに自動で再生が始まるかどうかのフラグです。trueにすると自動で再生されます。-->
+<param name="ShowControls" value="true">　　<!--　下部にあるコントロールのバーを出すかどうかのフラグです。trueにするとバーが出ます。-->
+<param name="BufferingTime" value="2">	　　<!--　バッファーの時間間隔です-->	
+<param name="ShowStatusBar" value="true">　<!--　下部にあるステータスバーを出すかどうかのフラグです。trueにするとバーが出ます。-->
+<param name="AutoSize" value="true">　　　　<!--　下部にあるステータスバーを出すかどうかのフラグです。trueにすると動画に合わせてサイズが変わります。-->
+<param name="InvokeURLs" value="false">　　<!--　自動的にURLを起動するかどうかのフラグです。-->
+<param name="AnimationatStart" value="1">　　<!--　最初の起動前にアニメーションを実行させるかどうかのフラグです-->
+<param name="TransparentatStart" value="1">　<!--　起動前と終了後にコントロールを透明にするかどうかのフラグです-->
+<param name="Loop" value="0">　　　　　　　　<!--　繰り返し再生するかどうかのフラグです-->
+<param name="Volume" value="0">		<!--　ボリュームについてです。0で最大です。-->
+<p>Internet Explorerで再生してください</p>
+</object>
+<!--WMVの再生の記述終了-->
+
+
+<!--WMVの再生/停止を簡単にするためのボタンの記述-->
+<div style="width:200px">
+<p>
+<input type="button" value="Play/Pause (P)" onclick="if(MediaPlayer.PlayState!=2){MediaPlayer.Play()}else{MediaPlayer.Pause()}" style="width:100%;height:50px" accesskey="p">
+</p>
+<p>
+<input type="button" value="&lt;&lt; 3 sec. (J)" onclick="MediaPlayer.CurrentPosition-=3;setTimeout(function(){MediaPlayer.Play()},0)" style="width:50%;height:50px" accesskey="j">
+<input type="button" value="3 sec. &gt;&gt; (K)" onclick="MediaPlayer.CurrentPosition+=3;setTimeout(function(){MediaPlayer.Play()},0)" style="width:50%;height:50px" accesskey="k">
+</p>
+<p>
+<input type="button" value="Mark (M)" onclick="MediaPlayer.Pause();SavedMarks.size+=1;SavedMarks.add(new Option(prompt('Label:',MediaPlayer.CurrentPosition+' sec.'),MediaPlayer.CurrentPosition));MediaPlayer.Play();" style="width:100%;height:25px" accesskey="m">
+<select id="SavedMarks" size="6" onclick="MediaPlayer.CurrentPosition=parseFloat(this[this.selectedIndex].value)" style="width:100%;">
+</select>
+</p>
+</div>
+<!--ボタンの記述終了-->
+
+</body>
+</html>

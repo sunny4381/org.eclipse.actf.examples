@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<link rel="StyleSheet" href="style.css" type="text/css" />
+<meta http-equiv="Content-Type" content="text/html; charset=SHIFT_JIS" />
+<meta name="copyright" content="Copyright (c) IBM Corporation and others 2010, 2011. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page." />
+<title>CVSのフォーマットについて　：　Script Editor Help</title>
+</head>
+
+<body>
+
+<p class="navigation">
+<a href="quickstart.html">クイックスタートに戻る</a>
+</p>
+
+<h1><img src="img/bl_32.gif" alt="" style="vertical-align:middle"/> ScriptEditorが利用するCSVのフォーマットについて</h1>
+<div class="h1">
+  <p>
+Script EditorはCSV形式のファイルを用いてデータをエクスポート/インポートすることが可能です。ScriptEditorでデータを扱うためのCSVのフォーマットは下記の通りです。
+  </p>
+</div>
+
+<h2>CSVのフォーマット</h2>
+<div class="h2">
+<div>
+CSVファイルを作成する際は、それぞれの情報を下記の順に区切り文字（カンマ）で区切って記述してください。データ項目の中では開始時間のみ省略不可ですが、それ以外の項目については省略可能です。データを省略した際は、デフォルト値が適用されます。
+</div>
+<br/>
+<div>"開始時刻(必須)", "録音音声を指定する場合のWavファイルのPath", "拡張音声ガイドのフラグ", "性別", "言語", "スピード", "ピッチ", "ボリューム", "WAVファイル利用フラグ", "WAV再生スピード", "音声ガイドデータ"</div>
+</div>
+<p class="h2">(注意：区切り文字は必ず11箇所必要になります。)</p>
+
+
+<div class="h2">
+CSVデータの詳細な記述方法および内容は下記の通りです。
+<dl class="h2">
+  <dt>開始時刻</dt><dd>現在、Script Editorで設定可能な範囲は、00:00:000 ～ 99:59:999 （分：秒：ミリ秒）です。 入力Formatは、以下の3通りが可能です。
+	<ul>
+	<li>MM:SS:sss      ･･･ 分：秒：ミリ秒</li>
+	<li>MM:SS          ･･･ 分：秒</li>
+	<li>HH:MM:SS:sss   ･･･ 時：分：秒：ミリ秒</li>
+	</ul>
+	</dd>
+  <dt>Wavファイルのpath</dt><dd>WAVファイルのPathを指定します。</dd>
+  <dt>拡張フラグ</dt><dd>（0：通常、1：Extended再生）を指定します。デフォルトは0です。</dd>
+  <dt>音声の性別</dt><dd>（male：男性音声、female：女性音声）を指定します。デフォルトはmaleです。</dd>
+  <dt>音声の言語</dt><dd>（ja：日本語、en：英語）を指定します。デフォルトはjaです。</dd>
+  <dt>音声のスピード</dt><dd>設定範囲は、0 ～ 100 です。デフォルトは50です。</dd>
+  <dt>音声のピッチ</dt><dd>設定範囲は、0 ～ 100 です。デフォルトは50です。</dd>
+  <dt>音声のボリューム</dt><dd>設定範囲は、0 ～ 100 です。デフォルトは50です。</dd>
+  <dt>WAVフラグ</dt><dd>（0：音声解説を再生、1：WAVファイルを再生）を指定します。</dd>
+  <dt>WAVの再生スピード</dt><dd>設定範囲は、50 ～ 200（％）です。</dd>
+  <dt>音声ガイド</dt><dd>音声エンジンで再生する音声解説データを指定します。</dd>
+</dl>
+
+</div>
+
+<p class="navigation">
+<a href="quickstart.html">クイックスタートに戻る</a><br/>
+<a href="index.html">目次に戻る</a>
+</p>
+
+
+</body>
+</html>

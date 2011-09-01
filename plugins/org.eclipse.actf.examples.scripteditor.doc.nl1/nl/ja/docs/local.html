@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<link rel="StyleSheet" href="style.css" type="text/css" />
+<meta http-equiv="Content-Type" content="text/html; charset=SHIFT_JIS" />
+<meta name="copyright" content="Copyright (c) IBM Corporation and others 2010. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page." />
+<title>PC上に保存された動画に対する音声ガイドの付与について　：　Script Editor Help</title>
+</head>
+
+<body>
+
+<p class="navigation">
+<a href="index.html">目次に戻る</a>
+</p>
+
+<h1><img src="img/bl_32.gif" alt="" style="vertical-align:middle"/> PC上に保存された動画に対する音声ガイドの付与について</h1>
+<div class="h1">
+  <p>
+Script Editorを用いることで、インターネット上にあるコンテンツだけでなく、ご自分のPC上にある動画に対しても音声ガイドを付与する事が可能です。
+PC上の動画への音声ガイド付与に際しては、下記の手順に従ってHTMLファイルを作成し、Script Editorで読み込んでください。
+  </p>
+</div>
+
+<h2>HTMLテンプレートファイル</h2>
+<div class="h2">
+<p>
+以降の説明では、Windows Media Video(WMV)ファイルを対象に、HTMLファイル内に動画を配置した上でScript Editorにより音声ガイドを作成する方法を説明します。
+それ以外の動画ファイルに関しては、変換ツールなどを用いてWMVに変換するか、各フォーマットのHTMLへの埋め込み方法のガイドなどを参考にHTML内に配置した上でScript Editorで読み込んでください。
+<br/>（Windows Media Player, QuickTime, RealPlayer等での動作実績があります。）
+</p>
+
+<h2>テンプレートファイルの入手</h2>
+<p>
+以下のリンクを右クリックし、表示されるメニューからファイルを作業フォルダに保存（IEの場合は「対象をファイルに保存」メニューを選択）してください。
+</p>
+<p>
+<a href="./wmv_template.html">HTMLファイルのテンプレート</a>
+</p>
+
+<p>
+なお、右クリックの代わりにメニューキー（図1参照）の押下、もしくはShift+F10を押下することでもメニューが表示できます。
+</p>
+<p class="h2 img">
+  <img src="img/menukey.jpg" width="342" height="240" alt="パソコンのキーボードの画像"/>
+</p>
+<p class="caption">
+図１：キーボード上のメニューキーの例
+</p>
+
+<h2>HTMLファイル作成手順</h2>
+
+<ol>
+<li>作業フォルダに保存したテンプレートのHTMLファイルをコピーし、適切な名前に変更してください。以降では、c:\tmpという作業フォルダの中で、test.htmlという名前に変更したとして説明を行います。また、対象となる動画ファイルはtest.wmvという名前で、作業PC上のc:\contents\にあるとします。</li>
+<li>1.でコピーしたテンプレートファイル（test.html）をノートパッドなどのエディタで開いてください。</li>
+<li>テンプレートファイル内には、コメント（&lt;!--　で始まり　--&gt;で終わっている部分）として説明が書かれていますので必要に応じて確認してください。</li>
+<li>テンプレートファイルの13行目の途中にある、 value="C:\TEST\001.wmv" の ファイルパス（C:\TEST\001.wmv）の部分を、動画ファイルのおいてある場所に書き換えてください。
+今回の例では
+<br />　&lt;param name="FileName" value="C:\TEST\001.wmv"&gt;<br />の部分を
+<br />　&lt;param name="FileName" value="C:\contents\test.wmv"&gt;
+<br />に書き換えます。</li>
+<li>書き換えが終了したら、ファイルを保存して下さい。</li>
+<li>保存したHTMLファイルをInternet Explorerで開き、動画が表示されるか、動画のサイズ等が適切かを確認してください。<br/>
+サイズを調整したい場合は、12行目の一番最後にあるwidthとheightの値を適宜調整してください。その他のパラメータについても、コメント内の説明を参考に、必要に応じて適宜調整してください。</li>
+</ol>
+
+<h2>HTMLファイル使用手順</h2>
+
+<ol>
+<li>上記の手順で作成したHTMLファイルを、ScriptEditorの動画再生用のブラウザに表示させます。<br/>方法は、図２の
+(1)のScriptEditorのアドレス入力部分にファイルの場所を記述して「移動」するか、ブラウザ部分にHTMLファイルをドラッグ＆ドロップするかのどちらかになります。</li>
+<li>テンプレートファイル内に配置されたボタン（図２の(2)の部分）を用いることで、下記の操作を実行できます。
+<ul>
+<li>Play/Pause ボタン　・・・　押下するたびに再生と停止が切り替わります。</li>
+<li>&lt;&lt;　3sec　ボタン　・・・　３秒分動画を戻します。</li>
+<li>3sec　&gt;&gt;　ボタン　・・・　３秒分動画を進めます。</li>
+<li>Mark　ボタン　・・・　Markをしたタイミングで、そのときの時間がMarkボタンの下のリスト中に
+記録されていきます。リスト内の時間をクリックするとMarkされた時間に移動できます。</li>
+</ul>
+</li>
+</ol>
+
+<p class="h2 img">
+  <img src="img/htmlcreate2.jpg" width="587" height="451" alt="Script EditorにHTMLを表示した図"/>
+</p>
+<p class="caption">
+図２：Script Editor にHTMLファイルを読み込ませた図
+</p>
+
+</div>
+
+
+<p class="navigation">
+<a href="quickstart.html">クイックスタートに戻る</a><br/>
+<a href="index.html">目次に戻る</a>
+</p>
+
+</body>
+</html>
