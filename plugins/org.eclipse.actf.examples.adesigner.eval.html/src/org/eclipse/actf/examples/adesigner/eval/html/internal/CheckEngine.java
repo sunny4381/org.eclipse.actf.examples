@@ -3570,6 +3570,9 @@ public class CheckEngine extends HtmlTagUtil {
 			}
 		}
 
+		//Special check for body element
+		//http://www.w3.org/TR/html4/sgml/loosedtd.html#bodycolors
+		
 		if (body_elements.length > 0) {
 			Element bodyEl = body_elements[0];
 			boolean color = bodyEl.getAttribute("text").length() > 0;

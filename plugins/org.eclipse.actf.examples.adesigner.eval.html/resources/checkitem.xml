@@ -2471,8 +2471,8 @@
             <gItem techniques="H2,H30" id="2.4.9" name="WCAG 2.0"/>
         </guideline>
         <metrics>
-            <mItem name="Perceivable" score="2"/>
-            <mItem name="Operable" score="2"/>
+            <mItem name="Perceivable"/>
+            <mItem name="Operable"/>
         </metrics>
         <description>
             <desc>This link does not have any readable text, while the next or previous link has link to the same URL. If they are adjacent to each other, combining them. {0}</desc>
