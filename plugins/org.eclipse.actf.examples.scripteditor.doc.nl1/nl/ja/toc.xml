@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <?NLS TYPE="org.eclipse.help.toc"?>
 <!--
  Copyright (c) 2010 IBM Corporation and others.
@@ -11,15 +11,18 @@
      IBM Corporation - initial API and implementation
 -->
 <toc label="ScriptEditorガイド" topic="docs/index.html">
-	<topic label="ScriptEditorについて" href="docs/index.html">
+	<topic label="Script Editorについて" href="docs/index.html">
 	</topic>
 	
-	<topic label="ScriptEditorの使い方" href="docs/quickstart.html">
+	<topic label="Script Editorの使用法" href="docs/quickstart.html">
 	</topic>
 	
 	<topic label="各部の詳細" href="docs/panel.html">
 	</topic>
-	
+
+	<topic label="PC上に保存された動画に対する音声ガイドの付与について" href="docs/local.html" > 
+	</topic>	
+
 	<topic label="特記事項" href="notices.html" /> 
 	
 </toc>
