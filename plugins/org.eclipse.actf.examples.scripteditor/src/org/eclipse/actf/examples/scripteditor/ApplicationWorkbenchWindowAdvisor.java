@@ -10,10 +10,13 @@
  *******************************************************************************/
 package org.eclipse.actf.examples.scripteditor;
 
+import java.net.URL;
+
 import org.eclipse.actf.ai.internal.ui.scripteditor.PreviewPanel;
 import org.eclipse.actf.ai.scripteditor.util.WebBrowserFactory;
 import org.eclipse.actf.model.flash.proxy.FlashCacheUtil;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.application.ActionBarAdvisor;
 import org.eclipse.ui.application.IActionBarConfigurer;
 import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
@@ -36,7 +39,7 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 		configurer.setInitialSize(new Point(1000, 768));
 		configurer.setShowCoolBar(false);
 		configurer.setShowStatusLine(false);
-		configurer.setTitle("ACTF ScriptEditor");
+		configurer.setTitle("ACTF ScriptEditor");		
 	}
 
 	@Override
@@ -46,6 +49,17 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 
 		// Launch Web Browser
 		String strUrl = "about:blank";
+		URL helpUrl = PlatformUI
+		.getWorkbench()
+		.getHelpSystem()
+		.resolve(
+				"/org.eclipse.actf.examples.scripteditor.doc/docs/index.html", //$NON-NLS-1$
+				true);
+
+		if(helpUrl!=null){
+			strUrl = helpUrl.toString();
+		}
+		
 		WebBrowserFactory.getInstance(strUrl);
 		PreviewPanel.getInstance().setURLMovie(strUrl);
 
