@@ -96,9 +96,9 @@ public class HtmlChecker implements IApplication {
 
 		File[] targetFiles = readHtmlList(htmllistFile);
 
-		//Enable JIS(A,AA) and WCAG 2.0 (A,AA) at first launch
+		// Enable JIS(A,AA) and WCAG 2.0 (A,AA) at first launch
 		initGuidelines();
-		
+
 		// ---prep end here---
 
 		// Utility for visualization and check
@@ -168,7 +168,8 @@ public class HtmlChecker implements IApplication {
 	}
 
 	/**
-	 * @param HTMLlist file
+	 * @param HTMLlist
+	 *            file
 	 * @return target HTML file list
 	 */
 	private File[] readHtmlList(File target) {
@@ -182,13 +183,18 @@ public class HtmlChecker implements IApplication {
 				tmpS = br.readLine();
 			}
 		} catch (Exception e) {
+			String msg = "File does not exist (" + target.getAbsolutePath()
+					+ "). Please create HTML list file.";
+			System.out.println(msg);
+			logPrintln(msg);
 		}
 
 		return list.toArray(new File[list.size()]);
 	}
 
 	/**
-	 * Initialize target guidelines. In this example, JIS(A,AA) and WCAG 2.0 (A,AA) are enabled. 
+	 * Initialize target guidelines. In this example, JIS(A,AA) and WCAG 2.0
+	 * (A,AA) are enabled.
 	 */
 	private void initGuidelines() {
 		IPreferenceStore prefStore = Activator.getDefault()
