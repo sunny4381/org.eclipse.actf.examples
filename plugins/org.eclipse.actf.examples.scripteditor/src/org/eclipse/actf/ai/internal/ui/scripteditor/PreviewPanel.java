@@ -581,6 +581,9 @@ public class PreviewPanel implements IUNIT {
 				instParentView.reqSetTrackCurrentTimeLine(currentLocation);
 				// Synchronize all TimeLine
 				instParentView.synchronizeAllTimeLine(currentLocation);
+				
+				WebBrowserFactory.getInstance()
+						.setCurrentPosition(currentLocation);					
 			}
 		}
 	}

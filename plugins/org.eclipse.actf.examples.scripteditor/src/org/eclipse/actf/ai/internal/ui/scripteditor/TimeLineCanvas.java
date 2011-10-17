@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.actf.ai.internal.ui.scripteditor;
 
+import org.eclipse.actf.ai.scripteditor.util.WebBrowserFactory;
 import org.eclipse.actf.ai.ui.scripteditor.views.IUNIT;
 import org.eclipse.actf.ai.ui.scripteditor.views.TimeLineView;
 import org.eclipse.actf.examples.scripteditor.Activator;
@@ -543,6 +544,9 @@ public class TimeLineCanvas extends Canvas implements IUNIT {
 		instParentView.reqSetTrackCurrentTimeLine(nowTime);
 		// Synchronize all TimeLine
 		instParentView.synchronizeAllTimeLine(nowTime);
+		
+		WebBrowserFactory.getInstance().setCurrentPosition(nowTime);
+
 	}
 
 	/**

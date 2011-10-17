@@ -230,6 +230,19 @@ public class WebBrowserFactory extends WebBrowserEditor implements
 		}
 	}
 
+	public boolean setCurrentPosition(int pos) {
+		checkVideo();// TODO cache
+		if (videos.length > 0) {
+			double readTime = pos / SEC2MSEC;
+			for (int i = 0; i < videos.length; i++) {
+				boolean result = videos[i].setCurrentPosition(readTime);
+			}
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	public int getTotalLength() {
 
 		/**
