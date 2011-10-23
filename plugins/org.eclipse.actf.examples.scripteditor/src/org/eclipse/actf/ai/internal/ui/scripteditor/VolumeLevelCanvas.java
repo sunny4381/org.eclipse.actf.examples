@@ -58,7 +58,7 @@ public class VolumeLevelCanvas extends Canvas implements IUNIT {
 	// private label object
 	// /private Label labelBorderTimeLine;
 	private int borderLinePosX = 0;
-	private int previousBorderLinePosX = 0;
+	//private int previousBorderLinePosX = 0;
 
 	// sampling audio level data
 	private ArrayList<Integer> sampleVolumeLevel;
@@ -209,7 +209,8 @@ public class VolumeLevelCanvas extends Canvas implements IUNIT {
 		// Point nowCanvas = this.getSize();
 
 		// Store current time
-		previousBorderLinePosX = borderLinePosX;
+		//previousBorderLinePosX = borderLinePosX;
+
 		// Update current time(position)
 		borderLinePosX = x - 1;
 		if (borderLinePosX < 0)
