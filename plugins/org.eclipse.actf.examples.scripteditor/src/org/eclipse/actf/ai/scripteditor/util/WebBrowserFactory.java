@@ -172,12 +172,19 @@ public class WebBrowserFactory extends WebBrowserEditor implements
 		} else if (videos.length == 0) {
 			counter++;
 			if (counter >= 50) {
+				checkFlag = true;
 				searchVideo();
 			}
 		}
 	}
 
 	public void searchVideo() {
+		// for cache
+		// checkFlag becomes true when mediaSearchRequest() is called.
+		if (checkFlag == false) {
+			return;
+		}
+
 		AnalyzedResult analyzedResult = new AnalyzedResult();
 		curRoot = browserPreview.getLiveDocument().getDocumentElement();
 		if (curRoot instanceof INodeEx) {
@@ -231,13 +238,14 @@ public class WebBrowserFactory extends WebBrowserEditor implements
 	}
 
 	public boolean setCurrentPosition(int pos) {
-		checkVideo();// TODO cache
+		checkVideo();
+		boolean result = true;
 		if (videos.length > 0) {
 			double readTime = pos / SEC2MSEC;
 			for (int i = 0; i < videos.length; i++) {
-				boolean result = videos[i].setCurrentPosition(readTime);
+				result = videos[i].setCurrentPosition(readTime) & result;
 			}
-			return true;
+			return result;
 		} else {
 			return false;
 		}
