@@ -50,6 +50,11 @@ public class PreviewPanel implements IUNIT {
 	private boolean currentSamplingAudioMode = false;
 	private boolean currentStatusMedia = true;
 
+	// for timeline drag
+	private boolean currentDragStatus = false; // status for dragging
+	private int saveCurrentActionStatus = currentActionStatus; // save
+																// currentActionStatus
+
 	// Preview part
 	private Button buttonRewind;
 	private Button buttonPlay;
@@ -419,8 +424,8 @@ public class PreviewPanel implements IUNIT {
 		redrawPlayButton(currentActionStatus);
 
 		// Control enabled "Preview" button of EditPanel view
-		EditPanelView.getInstance().getInstanceTabEditPanel().setEnablePreview(
-				currentActionStatus);
+		EditPanelView.getInstance().getInstanceTabEditPanel()
+				.setEnablePreview(currentActionStatus);
 		EditPanelView.getInstance().getInstanceTabSelWAVFile()
 				.setEnablePreview(currentActionStatus);
 
@@ -468,8 +473,8 @@ public class PreviewPanel implements IUNIT {
 		sliderPreview.setSelection(0);
 
 		// Control enabled "Preview" button of EditPanel view
-		EditPanelView.getInstance().getInstanceTabEditPanel().setEnablePreview(
-				currentActionStatus);
+		EditPanelView.getInstance().getInstanceTabEditPanel()
+				.setEnablePreview(currentActionStatus);
 		EditPanelView.getInstance().getInstanceTabSelWAVFile()
 				.setEnablePreview(currentActionStatus);
 
@@ -548,10 +553,16 @@ public class PreviewPanel implements IUNIT {
 				previousEventSliderPreview = e.detail;
 				// store current max time line
 				previousMaxSlider = ps.getMaximum();
+
+				pauseForDargging();
+
 			} else if ((e.detail == 0)
 					&& (previousEventSliderPreview == SWT.DRAG)) {
 				// store current event
 				previousEventSliderPreview = e.detail;
+
+				resumeAfterDragging();
+
 				// check stop flag & end process
 				if (stopExpandMaxSlider) {
 					// reset stop flag
@@ -581,9 +592,9 @@ public class PreviewPanel implements IUNIT {
 				instParentView.reqSetTrackCurrentTimeLine(currentLocation);
 				// Synchronize all TimeLine
 				instParentView.synchronizeAllTimeLine(currentLocation);
-				
-				WebBrowserFactory.getInstance()
-						.setCurrentPosition(currentLocation);					
+
+				WebBrowserFactory.getInstance().setCurrentPosition(
+						currentLocation);
 			}
 		}
 	}
@@ -605,6 +616,33 @@ public class PreviewPanel implements IUNIT {
 			Slider parentSlider = (Slider) e.getSource();
 			parentSlider.setCursor(new Cursor(null, SWT.CURSOR_ARROW));
 		}
+	}
+
+	/**
+	 * pause video while user drags a timeline.
+	 */
+	void pauseForDargging() {
+		if (currentDragStatus == true) {
+			return;
+		}
+		currentDragStatus = true;
+		saveCurrentActionStatus = currentActionStatus;
+		if (saveCurrentActionStatus != 0) { // (0:Idle(Stop/Pause), 1:Play)
+			playPauseMedia(); // pause media
+		}
+	}
+
+	/**
+	 * restart video after user dragged a timeline.
+	 */
+	void resumeAfterDragging() {
+		if (currentDragStatus == false) {
+			return;
+		}
+		if (saveCurrentActionStatus != 0) { // (0:Idle(Stop/Pause), 1:Play)
+			playPauseMedia(); // restart playing media
+		}
+		currentDragStatus = false;
 	}
 
 }

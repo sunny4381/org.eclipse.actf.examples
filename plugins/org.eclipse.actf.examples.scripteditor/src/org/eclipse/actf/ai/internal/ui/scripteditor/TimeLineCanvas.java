@@ -560,6 +560,7 @@ public class TimeLineCanvas extends Canvas implements IUNIT {
 			if (!statusMouseDragged && (e.button == 1)) {
 				// pre-check Mouse drag action
 				precheckMouseDraggedEvent(e);
+				PreviewPanel.getInstance().pauseForDargging();
 			}
 		}
 
@@ -581,6 +582,7 @@ public class TimeLineCanvas extends Canvas implements IUNIT {
 			else if (statusMouseDragged && (e.button == 1)) {
 				// Finish Mouse drag action
 				statusMouseDragged = false;
+				PreviewPanel.getInstance().resumeAfterDragging();
 			}
 		}
 	}

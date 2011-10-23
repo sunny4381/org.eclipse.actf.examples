@@ -23,7 +23,9 @@ public interface IUNIT {
 	static final int TIME2PIXEL = 20;
 	
 	// Timer counter : Synchronize movie position = 100msec
-	static final int TL_SYNC_MEDIA_TIME = 100;
+//	static final int TL_SYNC_MEDIA_TIME = 100;
+	static final int TL_SYNC_MEDIA_TIME = 150;	// (150 msec interval managed to draw TimeLineView smoothly.
+//	static final int TL_SYNC_MEDIA_TIME = 200;	// (200 msec interval is too slow which means drawing TimeLineView is not smooth.)
 	// Timer counter : Sampling audio level = 20msec
 	static final int TL_AUDIO_SAMPLE_TIME = 20;
 
