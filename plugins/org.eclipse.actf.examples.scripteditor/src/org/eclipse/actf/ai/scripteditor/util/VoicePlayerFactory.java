@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 IBM Corporation and Others
+ * Copyright (c) 2009, 2011 IBM Corporation and Others
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -38,7 +38,12 @@ public class VoicePlayerFactory implements IUNIT {
 	private static final String JA_TOUTEN_CODE2 = "\u3001";
 	private static final int JA_KUTEN_COUNT = 5;
 	private static final int JA_TOUTEN_COUNT = 2;
-
+	
+	//MORA
+	private static final float JA_KANJI_MORA = 1.545f;
+	private static final float JA_KANA_MORA = 0.988f;
+	private static final float EN_CHAR_MORA = 0.347f;
+	
 	/**
 	 * Constructor
 	 */
@@ -129,36 +134,12 @@ public class VoicePlayerFactory implements IUNIT {
 	/**
 	 * Sum Mora's count of Description for English
 	 */
-	public int sumMoraCountEn(String strDesc) {
+	public float sumMoraCountEn(String strDesc) {
 		// return code
-		int mora = 0;
-		// check valid
-		String validChara = "aiueoAIUEO";
-
+		float mora = 0;
 		// Sum count of Mora
-		for (int i = 0; i < (strDesc.length() - 1); i++) {
-			// check 1st character code
-			if (validChara.indexOf(strDesc.charAt(i)) == -1) {
-				// Count 1Mora
-				mora++;
-				// check 2nd character code
-				if (validChara.indexOf(strDesc.charAt(i + 1)) >= 0) {
-					// Count 1Mora with together previous character
-					i++;
-					continue;
-				}
-			} else {
-				// Count 1Mora
-				mora++;
-			}
-		}
-
-		// Trim count of blank code
-		String trimBlank = strDesc.replace(" ", "");
-		int delta = strDesc.length() - trimBlank.length();
-		// real count
-		mora = mora - delta;
-
+		String desc = strDesc.trim().replaceAll("^[\\s　]*", "").replaceAll("[\\s　]*$", "");
+		mora = desc.length() * EN_CHAR_MORA;
 		// return current Mora's counter
 		return (mora);
 	}
@@ -166,15 +147,16 @@ public class VoicePlayerFactory implements IUNIT {
 	/**
 	 * Sum Mora's count of Description for Japanese
 	 */
-	public int sumMoraCountJp(String strDesc) {
+	public float sumMoraCountJp(String strDesc) {
 		// return code
-		int mora = 0;
+		float mora = 0;
 		// Count character
-		for (int i = 0; i < strDesc.length(); i++) {
+		String desc = strDesc.trim().replaceAll("^[\\s　]*", "").replaceAll("[\\s　]*$", "");
+		for (int i = 0; i < desc.length(); i++) {
 			char c = strDesc.charAt(i);
 			if ((c >= 0x20) && (c <= 0x7E)) {
 				// ASCII code
-				mora++;
+				mora += EN_CHAR_MORA;
 			} else if ((c >= 0xFF61) && (c <= 0xFF9F)) {
 				String str = String.valueOf(c);
 				if (JA_KUTEN_CODE1.equals(str)) {
@@ -185,7 +167,7 @@ public class VoicePlayerFactory implements IUNIT {
 					mora += JA_TOUTEN_COUNT;
 				} else {
 					// JIS-KANA
-					mora++;
+					mora += JA_KANA_MORA;
 				}
 			} else {
 				String str = String.valueOf(c);
@@ -196,17 +178,18 @@ public class VoicePlayerFactory implements IUNIT {
 					// Tou-ten
 					mora += JA_TOUTEN_COUNT;
 				} else {
-					// Bai-kaku
-					mora++;
+					if(c >= 0x4e9c) {
+						// Kanji char
+						mora += JA_KANJI_MORA;
+					} else if(0x3041 <= c && c <= 0x30f6) {
+						// Hiragana or Katakana
+						mora += JA_KANA_MORA;
+					} else {
+						mora += EN_CHAR_MORA;
+					}
 				}
 			}
 		}
-
-		// Trim count of blank code
-		String trimBlank = strDesc.replace(" ", "");
-		int delta = strDesc.length() - trimBlank.length();
-		// real count
-		mora = mora - delta;
 
 		// return current Mora's counter
 		return (mora);

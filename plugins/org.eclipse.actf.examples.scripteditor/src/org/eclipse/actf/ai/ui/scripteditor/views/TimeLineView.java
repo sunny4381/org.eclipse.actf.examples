@@ -16,8 +16,11 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
+import org.eclipse.actf.ai.internal.ui.scripteditor.EventManager;
 import org.eclipse.actf.ai.internal.ui.scripteditor.PreviewPanel;
 import org.eclipse.actf.ai.internal.ui.scripteditor.ScriptAudioComposite;
+import org.eclipse.actf.ai.internal.ui.scripteditor.SyncTimeEvent;
+import org.eclipse.actf.ai.internal.ui.scripteditor.SyncTimeEventListener;
 import org.eclipse.actf.ai.internal.ui.scripteditor.TimeLineCanvas;
 import org.eclipse.actf.ai.internal.ui.scripteditor.VolumeLevelCanvas;
 import org.eclipse.actf.ai.internal.ui.scripteditor.XMLFileMessageBox;
@@ -33,6 +36,8 @@ import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DropTarget;
 import org.eclipse.swt.dnd.FileTransfer;
 import org.eclipse.swt.dnd.Transfer;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -51,7 +56,8 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
-public class TimeLineView extends ViewPart implements IUNIT {
+public class TimeLineView extends ViewPart implements IUNIT,
+		SyncTimeEventListener {
 	public static final String VIEW_ID = "org.eclipse.actf.examples.scripteditor.VolumeLevelView";
 
 	/**
@@ -85,11 +91,6 @@ public class TimeLineView extends ViewPart implements IUNIT {
 	private TimeLineManager instTimerTimeLineManager = null;
 	private ScheduledExecutorService schedulerTimeLineManager = null;
 	private ScheduledFuture<?> futureTimeLineManager = null;
-
-	// Synchronize TimeLine Timer Task
-	private SynchronizeTimeLineTimer instTimerSynchronizeTimeLine = null;
-	private ScheduledExecutorService schedulerSynchronizeTimeLine = null;
-	private ScheduledFuture<?> futureSynchronizeTimeLine = null;
 
 	// Instances of sub class
 	private TimeLineCanvas canvasTimeLine = null;
@@ -128,6 +129,8 @@ public class TimeLineView extends ViewPart implements IUNIT {
 	private FormData compositeScriptAudioLData;
 	private FormData labelAudio1LData;
 
+	private static EventManager eventManager = null;
+
 	/**
 	 * Constructor
 	 */
@@ -140,6 +143,8 @@ public class TimeLineView extends ViewPart implements IUNIT {
 
 		// store own instance
 		ownInst = this;
+		// store event lister
+		eventManager = EventManager.getInstance();
 	}
 
 	static public TimeLineView getInstance() {
@@ -170,13 +175,21 @@ public class TimeLineView extends ViewPart implements IUNIT {
 		// Initialize application's GUI
 		initGUI(ownDisplay);
 
-		// Start Timer for Synchronize TimeLine
-		startSynchronizeTimeLine();
 		// Start Timer for TimeLine management
 		startTimeLineManager();
 
 		// Add listener for load meta file
 		initDDListener(ownComposite);
+
+		eventManager.addSyncTimeEventListener(this);
+		parent.addDisposeListener(new DisposeListener() {
+
+			@Override
+			public void widgetDisposed(DisposeEvent e) {
+				// TODO other components
+				eventManager.removeSyncTimeEventListener(ownInst);
+			}
+		});
 	}
 
 	/**
@@ -202,10 +215,11 @@ public class TimeLineView extends ViewPart implements IUNIT {
 		reqStopScriptAudio();
 		reqStopCaptureAudio();
 
-		// dispose timer of Synchronize TimeLine
-		shutdownSynchronizeTimeLine();
 		// dispose thread of TimeLine
 		shutdownTimeLineManager();
+
+		eventManager.removeAllSyncTimeEventListener();
+		eventManager = null;
 
 		// dispose own ViewPart
 		super.dispose();
@@ -251,8 +265,7 @@ public class TimeLineView extends ViewPart implements IUNIT {
 
 			// Initial SetUP for own ScrolledComposite
 			parentSC.setContent(ownComposite);
-			parentSC
-					.setSize(ownComposite.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+			parentSC.setSize(ownComposite.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 			parentSC.setMinHeight(118 + adj_height);
 			parentSC.setExpandHorizontal(true);
 			parentSC.setExpandVertical(true);
@@ -1228,12 +1241,8 @@ public class TimeLineView extends ViewPart implements IUNIT {
 		// PickUP current location of TimeLine
 		int nowCnt = getCurrentLocation();
 
-		// Restart(repaint) child canvas's TimeLine
-		canvasTimeLine.refreshTimeLine(nowCnt);
-		// Restart(repaint) child composite's TimeLine
-		compositeScriptAudio.refreshTimeLine(nowCnt);
-		// Restart(repaint) child composite's VolumeLevel
-		canvasVolumeLevel.refreshTimeLine(nowCnt);
+		eventManager.fireSyncTimeEvent(new SyncTimeEvent(
+				SyncTimeEvent.REFRESH_TIME_LINE, nowCnt));
 	}
 
 	/**
@@ -1242,13 +1251,7 @@ public class TimeLineView extends ViewPart implements IUNIT {
 	 * 
 	 */
 	public void synchronizeAllTimeLine(int nowTime) {
-		// Synchronize TimeLine view
-		this.synchronizeTimeLine(nowTime);
-		// Synchronize Preview view
-		PreviewPanel.getInstance().synchronizeTimeLine(nowTime);
-		// Synchronize EditPanel view
-		EditPanelView.getInstance().getInstanceTabEditPanel()
-				.synchronizeTimeLine(nowTime);
+		eventManager.fireSyncTimeEvent(new SyncTimeEvent(nowTime, this));
 	}
 
 	/**
@@ -1257,13 +1260,6 @@ public class TimeLineView extends ViewPart implements IUNIT {
 	private void synchronizeTimeLine(int nowTime) {
 		// Synchronize TimeLine's components
 		updateLocationTimeLine(nowTime);
-
-		// Synchronize child canvas's TimeLine
-		canvasTimeLine.synchronizeTimeLine(nowTime);
-		// Synchronize child composite's TimeLine
-		compositeScriptAudio.synchronizeTimeLine(nowTime);
-		// Synchronize child composite's VolumeLevel
-		canvasVolumeLevel.synchronizeTimeLine(nowTime);
 	}
 
 	/**
@@ -1311,12 +1307,16 @@ public class TimeLineView extends ViewPart implements IUNIT {
 	public void reqRefreshScriptData(int currentStartTime, int newStartTime,
 			int newEndTime, int newEndTimeWav, boolean dspMode) {
 		// Request refresh ScriptData in EditPanel view
-		EditPanelView.getInstance().getInstanceTabEditPanel()
+		EditPanelView
+				.getInstance()
+				.getInstanceTabEditPanel()
 				.refreshScriptData(currentStartTime, newStartTime, newEndTime,
 						dspMode);
 
 		// Request refresh WAV file information in EditPanel view
-		EditPanelView.getInstance().getInstanceTabSelWAVFile()
+		EditPanelView
+				.getInstance()
+				.getInstanceTabSelWAVFile()
 				.refreshScriptData(currentStartTime, newStartTime,
 						newEndTimeWav, dspMode);
 	}
@@ -1483,8 +1483,8 @@ public class TimeLineView extends ViewPart implements IUNIT {
 		// SetUP current Script
 		reqSetupScriptAudio((instScriptData.getExtendGender(index) ? "male"
 				: "female"), instScriptData.getExtendSpeed(index),
-				instScriptData.getExtendPitch(index), instScriptData
-						.getExtendVolume(index));
+				instScriptData.getExtendPitch(index),
+				instScriptData.getExtendVolume(index));
 
 		// Start ProTalker
 		voicePlayer.speak(instScriptData.getScriptData(index));
@@ -1646,13 +1646,14 @@ public class TimeLineView extends ViewPart implements IUNIT {
 		// Count character
 		if (lang == DESC_LANG_JA) {
 			// Japanese
-			duration = nowPitch * voicePlayer.sumMoraCountJp(strDesc);
+			duration = (int) ((float) nowPitch * voicePlayer
+					.sumMoraCountJp(strDesc));
 		} else {
 			// English
-			duration = nowPitch * voicePlayer.sumMoraCountEn(strDesc);
+			duration = (int) ((float) nowPitch * (int) voicePlayer
+					.sumMoraCountEn(strDesc));
 		}
 
-		// return result
 		return (duration);
 	}
 
@@ -1889,90 +1890,6 @@ public class TimeLineView extends ViewPart implements IUNIT {
 				.getVideoCurrentPosition();
 	}
 
-	/**
-	 * @category Start Timer for Synchronize TimeLine
-	 * 
-	 */
-	public Boolean startSynchronizeTimeLine() {
-		// result own process
-		Boolean result = true;
-
-		// unable to duplicated spawn
-		if (futureSynchronizeTimeLine == null) {
-			// Initial setup Timer Task for sampling volume level data
-			instTimerSynchronizeTimeLine = new SynchronizeTimeLineTimer();
-			schedulerSynchronizeTimeLine = Executors
-					.newSingleThreadScheduledExecutor();
-			// Start Timer Task
-			futureSynchronizeTimeLine = schedulerSynchronizeTimeLine
-					.scheduleAtFixedRate(instTimerSynchronizeTimeLine, 0,
-							TL_SYNC_MEDIA_TIME, TimeUnit.MILLISECONDS);
-		} else {
-			// already spawn Thread
-			result = false;
-		}
-
-		// return current status
-		return (result);
-	}
-
-	public void shutdownSynchronizeTimeLine() {
-		// check current instance
-		if (futureSynchronizeTimeLine != null) {
-			// Destroy Timer Task & Scheduler
-			futureSynchronizeTimeLine.cancel(true);
-			schedulerSynchronizeTimeLine.shutdownNow();
-			// Request Garbage Collection
-			futureSynchronizeTimeLine = null;
-			instTimerSynchronizeTimeLine = null;
-		}
-	}
-
-	/**
-	 * @category Synchronize TimeLine Timer
-	 * 
-	 */
-	class SynchronizeTimeLineTimer implements Runnable {
-
-		/**
-		 * Setter method : Synchronize current TimeLine
-		 */
-		private void synchronizeCurrentTimeLine() {
-
-			// PickUP current movie's
-			getCurrentMovieInfo();
-
-			// Synchronized running TimeLine
-			if (currentMovieStatus != V_STAT_NOMEDIA) {
-				// SetUP Current Time
-				if (currentTimeLine != currentMovieTimeLine) {
-					// Store current video position
-					previousTimeLine = currentTimeLine;
-					currentTimeLine = currentMovieTimeLine;
-				}
-			}
-		}
-
-		/**
-		 * @category Run method of Timer Task
-		 */
-		public void run() {
-			try {
-				// Synchronize TimeLine
-				ownDisplay.asyncExec(new Runnable() {
-					public void run() {
-						// 1)Get&Store current time line
-						synchronizeCurrentTimeLine();
-					}
-				});
-				Thread.yield();
-			} catch (Exception e) {
-				System.out
-						.println("SynchronizeTimeLineTimer::run() : Exception = "
-								+ e);
-			}
-		}
-	}
 
 	/*******************************************************************************
 	 * Management TimeLine part
@@ -2230,6 +2147,28 @@ public class TimeLineView extends ViewPart implements IUNIT {
 		}
 
 		/**
+		 * Setter method : Synchronize current TimeLine
+		 */
+		private boolean synchronizeCurrentTimeLine() {
+
+			// PickUP current movie's
+			getCurrentMovieInfo();
+
+			// Synchronized running TimeLine
+			if (currentMovieStatus != V_STAT_NOMEDIA) {
+				// SetUP Current Time
+				if (currentTimeLine != currentMovieTimeLine) {
+					// Store current video position
+					previousTimeLine = currentTimeLine;
+					currentTimeLine = currentMovieTimeLine;
+					return true;
+				}
+				return false;
+			}
+			return false;
+		}
+
+		/**
 		 * @category Run method of Timer Task
 		 */
 		public void run() {
@@ -2237,8 +2176,20 @@ public class TimeLineView extends ViewPart implements IUNIT {
 				// Management TimeLine
 				ownDisplay.asyncExec(new Runnable() {
 					public void run() {
+						if (PreviewPanel.getInstance().isCurrentDragStatus() == true) {
+							// It returns in dragging mode ,
+							// because moveMouseDraggedEvent() of PreviewPanel
+							// calls synchronizeAllTimeLine() method.
+							return;
+						}
 						// Get current own status
 						int nowStat = instParentView.getStatusTimeLine();
+						if (synchronizeCurrentTimeLine() == false
+								&& nowStat != TL_STAT_EXTENDED) {
+							// Return run() method when currentTimeLine is no
+							// changed and video status is not extend mode.
+							return;
+						}
 
 						// 1)Check current position of media(movie)
 						boolean result = checkCurrentTimeLine();
@@ -2262,7 +2213,8 @@ public class TimeLineView extends ViewPart implements IUNIT {
 
 										// Start high-light for target index of
 										// ScriptList
-										ScriptListView.getInstance()
+										ScriptListView
+												.getInstance()
 												.getInstScriptList()
 												.updateHighLightScriptLine(
 														indexScriptData);
@@ -2376,11 +2328,19 @@ public class TimeLineView extends ViewPart implements IUNIT {
 						}
 					}
 				});
-				Thread.yield();
 			} catch (Exception e) {
 				System.out.println("TimerTask::run() : Exception = " + e);
 			}
 		}
 
 	} // End of Timer class
-} // End of public class
+
+	public void handleSyncTimeEvent(SyncTimeEvent e) {
+		// Synchronize TimeLine view
+		if (e.getEventType() == SyncTimeEvent.SYNCHRONIZE_TIME_LINE) {
+			synchronizeTimeLine(e.getCurrentTime());
+		} else if (e.getEventType() == SyncTimeEvent.REFRESH_TIME_LINE) {
+
+		}
+	}
+}

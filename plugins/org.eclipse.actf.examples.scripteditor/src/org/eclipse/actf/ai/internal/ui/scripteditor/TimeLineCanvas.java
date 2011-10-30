@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 IBM Corporation and Others
+ * Copyright (c) 2009, 2011 IBM Corporation and Others
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -15,6 +15,8 @@ import org.eclipse.actf.ai.ui.scripteditor.views.IUNIT;
 import org.eclipse.actf.ai.ui.scripteditor.views.TimeLineView;
 import org.eclipse.actf.examples.scripteditor.Activator;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseMoveListener;
@@ -30,7 +32,8 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 
-public class TimeLineCanvas extends Canvas implements IUNIT {
+public class TimeLineCanvas extends Canvas implements IUNIT,
+		SyncTimeEventListener {
 
 	// instance of own class
 	static private TimeLineCanvas ownInst = null;
@@ -67,6 +70,8 @@ public class TimeLineCanvas extends Canvas implements IUNIT {
 	private long timePushMouseLButton = 0;
 	private boolean currentDragStatus = false;
 
+	private static EventManager eventManager = null;
+
 	/**
 	 * @category Constructor
 	 */
@@ -81,6 +86,18 @@ public class TimeLineCanvas extends Canvas implements IUNIT {
 
 		// Store TimeLine view instance
 		instParentView = TimeLineView.getInstance();
+		// store event lister
+		eventManager = EventManager.getInstance();
+		// Add synchronized TimeEvent Listener
+		eventManager.addSyncTimeEventListener(this);
+		parent.addDisposeListener(new DisposeListener() {
+
+			@Override
+			public void widgetDisposed(DisposeEvent e) {
+				// TODO other components
+				eventManager.removeSyncTimeEventListener(ownInst);
+			}
+		});
 	}
 
 	static public TimeLineCanvas getInstance(Composite parent) {
@@ -542,9 +559,10 @@ public class TimeLineCanvas extends Canvas implements IUNIT {
 
 		// SetUP new location to current TimeLine
 		instParentView.reqSetTrackCurrentTimeLine(nowTime);
+
 		// Synchronize all TimeLine
-		instParentView.synchronizeAllTimeLine(nowTime);
-		
+		eventManager.fireSyncTimeEvent(new SyncTimeEvent(nowTime, this));
+
 		WebBrowserFactory.getInstance().setCurrentPosition(nowTime);
 
 	}
@@ -577,6 +595,10 @@ public class TimeLineCanvas extends Canvas implements IUNIT {
 				}
 				// Reset status flag
 				currentDragStatus = false;
+
+				// Sync dragStatus with PreviewPanel.
+				PreviewPanel.getInstance().setCurrentDragStatus(
+						currentDragStatus);
 			}
 			// Check mouse 'Left' button
 			else if (statusMouseDragged && (e.button == 1)) {
@@ -608,6 +630,15 @@ public class TimeLineCanvas extends Canvas implements IUNIT {
 
 			// Update ToolTip of TimeLine
 			displayTimeLineToolTip(e.x);
+		}
+	}
+
+	public void handleSyncTimeEvent(SyncTimeEvent e) {
+		// Synchronize TimeLine view
+		if (e.getEventType() == SyncTimeEvent.SYNCHRONIZE_TIME_LINE) {
+			synchronizeTimeLine(e.getCurrentTime());
+		} else if (e.getEventType() == SyncTimeEvent.REFRESH_TIME_LINE) {
+			refreshTimeLine(e.getCurrentTime());
 		}
 	}
 

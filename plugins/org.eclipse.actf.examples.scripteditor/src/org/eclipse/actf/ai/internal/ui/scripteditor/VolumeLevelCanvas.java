@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 IBM Corporation and Others
+ * Copyright (c) 2009, 2011 IBM Corporation and Others
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -25,6 +25,8 @@ import org.eclipse.actf.ai.ui.scripteditor.views.EditPanelView;
 import org.eclipse.actf.ai.ui.scripteditor.views.IUNIT;
 import org.eclipse.actf.ai.ui.scripteditor.views.TimeLineView;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Color;
@@ -40,7 +42,7 @@ import org.eclipse.ui.PlatformUI;
 
 //========================================
 // Canvas class for Volume Level content
-public class VolumeLevelCanvas extends Canvas implements IUNIT {
+public class VolumeLevelCanvas extends Canvas implements IUNIT, SyncTimeEventListener {
 
 	// instance of own class
 	static private VolumeLevelCanvas ownInst = null;
@@ -97,6 +99,8 @@ public class VolumeLevelCanvas extends Canvas implements IUNIT {
 	// parent view info.
 	private TimeLineView instParentView;
 
+	private EventManager eventManager = null;	
+	
 	/**
 	 * @category Constructor
 	 */
@@ -122,6 +126,18 @@ public class VolumeLevelCanvas extends Canvas implements IUNIT {
 
 		// Initialize value by Preference setting
 		setCurrentVolLvlGain(CapturePreferenceUtil.getPreferenceVolLvlGain());
+		// store event lister
+		eventManager = EventManager.getInstance();
+		// Add synchronized TimeEvent Listener
+		eventManager.addSyncTimeEventListener(this);
+		parent.addDisposeListener(new DisposeListener() {
+			
+			@Override
+			public void widgetDisposed(DisposeEvent e) {
+				// TODO other components
+				eventManager.removeSyncTimeEventListener(ownInst);
+			}
+		});
 
 	}
 
@@ -1006,6 +1022,15 @@ public class VolumeLevelCanvas extends Canvas implements IUNIT {
 			} catch (Exception ee) {
 				System.out.println("loadVolumeLevelTempFile() : " + ee);
 			}
+		}
+	}
+	
+	public void handleSyncTimeEvent(SyncTimeEvent e) {
+		// Synchronize TimeLine view
+		if(e.getEventType() == SyncTimeEvent.SYNCHRONIZE_TIME_LINE) {
+			synchronizeTimeLine( e.getCurrentTime());
+		} else if (e.getEventType() == SyncTimeEvent.REFRESH_TIME_LINE) {
+			refreshTimeLine(e.getCurrentTime());
 		}
 	}
 

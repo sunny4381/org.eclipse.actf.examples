@@ -11,9 +11,7 @@
 package org.eclipse.actf.ai.ui.scripteditor.views;
 
 import org.eclipse.actf.ai.internal.ui.scripteditor.ScriptListTable;
-import org.eclipse.actf.ai.scripteditor.data.ScriptData;
 import org.eclipse.actf.ai.scripteditor.util.ScriptFileDropListener;
-import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DropTarget;
@@ -24,8 +22,6 @@ import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
@@ -41,14 +37,7 @@ public class ScriptListView extends ViewPart {
 	// Own instance
 	static private ScriptListView ownInst = null;
 
-	// instance of ScriptData
-	private ScriptData instScriptData = null;
 	private ScriptListTable instScriptList;
-
-	// Script List Part
-	private TableColumn tableColumnStartTime;
-	private TableViewer tableScriptTableViewer;
-	private Table tableScriptTable;
 
 	/**
 	 * Constructor
@@ -77,8 +66,6 @@ public class ScriptListView extends ViewPart {
 		// Create own instance of Composite
 		ownComposite = new Composite(parent, SWT.NONE);
 
-		// Create Data class
-		instScriptData = ScriptData.getInstance();
 		// Create class of ScriptList Table
 		instScriptList = new ScriptListTable(ownComposite);
 

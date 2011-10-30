@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 IBM Corporation and Others
+ * Copyright (c) 2009, 2011 IBM Corporation and Others
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -18,6 +18,8 @@ import org.eclipse.actf.ai.ui.scripteditor.views.IUNIT;
 import org.eclipse.actf.ai.ui.scripteditor.views.TimeLineView;
 import org.eclipse.actf.examples.scripteditor.Activator;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseTrackAdapter;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -32,7 +34,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Slider;
 
-public class PreviewPanel implements IUNIT {
+public class PreviewPanel implements IUNIT, SyncTimeEventListener {
 
 	/**
 	 * Local data
@@ -69,6 +71,8 @@ public class PreviewPanel implements IUNIT {
 	// TimeLine control
 	private Label timelinePreview;
 
+	private static EventManager eventManager = null;
+
 	/**
 	 * Constructor
 	 */
@@ -77,6 +81,8 @@ public class PreviewPanel implements IUNIT {
 		instScriptData = ScriptData.getInstance();
 		// store parent class instance
 		instParentView = TimeLineView.getInstance();
+		// store event lister
+		eventManager = EventManager.getInstance();
 	}
 
 	static public PreviewPanel getInstance() {
@@ -177,6 +183,17 @@ public class PreviewPanel implements IUNIT {
 			sliderPreview
 					.addMouseTrackListener(new SliderMouseCursorTrackAdapter());
 
+			eventManager.addSyncTimeEventListener(this);
+			
+			parentComposite.addDisposeListener(new DisposeListener() {
+				
+				@Override
+				public void widgetDisposed(DisposeEvent e) {
+					//TODO other components
+					eventManager.removeSyncTimeEventListener(ownInst);
+				}
+			});
+			
 		} catch (Exception e) {
 			System.out.println("PreviewPanelView() : Exception = " + e);
 		}
@@ -590,8 +607,10 @@ public class PreviewPanel implements IUNIT {
 			if (!stopExpandMaxSlider) {
 				// SetUP new location to current TimeLine
 				instParentView.reqSetTrackCurrentTimeLine(currentLocation);
-				// Synchronize all TimeLine
-				instParentView.synchronizeAllTimeLine(currentLocation);
+				
+				// // Synchronize all TimeLine
+				eventManager.fireSyncTimeEvent(new SyncTimeEvent(
+						currentLocation, this));
 
 				WebBrowserFactory.getInstance().setCurrentPosition(
 						currentLocation);
@@ -616,6 +635,24 @@ public class PreviewPanel implements IUNIT {
 			Slider parentSlider = (Slider) e.getSource();
 			parentSlider.setCursor(new Cursor(null, SWT.CURSOR_ARROW));
 		}
+	}
+
+	/**
+	 * @category Getter Method
+	 * @purpose Get current dragging status
+	 * 
+	 * @return true  if user drags a timeline now.
+	 */
+	public boolean isCurrentDragStatus() {
+		return currentDragStatus;
+	}
+
+	/**
+	 * @category Setter Method
+	 * @param currentDragStatus
+	 */
+	void setCurrentDragStatus(boolean currentDragStatus) {
+		this.currentDragStatus = currentDragStatus;
 	}
 
 	/**
@@ -645,4 +682,12 @@ public class PreviewPanel implements IUNIT {
 		currentDragStatus = false;
 	}
 
+	public void handleSyncTimeEvent(SyncTimeEvent e) {
+		// Synchronize TimeLine view
+		if (e.getEventType() == SyncTimeEvent.SYNCHRONIZE_TIME_LINE) {
+			synchronizeTimeLine(e.getCurrentTime());
+		} else if (e.getEventType() == SyncTimeEvent.REFRESH_TIME_LINE) {
+
+		}
+	}
 }

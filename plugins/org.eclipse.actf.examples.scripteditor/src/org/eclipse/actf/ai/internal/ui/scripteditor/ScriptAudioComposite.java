@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 IBM Corporation and Others
+ * Copyright (c) 2009, 2011 IBM Corporation and Others
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -18,6 +18,8 @@ import org.eclipse.actf.ai.ui.scripteditor.views.IUNIT;
 import org.eclipse.actf.ai.ui.scripteditor.views.TimeLineView;
 import org.eclipse.actf.examples.scripteditor.Activator;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseMoveListener;
@@ -32,7 +34,8 @@ import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
-public class ScriptAudioComposite extends Composite implements IUNIT {
+public class ScriptAudioComposite extends Composite implements IUNIT,
+		SyncTimeEventListener {
 
 	// Local class
 	class AudioLabelInfo {
@@ -151,6 +154,8 @@ public class ScriptAudioComposite extends Composite implements IUNIT {
 	// for Label duplicated setting
 	private boolean stat_duplicate_label = true;
 
+	private EventManager eventManager = null;
+
 	/**
 	 * @category Constructor
 	 */
@@ -168,6 +173,19 @@ public class ScriptAudioComposite extends Composite implements IUNIT {
 		// Store TimeLine view instance
 		instParentView = TimeLineView.getInstance();
 		instScriptData = ScriptData.getInstance();
+
+		// store event lister
+		eventManager = EventManager.getInstance();
+		// Add synchronized TimeEvent Listener
+		eventManager.addSyncTimeEventListener(this);
+		parent.addDisposeListener(new DisposeListener() {
+
+			@Override
+			public void widgetDisposed(DisposeEvent e) {
+				// TODO other component
+				eventManager.removeSyncTimeEventListener(ownInst);
+			}
+		});
 	}
 
 	static public ScriptAudioComposite getInstance(Composite parent) {
@@ -537,8 +555,7 @@ public class ScriptAudioComposite extends Composite implements IUNIT {
 
 		// MakeUP MouseListener & MouseMoveListener
 		newAudio.addMouseListener(new AudioLabelMouseAdapter(startTime));
-		newAudio
-				.addMouseMoveListener(new AudioLabelMouseMoveListener(startTime));
+		newAudio.addMouseMoveListener(new AudioLabelMouseMoveListener(startTime));
 		// SetUP MouseTrackListener
 		newAudio.addMouseTrackListener(new LabelMouseCursorTrackAdapter());
 	}
@@ -693,8 +710,11 @@ public class ScriptAudioComposite extends Composite implements IUNIT {
 								.getLengthScriptList() - 1)) {
 							int ownEndTime = audioLabelInfo.get(collisions[i])
 									.getEndTime();
-							int nextStartTime = audioLabelInfo.get(
-									collisions[i] + 1).getStartTime();
+
+							int nextStartTime = (audioLabelInfo.size() <= (collisions[i] + 1)) ? -1
+									: audioLabelInfo.get(collisions[i] + 1)
+											.getStartTime();
+
 							if (ownEndTime > nextStartTime) {
 								// and more collision check both own start time
 								// and previous description's end time
@@ -759,9 +779,11 @@ public class ScriptAudioComposite extends Composite implements IUNIT {
 											.getLengthScriptList() - 1)) {
 										int ownEndTime = audioLabelInfo.get(
 												collisions[i]).getEndTime();
-										int nextStartTime = audioLabelInfo.get(
-												collisions[i] + 1)
-												.getStartTime();
+										int nextStartTime = (audioLabelInfo
+												.size() <= (collisions[i] + 1)) ? -1
+												: audioLabelInfo.get(
+														collisions[i] + 1)
+														.getStartTime();
 										if (ownEndTime <= nextStartTime) {
 											// ignore collision(reset to normal
 											// color)
@@ -1483,4 +1505,12 @@ public class ScriptAudioComposite extends Composite implements IUNIT {
 		}
 	}
 
+	public void handleSyncTimeEvent(SyncTimeEvent e) {
+		// Synchronize TimeLine view
+		if (e.getEventType() == SyncTimeEvent.SYNCHRONIZE_TIME_LINE) {
+			synchronizeTimeLine(e.getCurrentTime());
+		} else if (e.getEventType() == SyncTimeEvent.REFRESH_TIME_LINE) {
+			refreshTimeLine(e.getCurrentTime());
+		}
+	}
 }

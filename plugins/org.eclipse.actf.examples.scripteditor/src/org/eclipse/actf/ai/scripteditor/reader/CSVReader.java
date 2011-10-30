@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 IBM Corporation and Others
+ * Copyright (c) 2009, 2011 IBM Corporation and Others
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -131,7 +131,7 @@ public class CSVReader implements IUNIT {
 	private StringBuilder rawCsvCatString = null;
 	private int maxAnalyzeData = 0;
 	private int currentAnalyzeData = 0;
-	private boolean nowExceptionNoWavFile = false;
+//	private boolean nowExceptionNoWavFile = false;
 
 	// Thread of file reader
 	private ThreadCSVReader thCsvRd = null;
@@ -783,7 +783,6 @@ public class CSVReader implements IUNIT {
 			}
 		} catch (FileNotFoundException fnfe) {
 			// Catch File not found Exception
-			nowExceptionNoWavFile = true;
 		} catch (Exception ue) {
 			// System.out.println("isFormatWavPath() : " +ue);
 		}
@@ -1039,19 +1038,13 @@ public class CSVReader implements IUNIT {
 						// Cat string mode for splitting a few line
 						catStringCSVData();
 					} else if (currentProcess == CSV_PROC_ANALYZE) {
-						// Post process for Repaint all screen
-						PlatformUI.getWorkbench().getDisplay().asyncExec(
-								new Runnable() {
-									public void run() {
-										// Analyzing string data
-										boolean result = analyzeCSVData();
-										// check end of analyzing
-										if (result) {
-											// change next mode
-											currentProcess++;
-										}
-									}
-								});
+						// Analyzing string data
+						boolean result = analyzeCSVData();
+						// check end of analyzing
+						if (result) {
+							// change next mode
+							currentProcess++;
+						}
 					} else if (currentProcess == CSV_PROC_SAVE) {
 						// Saving data to ScriptList
 						ret = saveCSVData();

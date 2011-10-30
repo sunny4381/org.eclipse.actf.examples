@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 IBM Corporation and Others
+ * Copyright (c) 2009, 2011 IBM Corporation and Others
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -23,6 +23,8 @@ import org.eclipse.actf.ai.ui.scripteditor.views.TimeLineView;
 import org.eclipse.actf.examples.scripteditor.Activator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseTrackAdapter;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -44,7 +46,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 
-public class EditPanelTab implements IUNIT {
+public class EditPanelTab implements IUNIT, SyncTimeEventListener {
 
 	/**
 	 * Local data
@@ -120,19 +122,18 @@ public class EditPanelTab implements IUNIT {
 	private Label labelStartTimeSS;
 	private Text textStartTimeMS;
 
+	private static EventManager eventManager = null;
+
 	/**
 	 * Constructor
 	 */
 	public EditPanelTab(CTabFolder parent) {
 		// store own instance
 		ownInst = this;
-		// initial setup own TabItem
+		// store event lister
+		eventManager = EventManager.getInstance();
+		// initial setup
 		initTab(parent);
-	}
-
-	static public EditPanelTab getInstance() {
-		// return current own instance
-		return (ownInst);
 	}
 
 	/*
@@ -155,6 +156,16 @@ public class EditPanelTab implements IUNIT {
 
 		// Initialize application's GUI
 		initGUI(display);
+		// Add eventListener
+		eventManager.addSyncTimeEventListener(this);
+
+		parent.addDisposeListener(new DisposeListener() {
+			@Override
+			public void widgetDisposed(DisposeEvent e) {
+				//TODO other components
+				eventManager.removeSyncTimeEventListener(ownInst);
+			}
+		});
 	}
 
 	/**
@@ -649,9 +660,9 @@ public class EditPanelTab implements IUNIT {
 	 */
 	public int getStarTimeEditPanel() {
 		// Get index(StartTime)
-		int startTime = instScriptData.parseIntStartTime(textStartTimeMM
-				.getText(), textStartTimeSS.getText(), textStartTimeMS
-				.getText());
+		int startTime = instScriptData.parseIntStartTime(
+				textStartTimeMM.getText(), textStartTimeSS.getText(),
+				textStartTimeMS.getText());
 
 		// return result
 		return (startTime);
@@ -767,14 +778,11 @@ public class EditPanelTab implements IUNIT {
 		scaleVoiceVolume.setSelection(instScriptData.getExtendVolume(index));
 		// Update ToolTip Text for Scale of Speed
 		scaleVoiceSpeed.setToolTipText(String.valueOf(scaleVoiceSpeed
-				.getSelection())
-				+ "/100");
+				.getSelection()) + "/100");
 		scaleVoicePitch.setToolTipText(String.valueOf(scaleVoicePitch
-				.getSelection())
-				+ "/100");
+				.getSelection()) + "/100");
 		scaleVoiceVolume.setToolTipText(String.valueOf(scaleVoiceVolume
-				.getSelection())
-				+ "/100");
+				.getSelection()) + "/100");
 
 		// Clear position of Slider
 		TimeLineView.getInstance().repaintTimeLine();
@@ -941,20 +949,20 @@ public class EditPanelTab implements IUNIT {
 			}
 			if (isDiffSpeed()) {
 				scaleVoiceSpeed.setBackground(PlatformUI.getWorkbench()
-						.getDisplay().getSystemColor(
-								SWT.COLOR_WIDGET_HIGHLIGHT_SHADOW));
+						.getDisplay()
+						.getSystemColor(SWT.COLOR_WIDGET_HIGHLIGHT_SHADOW));
 			}
 			scaleVoiceSpeed.setSelection(speed);
 			if (isDiffPitch()) {
 				scaleVoicePitch.setBackground(PlatformUI.getWorkbench()
-						.getDisplay().getSystemColor(
-								SWT.COLOR_WIDGET_HIGHLIGHT_SHADOW));
+						.getDisplay()
+						.getSystemColor(SWT.COLOR_WIDGET_HIGHLIGHT_SHADOW));
 			}
 			scaleVoicePitch.setSelection(pitch);
 			if (isDiffVolume()) {
 				scaleVoiceVolume.setBackground(PlatformUI.getWorkbench()
-						.getDisplay().getSystemColor(
-								SWT.COLOR_WIDGET_HIGHLIGHT_SHADOW));
+						.getDisplay()
+						.getSystemColor(SWT.COLOR_WIDGET_HIGHLIGHT_SHADOW));
 			}
 			scaleVoiceVolume.setSelection(volume);
 			if (isDiffLang()) {
@@ -1184,9 +1192,9 @@ public class EditPanelTab implements IUNIT {
 	public int setEndTimeScriptData(int lenData) {
 
 		// Get index(StartTime)
-		int startTime = instScriptData.parseIntStartTime(textStartTimeMM
-				.getText(), textStartTimeSS.getText(), textStartTimeMS
-				.getText());
+		int startTime = instScriptData.parseIntStartTime(
+				textStartTimeMM.getText(), textStartTimeSS.getText(),
+				textStartTimeMS.getText());
 
 		// Calc. new End Time & Set string to Text field
 		int newEndTime = startTime + lenData;
@@ -1376,9 +1384,9 @@ public class EditPanelTab implements IUNIT {
 			boolean result = false;
 			int index = -1;
 			String strDesc = textAreaDescription.getText();
-			int startTime = instScriptData.parseIntStartTime(textStartTimeMM
-					.getText(), textStartTimeSS.getText(), textStartTimeMS
-					.getText());
+			int startTime = instScriptData.parseIntStartTime(
+					textStartTimeMM.getText(), textStartTimeSS.getText(),
+					textStartTimeMS.getText());
 			int newEndTime = currentEndTime;
 
 			// status of update(start time) mode flag
@@ -1847,14 +1855,11 @@ public class EditPanelTab implements IUNIT {
 		scaleVoiceVolume.setSelection(50);
 		// Update ToolTip Text for Scale of Speed
 		scaleVoiceSpeed.setToolTipText(String.valueOf(scaleVoiceSpeed
-				.getSelection())
-				+ "/100");
+				.getSelection()) + "/100");
 		scaleVoicePitch.setToolTipText(String.valueOf(scaleVoicePitch
-				.getSelection())
-				+ "/100");
+				.getSelection()) + "/100");
 		scaleVoiceVolume.setToolTipText(String.valueOf(scaleVoiceVolume
-				.getSelection())
-				+ "/100");
+				.getSelection()) + "/100");
 
 		/**
 		 * Keep current setting ************************* // Set Gender
@@ -1950,9 +1955,9 @@ public class EditPanelTab implements IUNIT {
 		 */
 		private void deleteSingleScript() {
 			// Append script data to Script List
-			boolean result = instScriptData.deleteScriptData(textStartTimeMM
-					.getText(), textStartTimeSS.getText(), textStartTimeMS
-					.getText());
+			boolean result = instScriptData.deleteScriptData(
+					textStartTimeMM.getText(), textStartTimeSS.getText(),
+					textStartTimeMS.getText());
 
 			// check result status
 			if (result) {
@@ -2094,22 +2099,22 @@ public class EditPanelTab implements IUNIT {
 					modifyMultiSpeed = true;
 					// Reset grayed color setting
 					scaleVoiceSpeed.setBackground(PlatformUI.getWorkbench()
-							.getDisplay().getSystemColor(
-									SWT.COLOR_WIDGET_BACKGROUND));
+							.getDisplay()
+							.getSystemColor(SWT.COLOR_WIDGET_BACKGROUND));
 				} else if (scaleVoicePitch.equals(scale)) {
 					// i am Pitch slider.
 					modifyMultiPitch = true;
 					// Reset grayed color setting
 					scaleVoicePitch.setBackground(PlatformUI.getWorkbench()
-							.getDisplay().getSystemColor(
-									SWT.COLOR_WIDGET_BACKGROUND));
+							.getDisplay()
+							.getSystemColor(SWT.COLOR_WIDGET_BACKGROUND));
 				} else if (scaleVoiceVolume.equals(scale)) {
 					// i am Volume slider
 					modifyMultiVolume = true;
 					// Reset grayed color setting
 					scaleVoiceVolume.setBackground(PlatformUI.getWorkbench()
-							.getDisplay().getSystemColor(
-									SWT.COLOR_WIDGET_BACKGROUND));
+							.getDisplay()
+							.getSystemColor(SWT.COLOR_WIDGET_BACKGROUND));
 				}
 			}
 		}
@@ -2271,6 +2276,15 @@ public class EditPanelTab implements IUNIT {
 				// Reset grayed color setting
 				chkBoxExtended.setGrayed(false);
 			}
+		}
+	}
+
+	public void handleSyncTimeEvent(SyncTimeEvent e) {
+		// Synchronize TimeLine view
+		if (e.getEventType() == SyncTimeEvent.SYNCHRONIZE_TIME_LINE) {
+			synchronizeTimeLine(e.getCurrentTime());
+		} else if (e.getEventType() == SyncTimeEvent.REFRESH_TIME_LINE) {
+
 		}
 	}
 
