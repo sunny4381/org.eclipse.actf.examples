@@ -10,6 +10,13 @@
  *******************************************************************************/
 package org.eclipse.actf.ai.internal.ui.scripteditor;
 
+import org.eclipse.actf.ai.internal.ui.scripteditor.event.EventManager;
+import org.eclipse.actf.ai.internal.ui.scripteditor.event.MouseDragEvent;
+import org.eclipse.actf.ai.internal.ui.scripteditor.event.MouseDragEventListener;
+import org.eclipse.actf.ai.internal.ui.scripteditor.event.PlayerControlEvent;
+import org.eclipse.actf.ai.internal.ui.scripteditor.event.PlayerControlEventListener;
+import org.eclipse.actf.ai.internal.ui.scripteditor.event.SyncTimeEvent;
+import org.eclipse.actf.ai.internal.ui.scripteditor.event.SyncTimeEventListener;
 import org.eclipse.actf.ai.scripteditor.data.ScriptData;
 import org.eclipse.actf.ai.scripteditor.util.SoundMixer;
 import org.eclipse.actf.ai.scripteditor.util.WebBrowserFactory;
@@ -34,7 +41,8 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Slider;
 
-public class PreviewPanel implements IUNIT, SyncTimeEventListener {
+public class PreviewPanel implements IUNIT, SyncTimeEventListener,
+		MouseDragEventListener, PlayerControlEventListener {
 
 	/**
 	 * Local data
@@ -184,16 +192,18 @@ public class PreviewPanel implements IUNIT, SyncTimeEventListener {
 					.addMouseTrackListener(new SliderMouseCursorTrackAdapter());
 
 			eventManager.addSyncTimeEventListener(this);
-			
+			eventManager.addMouseDragEventListener(this);
+			eventManager.addPlayerControlEvenListener(this);
 			parentComposite.addDisposeListener(new DisposeListener() {
-				
 				@Override
 				public void widgetDisposed(DisposeEvent e) {
-					//TODO other components
+					// TODO other components
 					eventManager.removeSyncTimeEventListener(ownInst);
+					eventManager.removeMouseDragEventListener(ownInst);
+					eventManager.removePlayerControlEventListener(ownInst);
 				}
 			});
-			
+
 		} catch (Exception e) {
 			System.out.println("PreviewPanelView() : Exception = " + e);
 		}
@@ -573,12 +583,20 @@ public class PreviewPanel implements IUNIT, SyncTimeEventListener {
 
 				pauseForDargging();
 
+				eventManager.fireMouseDragEvent(new MouseDragEvent(
+						MouseDragEvent.MOUSE_SET_DRAG_STATUS,
+						currentDragStatus, this));
+
 			} else if ((e.detail == 0)
 					&& (previousEventSliderPreview == SWT.DRAG)) {
 				// store current event
 				previousEventSliderPreview = e.detail;
 
 				resumeAfterDragging();
+
+				eventManager.fireMouseDragEvent(new MouseDragEvent(
+						MouseDragEvent.MOUSE_SET_DRAG_STATUS,
+						currentDragStatus, this));
 
 				// check stop flag & end process
 				if (stopExpandMaxSlider) {
@@ -607,7 +625,7 @@ public class PreviewPanel implements IUNIT, SyncTimeEventListener {
 			if (!stopExpandMaxSlider) {
 				// SetUP new location to current TimeLine
 				instParentView.reqSetTrackCurrentTimeLine(currentLocation);
-				
+
 				// // Synchronize all TimeLine
 				eventManager.fireSyncTimeEvent(new SyncTimeEvent(
 						currentLocation, this));
@@ -638,24 +656,6 @@ public class PreviewPanel implements IUNIT, SyncTimeEventListener {
 	}
 
 	/**
-	 * @category Getter Method
-	 * @purpose Get current dragging status
-	 * 
-	 * @return true  if user drags a timeline now.
-	 */
-	public boolean isCurrentDragStatus() {
-		return currentDragStatus;
-	}
-
-	/**
-	 * @category Setter Method
-	 * @param currentDragStatus
-	 */
-	void setCurrentDragStatus(boolean currentDragStatus) {
-		this.currentDragStatus = currentDragStatus;
-	}
-
-	/**
 	 * pause video while user drags a timeline.
 	 */
 	void pauseForDargging() {
@@ -670,7 +670,7 @@ public class PreviewPanel implements IUNIT, SyncTimeEventListener {
 	}
 
 	/**
-	 * restart video after user dragged a timeline.
+	 * resume video after user dragged a timeline.
 	 */
 	void resumeAfterDragging() {
 		if (currentDragStatus == false) {
@@ -690,4 +690,24 @@ public class PreviewPanel implements IUNIT, SyncTimeEventListener {
 
 		}
 	}
+
+	public void handleMouseDragEvent(MouseDragEvent e) {
+		//
+		switch (e.getEventType()) {
+		case MouseDragEvent.MOUSE_DRAG_START:
+			pauseForDargging();
+			break;
+		case MouseDragEvent.MOUSE_SET_DRAG_STATUS:
+			this.currentDragStatus = e.isStatus();
+			break;
+		case MouseDragEvent.MOUSE_DRAG_END:
+			resumeAfterDragging();
+			break;
+		}
+	}
+
+	public void handlePlayPauseEvent(PlayerControlEvent e) {
+		playPauseMedia();
+	}
+
 }

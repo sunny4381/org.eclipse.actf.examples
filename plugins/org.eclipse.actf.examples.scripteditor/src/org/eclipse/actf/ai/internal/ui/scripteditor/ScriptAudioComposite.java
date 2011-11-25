@@ -12,6 +12,9 @@ package org.eclipse.actf.ai.internal.ui.scripteditor;
 
 import java.util.ArrayList;
 
+import org.eclipse.actf.ai.internal.ui.scripteditor.event.EventManager;
+import org.eclipse.actf.ai.internal.ui.scripteditor.event.SyncTimeEvent;
+import org.eclipse.actf.ai.internal.ui.scripteditor.event.SyncTimeEventListener;
 import org.eclipse.actf.ai.scripteditor.data.ScriptData;
 import org.eclipse.actf.ai.ui.scripteditor.views.EditPanelView;
 import org.eclipse.actf.ai.ui.scripteditor.views.IUNIT;

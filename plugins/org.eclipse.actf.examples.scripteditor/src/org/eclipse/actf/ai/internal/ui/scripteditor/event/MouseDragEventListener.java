@@ -8,13 +8,11 @@
  * Contributors:
  *    IBM Corporation - initial API and implementation
  *******************************************************************************/
-package org.eclipse.actf.ai.internal.ui.scripteditor;
+package org.eclipse.actf.ai.internal.ui.scripteditor.event;
 
 import java.util.EventListener;
 
-/**
- * 
- */
-public interface  SyncTimeEventListener extends EventListener{
-	public abstract void handleSyncTimeEvent(SyncTimeEvent e);
+
+public interface MouseDragEventListener extends EventListener {
+	public abstract void handleMouseDragEvent(MouseDragEvent e);
 }

@@ -14,6 +14,9 @@ package org.eclipse.actf.ai.internal.ui.scripteditor;
 import java.net.URI;
 import java.util.Locale;
 
+import org.eclipse.actf.ai.internal.ui.scripteditor.event.EventManager;
+import org.eclipse.actf.ai.internal.ui.scripteditor.event.SyncTimeEvent;
+import org.eclipse.actf.ai.internal.ui.scripteditor.event.SyncTimeEventListener;
 import org.eclipse.actf.ai.scripteditor.data.ScriptData;
 import org.eclipse.actf.ai.scripteditor.preferences.CSVRulePreferenceUtil;
 import org.eclipse.actf.ai.ui.scripteditor.views.EditPanelView;

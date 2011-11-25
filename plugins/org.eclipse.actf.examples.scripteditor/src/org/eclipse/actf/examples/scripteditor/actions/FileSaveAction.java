@@ -36,18 +36,14 @@ public class FileSaveAction implements IWorkbenchWindowActionDelegate, IUNIT {
 		try {
 			// Create save class
 			XMLFileSaveUtil saveFH = new XMLFileSaveUtil();
-			int mode = MB_STYLE_MODIFY;
 
 			// Check exist opened file
 			saveFileName = TimeLineView.getInstance().reqGetXMLFilePath();
 			if (!XMLFileSaveUtil.exists(saveFileName)) {
 				// Request FileDialog (Choice open file name)
 				saveFileName = saveFH.open();
-			} else {
-				// exist target file
-				mode = MB_STYLE_OVERWR;
 			}
-
+			
 			// Check null (file name)
 			if (saveFileName != null) {
 				// Save script data to XML file

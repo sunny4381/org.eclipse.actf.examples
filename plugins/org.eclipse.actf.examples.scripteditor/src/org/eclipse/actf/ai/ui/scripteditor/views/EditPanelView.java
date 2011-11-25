@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 IBM Corporation and Others
+ * Copyright (c) 2009, 2011 IBM Corporation and Others
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -30,7 +30,6 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
-
 public class EditPanelView extends ViewPart implements IUNIT {
 	public static final String VIEW_ID = "org.eclipse.actf.examples.scripteditor.EditPanelView";
 
@@ -48,7 +47,6 @@ public class EditPanelView extends ViewPart implements IUNIT {
 	// Tab Item instance
 	private CTabItem instEditPanelTabItem = null;
 	private CTabItem instSelectWAVFileTabItem = null;
-
 
 	/**
      * 
@@ -78,7 +76,7 @@ public class EditPanelView extends ViewPart implements IUNIT {
 
 		// Initialize application's GUI
 		initTabFolder();
-		
+
 		// Add listener for load meta file
 		initDDListener(ownTabFolder);
 	}
@@ -88,13 +86,6 @@ public class EditPanelView extends ViewPart implements IUNIT {
 	 */
 	public void setFocus() {
 		ownTabFolder.setFocus();
-	}
-
-	/**
-	 * Cleans up all resources created by this ViewPart.
-	 */
-	public void dispose() {
-		super.dispose();
 	}
 
 	/**
@@ -117,39 +108,43 @@ public class EditPanelView extends ViewPart implements IUNIT {
 			ownTabFolder.setLayoutData(editPanelLData);
 			// otherwise setting
 			ownTabFolder.setSimple(false);
-			ownTabFolder.setMaximizeVisible(false);//do not display maximize button
-			ownTabFolder.setMinimizeVisible(false);//do not display minimize button
-			ownTabFolder.setSelectionBackground(
-				new Color[] {
-					new Color(display, 216, 228, 251),
-					new Color(display, 153, 186, 243)
-				},
-				new int[] {80},
-				true
-			);
+			ownTabFolder.setMaximizeVisible(false);// do not display maximize
+													// button
+			ownTabFolder.setMinimizeVisible(false);// do not display minimize
+													// button
+			ownTabFolder
+					.setSelectionBackground(new Color[] {
+							new Color(display, 216, 228, 251),
+							new Color(display, 153, 186, 243) },
+							new int[] { 80 }, true);
 
 			// create tab items
 			instEditPanelTabItem = new CTabItem(ownTabFolder, SWT.NONE);
 			instSelectWAVFileTabItem = new CTabItem(ownTabFolder, SWT.NONE);
 
 			// setup title of tab item
-			instEditPanelTabItem.setText(Activator.getResourceString("scripteditor.tabitem.editpanel"));
-			instSelectWAVFileTabItem.setText(Activator.getResourceString("scripteditor.tabitem.selwavfile"));
-			instEditPanelTabItem.setImage(Activator.getImageDescriptor("/icons/micx16.gif").createImage());
-			instSelectWAVFileTabItem.setImage(Activator.getImageDescriptor("/icons/micx16.gif").createImage());
+			instEditPanelTabItem.setText(Activator
+					.getResourceString("scripteditor.tabitem.editpanel"));
+			instSelectWAVFileTabItem.setText(Activator
+					.getResourceString("scripteditor.tabitem.selwavfile"));
+			instEditPanelTabItem.setImage(Activator.getImageDescriptor(
+					"/icons/micx16.gif").createImage());
+			instSelectWAVFileTabItem.setImage(Activator.getImageDescriptor(
+					"/icons/micx16.gif").createImage());
 
 			// spawn child class
 			instEditPanelTab = new EditPanelTab(ownTabFolder);
 			instSelectWAVFileTab = new SelectWAVFileTab(ownTabFolder);
 
 			// setup control of tab item
-			instEditPanelTabItem.setControl( instEditPanelTab.getOwnComposite() );
-			instSelectWAVFileTabItem.setControl( instSelectWAVFileTab.getOwnComposite() );
+			instEditPanelTabItem.setControl(instEditPanelTab.getOwnComposite());
+			instSelectWAVFileTabItem.setControl(instSelectWAVFileTab
+					.getOwnComposite());
 
 			// 1st Initialized current Window
 			ownTabFolder.layout();
 			ownTabFolder.pack();
-			
+
 		} catch (Exception e) {
 			System.out.println("EditPanelView : Exception = " + e);
 		}
@@ -160,8 +155,9 @@ public class EditPanelView extends ViewPart implements IUNIT {
 	 */
 	private void initDDListener(Composite parent) {
 		// Initial setup DnD target control
-		DropTarget targetDnD = new DropTarget(parent, DND.DROP_DEFAULT|DND.DROP_COPY);
-		targetDnD.setTransfer(new Transfer[] {FileTransfer.getInstance()});
+		DropTarget targetDnD = new DropTarget(parent, DND.DROP_DEFAULT
+				| DND.DROP_COPY);
+		targetDnD.setTransfer(new Transfer[] { FileTransfer.getInstance() });
 		targetDnD.addDropListener(new ScriptFileDropListener());
 	}
 
@@ -170,15 +166,15 @@ public class EditPanelView extends ViewPart implements IUNIT {
 	 */
 	public EditPanelTab getInstanceTabEditPanel() {
 		// return instance of tab item : EditPanel
-		return(instEditPanelTab);
+		return (instEditPanelTab);
 	}
-	
+
 	/**
 	 * Getter method : Get instance of tab item : SelectWAVFile
 	 */
 	public SelectWAVFileTab getInstanceTabSelWAVFile() {
 		// return instance of tab item : SelectWAVFile
-		return(instSelectWAVFileTab);
+		return (instSelectWAVFileTab);
 	}
 
 	/**
@@ -186,13 +182,12 @@ public class EditPanelView extends ViewPart implements IUNIT {
 	 */
 	public void setSelectMultiItemsMode(boolean sw) {
 		// Check switch flag
-		if( sw ){
+		if (sw) {
 			// Forced select Edit tab
 			ownTabFolder.setSelection(instEditPanelTabItem);
 			// exchange mode to multiple items selection to WAV file select tab
 			instSelectWAVFileTab.setEnabledTab(false);
-		}
-		else {
+		} else {
 			// exchange mode to normal to WAV file select tab
 			instSelectWAVFileTab.setEnabledTab(true);
 		}

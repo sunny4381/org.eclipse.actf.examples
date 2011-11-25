@@ -15,8 +15,6 @@ import java.util.ResourceBundle;
 
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
@@ -32,7 +30,7 @@ public class Activator extends AbstractUIPlugin {
 	// The shared instance
 	private static Activator plugin;
 	private ResourceBundle _resourceBundle;
-	private static Shell parentShell = null;
+	// private static Shell parentShell = null;
 
 	/**
 	 * The constructor
@@ -105,14 +103,14 @@ public class Activator extends AbstractUIPlugin {
 		return imageDescriptorFromPlugin(PLUGIN_ID, path);
 	}
 
-	public static void setParentShell() {
-		// Store parent shell instance
-		parentShell = PlatformUI.getWorkbench().getDisplay().getActiveShell();
-	}
-
-	public static Shell getParentShell() {
-		// Return result
-		return (parentShell);
-	}
+	// public static void setParentShell() {
+	// // Store parent shell instance
+	// parentShell = PlatformUI.getWorkbench().getDisplay().getActiveShell();
+	// }
+	//
+	// public static Shell getParentShell() {
+	// // Return result
+	// return (parentShell);
+	// }
 
 }

@@ -10,6 +10,10 @@
  *******************************************************************************/
 package org.eclipse.actf.ai.internal.ui.scripteditor;
 
+import org.eclipse.actf.ai.internal.ui.scripteditor.event.EventManager;
+import org.eclipse.actf.ai.internal.ui.scripteditor.event.MouseDragEvent;
+import org.eclipse.actf.ai.internal.ui.scripteditor.event.SyncTimeEvent;
+import org.eclipse.actf.ai.internal.ui.scripteditor.event.SyncTimeEventListener;
 import org.eclipse.actf.ai.scripteditor.util.WebBrowserFactory;
 import org.eclipse.actf.ai.ui.scripteditor.views.IUNIT;
 import org.eclipse.actf.ai.ui.scripteditor.views.TimeLineView;
@@ -540,7 +544,6 @@ public class TimeLineCanvas extends Canvas implements IUNIT,
 	 * Local method : Move Mouse drag position
 	 */
 	private void moveMouseDraggedEvent(MouseEvent e) {
-
 		// Calculate current time line
 		int nowTime = (e.x * TIME2PIXEL)
 				+ (currentTimeLineLocation * TL_DEF_SCROL_COMP_SCALE);
@@ -578,7 +581,9 @@ public class TimeLineCanvas extends Canvas implements IUNIT,
 			if (!statusMouseDragged && (e.button == 1)) {
 				// pre-check Mouse drag action
 				precheckMouseDraggedEvent(e);
-				PreviewPanel.getInstance().pauseForDargging();
+
+				eventManager.fireMouseDragEvent(new MouseDragEvent(
+						MouseDragEvent.MOUSE_DRAG_START, this));
 			}
 		}
 
@@ -596,15 +601,16 @@ public class TimeLineCanvas extends Canvas implements IUNIT,
 				// Reset status flag
 				currentDragStatus = false;
 
-				// Sync dragStatus with PreviewPanel.
-				PreviewPanel.getInstance().setCurrentDragStatus(
-						currentDragStatus);
+				eventManager.fireMouseDragEvent(new MouseDragEvent(
+						MouseDragEvent.MOUSE_SET_DRAG_STATUS,
+						currentDragStatus, this));
 			}
 			// Check mouse 'Left' button
 			else if (statusMouseDragged && (e.button == 1)) {
 				// Finish Mouse drag action
 				statusMouseDragged = false;
-				PreviewPanel.getInstance().resumeAfterDragging();
+				eventManager.fireMouseDragEvent(new MouseDragEvent(
+						MouseDragEvent.MOUSE_DRAG_END, this));
 			}
 		}
 	}

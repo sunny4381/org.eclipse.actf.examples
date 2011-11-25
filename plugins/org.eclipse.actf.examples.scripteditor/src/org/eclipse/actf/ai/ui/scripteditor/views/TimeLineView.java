@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 IBM Corporation and Others
+ * Copyright (c) 2009, 2011 IBM Corporation and Others
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,19 +11,21 @@
 package org.eclipse.actf.ai.ui.scripteditor.views;
 
 import java.net.URI;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
 
-import org.eclipse.actf.ai.internal.ui.scripteditor.EventManager;
 import org.eclipse.actf.ai.internal.ui.scripteditor.PreviewPanel;
 import org.eclipse.actf.ai.internal.ui.scripteditor.ScriptAudioComposite;
-import org.eclipse.actf.ai.internal.ui.scripteditor.SyncTimeEvent;
-import org.eclipse.actf.ai.internal.ui.scripteditor.SyncTimeEventListener;
+import org.eclipse.actf.ai.internal.ui.scripteditor.ScriptEditorTimerUtil;
 import org.eclipse.actf.ai.internal.ui.scripteditor.TimeLineCanvas;
 import org.eclipse.actf.ai.internal.ui.scripteditor.VolumeLevelCanvas;
 import org.eclipse.actf.ai.internal.ui.scripteditor.XMLFileMessageBox;
+import org.eclipse.actf.ai.internal.ui.scripteditor.event.EventManager;
+import org.eclipse.actf.ai.internal.ui.scripteditor.event.MouseDragEvent;
+import org.eclipse.actf.ai.internal.ui.scripteditor.event.MouseDragEventListener;
+import org.eclipse.actf.ai.internal.ui.scripteditor.event.PlayerControlEvent;
+import org.eclipse.actf.ai.internal.ui.scripteditor.event.SyncTimeEvent;
+import org.eclipse.actf.ai.internal.ui.scripteditor.event.SyncTimeEventListener;
+import org.eclipse.actf.ai.internal.ui.scripteditor.event.TimerEvent;
+import org.eclipse.actf.ai.internal.ui.scripteditor.event.TimerEventListener;
 import org.eclipse.actf.ai.scripteditor.data.ScriptData;
 import org.eclipse.actf.ai.scripteditor.data.XMLFileSaveUtil;
 import org.eclipse.actf.ai.scripteditor.util.ScriptFileDropListener;
@@ -57,7 +59,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
 public class TimeLineView extends ViewPart implements IUNIT,
-		SyncTimeEventListener {
+		SyncTimeEventListener, MouseDragEventListener, TimerEventListener {
 	public static final String VIEW_ID = "org.eclipse.actf.examples.scripteditor.VolumeLevelView";
 
 	/**
@@ -87,11 +89,6 @@ public class TimeLineView extends ViewPart implements IUNIT,
 	private int previewVoicePitch;
 	private String previewVoiceDesc = new String();
 
-	// TimeLine's Timer Task
-	private TimeLineManager instTimerTimeLineManager = null;
-	private ScheduledExecutorService schedulerTimeLineManager = null;
-	private ScheduledFuture<?> futureTimeLineManager = null;
-
 	// Instances of sub class
 	private TimeLineCanvas canvasTimeLine = null;
 	private VolumeLevelCanvas canvasVolumeLevel = null;
@@ -105,6 +102,7 @@ public class TimeLineView extends ViewPart implements IUNIT,
 	private int movieEndTimeLine = 0;
 	private int currentMovieTimeLine = 0;
 	private int currentMovieStatus = -1;
+	private int previousMovieStatus = -1;
 	private int currentTimeLineLocation = 0;
 	private int previousTimeLine = -1;
 	private int pauseTimeLine = 0;
@@ -129,8 +127,17 @@ public class TimeLineView extends ViewPart implements IUNIT,
 	private FormData compositeScriptAudioLData;
 	private FormData labelAudio1LData;
 
+	// for Event Managing
 	private static EventManager eventManager = null;
 
+	// for Video play interval.
+	private static final int WAIT_COUNT_FOR_VIDEO_PLAY = 3;	// Video play 150 msec and timer_task witch interval is 50 msec.
+	private int videoPlayCount = WAIT_COUNT_FOR_VIDEO_PLAY;
+
+	private boolean currentDragStatus = false; // status for dragging
+
+	private int timerUtilCounter = TL_SYNC_MEDIA_TIME;	// for Timer Util
+	
 	/**
 	 * Constructor
 	 */
@@ -145,6 +152,7 @@ public class TimeLineView extends ViewPart implements IUNIT,
 		ownInst = this;
 		// store event lister
 		eventManager = EventManager.getInstance();
+
 	}
 
 	static public TimeLineView getInstance() {
@@ -175,21 +183,27 @@ public class TimeLineView extends ViewPart implements IUNIT,
 		// Initialize application's GUI
 		initGUI(ownDisplay);
 
-		// Start Timer for TimeLine management
-		startTimeLineManager();
+//		// Start Timer for TimeLine management
+//		startTimeLineManager();
 
 		// Add listener for load meta file
 		initDDListener(ownComposite);
 
 		eventManager.addSyncTimeEventListener(this);
-		parent.addDisposeListener(new DisposeListener() {
+		eventManager.addMouseDragEventListener(this);
+		eventManager.addTimerEventListener(this);
 
+		parent.addDisposeListener(new DisposeListener() {
 			@Override
 			public void widgetDisposed(DisposeEvent e) {
 				// TODO other components
 				eventManager.removeSyncTimeEventListener(ownInst);
+				eventManager.removeMouseDragEventListener(ownInst);
+				eventManager.removeTimerEventListener(ownInst);
 			}
 		});
+		videoPlayCount = TimeLineView.WAIT_COUNT_FOR_VIDEO_PLAY; // Video play count;
+
 	}
 
 	/**
@@ -208,6 +222,7 @@ public class TimeLineView extends ViewPart implements IUNIT,
 	 * Cleans up all resources created by this ViewPart.
 	 */
 	public void dispose() {
+
 		// change status to DISPOSE
 		setStatusTimeLine(TL_STAT_DISPOSE);
 
@@ -215,10 +230,6 @@ public class TimeLineView extends ViewPart implements IUNIT,
 		reqStopScriptAudio();
 		reqStopCaptureAudio();
 
-		// dispose thread of TimeLine
-		shutdownTimeLineManager();
-
-		eventManager.removeAllSyncTimeEventListener();
 		eventManager = null;
 
 		// dispose own ViewPart
@@ -878,10 +889,7 @@ public class TimeLineView extends ViewPart implements IUNIT,
 		endTimeLine = unitCount * TL_DEF_SCROL_COMP_SCALE;
 		setCurrentLocation(0);
 
-		// Initial setup index of ScriptData
-		if (instTimerTimeLineManager != null) {
-			instTimerTimeLineManager.seekIndexTimeLine(currentTimeLine);
-		}
+		seekIndexTimeLine(currentTimeLine);
 
 		// Initial synchronized each TimeLine info.
 		synchronizeAllTimeLine(currentTimeLine);
@@ -924,9 +932,7 @@ public class TimeLineView extends ViewPart implements IUNIT,
 		}
 
 		// Initial setup index of ScriptData
-		if (instTimerTimeLineManager != null) {
-			instTimerTimeLineManager.seekIndexTimeLine(currentTimeLine);
-		}
+		seekIndexTimeLine(currentTimeLine);
 
 		// Initial synchronized each TimeLine info.
 		synchronizeAllTimeLine(currentTimeLine);
@@ -973,9 +979,7 @@ public class TimeLineView extends ViewPart implements IUNIT,
 			}
 
 			// Initial setup index of ScriptData
-			if (instTimerTimeLineManager != null) {
-				instTimerTimeLineManager.seekIndexTimeLine(currentTimeLine);
-			}
+			seekIndexTimeLine(currentTimeLine);
 
 			// Check current TimeLine's status again
 			if (currentStatusTimeLine == TL_STAT_PLAY) {
@@ -994,9 +998,7 @@ public class TimeLineView extends ViewPart implements IUNIT,
 		currentTimeLine = newTime;
 
 		// Initial setup index of ScriptData
-		if (instTimerTimeLineManager != null) {
-			instTimerTimeLineManager.seekIndexTimeLine(currentTimeLine);
-		}
+		seekIndexTimeLine(currentTimeLine);
 	}
 
 	/**
@@ -1242,7 +1244,7 @@ public class TimeLineView extends ViewPart implements IUNIT,
 		int nowCnt = getCurrentLocation();
 
 		eventManager.fireSyncTimeEvent(new SyncTimeEvent(
-				SyncTimeEvent.REFRESH_TIME_LINE, nowCnt));
+				SyncTimeEvent.REFRESH_TIME_LINE, nowCnt, this));
 	}
 
 	/**
@@ -1433,18 +1435,6 @@ public class TimeLineView extends ViewPart implements IUNIT,
 				.getInstanceTabEditPanel().getCurrentPitch();
 		previewVoiceDesc = currentScriptText;
 
-		// ** Comment Out for VoiceUtl
-		// *******************************************
-		/**/
-		// Start timer for sampling Volume Level
-		canvasVolumeLevel.startSamplingVolumeLevel();
-		/**/
-		// Dummy *************************
-		// Repaint EndTime
-		// // EditPanelView.getInstance().repaintTextEndTime();
-		// ** Comment Out for VoiceUtl
-		// *******************************************
-
 		// Play voice
 		voicePlayer.speak(currentScriptText);
 	}
@@ -1455,8 +1445,6 @@ public class TimeLineView extends ViewPart implements IUNIT,
 	public void reqStopScriptAudio() {
 		// Stop ProTalker
 		voicePlayer.stop();
-		// Destroy current Thread
-		canvasVolumeLevel.shutdownSamplingVolumeLevel();
 	}
 
 	/**
@@ -1467,8 +1455,6 @@ public class TimeLineView extends ViewPart implements IUNIT,
 		SoundMixer.getInstance().stopCaptureSound();
 		SoundMixer.getInstance().stopPlaySound();
 		SoundMixer.getInstance().dispose();
-		// Stop & Dispose TimeLine Thread
-		canvasVolumeLevel.shutdownTimerCaptureAudio();
 	}
 
 	/**
@@ -1883,55 +1869,13 @@ public class TimeLineView extends ViewPart implements IUNIT,
 	 * Background method : PickUP current Movie's status & position
 	 */
 	private void getCurrentMovieInfo() {
+		previousMovieStatus =currentMovieStatus; 		
+		
 		// PickUP current video player status
 		currentMovieStatus = PreviewPanel.getInstance().getVideoStatus();
 		// PickUP current video position
 		currentMovieTimeLine = PreviewPanel.getInstance()
 				.getVideoCurrentPosition();
-	}
-
-
-	/*******************************************************************************
-	 * Management TimeLine part
-	 * 
-	 *******************************************************************************/
-	/**
-	 * @category Start Timer for TimeLineManager
-	 * 
-	 */
-	public Boolean startTimeLineManager() {
-		// result own process
-		Boolean result = true;
-
-		// unable to duplicated spawn
-		if (futureTimeLineManager == null) {
-			// Initial setup Timer Task for sampling volume level data
-			instTimerTimeLineManager = new TimeLineManager(this, instScriptData);
-			schedulerTimeLineManager = Executors
-					.newSingleThreadScheduledExecutor();
-			// Start Timer Task
-			futureTimeLineManager = schedulerTimeLineManager
-					.scheduleAtFixedRate(instTimerTimeLineManager, 0,
-							TL_SYNC_MEDIA_TIME, TimeUnit.MILLISECONDS);
-		} else {
-			// already spawn Thread
-			result = false;
-		}
-
-		// return current status
-		return (result);
-	}
-
-	public void shutdownTimeLineManager() {
-		// check current instance
-		if (futureTimeLineManager != null) {
-			// Destroy Timer Task & Scheduler
-			futureTimeLineManager.cancel(true);
-			schedulerTimeLineManager.shutdownNow();
-			// Request Garbage Collection
-			futureTimeLineManager = null;
-			instTimerTimeLineManager = null;
-		}
 	}
 
 	/**
@@ -1957,390 +1901,372 @@ public class TimeLineView extends ViewPart implements IUNIT,
 		startTimeLine = TL_DEF_STIME;
 		currentTimeLine = TL_DEF_STIME;
 		previousTimeLine = -1;
-		instTimerTimeLineManager.initIndexTimeLine(nextStatus);
+
+		initIndexTimeLine(nextStatus);
 	}
 
 	/**
-	 * @category TimeLine Manager
-	 * 
+	 * --------------------- for Time Line Timer Management --------------------
 	 */
-	class TimeLineManager implements Runnable {
-		// Instance of each class
-		private TimeLineView instParentView = null;
-		private ScriptData instScriptData = null;
+	// Index pointer of ScriptList
+	private int indexScriptData = 0;
 
-		// Index pointer of ScriptList
-		private int indexScriptData = 0;
+	// Local parameters
+	private int ownCurrentTimeLine = 0;
+	private int ownPreviousTimeLine = 0;
 
-		// Local parameters
-		private int ownCurrentTimeLine = 0;
-		private int ownPreviousTimeLine = 0;
-
-		/**
-		 * Constructor
-		 */
-		public TimeLineManager(TimeLineView instParentView,
-				ScriptData instScriptData) {
-			// Store instance of parent View
-			this.instParentView = instParentView;
-			// Store instance of ScriptData
-			this.instScriptData = instScriptData;
-
-			// initial parameters
-			initIndexTimeLine(TL_STAT_IDLE);
+	/**
+	 * Setter method : Initialize parameters
+	 */
+	public void initIndexTimeLine(int nextStatus) {
+		// initial index of next script data
+		indexScriptData = 0;
+		ownCurrentTimeLine = currentTimeLine;
+		ownPreviousTimeLine = previousTimeLine;
+		if (instScriptData.getLengthScriptList() <= 0) {
+			// End of Data
+			indexScriptData = TL_EOL;
 		}
+	}
 
-		/**
-		 * Setter method : Initialize parameters
-		 */
-		public void initIndexTimeLine(int nextStatus) {
-			// initial index of next script data
-			indexScriptData = 0;
-			ownCurrentTimeLine = currentTimeLine;
-			ownPreviousTimeLine = previousTimeLine;
-			if (instScriptData.getLengthScriptList() <= 0) {
-				// End of Data
-				indexScriptData = TL_EOL;
-			}
-		}
+	/**
+	 * Local method : Seek index of Script pointer & Refresh inner parameters
+	 */
+	public int seekIndexTimeLine(int targetTime) {
+		// If index is -1, then no exist data(currentTime)
+		int index;
+		int len = instScriptData.getLengthScriptList();
+		int previousTime = 0;
 
-		/**
-		 * Local method : Seek index of Script pointer & Refresh inner
-		 * parameters
-		 */
-		public int seekIndexTimeLine(int targetTime) {
-			// If index is -1, then no exist data(currentTime)
-			int index;
-			int len = instScriptData.getLengthScriptList();
-			int previousTime = 0;
+		// Exist data in ScriptList
+		if (len > 0) {
+			// Search index from ScriiptList
+			for (index = 0; index < len; index++) {
+				// PickUP current ScriptData & Check Time
+				int startTime = instScriptData.getScriptStartTime(index);
 
-			// Exist data in ScriptList
-			if (len > 0) {
-				// Search index from ScriiptList
-				for (index = 0; index < len; index++) {
-					// PickUP current ScriptData & Check Time
-					int startTime = instScriptData.getScriptStartTime(index);
-
-					// Check limit
-					if ((previousTime <= startTime)
-							&& (targetTime <= startTime)) {
-						// current i value is next Script's index
-						break;
-					}
-					// Check Start Time '00:00.000'
-					else if ((startTime <= TL_MARGIN_STARTTIME)
-							&& ((startTime + TL_MARGIN_STARTTIME) >= targetTime)) {
-						// current i value is next Script's index
-						break;
-					}
-
-					// Update previous time
-					previousTime = startTime;
+				// Check limit
+				if ((previousTime <= startTime) && (targetTime <= startTime)) {
+					// current i value is next Script's index
+					break;
 				}
-				// Limit check for index
-				if (index >= instScriptData.getLengthScriptList()) {
-					// Limit Over, then reset no exist data
-					index = TL_EOL;
-				}
-			}
-			// Nothing script data
-			else {
-				index = TL_NODATA;
-			}
-
-			// Reset index of next ScriptData
-			indexScriptData = index;
-			ownPreviousTimeLine = previousTime;
-
-			// return target index of ScriptList
-			return (index);
-		}
-
-		/**
-		 * Local method : Increment index of target ScriptData
-		 */
-		private void incrementIndexTimeLine() {
-			// Increment index of target ScriptData
-			indexScriptData++;
-
-			// Limit check for index
-			if (indexScriptData >= instScriptData.getLengthScriptList()) {
-				// Limit Over, then reset as End of List(-1)
-				indexScriptData = TL_EOL;
-			}
-		}
-
-		/**
-		 * Setter method : Check TimeLine modify
-		 */
-		public boolean checkCurrentTimeLine() {
-			boolean result = false;
-
-			// Synchronized running TimeLine
-			if (currentMovieStatus != V_STAT_NOMEDIA) {
-				// SetUP Current Time
-				if (ownCurrentTimeLine != currentTimeLine) {
-					// Store current video position
-					ownPreviousTimeLine = ownCurrentTimeLine;
-					ownCurrentTimeLine = currentTimeLine;
-					// check previous track control
-					if (ownPreviousTimeLine > ownCurrentTimeLine) {
-						// search index of description
-						seekIndexTimeLine(ownCurrentTimeLine);
-					}
-					// Set result
-					result = true;
-				}
-			}
-			// return result
-			return (result);
-		}
-
-		/**
-		 * Checker method : Check current index of ScriptList
-		 */
-		private boolean watchdocIndexTimeLine() {
-			// Result is true, then immediately access VoicePlayer as current
-			// index
-			boolean result = false;
-
-			// Check Limit of index
-			if (indexScriptData > TL_EOL) {
-				// PickUP StartTime as current index of ScriptList
-				int startTime = instScriptData
-						.getScriptStartTime(indexScriptData);
-				int endTime = instScriptData.getScriptEndTime(indexScriptData);
-
-				// search next index of description, cause past time line
-				if (endTime <= ownCurrentTimeLine) {
-					while (endTime <= ownCurrentTimeLine) {
-						// Past TimeLine, then search next script data('s index)
-						incrementIndexTimeLine();
-						// Check End of List
-						if (indexScriptData == TL_EOL)
-							return (result);
-
-						// PickUP StartTime as current index of ScriptList
-						startTime = instScriptData
-								.getScriptStartTime(indexScriptData);
-						endTime = instScriptData
-								.getScriptEndTime(indexScriptData);
-					}
-				}
-
-				// Check Start Time
-				if ((ownPreviousTimeLine < startTime)
-						&& (startTime <= ownCurrentTimeLine)) {
-					// Now Play voice timing by current index's Script data
-					result = true;
-				}
-				// Check Start Time for 00:00.000
+				// Check Start Time '00:00.000'
 				else if ((startTime <= TL_MARGIN_STARTTIME)
-						&& (endTime >= ownCurrentTimeLine)) {
-					// Delayed Play voice timing by current index's Script data
-					result = true;
+						&& ((startTime + TL_MARGIN_STARTTIME) >= targetTime)) {
+					// current i value is next Script's index
+					break;
+				}
+
+				// Update previous time
+				previousTime = startTime;
+			}
+			// Limit check for index
+			if (index >= instScriptData.getLengthScriptList()) {
+				// Limit Over, then reset no exist data
+				index = TL_EOL;
+			}
+		}
+		// Nothing script data
+		else {
+			index = TL_NODATA;
+		}
+
+		// Reset index of next ScriptData
+		indexScriptData = index;
+		ownPreviousTimeLine = previousTime;
+
+		// return target index of ScriptList
+		return (index);
+	}
+
+	/**
+	 * Local method : Increment index of target ScriptData
+	 */
+	private void incrementIndexTimeLine() {
+		// Increment index of target ScriptData
+		indexScriptData++;
+
+		// Limit check for index
+		if (indexScriptData >= instScriptData.getLengthScriptList()) {
+			// Limit Over, then reset as End of List(-1)
+			indexScriptData = TL_EOL;
+		}
+	}
+
+	/**
+	 * Setter method : Check TimeLine modify
+	 */
+	public boolean checkCurrentTimeLine() {
+		boolean result = false;
+
+		// Synchronized running TimeLine
+		if (currentMovieStatus != V_STAT_NOMEDIA) {
+			// SetUP Current Time
+			if (ownCurrentTimeLine != currentTimeLine) {
+				// Store current video position
+				ownPreviousTimeLine = ownCurrentTimeLine;
+				ownCurrentTimeLine = currentTimeLine;
+				// check previous track control
+				if (ownPreviousTimeLine > ownCurrentTimeLine) {
+					// search index of description
+					seekIndexTimeLine(ownCurrentTimeLine);
+				}
+				// Set result
+				result = true;
+			}
+		}
+		// return result
+		return (result);
+	}
+
+	/**
+	 * Checker method : Check current index of ScriptList
+	 */
+	private boolean watchdocIndexTimeLine() {
+		// Result is true, then immediately access VoicePlayer as current
+		// index
+		boolean result = false;
+
+		// Check Limit of index
+		if (indexScriptData > TL_EOL) {
+			// PickUP StartTime as current index of ScriptList
+			int startTime = instScriptData.getScriptStartTime(indexScriptData);
+			int endTime = instScriptData.getScriptEndTime(indexScriptData);
+
+			// search next index of description, cause past time line
+			if (endTime <= ownCurrentTimeLine) {
+				while (endTime <= ownCurrentTimeLine) {
+					// Past TimeLine, then search next script data('s index)
+					incrementIndexTimeLine();
+					// Check End of List
+					if (indexScriptData == TL_EOL)
+						return (result);
+
+					// PickUP StartTime as current index of ScriptList
+					startTime = instScriptData
+							.getScriptStartTime(indexScriptData);
+					endTime = instScriptData.getScriptEndTime(indexScriptData);
 				}
 			}
 
-			// return result
-			return (result);
+			// Check Start Time
+			if ((ownPreviousTimeLine < startTime)
+					&& (startTime <= ownCurrentTimeLine)) {
+				// Now Play voice timing by current index's Script data
+				result = true;
+			}
+			// Check Start Time for 00:00.000
+			else if ((startTime <= TL_MARGIN_STARTTIME)
+					&& (endTime >= ownCurrentTimeLine)) {
+				// Delayed Play voice timing by current index's Script data
+				result = true;
+			}
 		}
 
-		/**
-		 * Setter method : Synchronize current TimeLine
-		 */
-		private boolean synchronizeCurrentTimeLine() {
+		// return result
+		return (result);
+	}
 
-			// PickUP current movie's
-			getCurrentMovieInfo();
+	/**
+	 * Setter method : Synchronize current TimeLine
+	 */
+	private boolean synchronizeCurrentTimeLine() {
 
-			// Synchronized running TimeLine
-			if (currentMovieStatus != V_STAT_NOMEDIA) {
-				// SetUP Current Time
-				if (currentTimeLine != currentMovieTimeLine) {
-					// Store current video position
-					previousTimeLine = currentTimeLine;
-					currentTimeLine = currentMovieTimeLine;
-					return true;
-				}
-				return false;
+		// PickUP current movie's
+		getCurrentMovieInfo();
+
+		// Synchronized running TimeLine
+		if (currentMovieStatus != V_STAT_NOMEDIA) {
+			// SetUP Current Time
+			if (currentTimeLine != currentMovieTimeLine) {
+				// Store current video position
+				previousTimeLine = currentTimeLine;
+				currentTimeLine = currentMovieTimeLine;
+				return true;
 			}
 			return false;
 		}
+		return false;
+	}
 
-		/**
-		 * @category Run method of Timer Task
-		 */
-		public void run() {
-			try {
-				// Management TimeLine
-				ownDisplay.asyncExec(new Runnable() {
-					public void run() {
-						if (PreviewPanel.getInstance().isCurrentDragStatus() == true) {
-							// It returns in dragging mode ,
-							// because moveMouseDraggedEvent() of PreviewPanel
-							// calls synchronizeAllTimeLine() method.
-							return;
+	private void timerTask() {
+		if (currentDragStatus == true) {
+			// It returns in dragging mode ,
+			// because moveMouseDraggedEvent() of PreviewPanel
+			// calls synchronizeAllTimeLine() method.
+			return;
+		}
+		// Get current own status
+		int nowStat = getStatusTimeLine();
+		
+		if (synchronizeCurrentTimeLine() == false
+				&& nowStat != TL_STAT_EXTENDED && previousMovieStatus == currentMovieStatus) {
+			return;
+		}		// 1)Check current position of media(movie)
+		boolean result = checkCurrentTimeLine();
+		// 2)control preview movie
+		if (result || previousMovieStatus != currentMovieStatus) {
+			// TL_STAT_PLAY : Status is Playing movie
+			if (nowStat == TL_STAT_PLAY) {
+				// Check next timing for play Voice
+				boolean result2 = watchdocIndexTimeLine();
+				if (result2) {
+					// check status of enabled play description
+					// flag
+					if (getEnableDescription()) {
+						// Check current Player status
+						if (isSamplingScriptAudio()) {
+							// Forced Stop VoicePlayer
+							reqStopScriptAudio();
 						}
-						// Get current own status
-						int nowStat = instParentView.getStatusTimeLine();
-						if (synchronizeCurrentTimeLine() == false
-								&& nowStat != TL_STAT_EXTENDED) {
-							// Return run() method when currentTimeLine is no
-							// changed and video status is not extend mode.
-							return;
-						}
 
-						// 1)Check current position of media(movie)
-						boolean result = checkCurrentTimeLine();
-						// 2)control preview movie
-						if (result) {
-							// TL_STAT_PLAY : Status is Playing movie
-							// (automatic)
-							if (nowStat == TL_STAT_PLAY) {
-								// Check next timing for play Voice
-								boolean result2 = watchdocIndexTimeLine();
-								if (result2) {
-									// check status of enabled play description
-									// flag
-									if (instParentView.getEnableDescription()) {
-										// Check current Player status
-										if (instParentView
-												.isSamplingScriptAudio()) {
-											// Forced Stop VoicePlayer
-											instParentView.reqStopScriptAudio();
-										}
+						// Start high-light for target index of
+						// ScriptList
+						ScriptListView.getInstance().getInstScriptList()
+								.updateHighLightScriptLine(indexScriptData);
 
-										// Start high-light for target index of
-										// ScriptList
-										ScriptListView
-												.getInstance()
-												.getInstScriptList()
-												.updateHighLightScriptLine(
-														indexScriptData);
+						// Play Voice, Now!
+						reqPlayAudio(indexScriptData);
+						// Set status flag
+						indexCurrentScriptData = indexScriptData;
+						setCountDurationVoice(0);
+						currentVoiceEngineAction = true;
+					}
 
-										// Play Voice, Now!
-										instParentView
-												.reqPlayAudio(indexScriptData);
-										// Set status flag
-										indexCurrentScriptData = indexScriptData;
-										setCountDurationVoice(0);
-										currentVoiceEngineAction = true;
-									}
-
-									// Update index to next ScriptData
-									incrementIndexTimeLine();
-								}
-								// For end time update
-								else {
-									// check status of enabled play description
-									// flag
-									if (currentVoiceEngineAction
-											&& instParentView
-													.getEnableDescription()) {
-										// Check status of voice engine
-										if (!(instParentView.isRunningAudio())) {
-											// Reset status flag
-											currentVoiceEngineAction = false;
-											// Update end time of current
-											// description
-											updateEndTimeVolumeLevel(indexCurrentScriptData);
-											// Finish high-light for target
-											// index of ScriptList
-											ScriptListView.getInstance()
-													.getInstScriptList()
-													.clearHighLightScriptLine();
-										} else {
-											// increment duration counter
-											incCountDurationVoice();
-										}
-									}
-								}
-
-								// Synchronize TimeLine each views
-								instParentView
-										.synchronizeAllTimeLine(ownCurrentTimeLine);
-
-								// Check current movie status
-								if (currentMovieStatus != V_STAT_PLAY) {
-									// Forced change own status(action)
-									PreviewPanel.getInstance().playPauseMedia();
-								}
-							}
-							// TL_STAT_PAUSE : Status is Pause action
-							else if ((nowStat == TL_STAT_PAUSE)
-									|| (nowStat == TL_STAT_IDLE)) {
-								// Check TimeLine both Movie's position and
-								// pause TimeLine
-								if (currentMovieTimeLine != pauseTimeLine) {
-									// Store current movie position as pause
-									// time
-									pauseTimeLine = currentMovieTimeLine;
-									// Synchronize TimeLine each views
-									instParentView
-											.synchronizeAllTimeLine(pauseTimeLine);
-								}
-								// Reset status flag
-								currentVoiceEngineAction = false;
-
-								// Check current movie status
-								if (currentMovieStatus == V_STAT_PLAY) {
-									// Forced change own status(action)
-									PreviewPanel.getInstance().playPauseMedia();
-								}
-							}
+					// Update index to next ScriptData
+					incrementIndexTimeLine();
+				}
+				// For end time update
+				else {
+					// check status of enabled play description
+					// flag
+					if (currentVoiceEngineAction && getEnableDescription()) {
+						// Check status of voice engine
+						if (!(isRunningAudio())) {
+							// Reset status flag
+							currentVoiceEngineAction = false;
+							// Update end time of current
+							// description
+							updateEndTimeVolumeLevel(indexCurrentScriptData);
+							// Finish high-light for target
+							// index of ScriptList
+							ScriptListView.getInstance().getInstScriptList()
+									.clearHighLightScriptLine();
 						} else {
-							// TL_STAT_EXTENDED : Status is Play extended text,
-							// All TimeLine suspends
-							if (nowStat == TL_STAT_EXTENDED) {
-								// Check status of voice engine
-								if (!(instParentView.isRunningAudio())) {
-									// Restart TimeLine
-									PreviewPanel.getInstance()
-											.controlExtendedPlay(false);
-									instParentView
-											.setStatusTimeLine(TL_STAT_PLAY);
-									// Reset status flag
-									currentVoiceEngineAction = false;
-									// Update end time of current description
-									updateEndTimeVolumeLevel(indexCurrentScriptData);
-									// Finish high-light for target index of
-									// ScriptList
-									ScriptListView.getInstance()
-											.getInstScriptList()
-											.clearHighLightScriptLine();
-								} else {
-									// increment duration counter
-									incCountDurationVoice();
-								}
-							}
-							// TL_STAT_PAUSE : Status is Pause action
-							else if ((nowStat == TL_STAT_PAUSE)
-									|| (nowStat == TL_STAT_IDLE)) {
-								// Check current movie status
-								if (currentMovieStatus == V_STAT_PLAY) {
-									// Forced change own status(action)
-									PreviewPanel.getInstance().playPauseMedia();
-								}
-								// Reset status flag
-								currentVoiceEngineAction = false;
-							}
+							// increment duration counter
+							incCountDurationVoice();
 						}
 					}
-				});
-			} catch (Exception e) {
-				System.out.println("TimerTask::run() : Exception = " + e);
+				}
+
+				// TimelineView refresh 1/3 of timer_task. (150 msec interval)
+				if (videoPlayCount++ >= TimeLineView.WAIT_COUNT_FOR_VIDEO_PLAY ||
+					previousMovieStatus != currentMovieStatus) {
+					// Synchronize TimeLine each views
+					synchronizeAllTimeLine(ownCurrentTimeLine);
+					// Check current movie status
+					if (currentMovieStatus != V_STAT_PLAY) {
+						// Forced change own status(action)
+						eventManager
+								.firePlayerControlEvent(new PlayerControlEvent(this));
+					}
+					videoPlayCount = 0;
+				}
+			}
+			// TL_STAT_PAUSE : Status is Pause action
+			else if ((nowStat == TL_STAT_PAUSE) || (nowStat == TL_STAT_IDLE)) {
+				// Check TimeLine both Movie's position and
+				// pause TimeLine
+				if (currentMovieTimeLine != pauseTimeLine) {
+					// Store current movie position as pause
+					// time
+					pauseTimeLine = currentMovieTimeLine;
+					// Synchronize TimeLine each views
+					synchronizeAllTimeLine(pauseTimeLine);
+				}
+				// Reset status flag
+				currentVoiceEngineAction = false;
+
+				// Check current movie status
+				if (currentMovieStatus == V_STAT_PLAY) {
+					// Forced change own status(action)
+					eventManager.firePlayerControlEvent(new PlayerControlEvent(this));
+				}
+			}
+		} else {
+			// TL_STAT_EXTENDED : Status is Play extended text,
+			// All TimeLine suspends
+			if (nowStat == TL_STAT_EXTENDED) {
+				// Check status of voice engine
+				if (!(isRunningAudio())) {
+					// Restart TimeLine
+					PreviewPanel.getInstance().controlExtendedPlay(false);
+					setStatusTimeLine(TL_STAT_PLAY);
+					// Reset status flag
+					currentVoiceEngineAction = false;
+					// Update end time of current description
+					updateEndTimeVolumeLevel(indexCurrentScriptData);
+					// Finish high-light for target index of
+					// ScriptList
+					ScriptListView.getInstance().getInstScriptList()
+							.clearHighLightScriptLine();
+				} else {
+					// increment duration counter
+					incCountDurationVoice();
+				}
+			}
+			// TL_STAT_PAUSE : Status is Pause action
+			else if ((nowStat == TL_STAT_PAUSE) || (nowStat == TL_STAT_IDLE)) {
+				// Check current movie status
+				if (currentMovieStatus == V_STAT_PLAY) {
+					// Forced change own status(action)
+					eventManager.firePlayerControlEvent(new PlayerControlEvent(this));
+				}
+				// Reset status flag
+				currentVoiceEngineAction = false;
 			}
 		}
+	}
 
-	} // End of Timer class
-
+	/**
+	 * 
+	 */
 	public void handleSyncTimeEvent(SyncTimeEvent e) {
 		// Synchronize TimeLine view
 		if (e.getEventType() == SyncTimeEvent.SYNCHRONIZE_TIME_LINE) {
 			synchronizeTimeLine(e.getCurrentTime());
-		} else if (e.getEventType() == SyncTimeEvent.REFRESH_TIME_LINE) {
+		}
+	}
 
+	/**
+	 * 
+	 */
+	public void handleMouseDragEvent(MouseDragEvent e) {
+		// Synchronize TimeLine view
+		switch (e.getEventType()) {
+		case MouseDragEvent.MOUSE_DRAG_START:
+			currentDragStatus = true;
+			break;
+		case MouseDragEvent.MOUSE_DRAGGING:
+			currentDragStatus = true;
+			break;
+		case MouseDragEvent.MOUSE_DRAG_END:
+			currentDragStatus = false;
+			break;
+		case MouseDragEvent.MOUSE_SET_DRAG_STATUS:
+			currentDragStatus = e.isStatus();
+			break;
+		}
+	}
+
+	/**
+	 * 
+	 */
+	public void handleTimerUtilEvent(TimerEvent e){
+		timerUtilCounter += ScriptEditorTimerUtil.TL_SYNC_TIME_BASE;
+		if(timerUtilCounter >= TL_SYNC_MEDIA_TIME){
+			timerTask();
+			timerUtilCounter = 0;
 		}
 	}
 }

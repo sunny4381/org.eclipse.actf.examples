@@ -87,13 +87,6 @@ public class ScriptListView extends ViewPart {
 	}
 
 	/**
-	 * Cleans up all resources created by this ViewPart.
-	 */
-	public void dispose() {
-		super.dispose();
-	}
-
-	/**
 	 * Initialize Screen
 	 */
 	private void initGUI(Display parentDisp) {

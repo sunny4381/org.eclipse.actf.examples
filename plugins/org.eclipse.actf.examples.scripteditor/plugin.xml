@@ -101,7 +101,7 @@
                class="org.eclipse.actf.examples.scripteditor.actions.MoviePlayAction"
                definitionId="org.eclipse.actf.examples.scripteditor.actions.MoviePlayAction"
                id="org.eclipse.actf.examples.scripteditor.MoviePlayAction"
-               label="%scripteditor.action.play"
+               label="%scripteditor.action.play_pause"
                menubarPath="multimedia/mediaMovieGroup"
                style="push">
          </action>

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 IBM Corporation and Others
+ * Copyright (c) 2009, 2011 IBM Corporation and Others
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -262,7 +262,7 @@ public class ScriptListTable {
 	 *            : switch of high-light (TRUE:on, FALSE:off)
 	 */
 	private void setBackgroundColorScriptLine(int index, boolean swHighLight) {
-		if (instTableItems != null) {
+		if (instTableItems != null && instTableItems.length > index) {
 			// Change background color of target table item
 			instTableItems[index].setBackground((swHighLight ? onHighLight
 					: offHighLight));

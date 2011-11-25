@@ -13,9 +13,9 @@ package org.eclipse.actf.ai.internal.ui.scripteditor;
 import java.io.File;
 
 import org.eclipse.actf.ai.ui.scripteditor.views.IUNIT;
-import org.eclipse.actf.examples.scripteditor.Activator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.MessageBox;
+import org.eclipse.ui.PlatformUI;
 
 public class XMLFileMessageBox implements IUNIT {
 
@@ -77,10 +77,8 @@ public class XMLFileMessageBox implements IUNIT {
 
 			try {
 				// Display confirm message box
-				// msgBox = new
-				// MessageBox(PlatformUI.getWorkbench().getDisplay().getActiveShell(),
-				// style);
-				msgBox = new MessageBox(Activator.getParentShell(), style);
+				msgBox = new MessageBox(PlatformUI.getWorkbench().getDisplay()
+						.getActiveShell(), style);
 				msgBox.setText(strTitle);
 				msgBox.setMessage(strMessage);
 			} catch (Exception ee) {

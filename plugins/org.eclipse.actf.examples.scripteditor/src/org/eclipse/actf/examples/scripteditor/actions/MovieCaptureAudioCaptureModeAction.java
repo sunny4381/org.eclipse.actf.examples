@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 IBM Corporation and Others
+ * Copyright (c) 2009, 2011 IBM Corporation and Others
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,7 @@
 package org.eclipse.actf.examples.scripteditor.actions;
 
 import org.eclipse.actf.ai.internal.ui.scripteditor.VolumeLevelCanvas;
+import org.eclipse.actf.ai.internal.ui.scripteditor.event.EventManager;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.IWorkbenchWindow;
@@ -24,6 +25,11 @@ public class MovieCaptureAudioCaptureModeAction implements
 	 */
 	// instance of each ViewPart class
 	private VolumeLevelCanvas instParentView = null;
+	
+	// for Event Managing
+	private static EventManager eventManager = null;
+
+	private static boolean movieCapture = false;
 
 	/**
 	 * Local method : PickUP instance of parent Canvas class
@@ -33,11 +39,14 @@ public class MovieCaptureAudioCaptureModeAction implements
 			instParentView = VolumeLevelCanvas.getInstance();
 		}
 	}
-
 	/**
-	 * Management PopUP window for preference of capture audio (non-Javadoc)
-	 * 
+	 * Local method : Check Event Manager instance
 	 */
+	private void preCheckEventManager() {
+		if(eventManager == null) {
+			eventManager = EventManager.getInstance(); 			
+		}
+	}
 
 	/**
 	 * @see org.eclipse.ui.IActionDelegate#run(org.eclipse.jface.action.IAction)
@@ -45,19 +54,12 @@ public class MovieCaptureAudioCaptureModeAction implements
 	public void run(IAction action) {
 		// Store instance of parent Canvas class
 		pickupInstViewPart();
-
+		// Check event Manager instance
+		preCheckEventManager();
 		// Check current action(toggle)
-		if (action.isChecked()) {
-			// Start Timer
-			instParentView.startTimerCaptureAudio();
-			// Set status : Capture Audio mode
-			instParentView.setCurrentCaptureMode(true);
-		} else {
-			// Set status : Normal play mode
-			instParentView.setCurrentCaptureMode(false);
-			// Dispose Timer
-			instParentView.shutdownTimerCaptureAudio();
-		}
+		movieCapture = action.isChecked();
+		// Set status : Capture Audio mode
+		instParentView.setCurrentCaptureMode(movieCapture);
 	}
 
 	public void init(IWorkbenchWindow window) {

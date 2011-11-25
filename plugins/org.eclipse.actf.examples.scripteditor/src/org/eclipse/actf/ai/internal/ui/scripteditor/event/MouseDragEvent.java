@@ -8,37 +8,25 @@
  * Contributors:
  *    IBM Corporation - initial API and implementation
  *******************************************************************************/
-package org.eclipse.actf.ai.internal.ui.scripteditor;
+package org.eclipse.actf.ai.internal.ui.scripteditor.event;
 
 import java.util.EventObject;
 
-/**
- *
- */
-public class SyncTimeEvent extends EventObject {
+public class MouseDragEvent extends EventObject {
 
-	private static final long serialVersionUID = 6939507005105789334L;
-
-	public static final int SYNCHRONIZE_TIME_LINE = 0;
-	public static final int REFRESH_TIME_LINE = 1;
-	private int currentTime;
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -264642209345581317L;
+	
+	public static final int MOUSE_DRAG_START = 0;
+	public static final int MOUSE_DRAGGING = 1;
+	public static final int MOUSE_DRAG_END = 2;
+	public static final int MOUSE_SET_DRAG_STATUS = 3;
+	private boolean status;
 	private int eventType;
 
-	/**
-	 * @category Constructor
-	 * 
-	 *           for the SYNCHRONIZE_TIME_LINE event.
-	 * 
-	 * @param currentTime
-	 *            current movie time
-	 * @param source
-	 *            event source
-	 */
-	public SyncTimeEvent(int currentTime, Object source) {
-		super(source);
-		this.eventType = SYNCHRONIZE_TIME_LINE;
-		this.currentTime = currentTime;
-	}
 
 	/**
 	 * @category Constructor
@@ -50,22 +38,43 @@ public class SyncTimeEvent extends EventObject {
 	 * @param source
 	 *            event source
 	 */
-	public SyncTimeEvent(int type, int currentTime, Object source) {
+	public MouseDragEvent(int type, Object source) {
 		super(source);
 		this.eventType = type;
-		this.currentTime = currentTime;
+		if(type == MOUSE_DRAG_START) {
+			status = true;
+		} else if (type == MOUSE_DRAG_END){
+			status = false;
+		}
+	}
+	/**
+	 * @category Constructor
+	 * 
+	 * @param type
+	 *            event type
+	 * @param currentTime
+	 *            current movie time
+	 * @param source
+	 *            event source
+	 */
+	public MouseDragEvent(int type, boolean status, Object source) {
+		super(source);
+		this.eventType = type;
+		this.status = status;
 	}
 
 	/**
 	 * @category getter
 	 * 
-	 * @return current movie time
+	 * @return current status
 	 */
-	public int getCurrentTime() {
-		return currentTime;
+	public boolean isStatus() {
+		return status;
 	}
 
+
 	/**
+	 * @category getter
 	 * @return type of event
 	 */
 	public int getEventType() {

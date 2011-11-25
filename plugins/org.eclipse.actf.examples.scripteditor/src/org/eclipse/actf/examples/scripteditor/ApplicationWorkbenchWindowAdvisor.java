@@ -64,10 +64,10 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 		PreviewPanel.getInstance().setURLMovie(strUrl);
 
 		// Store parent shell instance
-		Activator.setParentShell();
+		//Activator.setParentShell();
 
 		// SetUP FileMenu listener
-		ApplicationActionBarAdvisor.getInstance().setFileMenuListener();
+		ApplicationActionBarAdvisor.getInstance().setFileMenuListener();		
 	}
 
 }
