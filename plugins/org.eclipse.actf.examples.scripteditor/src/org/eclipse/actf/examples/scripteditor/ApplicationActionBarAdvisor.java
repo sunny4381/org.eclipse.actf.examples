@@ -85,8 +85,8 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 		 **/
 
 		// File Menu
-		fileMenu = new MenuManager(Activator
-				.getResourceString("scripteditor.menu.file"),
+		fileMenu = new MenuManager(
+				Activator.getResourceString("scripteditor.menu.file"),
 				IWorkbenchActionConstants.M_FILE);
 		// Add menu item
 		fileMenu.add(new Separator("fileOpenGroup"));
@@ -103,8 +103,8 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 		menuBar.add(fileMenu);
 
 		// Multimedia Menu
-		MenuManager multimediaMenu = new MenuManager(Activator
-				.getResourceString("scripteditor.menu.multimedia"),
+		MenuManager multimediaMenu = new MenuManager(
+				Activator.getResourceString("scripteditor.menu.multimedia"),
 				"multimedia");
 		// Add menu item
 		multimediaMenu.add(new Separator("mediaMovieGroup"));
@@ -115,8 +115,9 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 		multimediaMenu.add(new Separator());
 		menuBar.add(multimediaMenu);
 		// Add sub menu item
-		MenuManager captureModeSubMenu = new MenuManager(Activator
-				.getResourceString("scripteditor.menu.multimedia.capturemode"),
+		MenuManager captureModeSubMenu = new MenuManager(
+				Activator
+						.getResourceString("scripteditor.menu.multimedia.capturemode"),
 				"capturemode");
 		captureModeSubMenu.add(new Separator("captureAudioModeGroup"));
 		captureModeSubMenu.add(new Separator());
@@ -128,8 +129,8 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 		menuBar.add(favoritesMenu);
 
 		// Window Menu
-		MenuManager windowMenu = new MenuManager(Activator
-				.getResourceString("scripteditor.menu.window"),
+		MenuManager windowMenu = new MenuManager(
+				Activator.getResourceString("scripteditor.menu.window"),
 				IWorkbenchActionConstants.M_WINDOW);
 		windowMenu.add(new Separator(IWorkbenchActionConstants.NAV_START));
 		windowMenu.add(new Separator(IWorkbenchActionConstants.NAV_END));
@@ -138,8 +139,8 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 		menuBar.add(windowMenu);
 
 		// Help Menu
-		MenuManager helpMenu = new MenuManager(Activator
-				.getResourceString("scripteditor.menu.help"),
+		MenuManager helpMenu = new MenuManager(
+				Activator.getResourceString("scripteditor.menu.help"),
 				IWorkbenchActionConstants.M_HELP);
 		helpMenu.add(new Separator(IWorkbenchActionConstants.HELP_START));
 		helpMenu.add(_helpAction);

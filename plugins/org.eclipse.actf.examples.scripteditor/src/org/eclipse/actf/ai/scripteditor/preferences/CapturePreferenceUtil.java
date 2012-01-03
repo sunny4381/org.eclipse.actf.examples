@@ -47,8 +47,8 @@ public class CapturePreferenceUtil implements IUNIT {
 	 */
 	public static int getPreferenceVolLvlGain() {
 		// PickUP current stored string of sampling rate
-		int gain = Activator.getDefault().getPreferenceStore().getInt(
-				CapturePreferenceConstants.GAIN_VOLLVL_NAME);
+		int gain = Activator.getDefault().getPreferenceStore()
+				.getInt(CapturePreferenceConstants.GAIN_VOLLVL_NAME);
 
 		// TODO : Exchange null code
 		if (gain == 0) {

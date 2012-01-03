@@ -20,8 +20,10 @@ public class CSVRulePreferenceInitializer extends AbstractPreferenceInitializer 
 		IPreferenceStore store = Activator.getDefault().getPreferenceStore();
 
 		// Initialize values
-		store.setDefault(CSVRulePreferenceConstants.CSVRULE_SAVE_GROUP_NAME, CSVRulePreferenceConstants.CSVRULE_SAVE_INSERT);
-		store.setDefault(CSVRulePreferenceConstants.CSVRULE_WAV_GROUP_NAME, CSVRulePreferenceConstants.CSVRULE_WAV_DROP);
+		store.setDefault(CSVRulePreferenceConstants.CSVRULE_SAVE_GROUP_NAME,
+				CSVRulePreferenceConstants.CSVRULE_SAVE_INSERT);
+		store.setDefault(CSVRulePreferenceConstants.CSVRULE_WAV_GROUP_NAME,
+				CSVRulePreferenceConstants.CSVRULE_WAV_DROP);
 	}
 
 }

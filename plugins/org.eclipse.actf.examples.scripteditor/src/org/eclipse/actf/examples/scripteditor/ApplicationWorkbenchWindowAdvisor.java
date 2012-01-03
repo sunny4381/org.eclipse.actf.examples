@@ -39,7 +39,7 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 		configurer.setInitialSize(new Point(1000, 768));
 		configurer.setShowCoolBar(false);
 		configurer.setShowStatusLine(false);
-		configurer.setTitle("ACTF ScriptEditor");		
+		configurer.setTitle("ACTF ScriptEditor");
 	}
 
 	@Override
@@ -50,24 +50,24 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 		// Launch Web Browser
 		String strUrl = "about:blank";
 		URL helpUrl = PlatformUI
-		.getWorkbench()
-		.getHelpSystem()
-		.resolve(
-				"/org.eclipse.actf.examples.scripteditor.doc/docs/index.html", //$NON-NLS-1$
-				true);
+				.getWorkbench()
+				.getHelpSystem()
+				.resolve(
+						"/org.eclipse.actf.examples.scripteditor.doc/docs/index.html", //$NON-NLS-1$
+						true);
 
-		if(helpUrl!=null){
+		if (helpUrl != null) {
 			strUrl = helpUrl.toString();
 		}
-		
+
 		WebBrowserFactory.getInstance(strUrl);
 		PreviewPanel.getInstance().setURLMovie(strUrl);
 
 		// Store parent shell instance
-		//Activator.setParentShell();
+		// Activator.setParentShell();
 
 		// SetUP FileMenu listener
-		ApplicationActionBarAdvisor.getInstance().setFileMenuListener();		
+		ApplicationActionBarAdvisor.getInstance().setFileMenuListener();
 	}
 
 }

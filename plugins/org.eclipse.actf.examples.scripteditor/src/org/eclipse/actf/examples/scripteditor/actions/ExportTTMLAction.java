@@ -84,72 +84,51 @@ public class ExportTTMLAction implements IWorkbenchWindowActionDelegate, IUNIT {
 
 			// Write Header & Comments
 			writer.println("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
-			writer
-					.println("<?xml-stylesheet href=\"ttml.css\" type=\"text/css\"?>");
+			writer.println("<?xml-stylesheet href=\"ttml.css\" type=\"text/css\"?>");
 			writer.println("<?access-control allow=\"*\"?>");
-			writer
-					.println("<tt ttp:profile='http://www.w3.org/ns/ttml/profile/dfxp-full'"
-							+ LINE_SEP
-							+ "    xmlns='http://www.w3.org/ns/ttml'"
-							+ LINE_SEP
-							+ "    xmlns:ttm='http://www.w3.org/ns/ttml#metadata'"
-							+ LINE_SEP
-							+ "    xmlns:tts='http://www.w3.org/ns/ttml#styling'"
-							+ LINE_SEP
-							+ "    xmlns:ttp='http://www.w3.org/ns/ttml#parameter'"
-							+ LINE_SEP
-							+ "    xmlns:actftvd='http://www.eclipse.org/actf/ai/tvd'>");
+			writer.println("<tt ttp:profile='http://www.w3.org/ns/ttml/profile/dfxp-full'"
+					+ LINE_SEP
+					+ "    xmlns='http://www.w3.org/ns/ttml'"
+					+ LINE_SEP
+					+ "    xmlns:ttm='http://www.w3.org/ns/ttml#metadata'"
+					+ LINE_SEP
+					+ "    xmlns:tts='http://www.w3.org/ns/ttml#styling'"
+					+ LINE_SEP
+					+ "    xmlns:ttp='http://www.w3.org/ns/ttml#parameter'"
+					+ LINE_SEP
+					+ "    xmlns:actftvd='http://www.eclipse.org/actf/ai/tvd'>");
 			writer.println(" <head>");
 			writer.println("  <ttm:title>" + instPreviewPanel.getURLMovie()
 					+ "</ttm:title>");// TODO
 
-			writer
-					.println(
-							/*
-							"  <styling>"
-							+ LINE_SEP
-							+ "    <style xml:id='ad1' tts:color='yellow' tts:fontFamily='proportionalSansSerif' tts:fontSize='16px' tts:textAlign='left'/>"
-							+ LINE_SEP
-							+ "  </styling>"
-							+ LINE_SEP
-							+ "  <layout>"
-							+ LINE_SEP
-							+ "   <region xml:id='descriptionArea'"
-							+ LINE_SEP
-							+ "           style='ad1'"
-							+ LINE_SEP
-							+ "           tts:origin='0% -15%'"
-							+ LINE_SEP
-							+ "           tts:extent='100% 20%'"
-							+ LINE_SEP
-							+ "           tts:padding='0px 0px'"
-							+ LINE_SEP
-							+ "           tts:backgroundColor='black'"
-							+ LINE_SEP
-							+ "           tts:opacity='0.75'"
-							+ LINE_SEP
-							+ "           tts:displayAlign='before'"
-							+ LINE_SEP
-							+ "           tts:showBackground='whenActive' />"
-							+ LINE_SEP
-							+ "  </layout>"
-							+ LINE_SEP	
-							+ */
-							" </head>"
-							+ LINE_SEP
-							+ " <body>"
-							+ LINE_SEP
-							+ "  <div role=\"narration\" region=\"descriptionArea\">");
+			writer.println(
+			/*
+			 * "  <styling>" + LINE_SEP +
+			 * "    <style xml:id='ad1' tts:color='yellow' tts:fontFamily='proportionalSansSerif' tts:fontSize='16px' tts:textAlign='left'/>"
+			 * + LINE_SEP + "  </styling>" + LINE_SEP + "  <layout>" + LINE_SEP
+			 * + "   <region xml:id='descriptionArea'" + LINE_SEP +
+			 * "           style='ad1'" + LINE_SEP +
+			 * "           tts:origin='0% -15%'" + LINE_SEP +
+			 * "           tts:extent='100% 20%'" + LINE_SEP +
+			 * "           tts:padding='0px 0px'" + LINE_SEP +
+			 * "           tts:backgroundColor='black'" + LINE_SEP +
+			 * "           tts:opacity='0.75'" + LINE_SEP +
+			 * "           tts:displayAlign='before'" + LINE_SEP +
+			 * "           tts:showBackground='whenActive' />" + LINE_SEP +
+			 * "  </layout>" + LINE_SEP +
+			 */
+			" </head>" + LINE_SEP + " <body>" + LINE_SEP
+					+ "  <div role=\"narration\" region=\"descriptionArea\">");
 
 			// Write all ScriptData
 			for (int i = 0; i < instScriptData.getLengthScriptList(); i++) {
 				int startTime = instScriptData.getScriptStartTime(i);
-				int frame = (startTime % 1000)/(1000/30);
-				String frameS = (frame>9) ? Integer.toString(frame) : "0"+frame;
-				
+				int frame = (startTime % 1000) / (1000 / 30);
+				String frameS = (frame > 9) ? Integer.toString(frame) : "0"
+						+ frame;
+
 				String strStartTime = instScriptData
-						.makeFormatHHMMSS(startTime / 1000)
-						+ ":" + frameS;
+						.makeFormatHHMMSS(startTime / 1000) + ":" + frameS;
 				int endTime = instScriptData.getScriptEndTime(i) + 250; // TBD
 				if (i < instScriptData.getLengthScriptList() - 1) {
 					if (endTime > instScriptData.getScriptStartTime(i + 1)) {
@@ -158,29 +137,26 @@ public class ExportTTMLAction implements IWorkbenchWindowActionDelegate, IUNIT {
 				}
 
 				int duration = endTime - startTime;
-				frame = (endTime % 1000)/(1000/30);
-				frameS = (frame>9) ? Integer.toString(frame) : "0"+frame;
+				frame = (endTime % 1000) / (1000 / 30);
+				frameS = (frame > 9) ? Integer.toString(frame) : "0" + frame;
 
 				String StrEndTime = instScriptData
-						.makeFormatHHMMSS(endTime / 1000)
-						+ ":" + frameS;
+						.makeFormatHHMMSS(endTime / 1000) + ":" + frameS;
 
-				frame = (duration % 1000)/(1000/30);
-				frameS = (frame>9) ? Integer.toString(frame) : "0"+frame;
+				frame = (duration % 1000) / (1000 / 30);
+				frameS = (frame > 9) ? Integer.toString(frame) : "0" + frame;
 
 				String strDuration = instScriptData
-				.makeFormatHHMMSS(duration / 1000)
-				+ ":"
-				+ frameS;
-				
+						.makeFormatHHMMSS(duration / 1000) + ":" + frameS;
+
 				String strDesc = instScriptData.getScriptData(i);
 
 				// TODO diff duration with next item
 				/*
-				 * writer.println("    <p xml:id=\"description"+i+"\" ttm:role=\"narration\" begin=\""
-				 * +
-				 * strStartTime+"\" dur=\""+strDuration+"s\">"+canonicalize(strDesc
-				 * )+"</p>");
+				 * writer.println("    <p xml:id=\"description"+i+
+				 * "\" ttm:role=\"narration\" begin=\"" +
+				 * strStartTime+"\" dur=\""
+				 * +strDuration+"s\">"+canonicalize(strDesc )+"</p>");
 				 */
 				writer.print("    <p xml:id=\"description" + i
 						+ "\" ttm:role=\"narration\" begin=\"" + strStartTime);
@@ -243,7 +219,7 @@ public class ExportTTMLAction implements IWorkbenchWindowActionDelegate, IUNIT {
 
 	private String canonicalize(String targetS) {
 		return (targetS.replaceAll("\\p{Cntrl}", "").replaceAll("&", "&amp;")
-				.replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll(
-						"\"", "&quot;").replaceAll("\'", "&apos;"));
+				.replaceAll("<", "&lt;").replaceAll(">", "&gt;")
+				.replaceAll("\"", "&quot;").replaceAll("\'", "&apos;"));
 	}
 }

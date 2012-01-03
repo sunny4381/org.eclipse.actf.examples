@@ -15,7 +15,6 @@ import java.util.List;
 
 import org.eclipse.actf.ai.internal.ui.scripteditor.ScriptEditorTimerUtil;
 
-
 /**
  *
  */
@@ -24,6 +23,7 @@ public class EventManager {
 
 	/**
 	 * Get instance of EventManager
+	 * 
 	 * @return instance
 	 */
 	public static EventManager getInstance() {
@@ -32,8 +32,8 @@ public class EventManager {
 		}
 		return ownInst;
 	}
-	
-	private EventManager(){
+
+	private EventManager() {
 		ScriptEditorTimerUtil.getInstance();
 	}
 
@@ -44,6 +44,7 @@ public class EventManager {
 
 	/**
 	 * Add Synchronize Timer Event Listener
+	 * 
 	 * @param listener
 	 */
 	public synchronized void addSyncTimeEventListener(
@@ -53,6 +54,7 @@ public class EventManager {
 
 	/**
 	 * Remove Synchronize Timer Event Listener
+	 * 
 	 * @param listener
 	 */
 	public synchronized void removeSyncTimeEventListener(
@@ -62,6 +64,7 @@ public class EventManager {
 
 	/**
 	 * fire Synchronize Timer Event
+	 * 
 	 * @param event
 	 */
 	public synchronized void fireSyncTimeEvent(SyncTimeEvent event) {
@@ -77,8 +80,10 @@ public class EventManager {
 	 * Mouse Drag Event Listeners
 	 */
 	private static List<MouseDragEventListener> DragListeners = new ArrayList<MouseDragEventListener>();
+
 	/**
 	 * Add Mouse Drag Event Listener
+	 * 
 	 * @param listener
 	 */
 	public synchronized void addMouseDragEventListener(
@@ -88,6 +93,7 @@ public class EventManager {
 
 	/**
 	 * Remove Mouse Drag Event Listener
+	 * 
 	 * @param listener
 	 */
 	public synchronized void removeMouseDragEventListener(
@@ -97,6 +103,7 @@ public class EventManager {
 
 	/**
 	 * fire Mouse Drag Event
+	 * 
 	 * @param event
 	 */
 	public synchronized void fireMouseDragEvent(MouseDragEvent event) {
@@ -104,14 +111,16 @@ public class EventManager {
 			listener.handleMouseDragEvent(event);
 		}
 	}
-	
+
 	// ----------------- Play Pause Event -----------------------
 	/**
 	 * Player Control Event Listeners
 	 */
 	private static List<PlayerControlEventListener> PlayerControlEventListeners = new ArrayList<PlayerControlEventListener>();
+
 	/**
 	 * Add Player Control Event Listener
+	 * 
 	 * @param listener
 	 */
 	public synchronized void addPlayerControlEvenListener(
@@ -121,6 +130,7 @@ public class EventManager {
 
 	/**
 	 * Remove Player Control Event Listener
+	 * 
 	 * @param listener
 	 */
 	public synchronized void removePlayerControlEventListener(
@@ -130,6 +140,7 @@ public class EventManager {
 
 	/**
 	 * fire Player Control Event
+	 * 
 	 * @param event
 	 */
 	public synchronized void firePlayerControlEvent(PlayerControlEvent event) {
@@ -137,38 +148,41 @@ public class EventManager {
 			listener.handlePlayPauseEvent(event);
 		}
 	}
-	
-// ----------------- Timer Event -----------------------
-		/**
-		 * Time Line Event Listeners
-		 */
-		private static List<TimerEventListener> TimerEventListeners = new ArrayList<TimerEventListener>();
-		/**
-		 * Add Time Line Event Listener
-		 * @param listener
-		 */
-		public synchronized void addTimerEventListener(
-				TimerEventListener listener) {
-			TimerEventListeners.add(listener);
-		}
 
-		/**
-		 * Remove Time Line Event Listener
-		 * @param listener
-		 */
-		public synchronized void removeTimerEventListener(
-				TimerEventListener listener) {
-			TimerEventListeners.remove(listener);
-		}
+	// ----------------- Timer Event -----------------------
+	/**
+	 * Time Line Event Listeners
+	 */
+	private static List<TimerEventListener> TimerEventListeners = new ArrayList<TimerEventListener>();
 
-		/**
-		 * fire Timer Event
-		 * @param event
-		 */
-		public synchronized void fireTimerEvent(TimerEvent event) {
-			for (TimerEventListener listener : TimerEventListeners) {
-				listener.handleTimerUtilEvent(event);
-			}
+	/**
+	 * Add Time Line Event Listener
+	 * 
+	 * @param listener
+	 */
+	public synchronized void addTimerEventListener(TimerEventListener listener) {
+		TimerEventListeners.add(listener);
+	}
+
+	/**
+	 * Remove Time Line Event Listener
+	 * 
+	 * @param listener
+	 */
+	public synchronized void removeTimerEventListener(
+			TimerEventListener listener) {
+		TimerEventListeners.remove(listener);
+	}
+
+	/**
+	 * fire Timer Event
+	 * 
+	 * @param event
+	 */
+	public synchronized void fireTimerEvent(TimerEvent event) {
+		for (TimerEventListener listener : TimerEventListeners) {
+			listener.handleTimerUtilEvent(event);
 		}
+	}
 
 }

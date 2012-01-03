@@ -17,13 +17,13 @@ public class CSVRulePreferenceConstants {
 	 */
 	public static final String CSVRULE_SAVE_GROUP_NAME = "CsvRuleSaveGroup";
 	public static final String CSVRULE_SAVE_RENEWAL = "SAVE_RENEW";
-	public static final String CSVRULE_SAVE_INSERT  = "SAVE_INSERT";
+	public static final String CSVRULE_SAVE_INSERT = "SAVE_INSERT";
 
 	/**
 	 * CSV rule for stored WAV file path
 	 */
 	public static final String CSVRULE_WAV_GROUP_NAME = "CsvRuleWavGroup";
-	public static final String CSVRULE_WAV_DROP    = "WAV_DROP";
+	public static final String CSVRULE_WAV_DROP = "WAV_DROP";
 	public static final String CSVRULE_WAV_CONFIRM = "WAV_CONF";
 	public static final String CSVRULE_WAV_THROUGH = "WAV_THRO";
 

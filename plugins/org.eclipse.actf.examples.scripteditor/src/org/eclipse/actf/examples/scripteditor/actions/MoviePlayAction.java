@@ -26,7 +26,8 @@ public class MoviePlayAction implements IWorkbenchWindowActionDelegate {
 	}
 
 	public void run(IAction action) {
-		EventManager.getInstance().firePlayerControlEvent(new PlayerControlEvent(this));
+		EventManager.getInstance().firePlayerControlEvent(
+				new PlayerControlEvent(this));
 	}
 
 	public void selectionChanged(IAction action, ISelection selection) {

@@ -12,10 +12,9 @@ package org.eclipse.actf.ai.internal.ui.scripteditor.event;
 
 import java.util.EventListener;
 
-
 /**
  * 
  */
-public interface  SyncTimeEventListener extends EventListener{
+public interface SyncTimeEventListener extends EventListener {
 	public abstract void handleSyncTimeEvent(SyncTimeEvent e);
 }

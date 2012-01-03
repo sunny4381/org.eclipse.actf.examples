@@ -42,8 +42,8 @@ public class CSVRulePreferencePage extends FieldEditorPreferencePage implements
 		setPreferenceStore(Activator.getDefault().getPreferenceStore());
 		// SetUP own ChangeListener
 		chgListener = new CSVRulePropertyChangeListener();
-		Activator.getDefault().getPreferenceStore().addPropertyChangeListener(
-				chgListener);
+		Activator.getDefault().getPreferenceStore()
+				.addPropertyChangeListener(chgListener);
 	}
 
 	/**

@@ -131,7 +131,7 @@ public class CSVReader implements IUNIT {
 	private StringBuilder rawCsvCatString = null;
 	private int maxAnalyzeData = 0;
 	private int currentAnalyzeData = 0;
-//	private boolean nowExceptionNoWavFile = false;
+	// private boolean nowExceptionNoWavFile = false;
 
 	// Thread of file reader
 	private ThreadCSVReader thCsvRd = null;
@@ -454,8 +454,8 @@ public class CSVReader implements IUNIT {
 					final String targetWavFile = nowStr;
 
 					// Display confirm message box
-					PlatformUI.getWorkbench().getDisplay().asyncExec(
-							new Runnable() {
+					PlatformUI.getWorkbench().getDisplay()
+							.asyncExec(new Runnable() {
 								public void run() {
 									// MakeUP WAV information
 									String wavInfo = LN_SEPARATOR
@@ -959,7 +959,9 @@ public class CSVReader implements IUNIT {
 			int volume = list_ext_volume.get(i);
 
 			// Update ScriptList
-			EditPanelView.getInstance().getInstanceTabEditPanel()
+			EditPanelView
+					.getInstance()
+					.getInstanceTabEditPanel()
 					.appendScriptData(startTime, description, extended, gender,
 							lang, speed, pitch, volume);
 
@@ -974,7 +976,9 @@ public class CSVReader implements IUNIT {
 				float wavSpeed = list_ext_wav_speed.get(indexWav);
 
 				// Update WAV file list
-				EditPanelView.getInstance().getInstanceTabEditPanel()
+				EditPanelView
+						.getInstance()
+						.getInstanceTabEditPanel()
 						.appendDataWavList(startTime, wavDuration, wavUri,
 								wavEnable, wavSpeed);
 			}
@@ -1051,8 +1055,8 @@ public class CSVReader implements IUNIT {
 						// check end of saving
 						if (ret) {
 							// Post process for Repaint all screen
-							PlatformUI.getWorkbench().getDisplay().asyncExec(
-									new Runnable() {
+							PlatformUI.getWorkbench().getDisplay()
+									.asyncExec(new Runnable() {
 										public void run() {
 											// Repaint all screen by new Script
 											// list

@@ -84,6 +84,7 @@ public class ScriptListTable {
 	/**
 	 * @category
 	 
+	 
 	 */
 	private void initTable() {
 
@@ -150,10 +151,6 @@ public class ScriptListTable {
 		offHighLight = Display.getCurrent().getSystemColor(SWT.COLOR_WHITE);
 	}
 
-	/**
-	 * @category
-	 
-	 */
 	public void reloadScriptList() {
 
 		// temporary items
@@ -179,8 +176,8 @@ public class ScriptListTable {
 				columnScriptData = new ScriptData();
 
 				// PickUP Script Data from current ScriptData object.
-				String nowScriptData = new String(instScriptData
-						.getScriptData(i));
+				String nowScriptData = new String(
+						instScriptData.getScriptData(i));
 				int intScriptStartTime = instScriptData.getScriptStartTime(i);
 				int intScriptEndTime = instScriptData.getScriptEndTime(i);
 

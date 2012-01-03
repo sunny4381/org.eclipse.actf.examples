@@ -48,8 +48,8 @@ public class CapturePreferencePage extends FieldEditorPreferencePage implements
 		setPreferenceStore(Activator.getDefault().getPreferenceStore());
 		// SetUP own ChangeListener
 		chgListener = new CaptureAudioPropertyChangeListener();
-		Activator.getDefault().getPreferenceStore().addPropertyChangeListener(
-				chgListener);
+		Activator.getDefault().getPreferenceStore()
+				.addPropertyChangeListener(chgListener);
 	}
 
 	/**

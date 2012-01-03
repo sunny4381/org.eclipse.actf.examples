@@ -20,8 +20,10 @@ public class CapturePreferenceInitializer extends AbstractPreferenceInitializer 
 		IPreferenceStore store = Activator.getDefault().getPreferenceStore();
 
 		// Initialize values
-		store.setDefault(CapturePreferenceConstants.SAMPRATE_GROUP_NAME, CapturePreferenceConstants.SAMPRATE_NOM);
-		store.setDefault(CapturePreferenceConstants.GAIN_VOLLVL_NAME, CapturePreferenceConstants.GAIN_DEF);
+		store.setDefault(CapturePreferenceConstants.SAMPRATE_GROUP_NAME,
+				CapturePreferenceConstants.SAMPRATE_NOM);
+		store.setDefault(CapturePreferenceConstants.GAIN_VOLLVL_NAME,
+				CapturePreferenceConstants.GAIN_DEF);
 	}
 
 }

@@ -30,6 +30,7 @@ public class Activator extends AbstractUIPlugin {
 	// The shared instance
 	private static Activator plugin;
 	private ResourceBundle _resourceBundle;
+
 	// private static Shell parentShell = null;
 
 	/**

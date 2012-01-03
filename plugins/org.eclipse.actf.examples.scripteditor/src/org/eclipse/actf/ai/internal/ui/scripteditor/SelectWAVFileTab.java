@@ -443,8 +443,7 @@ public class SelectWAVFileTab implements IUNIT {
 				// Reset scale position
 				scaleWavSpeed.setSelection(100);
 				scaleWavSpeed.setToolTipText(String.valueOf(scaleWavSpeed
-						.getSelection())
-						+ "/200");
+						.getSelection()) + "/200");
 				// end of edit description
 				currentSelWavFile = true;
 			}
@@ -602,16 +601,16 @@ public class SelectWAVFileTab implements IUNIT {
 						.getEnableWavList(descriptionIndex));
 				descriptionCompetitiveRatio = instScriptData
 						.getPlaySpeedWavList(descriptionIndex);
-				descriptionEndTime = calDurationTimeWav(instSoundMixer
-						.getDurationTimeWav(), descriptionCompetitiveRatio);
+				descriptionEndTime = calDurationTimeWav(
+						instSoundMixer.getDurationTimeWav(),
+						descriptionCompetitiveRatio);
 				textEndTime.setText(instScriptData
 						.makeFormatMMSSMS(descriptionStartTime
 								+ descriptionEndTime));
 				scaleWavSpeed
 						.setSelection(calSpeedScale(descriptionCompetitiveRatio));
 				scaleWavSpeed.setToolTipText(String.valueOf(scaleWavSpeed
-						.getSelection())
-						+ "/200");
+						.getSelection()) + "/200");
 				// Enable setting
 				chkboxPlayWav.setEnabled(true);
 				scaleWavSpeed.setEnabled(true);
@@ -875,8 +874,8 @@ public class SelectWAVFileTab implements IUNIT {
 
 						// additional display of exist data information
 						descriptionCompetitiveRatio = calCompetitiveRatioWav();
-						descriptionEndTime = calDurationTimeWav(instSoundMixer
-								.getDurationTimeWav(),
+						descriptionEndTime = calDurationTimeWav(
+								instSoundMixer.getDurationTimeWav(),
 								descriptionCompetitiveRatio);
 						textEndTime.setText(instScriptData
 								.makeFormatMMSSMS(descriptionStartTime
@@ -970,8 +969,9 @@ public class SelectWAVFileTab implements IUNIT {
 			descriptionCompetitiveRatio = calCompetitiveRatioWav();
 
 			// Update duration(end) time
-			descriptionEndTime = calDurationTimeWav(instSoundMixer
-					.getDurationTimeWav(), descriptionCompetitiveRatio);
+			descriptionEndTime = calDurationTimeWav(
+					instSoundMixer.getDurationTimeWav(),
+					descriptionCompetitiveRatio);
 			textEndTime
 					.setText(instScriptData
 							.makeFormatMMSSMS(descriptionStartTime

@@ -22,7 +22,7 @@ public class ScriptEditorShutdownListener implements IWorkbenchListener {
 		boolean result = TimeLineView.getInstance().reqConfirmSaveData();
 
 		// return result
-		return(result);
+		return (result);
 	}
 
 	public void postShutdown(IWorkbench workbench) {

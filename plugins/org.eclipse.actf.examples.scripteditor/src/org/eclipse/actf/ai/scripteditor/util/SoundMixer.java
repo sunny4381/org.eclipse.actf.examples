@@ -49,7 +49,8 @@ public class SoundMixer implements IUNIT {
 	private byte voiceCaptureBuffer[];
 	private byte voiceStoreBuffer[];
 	private byte voiceClearData[];
-	private float voiceSampleRate = SM_CAP_RATE_NOM;	// Default sampling rate : 22050Hz
+	private float voiceSampleRate = SM_CAP_RATE_NOM; // Default sampling rate :
+														// 22050Hz
 
 	// Save file(.wav) mode
 	private AudioInputStream voiceInputStream = null;
@@ -75,13 +76,13 @@ public class SoundMixer implements IUNIT {
 	private AudioInputStream audioInputStreamWavPlayer;
 	private SourceDataLine lineWavPlayer;
 
-
 	/**
 	 * Constructor
 	 */
 	private SoundMixer() {
 		// Initialize value by Preference setting
-		setSampleRateCaptureAudio( CapturePreferenceUtil.getPreferenceSampleRate() );
+		setSampleRateCaptureAudio(CapturePreferenceUtil
+				.getPreferenceSampleRate());
 	}
 
 	/**
@@ -107,17 +108,19 @@ public class SoundMixer implements IUNIT {
 	public void dispose() {
 		try {
 			// clear own instance
-			if(voiceOutputStream != null) voiceOutputStream.close();
-			if(ownInst != null)ownInst = null;
+			if (voiceOutputStream != null)
+				voiceOutputStream.close();
+			if (ownInst != null)
+				ownInst = null;
 		} catch (Exception e) {
 			System.out.println("SoundMixer.dispose() : " + e);
 		}
 	}
 
-/*******************************************************************
- * Capture audio control part
- * 
- ******************************************************************/
+	/*******************************************************************
+	 * Capture audio control part
+	 * 
+	 ******************************************************************/
 	/**
 	 * Main thread class for Capture audio
 	 */
@@ -159,12 +162,12 @@ public class SoundMixer implements IUNIT {
 		// Set own process mode
 		ownProcMode = procMode;
 
-		//1)Capture audio mode
-		if(ownProcMode == SM_PMODE_CAPTURE){
+		// 1)Capture audio mode
+		if (ownProcMode == SM_PMODE_CAPTURE) {
 			startCaptureAudio();
 		}
-		//2)Save to file(.wav) mode
-		else if(ownProcMode == SM_PMODE_FSAVE){
+		// 2)Save to file(.wav) mode
+		else if (ownProcMode == SM_PMODE_FSAVE) {
 			startSaveFileCaptureAudio();
 		}
 	}
@@ -177,24 +180,26 @@ public class SoundMixer implements IUNIT {
 			// SetUP Input stream (wave mix)
 			final AudioFormat format = getFormat();
 			voiceInfo = new DataLine.Info(TargetDataLine.class, format);
-			voiceLine = (TargetDataLine)AudioSystem.getLine(voiceInfo);
+			voiceLine = (TargetDataLine) AudioSystem.getLine(voiceInfo);
 
 			// Initialize captured voice data(wave format)
 			int bufferSize = format.getFrameSize();
-			voiceCaptureBuffer = new byte[bufferSize];		// Capture buffer for Thread process
-			voiceStoreBuffer = new byte[bufferSize];		// Store buffer for latest captured data
-			voiceClearData = new byte[bufferSize];			// Clear data for stored buffer
-			for(int i = 0; i < voiceClearData.length; i++){	// SetUP zero data
+			voiceCaptureBuffer = new byte[bufferSize]; // Capture buffer for
+														// Thread process
+			voiceStoreBuffer = new byte[bufferSize]; // Store buffer for latest
+														// captured data
+			voiceClearData = new byte[bufferSize]; // Clear data for stored
+													// buffer
+			for (int i = 0; i < voiceClearData.length; i++) { // SetUP zero data
 				voiceClearData[i] = 0;
 			}
 
 			// Setup output stream
-			if(voiceOutputStream == null){
+			if (voiceOutputStream == null) {
 				voiceOutputStream = new ByteArrayOutputStream();
-			}
-			else {
+			} else {
 				// reset data
-				if(voiceOutputStream.size() > 0){
+				if (voiceOutputStream.size() > 0) {
 					voiceOutputStream.reset();
 				}
 			}
@@ -207,8 +212,7 @@ public class SoundMixer implements IUNIT {
 			voiceLine.open(format);
 			voiceLine.start();
 			mainThreadCapture.start();
-		}
-		catch (LineUnavailableException e) {
+		} catch (LineUnavailableException e) {
 			System.err.println("Line unavailable: " + e);
 		}
 	}
@@ -221,7 +225,7 @@ public class SoundMixer implements IUNIT {
 			// SetUP Input stream (wave mix)
 			final AudioFormat format = getFormat();
 			voiceInfo = new DataLine.Info(TargetDataLine.class, format);
-			voiceLine = (TargetDataLine)AudioSystem.getLine(voiceInfo);
+			voiceLine = (TargetDataLine) AudioSystem.getLine(voiceInfo);
 
 			// Create & Open file for save voice data
 			saveFH = new File("c:\\temp\\dummy.wav");
@@ -237,28 +241,27 @@ public class SoundMixer implements IUNIT {
 			voiceLine.open(format);
 			voiceLine.start();
 			mainThreadCapture.start();
-		}
-		catch (LineUnavailableException e) {
+		} catch (LineUnavailableException e) {
 			System.err.println("Line unavailable: " + e);
-		}
-		catch(IOException ee){
-			System.err.println("File IO : " +ee);
+		} catch (IOException ee) {
+			System.err.println("File IO : " + ee);
 		}
 	}
 
 	public void updateCaptureSound() {
 		try {
 			// Only Playing
-			if( runningCapture ){
+			if (runningCapture) {
 				// PickUP capture data(PCM)
-				int count = voiceLine.read(voiceCaptureBuffer, 0, voiceCaptureBuffer.length);
-				if(count > 0){
+				int count = voiceLine.read(voiceCaptureBuffer, 0,
+						voiceCaptureBuffer.length);
+				if (count > 0) {
 					// Buffering capture data
-					System.arraycopy(voiceCaptureBuffer, 0, voiceStoreBuffer, 0, count);
+					System.arraycopy(voiceCaptureBuffer, 0, voiceStoreBuffer,
+							0, count);
 				}
 			}
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			System.err.println("I/O problems: " + e);
 		}
 	}
@@ -266,12 +269,11 @@ public class SoundMixer implements IUNIT {
 	public void updateSaveFileCaptureSound() {
 		try {
 			// Only Playing
-			if( runningCapture ){
+			if (runningCapture) {
 				// Write data to .wav file
 				AudioSystem.write(voiceInputStream, voiceTargetType, saveFH);
 			}
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			System.err.println("I/O problems: " + e);
 		}
 	}
@@ -287,11 +289,11 @@ public class SoundMixer implements IUNIT {
 				mainThreadCapture = null;
 
 				// Stop&Close InputStream for Save file mode
-				if(voiceInputStream != null){
+				if (voiceInputStream != null) {
 					voiceInputStream.close();
 				}
 				// Stop&Close InputStream for Capture audio mode
-				if(voiceLine != null){
+				if (voiceLine != null) {
 					voiceLine.stop();
 					voiceLine.close();
 				}
@@ -303,15 +305,19 @@ public class SoundMixer implements IUNIT {
 
 	/**
 	 * Getter method : Get current sampling rate for capture audio
+	 * 
 	 * @return Current sampling rate(Hz)
 	 */
 	public float getSampleRateCaptureAudio() {
 		// return current value of sampling rate for capture audio
-		return(voiceSampleRate);
+		return (voiceSampleRate);
 	}
+
 	/**
 	 * Setter method : Set sampling rate for capture audio
-	 * @param newSampleRate : new sampling rate for capture audio
+	 * 
+	 * @param newSampleRate
+	 *            : new sampling rate for capture audio
 	 */
 	public void setSampleRateCaptureAudio(float newSampleRate) {
 		// Update new sampling rate for capture audio
@@ -342,15 +348,18 @@ public class SoundMixer implements IUNIT {
 		int rawData = -1;
 
 		// check running
-		if( runningCapture ){
+		if (runningCapture) {
 			// check current process mode
-			if(ownProcMode == SM_PMODE_CAPTURE){
+			if (ownProcMode == SM_PMODE_CAPTURE) {
 				// Exchange data type from byte[] to integer
-				rawData = ((int)voiceStoreBuffer[1] << 8) + (int)voiceStoreBuffer[0];
-				if (rawData < 0) rawData = -1 * rawData;
+				rawData = ((int) voiceStoreBuffer[1] << 8)
+						+ (int) voiceStoreBuffer[0];
+				if (rawData < 0)
+					rawData = -1 * rawData;
 
 				// Clear current stored buffer
-				System.arraycopy(voiceClearData, 0, voiceStoreBuffer, 0, voiceClearData.length);
+				System.arraycopy(voiceClearData, 0, voiceStoreBuffer, 0,
+						voiceClearData.length);
 			}
 		}
 
@@ -373,10 +382,10 @@ public class SoundMixer implements IUNIT {
 				channels, frameSize, frameRate, bigEndian));
 	}
 
-/*******************************************************************
- * Play audio control part
- * 
- ******************************************************************/
+	/*******************************************************************
+	 * Play audio control part
+	 * 
+	 ******************************************************************/
 	/**
 	 * Main thread class for Play sound
 	 */
@@ -387,19 +396,21 @@ public class SoundMixer implements IUNIT {
 		public void run() {
 			try {
 				int size = 0;
-				float frameRate = audioInputStreamWavPlayer.getFormat().getFrameRate();
-				int frameSize = audioInputStreamWavPlayer.getFormat().getFrameSize();
-				byte[] inStream = new byte[(int)(frameRate * frameSize)];
+				float frameRate = audioInputStreamWavPlayer.getFormat()
+						.getFrameRate();
+				int frameSize = audioInputStreamWavPlayer.getFormat()
+						.getFrameSize();
+				byte[] inStream = new byte[(int) (frameRate * frameSize)];
 
 				// Play sound stream
 				while (runningPlayer) {
 					// Read WAV data from input stream
-					size = audioInputStreamWavPlayer.read(inStream, 0, inStream.length);
-					if(size >= 0){
+					size = audioInputStreamWavPlayer.read(inStream, 0,
+							inStream.length);
+					if (size >= 0) {
 						// put WAV data to source line
 						int len = lineWavPlayer.write(inStream, 0, size);
-					}
-					else {
+					} else {
 						// End of WAV data
 						stopPlaySound();
 						break;
@@ -407,9 +418,8 @@ public class SoundMixer implements IUNIT {
 					// yield own thread
 					Thread.yield();
 				}
-			}
-			catch (IOException e) {
-				//System.out.println("IOException : " +e);
+			} catch (IOException e) {
+				// System.out.println("IOException : " +e);
 
 				// Forced stop player
 				stopPlaySound();
@@ -418,12 +428,15 @@ public class SoundMixer implements IUNIT {
 	}
 
 	/**
-	 * Local method : Re-make Audio Format of current WAV file for Adjust Sampling Rate
+	 * Local method : Re-make Audio Format of current WAV file for Adjust
+	 * Sampling Rate
+	 * 
 	 * @param orgForm
 	 * @param newSampleRate
 	 * @return New AudioFormat
 	 */
-	private AudioFormat adjustSampleRateWav(AudioFormat orgForm, float newSampleRate) {
+	private AudioFormat adjustSampleRateWav(AudioFormat orgForm,
+			float newSampleRate) {
 		// MakeUP new sampling rate
 		float sampleRate = newSampleRate;
 
@@ -442,13 +455,14 @@ public class SoundMixer implements IUNIT {
 
 	/**
 	 * Setter method : Start play WAV sound
-	 * @throws LineUnavailableException 
+	 * 
+	 * @throws LineUnavailableException
 	 */
 	public void startPlaySound(URI uriWavFileName, float competitiveRatioWav) {
-		if(uriWavFileName != null){
+		if (uriWavFileName != null) {
 			try {
 				// Check current status of Player thread
-				if( runningPlayer ){
+				if (runningPlayer) {
 					// Forced stop player
 					stopPlaySound();
 				}
@@ -456,7 +470,8 @@ public class SoundMixer implements IUNIT {
 				// Open WAV file
 				File soundFile = new File(uriWavFileName);
 				// Create Input stream
-				audioInputStreamWavPlayer = AudioSystem.getAudioInputStream(soundFile);
+				audioInputStreamWavPlayer = AudioSystem
+						.getAudioInputStream(soundFile);
 				// Get audio format from current input stream
 				AudioFormat audioFormat = audioInputStreamWavPlayer.getFormat();
 
@@ -466,7 +481,8 @@ public class SoundMixer implements IUNIT {
 				audioFormat = adjustSampleRateWav(audioFormat, samplerate);
 
 				// Get data line from current input stream
-				DataLine.Info info = new DataLine.Info(SourceDataLine.class, audioFormat);
+				DataLine.Info info = new DataLine.Info(SourceDataLine.class,
+						audioFormat);
 				// Get source line from current data line
 				lineWavPlayer = (SourceDataLine) AudioSystem.getLine(info);
 				// Open source line
@@ -479,15 +495,12 @@ public class SoundMixer implements IUNIT {
 				runningPlayer = true;
 				mainThreadPlayer.start();
 
-			}
-			catch (UnsupportedAudioFileException e1) {
-				//System.out.println("UnsupportedAudioFileException : "+e1);
-			}
-			catch (IOException e2) {
-				//System.out.println("IOException : "+e2);
-			}
-			catch (LineUnavailableException e3) {
-				//System.out.println("LineUnavailableException : "+e3);
+			} catch (UnsupportedAudioFileException e1) {
+				// System.out.println("UnsupportedAudioFileException : "+e1);
+			} catch (IOException e2) {
+				// System.out.println("IOException : "+e2);
+			} catch (LineUnavailableException e3) {
+				// System.out.println("LineUnavailableException : "+e3);
 			}
 		}
 	}
@@ -503,17 +516,16 @@ public class SoundMixer implements IUNIT {
 				mainThreadPlayer = null;
 
 				// Stop&Close InputStream for Save file mode
-				if(audioInputStreamWavPlayer != null){
+				if (audioInputStreamWavPlayer != null) {
 					audioInputStreamWavPlayer.close();
 				}
 				// Stop&Close InputStream for Capture audio mode
-				if(lineWavPlayer != null){
+				if (lineWavPlayer != null) {
 					lineWavPlayer.drain();
 					lineWavPlayer.close();
 				}
 			}
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			System.out.println("stopPlaySound() : " + e);
 		}
 	}
@@ -523,13 +535,14 @@ public class SoundMixer implements IUNIT {
 	 */
 	public boolean isRunningPlaySound() {
 		// return current status
-		return(runningPlayer);
+		return (runningPlayer);
 	}
 
 	/**
 	 * Getter method : Check type WAV format of current file
-	 * @throws IOException 
-	 * @throws UnsupportedAudioFileException 
+	 * 
+	 * @throws IOException
+	 * @throws UnsupportedAudioFileException
 	 */
 	public boolean isWavFormat(String fname) throws FileNotFoundException {
 		boolean result = false;
@@ -541,20 +554,18 @@ public class SoundMixer implements IUNIT {
 			// Get audio format from target file
 			AudioFileFormat aff = AudioSystem.getAudioFileFormat(fh);
 			// check audio format as WAV?
-			if(AudioFileFormat.Type.WAVE == aff.getType()){
+			if (AudioFileFormat.Type.WAVE == aff.getType()) {
 				// target file type is WAV format
 				result = true;
 			}
-		}
-		catch(UnsupportedAudioFileException e1){
-			//System.out.println("UnsupportedAudioFileException : "+e1);
-		}
-		catch(IOException e2){
-			//System.out.println("IOException : "+e2);
+		} catch (UnsupportedAudioFileException e1) {
+			// System.out.println("UnsupportedAudioFileException : "+e1);
+		} catch (IOException e2) {
+			// System.out.println("IOException : "+e2);
 		}
 
 		// return result
-		return(result);
+		return (result);
 	}
 
 	/**
@@ -573,16 +584,20 @@ public class SoundMixer implements IUNIT {
 		String strEndian = "Endian : ";
 
 		// Cat string for WAV header information
-		strWavInfo =   strFileName  + wfname + strSeparator
-		             + strFormatID  + currentWavFormatID + strSeparator
-		             + strSampRate  + Integer.toString((int)currentWavSampRate) + " Hz" + strSeparator
-		             + strSampBit   + Integer.toString(currentWavSampBit) + " bit" + strSeparator
-		             + strChNum     + ((currentWavCh == 2) ? "Stereo" : "Mono") + strSeparator
-		             + strFrameRate + Integer.toString((int)currentWavFrameRate) + " bytes/frame" + strSeparator
-		             + strEndian   + (currentWavBigEndian ? "Big Endian" : "Littele Endian") + strSeparator;
+		strWavInfo = strFileName + wfname + strSeparator + strFormatID
+				+ currentWavFormatID + strSeparator + strSampRate
+				+ Integer.toString((int) currentWavSampRate) + " Hz"
+				+ strSeparator + strSampBit
+				+ Integer.toString(currentWavSampBit) + " bit" + strSeparator
+				+ strChNum + ((currentWavCh == 2) ? "Stereo" : "Mono")
+				+ strSeparator + strFrameRate
+				+ Integer.toString((int) currentWavFrameRate) + " bytes/frame"
+				+ strSeparator + strEndian
+				+ (currentWavBigEndian ? "Big Endian" : "Littele Endian")
+				+ strSeparator;
 
 		// return result
-		return(strWavInfo);
+		return (strWavInfo);
 	}
 
 	/**
@@ -590,7 +605,7 @@ public class SoundMixer implements IUNIT {
 	 */
 	public int getDurationTimeWav() {
 		// return current end time of WAV data
-		return(currentWavDurationTime);
+		return (currentWavDurationTime);
 	}
 
 	/**
@@ -604,7 +619,7 @@ public class SoundMixer implements IUNIT {
 		// Get audio format from target file
 		AudioFileFormat aff = AudioSystem.getAudioFileFormat(fh);
 		// check audio format as WAV?
-		if(AudioFileFormat.Type.WAVE == aff.getType()){
+		if (AudioFileFormat.Type.WAVE == aff.getType()) {
 			// Get current WAV header information
 			AudioFormat af = aff.getFormat();
 			currentWavFormatID = af.getEncoding().toString();
@@ -617,11 +632,11 @@ public class SoundMixer implements IUNIT {
 			currentWavFormat = af.toString();
 
 			// Calculate byte per second of current WAV file
-			currentWavBytePerSec = (int)(currentWavSampRate * currentWavCh * (currentWavSampBit / 8));
+			currentWavBytePerSec = (int) (currentWavSampRate * currentWavCh * (currentWavSampBit / 8));
 			// Calculate total data length of current WAV file
-			currentWavDataLength = (int)(aff.getFrameLength() * currentWavFrameSize);
+			currentWavDataLength = (int) (aff.getFrameLength() * currentWavFrameSize);
 			// Calculate duration time of current WAV file
-			currentWavDurationTime = (int)(((float)currentWavDataLength / (float)currentWavBytePerSec) * (float)MSEC);
+			currentWavDurationTime = (int) (((float) currentWavDataLength / (float) currentWavBytePerSec) * (float) MSEC);
 		}
 	}
 

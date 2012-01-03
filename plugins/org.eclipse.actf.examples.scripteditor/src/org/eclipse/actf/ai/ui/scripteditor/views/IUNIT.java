@@ -21,9 +21,11 @@ public interface IUNIT {
 
 	// Exchange from Time to Pixel (=Time/20msec)
 	static final int TIME2PIXEL = 20;
-	
+
 	// Timer counter : Synchronize movie position = 100msec
-	static final int TL_SYNC_MEDIA_TIME = 50;	// (50 msec is for Audio interval and  50*3 is for Video interval.
+	static final int TL_SYNC_MEDIA_TIME = 50; // (50 msec is for Audio interval
+												// and 50*3 is for Video
+												// interval.
 
 	// Timer counter : Sampling audio level = 20msec
 	static final int TL_AUDIO_SAMPLE_TIME = 20;
@@ -63,21 +65,25 @@ public interface IUNIT {
 	static final int TL_DEF_LINES = 3;
 
 	// Definition of Event of EndTimeLine
-	static final int TL_NO_EVENT = 0;				// No event
-	static final int TL_OVER_MAX_LIMIT = 1;			// Over max limit
-	static final int TL_OVER_MIN_LIMIT = -1;		// Over min limit
+	static final int TL_NO_EVENT = 0; // No event
+	static final int TL_OVER_MAX_LIMIT = 1; // Over max limit
+	static final int TL_OVER_MIN_LIMIT = -1; // Over min limit
 
 	// Definition of Control scroll Composite
-	static final int TL_DEF_SCROL_COMP_SCALE = 300000;	// Size of one scroll Composite(5mins=300000msec)
-	static final int TL_DEF_SCROL_COMP_T2P = 15000;     // time to pixel of 5mins
-	static final int TL_MAX_ENDTIME_COUNT = 20;			// Max Counter of EndTimeLine(20=100mins/5mins)
-	static final int TL_MAX_ENDTIME_MSEC = 6000000;		// Max Time of EndTimeLine(100mins=6000000msec)
-	static final int TL_LIMIT_STARTTIME = 100;			// Limit Start TimeLine (under 100mins)
+	static final int TL_DEF_SCROL_COMP_SCALE = 300000; // Size of one scroll
+														// Composite(5mins=300000msec)
+	static final int TL_DEF_SCROL_COMP_T2P = 15000; // time to pixel of 5mins
+	static final int TL_MAX_ENDTIME_COUNT = 20; // Max Counter of
+												// EndTimeLine(20=100mins/5mins)
+	static final int TL_MAX_ENDTIME_MSEC = 6000000; // Max Time of
+													// EndTimeLine(100mins=6000000msec)
+	static final int TL_LIMIT_STARTTIME = 100; // Limit Start TimeLine (under
+												// 100mins)
 
 	// Definition of End of ScriptList
-	static final int TL_EOL = -1;		// -1 : End of Play (no more script data)
-	static final int TL_NODATA = -2;	// -2 : No Data
-	static final int TL_EOT = -3;       // -3 : End of TimeLine
+	static final int TL_EOL = -1; // -1 : End of Play (no more script data)
+	static final int TL_NODATA = -2; // -2 : No Data
+	static final int TL_EOT = -3; // -3 : End of TimeLine
 
 	// Status of Preview movie
 	static final int TL_STAT_IDLE = 0; // 0 : Idle (stop movie or no content)
@@ -88,11 +94,14 @@ public interface IUNIT {
 	static final int TL_STAT_RESUME = 3; // 3 : Resume auto play movie
 	// (automatic time line)
 	static final int TL_STAT_PAUSE = 4; // 4 : Pause movie (stop time line)
-	static final int TL_STAT_EXTENDED = 5;    // 5 : Play Extended text(suspend time line)
+	static final int TL_STAT_EXTENDED = 5; // 5 : Play Extended text(suspend
+											// time line)
 	static final int TL_STAT_DISPOSE = -1; // -1 : Dispose own thread
 
 	// Audio Label control
-	static final long TL_SINGLE_CLICK_TIME = 500;	// single click action of TimeLine's Marker (duration : 500msec)
+	static final long TL_SINGLE_CLICK_TIME = 500; // single click action of
+													// TimeLine's Marker
+													// (duration : 500msec)
 
 	// Symbolic Definition for Voice Engine
 	static final int VOICE_SAPI = 0; // 0 : Use VoiceManager(SAPI) engine
@@ -100,38 +109,45 @@ public interface IUNIT {
 	static final int VE_EXCEPTION = -1; // -1 : Occur some problem in current
 	// voice engine
 	static final int VE_NOSUPPORT = -1; // -1 : No support function in current
-	static final int VE_TIME_MORA_EN = 110;    // Time of 1Mora (=110msec)
+	static final int VE_TIME_MORA_EN = 110; // Time of 1Mora (=110msec)
 
 	// TTS FLAGMENT
-	static final boolean TTSFLAG_FLUSH = true;		// TTS FLAG : Flush voice data
-	static final boolean TTSFLAG_DEFAULT = false;	// TTS FLAG : Normal play 
+	static final boolean TTSFLAG_FLUSH = true; // TTS FLAG : Flush voice data
+	static final boolean TTSFLAG_DEFAULT = false; // TTS FLAG : Normal play
 
 	// Audio Label control
-	static final long AL_SINGLE_CLICK_TIME = 200;	// single click action of Audio Label (duration : 200msec)
+	static final long AL_SINGLE_CLICK_TIME = 200; // single click action of
+													// Audio Label (duration :
+													// 200msec)
 
 	// Status of Media action
-	static final int V_STAT_NOMEDIA = -1;  		// -1 : no media
-	static final int V_STAT_UNKNOWN = 0;   		//  0 : Unknown media
-	static final int V_STAT_PLAY = 1;      		//  1 : Play media
-	static final int V_STAT_STOP = 2;      		//  2 : Stop media
-	static final int V_STAT_PAUSE = 3;      	//  3 : Pause media
-	static final int V_STAT_FASTFORWARD = 4;    //  4 : Fast forward media
-	static final int V_STAT_FASTREVERSE = 5;    //  5 : Fast Reverse media
-	static final int V_STAT_WAITING = 6;      	//  6 : Wait media
+	static final int V_STAT_NOMEDIA = -1; // -1 : no media
+	static final int V_STAT_UNKNOWN = 0; // 0 : Unknown media
+	static final int V_STAT_PLAY = 1; // 1 : Play media
+	static final int V_STAT_STOP = 2; // 2 : Stop media
+	static final int V_STAT_PAUSE = 3; // 3 : Pause media
+	static final int V_STAT_FASTFORWARD = 4; // 4 : Fast forward media
+	static final int V_STAT_FASTREVERSE = 5; // 5 : Fast Reverse media
+	static final int V_STAT_WAITING = 6; // 6 : Wait media
 
 	// Process mode of Sound Mix
-	static final int SM_PMODE_CAPTURE = 0;			// 0 : Capture audio mode
-	static final int SM_PMODE_FSAVE = 1;			// 1 : Save fine(.wav) mode
-	static final int SM_MAX_FREERUN_COUNT = 5;		// 5 : Limit counter of free running capture (less than 100msec)
-	static final float SM_CAP_RATE_FAST = 44100;	// 44100Hz : Sampling rate of capture voice (fast mode)
-	static final float SM_CAP_RATE_NOM = 22050;		// 22050Hz : Sampling rate of capture voice (normal mode)
-	static final float SM_CAP_RATE_LATE = 11025;	// 11025Hz : Sampling rate of capture voice (late mode)
+	static final int SM_PMODE_CAPTURE = 0; // 0 : Capture audio mode
+	static final int SM_PMODE_FSAVE = 1; // 1 : Save fine(.wav) mode
+	static final int SM_MAX_FREERUN_COUNT = 5; // 5 : Limit counter of free
+												// running capture (less than
+												// 100msec)
+	static final float SM_CAP_RATE_FAST = 44100; // 44100Hz : Sampling rate of
+													// capture voice (fast mode)
+	static final float SM_CAP_RATE_NOM = 22050; // 22050Hz : Sampling rate of
+												// capture voice (normal mode)
+	static final float SM_CAP_RATE_LATE = 11025; // 11025Hz : Sampling rate of
+													// capture voice (late mode)
 
 	// Language of Description
 	static final String[] itemLang = { "English", "Japanese" };
 	static final int DESC_LANG_EN = 0;
 	static final int DESC_LANG_JA = 1;
-	
+
 	// temporary file interface
 	static final String DIR_TEMP_VOLLVL = "VOLLVL";
 	static final String FILE_TEMP_VOLLVL_PREFIX = "temp";
@@ -139,10 +155,10 @@ public interface IUNIT {
 	static final String DIR_TEMP_WAVE = "WAV";
 	static final String FILE_TEMP_WAVE_PREFIX = "temp";
 	static final String FILE_TEMP_WAVE_SUFFIX = ".wav";
-	
+
 	// file type for Drag&Drop file reader
-	static final int LD_FTYPE_XML = 0;				// file type : XML file
-	static final int LD_FTYPE_CSV = 1;				// file type : CSV file
+	static final int LD_FTYPE_XML = 0; // file type : XML file
+	static final int LD_FTYPE_CSV = 1; // file type : CSV file
 
 	// Preference data
 	static final int CSV_SAVE_RULE_INSERT = 0;
@@ -150,17 +166,26 @@ public interface IUNIT {
 	static final int CSV_WAV_RULE_DROP = 0;
 	static final int CSV_WAV_RULE_CONFIRM = 1;
 	static final int CSV_WAV_RULE_IGNORE = 2;
-	
+
 	// WAV file management
-	static final int WAV_STAT_INVALID = -1;		// -1 : Status of WAV file as INVALID data mode
+	static final int WAV_STAT_INVALID = -1; // -1 : Status of WAV file as
+											// INVALID data mode
 
 	// MessageBox part
-	static final int MB_STYLE_CONFIRM = 1;		// 1 : Style of MessageBox is Confirmation mode
-	static final int MB_STYLE_OVERWR = 2;		// 2 : Style of MessageBox is Overwrite mode
-	static final int MB_STYLE_NODESC = 3;		// 3 : Style of MessageBox is No exist description mode
-	static final int MB_STYLE_NOEXIST = 4;		// 4 : Style of MessageBox is No exist script ID mode
-	static final int MB_STYLE_MODIFY = 5;		// 5 : Style of MessageBox is Modify current script list
-	static final int MB_STYLE_WAV_CONFIRM = 6;	// 6 : Style of MessageBox is WAV file confirmation mode
-	static final int MB_STYLE_ACCESS_DENIED = 7;	// 7 : Style of MessageBox is Notice access denied during play movie
+	static final int MB_STYLE_CONFIRM = 1; // 1 : Style of MessageBox is
+											// Confirmation mode
+	static final int MB_STYLE_OVERWR = 2; // 2 : Style of MessageBox is
+											// Overwrite mode
+	static final int MB_STYLE_NODESC = 3; // 3 : Style of MessageBox is No exist
+											// description mode
+	static final int MB_STYLE_NOEXIST = 4; // 4 : Style of MessageBox is No
+											// exist script ID mode
+	static final int MB_STYLE_MODIFY = 5; // 5 : Style of MessageBox is Modify
+											// current script list
+	static final int MB_STYLE_WAV_CONFIRM = 6; // 6 : Style of MessageBox is WAV
+												// file confirmation mode
+	static final int MB_STYLE_ACCESS_DENIED = 7; // 7 : Style of MessageBox is
+													// Notice access denied
+													// during play movie
 
 }

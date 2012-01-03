@@ -25,9 +25,9 @@ public class FlashAnalyzeAction implements IWorkbenchWindowActionDelegate {
 	}
 
 	public void run(IAction action) {
-		//System.out.println("Flash reload");
+		// System.out.println("Flash reload");
 		WebBrowserFactory web = WebBrowserFactory.getInstance();
-		if(web != null){
+		if (web != null) {
 			web.searchVideo();
 		}
 	}

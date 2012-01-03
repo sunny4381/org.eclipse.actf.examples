@@ -12,10 +12,9 @@ package org.eclipse.actf.ai.internal.ui.scripteditor.event;
 
 import java.util.EventListener;
 
-
 /**
  * 
  */
-public interface  TimerEventListener extends EventListener{
+public interface TimerEventListener extends EventListener {
 	public abstract void handleTimerUtilEvent(TimerEvent e);
 }

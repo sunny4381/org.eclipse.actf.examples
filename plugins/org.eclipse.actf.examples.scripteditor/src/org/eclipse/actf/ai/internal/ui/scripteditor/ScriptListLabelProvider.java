@@ -56,14 +56,14 @@ public class ScriptListLabelProvider extends LabelProvider implements
 				// Check WAV header's format
 				try {
 					String strWavPath = ScriptData.getInstance()
-							.getFileNameWavList(index).toString().replace(
-									"file:/", "");
+							.getFileNameWavList(index).toString()
+							.replace("file:/", "");
 					if (!SoundMixer.getInstance().isWavFormat(strWavPath)) {
 						// Change INVALID image
 						strWavPath = URLDecoder.decode(
-								ScriptData.getInstance().getFileNameWavList(
-										index).toString(), "UTF-8").replace(
-								"file:/", "");
+								ScriptData.getInstance()
+										.getFileNameWavList(index).toString(),
+								"UTF-8").replace("file:/", "");
 						if (!SoundMixer.getInstance().isWavFormat(strWavPath)) {
 							result = imgWavOff;
 						}

@@ -17,7 +17,7 @@ public class CapturePreferenceConstants {
 	 */
 	public static final String SAMPRATE_GROUP_NAME = "CaptureSamplingRate";
 	public static final String SAMPRATE_FAST = "SAMPRATE_FAST";
-	public static final String SAMPRATE_NOM  = "SAMPRATE_NOM";
+	public static final String SAMPRATE_NOM = "SAMPRATE_NOM";
 	public static final String SAMPRATE_LATE = "SAMPRATE_LATE";
 
 	/**

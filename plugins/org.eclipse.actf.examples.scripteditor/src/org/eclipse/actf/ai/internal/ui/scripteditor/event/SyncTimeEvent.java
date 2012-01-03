@@ -17,12 +17,11 @@ import java.util.EventObject;
  */
 public class SyncTimeEvent extends EventObject {
 
-
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -5354476659198633807L;
-	
+
 	public static final int SYNCHRONIZE_TIME_LINE = 0;
 	public static final int REFRESH_TIME_LINE = 1;
 	private int currentTime;

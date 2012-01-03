@@ -38,12 +38,12 @@ public class VoicePlayerFactory implements IUNIT {
 	private static final String JA_TOUTEN_CODE2 = "\u3001";
 	private static final int JA_KUTEN_COUNT = 5;
 	private static final int JA_TOUTEN_COUNT = 2;
-	
-	//MORA
+
+	// MORA
 	private static final float JA_KANJI_MORA = 1.545f;
 	private static final float JA_KANA_MORA = 0.988f;
 	private static final float EN_CHAR_MORA = 0.347f;
-	
+
 	/**
 	 * Constructor
 	 */
@@ -138,7 +138,8 @@ public class VoicePlayerFactory implements IUNIT {
 		// return code
 		float mora = 0;
 		// Sum count of Mora
-		String desc = strDesc.trim().replaceAll("^[\\s　]*", "").replaceAll("[\\s　]*$", "");
+		String desc = strDesc.trim().replaceAll("^[\\s　]*", "")
+				.replaceAll("[\\s　]*$", "");
 		mora = desc.length() * EN_CHAR_MORA;
 		// return current Mora's counter
 		return (mora);
@@ -151,7 +152,8 @@ public class VoicePlayerFactory implements IUNIT {
 		// return code
 		float mora = 0;
 		// Count character
-		String desc = strDesc.trim().replaceAll("^[\\s　]*", "").replaceAll("[\\s　]*$", "");
+		String desc = strDesc.trim().replaceAll("^[\\s　]*", "")
+				.replaceAll("[\\s　]*$", "");
 		for (int i = 0; i < desc.length(); i++) {
 			char c = strDesc.charAt(i);
 			if ((c >= 0x20) && (c <= 0x7E)) {
@@ -178,10 +180,10 @@ public class VoicePlayerFactory implements IUNIT {
 					// Tou-ten
 					mora += JA_TOUTEN_COUNT;
 				} else {
-					if(c >= 0x4e9c) {
+					if (c >= 0x4e9c) {
 						// Kanji char
 						mora += JA_KANJI_MORA;
-					} else if(0x3041 <= c && c <= 0x30f6) {
+					} else if (0x3041 <= c && c <= 0x30f6) {
 						// Hiragana or Katakana
 						mora += JA_KANA_MORA;
 					} else {

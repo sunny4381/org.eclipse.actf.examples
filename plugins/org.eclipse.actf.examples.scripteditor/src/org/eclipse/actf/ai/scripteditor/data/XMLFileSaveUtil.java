@@ -35,10 +35,10 @@ public class XMLFileSaveUtil implements IUNIT {
 	private PreviewPanel instPreviewPanel = null;
 	private TimeLineView instTimeLine = null;
 
-
 	/**
 	 * @category Constructor
-	 * @param filePath : String of target XML file path
+	 * @param filePath
+	 *            : String of target XML file path
 	 */
 	public XMLFileSaveUtil() {
 		// Store instance of parent view part, and so on..
@@ -47,27 +47,27 @@ public class XMLFileSaveUtil implements IUNIT {
 
 	/**
 	 * @category Check exist target file
-	 * @param filePath : target file path
+	 * @param filePath
+	 *            : target file path
 	 * @return result status : TRUE:exist file, FALSE:not exist
 	 */
 	static public boolean exists(String filePath) {
 		boolean result = false;
 
 		// check exit file
-		if(filePath != null){
+		if (filePath != null) {
 			try {
 				// Check enable data
 				File fh = new File(filePath);
-				if( fh.exists() ){
+				if (fh.exists()) {
 					// exist target file
 					result = true;
 				}
-			}
-			catch(Exception ee){
+			} catch (Exception ee) {
 			}
 		}
 		// return result
-		return(result);
+		return (result);
 	}
 
 	/**
@@ -76,15 +76,15 @@ public class XMLFileSaveUtil implements IUNIT {
 	 */
 	public String open() {
 		String filePath = null;
-		
+
 		// Request FileDialog (Choice open file name)
-		FileDialog saveDialog = new FileDialog(Display.getCurrent().getActiveShell(),
-												SWT.SAVE);
+		FileDialog saveDialog = new FileDialog(Display.getCurrent()
+				.getActiveShell(), SWT.SAVE);
 		saveDialog.setFilterExtensions(EXTENSIONS);
 		filePath = saveDialog.open();
 
 		// return result
-		return(filePath);
+		return (filePath);
 	}
 
 	/**
@@ -96,7 +96,7 @@ public class XMLFileSaveUtil implements IUNIT {
 		boolean result = false;
 
 		// Check null (file name)
-		if(filePath != null){
+		if (filePath != null) {
 			// Save volume level data
 			instTimeLine.reqSaveVolumeLevelTempFile();
 			// Save file
@@ -110,20 +110,20 @@ public class XMLFileSaveUtil implements IUNIT {
 		}
 
 		// return result
-		return(result);
+		return (result);
 	}
 
 	/**
 	 * Local method : PickUP instance of each ViewPart class
 	 */
 	private void pickupInstViewPart() {
-		if(instPreviewPanel == null){
+		if (instPreviewPanel == null) {
 			instPreviewPanel = PreviewPanel.getInstance();
 		}
-		if(instScriptData == null){
+		if (instScriptData == null) {
 			instScriptData = ScriptData.getInstance();
 		}
-		if(instTimeLine == null){
+		if (instTimeLine == null) {
 			instTimeLine = TimeLineView.getInstance();
 		}
 	}
@@ -138,7 +138,8 @@ public class XMLFileSaveUtil implements IUNIT {
 			File file = new File(fname);
 			if (warnOverwrite && file.exists()) {
 				// Warning : No Script data
-				XMLFileMessageBox warningExistFile = new XMLFileMessageBox(MB_STYLE_OVERWR, fname);
+				XMLFileMessageBox warningExistFile = new XMLFileMessageBox(
+						MB_STYLE_OVERWR, fname);
 				// Check answer
 				int ret = warningExistFile.open();
 				if (ret != SWT.YES)
@@ -155,9 +156,8 @@ public class XMLFileSaveUtil implements IUNIT {
 			writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
 					+ LINE_SEP);
 			writer.write("<puits xmlns=\"urn:puits\">" + LINE_SEP);
-			writer
-					.write("  <meta xmlns=\"http://www.ibm.com/xmlns/prod/AcTF/aiBrowser/selector/1.0\">"
-							+ LINE_SEP);
+			writer.write("  <meta xmlns=\"http://www.ibm.com/xmlns/prod/AcTF/aiBrowser/selector/1.0\">"
+					+ LINE_SEP);
 
 			// Write URL with encode to UTF-8
 			String strURL = instPreviewPanel.getURLMovie();
@@ -174,10 +174,11 @@ public class XMLFileSaveUtil implements IUNIT {
 			writer.write("  </alternative>" + LINE_SEP);
 
 			// Write path of volume level file(temporary file)
-			if(instTimeLine.reqGetVolLvlPath() != null){
+			if (instTimeLine.reqGetVolLvlPath() != null) {
 				String strPath = instTimeLine.reqGetVolLvlPath().toString();
 				writer.write("  " + LINE_SEP);
-				writer.write("  <volumeLevel local=\"" + strPath + "\"/>" + LINE_SEP);
+				writer.write("  <volumeLevel local=\"" + strPath + "\"/>"
+						+ LINE_SEP);
 			}
 
 			writer.write("</puits>" + LINE_SEP);

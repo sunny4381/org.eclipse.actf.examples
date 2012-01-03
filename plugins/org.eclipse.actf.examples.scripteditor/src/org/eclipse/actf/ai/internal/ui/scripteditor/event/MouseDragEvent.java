@@ -14,19 +14,17 @@ import java.util.EventObject;
 
 public class MouseDragEvent extends EventObject {
 
-	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -264642209345581317L;
-	
+
 	public static final int MOUSE_DRAG_START = 0;
 	public static final int MOUSE_DRAGGING = 1;
 	public static final int MOUSE_DRAG_END = 2;
 	public static final int MOUSE_SET_DRAG_STATUS = 3;
 	private boolean status;
 	private int eventType;
-
 
 	/**
 	 * @category Constructor
@@ -41,12 +39,13 @@ public class MouseDragEvent extends EventObject {
 	public MouseDragEvent(int type, Object source) {
 		super(source);
 		this.eventType = type;
-		if(type == MOUSE_DRAG_START) {
+		if (type == MOUSE_DRAG_START) {
 			status = true;
-		} else if (type == MOUSE_DRAG_END){
+		} else if (type == MOUSE_DRAG_END) {
 			status = false;
 		}
 	}
+
 	/**
 	 * @category Constructor
 	 * 
@@ -71,7 +70,6 @@ public class MouseDragEvent extends EventObject {
 	public boolean isStatus() {
 		return status;
 	}
-
 
 	/**
 	 * @category getter

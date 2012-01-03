@@ -16,7 +16,8 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 
-public class MovieCaptureAudioClearDataAction implements IWorkbenchWindowActionDelegate {
+public class MovieCaptureAudioClearDataAction implements
+		IWorkbenchWindowActionDelegate {
 
 	/**
 	 * Local data
@@ -24,12 +25,11 @@ public class MovieCaptureAudioClearDataAction implements IWorkbenchWindowActionD
 	// instance of each ViewPart class
 	private VolumeLevelCanvas instParentView = null;
 
-
 	/**
 	 * Local method : PickUP instance of parent Canvas class
 	 */
 	private void pickupInstViewPart() {
-		if(instParentView == null){
+		if (instParentView == null) {
 			instParentView = VolumeLevelCanvas.getInstance();
 		}
 	}
@@ -37,7 +37,7 @@ public class MovieCaptureAudioClearDataAction implements IWorkbenchWindowActionD
 	/**
 	 * Management PopUP window for preference of capture audio (non-Javadoc)
 	 */
-	
+
 	/**
 	 * 
 	 * @see org.eclipse.ui.IActionDelegate#run(org.eclipse.jface.action.IAction)

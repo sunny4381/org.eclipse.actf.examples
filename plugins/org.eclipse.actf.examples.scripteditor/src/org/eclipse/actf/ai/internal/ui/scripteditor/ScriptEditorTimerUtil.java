@@ -24,7 +24,7 @@ import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
 
-public class ScriptEditorTimerUtil implements Runnable, IUNIT{
+public class ScriptEditorTimerUtil implements Runnable, IUNIT {
 
 	private static ScriptEditorTimerUtil ownInst = null;
 
@@ -36,7 +36,7 @@ public class ScriptEditorTimerUtil implements Runnable, IUNIT{
 	private static EventManager eventManager = null;
 
 	public static final int TL_SYNC_TIME_BASE = 10;
-	
+
 	private static Display display = null;
 
 	/**
@@ -63,17 +63,17 @@ public class ScriptEditorTimerUtil implements Runnable, IUNIT{
 		}
 		return ownInst;
 	}
-	
+
 	private ScriptEditorTimerUtil() {
 		PlatformUIUtil.getActiveWindow().getShell()
-		.addDisposeListener(new DisposeListener() {
-			@Override
-			public void widgetDisposed(DisposeEvent e) {
-				dispose();
-			}
-		});
+				.addDisposeListener(new DisposeListener() {
+					@Override
+					public void widgetDisposed(DisposeEvent e) {
+						dispose();
+					}
+				});
 	}
-	
+
 	@Override
 	public void run() {
 		try {
@@ -98,7 +98,7 @@ public class ScriptEditorTimerUtil implements Runnable, IUNIT{
 	 * dispose timer
 	 */
 	private void dispose() {
-		//TODO
+		// TODO
 		if (futureSynchronizeTimeLine != null) {
 			// Destroy Timer Task & Scheduler
 			futureSynchronizeTimeLine.cancel(true);

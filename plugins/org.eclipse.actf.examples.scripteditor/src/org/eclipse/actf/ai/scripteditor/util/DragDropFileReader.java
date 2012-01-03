@@ -37,14 +37,15 @@ public class DragDropFileReader implements IUNIT {
 	private String saveFileName = "";
 	private String currentURLMovie = "about:blank";
 
-
 	/**
 	 * @category Constructor
-	 * @param mode : file type (0:XML file, 1:CSV file)
-	 * @param fname : file path
+	 * @param mode
+	 *            : file type (0:XML file, 1:CSV file)
+	 * @param fname
+	 *            : file path
 	 */
 	public DragDropFileReader(int mode, String fname) {
-		
+
 		// Store target file information
 		modeFile = mode;
 		saveFileName = fname;
@@ -58,11 +59,10 @@ public class DragDropFileReader implements IUNIT {
 	 */
 	public void load() {
 		// Load data from target meta file
-		if(modeFile == LD_FTYPE_XML){
+		if (modeFile == LD_FTYPE_XML) {
 			// XML file
 			loadXMLFile();
-		}
-		else if(modeFile == LD_FTYPE_CSV){
+		} else if (modeFile == LD_FTYPE_CSV) {
 			// CSV file
 			loadCSVFile();
 		}
@@ -73,28 +73,29 @@ public class DragDropFileReader implements IUNIT {
 	 */
 	private void pickupInstViewPart() {
 		// Check each instance of parent Class
-		if(instEditPanelTab == null){
-			instEditPanelTab = EditPanelView.getInstance().getInstanceTabEditPanel();
+		if (instEditPanelTab == null) {
+			instEditPanelTab = EditPanelView.getInstance()
+					.getInstanceTabEditPanel();
 		}
-		if(instTimeLine == null){
+		if (instTimeLine == null) {
 			instTimeLine = TimeLineView.getInstance();
 		}
-		if(instPreviewPanel == null){
+		if (instPreviewPanel == null) {
 			instPreviewPanel = PreviewPanel.getInstance();
 		}
-		if(instScriptList == null){
+		if (instScriptList == null) {
 			instScriptList = ScriptListView.getInstance();
 		}
-		if(instScriptData == null){
+		if (instScriptData == null) {
 			instScriptData = ScriptData.getInstance();
 		}
 	}
-	
-/*************************************************************************
- * Drag & Drop XML file reader
- * 	
- ************************************************************************/
-	//**
+
+	/*************************************************************************
+	 * Drag & Drop XML file reader
+	 * 
+	 ************************************************************************/
+	// **
 	// * Private method : Pre-Process for Load data
 	// *
 	private void preProcessLoadFile() {
@@ -104,7 +105,7 @@ public class DragDropFileReader implements IUNIT {
 		instTimeLine.reqStoreVolLvlFilePath(null);
 	}
 
-	//**
+	// **
 	// * Private method : Post-Process for Load data
 	// *
 	private void postProcessLoadFile() {
@@ -113,9 +114,11 @@ public class DragDropFileReader implements IUNIT {
 		// Initialize Edit Panel contents
 		instEditPanelTab.initDispEditPanel();
 		// initialize all parameters
-		EditPanelView.getInstance().getInstanceTabSelWAVFile().initDescriptionStruct();
+		EditPanelView.getInstance().getInstanceTabSelWAVFile()
+				.initDescriptionStruct();
 		// initialize own screen
-		EditPanelView.getInstance().getInstanceTabSelWAVFile().initDispSelWavFile();
+		EditPanelView.getInstance().getInstanceTabSelWAVFile()
+				.initDispSelWavFile();
 		// Reset URL for Preview Movie
 		instPreviewPanel.setURLMovie(currentURLMovie);
 		// Store current opened XML file path
@@ -134,7 +137,7 @@ public class DragDropFileReader implements IUNIT {
 		instTimeLine.rewindActionTimeLine();
 	}
 
-	//**
+	// **
 	// * Private method : Load data from Open file.
 	// *
 	private void loadFile(String fname) {
@@ -158,28 +161,28 @@ public class DragDropFileReader implements IUNIT {
 	 */
 	private void loadXMLFile() {
 		boolean start_flg = true;
-		
+
 		// Check exist unsaved data Before Open file
-		if(instScriptData.getStatusSaveScripts() > 0){
+		if (instScriptData.getStatusSaveScripts() > 0) {
 			// Display confirmation message box
-			XMLFileMessageBox confModifyMB = new XMLFileMessageBox(MB_STYLE_MODIFY, null);
+			XMLFileMessageBox confModifyMB = new XMLFileMessageBox(
+					MB_STYLE_MODIFY, null);
 			int result = confModifyMB.open();
 			// Check result
-			if(result == SWT.YES){
+			if (result == SWT.YES) {
 				// Save current data to XML file
 				XMLFileSaveUtil saveFH = new XMLFileSaveUtil();
 				String filePath = saveFH.open();
 				saveFH.save(filePath, true);
-			}
-			else if(result == SWT.CANCEL){
+			} else if (result == SWT.CANCEL) {
 				// cancel close action
 				start_flg = false;
 			}
 		}
 		// Check status
-		if( start_flg ){
+		if (start_flg) {
 			// Check null (file name)
-			if(saveFileName != null){
+			if (saveFileName != null) {
 				// Pre-Process for loading
 				preProcessLoadFile();
 				// Load file(XML format)
@@ -190,37 +193,37 @@ public class DragDropFileReader implements IUNIT {
 		}
 	}
 
-/*************************************************************************
- * Drag & Drop CSV file reader
- * 	
- ************************************************************************/
+	/*************************************************************************
+	 * Drag & Drop CSV file reader
+	 * 
+	 ************************************************************************/
 	/**
 	 * @category Local method : Main method of Load CSV file
 	 */
 	private void loadCSVFile() {
 		boolean start_flg = true;
-		
+
 		// Check exist unsaved data Before Open file
-		if(instScriptData.getStatusSaveScripts() > 0){
+		if (instScriptData.getStatusSaveScripts() > 0) {
 			// Display confirmation message box
-			XMLFileMessageBox confModifyMB = new XMLFileMessageBox(MB_STYLE_MODIFY, null);
+			XMLFileMessageBox confModifyMB = new XMLFileMessageBox(
+					MB_STYLE_MODIFY, null);
 			int result = confModifyMB.open();
 			// Check result
-			if(result == SWT.YES){
+			if (result == SWT.YES) {
 				// Save current data to XML file
 				XMLFileSaveUtil saveFH = new XMLFileSaveUtil();
 				String filePath = saveFH.open();
 				saveFH.save(filePath, true);
-			}
-			else if(result == SWT.CANCEL){
+			} else if (result == SWT.CANCEL) {
 				// cancel close action
 				start_flg = false;
 			}
 		}
 		// Check status
-		if( start_flg ){
+		if (start_flg) {
 			// Check null (file name)
-			if(saveFileName != null){
+			if (saveFileName != null) {
 				// Clear XML file path
 				TimeLineView.getInstance().reqStoreXMLFilePath(null);
 

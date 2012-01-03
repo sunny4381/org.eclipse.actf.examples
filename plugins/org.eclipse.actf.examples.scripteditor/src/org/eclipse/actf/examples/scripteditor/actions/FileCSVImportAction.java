@@ -24,46 +24,45 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 
-
-public class FileCSVImportAction implements IWorkbenchWindowActionDelegate, IUNIT {
+public class FileCSVImportAction implements IWorkbenchWindowActionDelegate,
+		IUNIT {
 
 	// parameters
 	private String[] EXTENSIONS = { "*.csv", "*" };
 
-
 	public void run(IAction action) {
 		boolean start_flg = true;
-		
+
 		// Store instance of each ViewPart class
 		ScriptData instScriptData = ScriptData.getInstance();
 
 		// Check exist unsaved data Before Open file
-		if(instScriptData.getStatusSaveScripts() > 0){
+		if (instScriptData.getStatusSaveScripts() > 0) {
 			// Display confirmation message box
-			XMLFileMessageBox confModifyMB = new XMLFileMessageBox(MB_STYLE_MODIFY, null);
+			XMLFileMessageBox confModifyMB = new XMLFileMessageBox(
+					MB_STYLE_MODIFY, null);
 			int result = confModifyMB.open();
 			// Check result
-			if(result == SWT.YES){
+			if (result == SWT.YES) {
 				// Save current data to XML file
 				XMLFileSaveUtil saveFH = new XMLFileSaveUtil();
 				String filePath = saveFH.open();
 				saveFH.save(filePath, true);
-			}
-			else if(result == SWT.CANCEL){
+			} else if (result == SWT.CANCEL) {
 				// cancel close action
 				start_flg = false;
 			}
 		}
 		// Check status
-		if( start_flg ){
+		if (start_flg) {
 			// Request FileDialog (Choice open file name)
-			FileDialog openDialog = new FileDialog(	Display.getCurrent().getActiveShell(),
-													SWT.OPEN);
+			FileDialog openDialog = new FileDialog(Display.getCurrent()
+					.getActiveShell(), SWT.OPEN);
 			openDialog.setFilterExtensions(EXTENSIONS);
 			String csvFileName = openDialog.open();
 
 			// Check null (file name)
-			if(csvFileName != null){
+			if (csvFileName != null) {
 				// Clear XML file path
 				TimeLineView.getInstance().reqStoreXMLFilePath(null);
 

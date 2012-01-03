@@ -12,7 +12,6 @@ package org.eclipse.actf.ai.internal.ui.scripteditor.event;
 
 import java.util.EventListener;
 
-
 public interface PlayerControlEventListener extends EventListener {
 	public abstract void handlePlayPauseEvent(PlayerControlEvent e);
 }

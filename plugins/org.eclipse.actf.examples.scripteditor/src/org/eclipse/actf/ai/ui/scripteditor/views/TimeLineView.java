@@ -131,13 +131,17 @@ public class TimeLineView extends ViewPart implements IUNIT,
 	private static EventManager eventManager = null;
 
 	// for Video play interval.
-	private static final int WAIT_COUNT_FOR_VIDEO_PLAY = 3;	// Video play 150 msec and timer_task witch interval is 50 msec.
+	private static final int WAIT_COUNT_FOR_VIDEO_PLAY = 3; // Video play 150
+															// msec and
+															// timer_task witch
+															// interval is 50
+															// msec.
 	private int videoPlayCount = WAIT_COUNT_FOR_VIDEO_PLAY;
 
 	private boolean currentDragStatus = false; // status for dragging
 
-	private int timerUtilCounter = TL_SYNC_MEDIA_TIME;	// for Timer Util
-	
+	private int timerUtilCounter = TL_SYNC_MEDIA_TIME; // for Timer Util
+
 	/**
 	 * Constructor
 	 */
@@ -183,8 +187,8 @@ public class TimeLineView extends ViewPart implements IUNIT,
 		// Initialize application's GUI
 		initGUI(ownDisplay);
 
-//		// Start Timer for TimeLine management
-//		startTimeLineManager();
+		// // Start Timer for TimeLine management
+		// startTimeLineManager();
 
 		// Add listener for load meta file
 		initDDListener(ownComposite);
@@ -202,7 +206,8 @@ public class TimeLineView extends ViewPart implements IUNIT,
 				eventManager.removeTimerEventListener(ownInst);
 			}
 		});
-		videoPlayCount = TimeLineView.WAIT_COUNT_FOR_VIDEO_PLAY; // Video play count;
+		videoPlayCount = TimeLineView.WAIT_COUNT_FOR_VIDEO_PLAY; // Video play
+																	// count;
 
 	}
 
@@ -1869,8 +1874,8 @@ public class TimeLineView extends ViewPart implements IUNIT,
 	 * Background method : PickUP current Movie's status & position
 	 */
 	private void getCurrentMovieInfo() {
-		previousMovieStatus =currentMovieStatus; 		
-		
+		previousMovieStatus = currentMovieStatus;
+
 		// PickUP current video player status
 		currentMovieStatus = PreviewPanel.getInstance().getVideoStatus();
 		// PickUP current video position
@@ -2098,11 +2103,12 @@ public class TimeLineView extends ViewPart implements IUNIT,
 		}
 		// Get current own status
 		int nowStat = getStatusTimeLine();
-		
+
 		if (synchronizeCurrentTimeLine() == false
-				&& nowStat != TL_STAT_EXTENDED && previousMovieStatus == currentMovieStatus) {
+				&& nowStat != TL_STAT_EXTENDED
+				&& previousMovieStatus == currentMovieStatus) {
 			return;
-		}		// 1)Check current position of media(movie)
+		} // 1)Check current position of media(movie)
 		boolean result = checkCurrentTimeLine();
 		// 2)control preview movie
 		if (result || previousMovieStatus != currentMovieStatus) {
@@ -2160,15 +2166,16 @@ public class TimeLineView extends ViewPart implements IUNIT,
 				}
 
 				// TimelineView refresh 1/3 of timer_task. (150 msec interval)
-				if (videoPlayCount++ >= TimeLineView.WAIT_COUNT_FOR_VIDEO_PLAY ||
-					previousMovieStatus != currentMovieStatus) {
+				if (videoPlayCount++ >= TimeLineView.WAIT_COUNT_FOR_VIDEO_PLAY
+						|| previousMovieStatus != currentMovieStatus) {
 					// Synchronize TimeLine each views
 					synchronizeAllTimeLine(ownCurrentTimeLine);
 					// Check current movie status
 					if (currentMovieStatus != V_STAT_PLAY) {
 						// Forced change own status(action)
 						eventManager
-								.firePlayerControlEvent(new PlayerControlEvent(this));
+								.firePlayerControlEvent(new PlayerControlEvent(
+										this));
 					}
 					videoPlayCount = 0;
 				}
@@ -2190,7 +2197,8 @@ public class TimeLineView extends ViewPart implements IUNIT,
 				// Check current movie status
 				if (currentMovieStatus == V_STAT_PLAY) {
 					// Forced change own status(action)
-					eventManager.firePlayerControlEvent(new PlayerControlEvent(this));
+					eventManager.firePlayerControlEvent(new PlayerControlEvent(
+							this));
 				}
 			}
 		} else {
@@ -2220,7 +2228,8 @@ public class TimeLineView extends ViewPart implements IUNIT,
 				// Check current movie status
 				if (currentMovieStatus == V_STAT_PLAY) {
 					// Forced change own status(action)
-					eventManager.firePlayerControlEvent(new PlayerControlEvent(this));
+					eventManager.firePlayerControlEvent(new PlayerControlEvent(
+							this));
 				}
 				// Reset status flag
 				currentVoiceEngineAction = false;
@@ -2262,9 +2271,9 @@ public class TimeLineView extends ViewPart implements IUNIT,
 	/**
 	 * 
 	 */
-	public void handleTimerUtilEvent(TimerEvent e){
+	public void handleTimerUtilEvent(TimerEvent e) {
 		timerUtilCounter += ScriptEditorTimerUtil.TL_SYNC_TIME_BASE;
-		if(timerUtilCounter >= TL_SYNC_MEDIA_TIME){
+		if (timerUtilCounter >= TL_SYNC_MEDIA_TIME) {
 			timerTask();
 			timerUtilCounter = 0;
 		}

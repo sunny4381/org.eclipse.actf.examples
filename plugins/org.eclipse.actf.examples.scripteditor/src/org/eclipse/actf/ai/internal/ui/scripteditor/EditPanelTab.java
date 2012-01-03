@@ -165,7 +165,7 @@ public class EditPanelTab implements IUNIT, SyncTimeEventListener {
 		parent.addDisposeListener(new DisposeListener() {
 			@Override
 			public void widgetDisposed(DisposeEvent e) {
-				//TODO other components
+				// TODO other components
 				eventManager.removeSyncTimeEventListener(ownInst);
 			}
 		});

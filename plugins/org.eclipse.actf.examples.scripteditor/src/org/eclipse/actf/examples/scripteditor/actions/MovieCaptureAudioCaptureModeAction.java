@@ -25,7 +25,7 @@ public class MovieCaptureAudioCaptureModeAction implements
 	 */
 	// instance of each ViewPart class
 	private VolumeLevelCanvas instParentView = null;
-	
+
 	// for Event Managing
 	private static EventManager eventManager = null;
 
@@ -39,12 +39,13 @@ public class MovieCaptureAudioCaptureModeAction implements
 			instParentView = VolumeLevelCanvas.getInstance();
 		}
 	}
+
 	/**
 	 * Local method : Check Event Manager instance
 	 */
 	private void preCheckEventManager() {
-		if(eventManager == null) {
-			eventManager = EventManager.getInstance(); 			
+		if (eventManager == null) {
+			eventManager = EventManager.getInstance();
 		}
 	}
 

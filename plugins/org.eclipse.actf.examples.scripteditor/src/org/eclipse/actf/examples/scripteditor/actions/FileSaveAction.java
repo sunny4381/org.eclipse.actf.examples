@@ -43,7 +43,7 @@ public class FileSaveAction implements IWorkbenchWindowActionDelegate, IUNIT {
 				// Request FileDialog (Choice open file name)
 				saveFileName = saveFH.open();
 			}
-			
+
 			// Check null (file name)
 			if (saveFileName != null) {
 				// Save script data to XML file

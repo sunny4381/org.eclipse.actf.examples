@@ -13,7 +13,7 @@ package org.eclipse.actf.ai.internal.ui.scripteditor.event;
 import java.util.EventObject;
 
 public class PlayerControlEvent extends EventObject {
-	
+
 	private static final long serialVersionUID = -2418137134633782251L;
 
 	/**

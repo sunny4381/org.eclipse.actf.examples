@@ -12,7 +12,6 @@ package org.eclipse.actf.ai.internal.ui.scripteditor.event;
 
 import java.util.EventListener;
 
-
 public interface MouseDragEventListener extends EventListener {
 	public abstract void handleMouseDragEvent(MouseDragEvent e);
 }
