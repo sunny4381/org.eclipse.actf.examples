@@ -160,7 +160,11 @@ public class XMLFileSaveUtil implements IUNIT {
 					+ LINE_SEP);
 
 			// Write URL with encode to UTF-8
-			String strURL = instPreviewPanel.getURLMovie();
+			String strURL = "about:blank";
+			try {
+				strURL = instPreviewPanel.getURLMovie();
+			} catch (Exception e) {
+			}
 			writer.write("\t<targetSite uri=\"" + strURL + "\">" + LINE_SEP);
 			writer.write("\t  <targetContent key=\"*\"/>" + LINE_SEP);
 			writer.write("\t</targetSite>" + LINE_SEP);
@@ -182,7 +186,7 @@ public class XMLFileSaveUtil implements IUNIT {
 			}
 
 			writer.write("</puits>" + LINE_SEP);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			if (writer != null) {
