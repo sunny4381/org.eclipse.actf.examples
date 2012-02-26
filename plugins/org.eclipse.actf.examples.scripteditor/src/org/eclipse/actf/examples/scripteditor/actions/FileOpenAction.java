@@ -129,7 +129,7 @@ public class FileOpenAction implements IWorkbenchWindowActionDelegate, IUNIT {
 			// PickUP URI String
 			currentURLMovie = loader.getUri();
 		} catch (Exception e) {
-			System.out.println("loadFile() : Exception = " + e);
+			e.printStackTrace();
 		} finally {
 			loader = null;
 		}
