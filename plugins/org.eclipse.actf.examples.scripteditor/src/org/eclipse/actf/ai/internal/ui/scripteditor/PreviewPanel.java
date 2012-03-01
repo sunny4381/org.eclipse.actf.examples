@@ -24,6 +24,10 @@ import org.eclipse.actf.ai.ui.scripteditor.views.EditPanelView;
 import org.eclipse.actf.ai.ui.scripteditor.views.IUNIT;
 import org.eclipse.actf.ai.ui.scripteditor.views.TimeLineView;
 import org.eclipse.actf.examples.scripteditor.Activator;
+import org.eclipse.actf.model.ui.IModelService;
+import org.eclipse.actf.model.ui.editor.browser.IWebBrowserACTF;
+import org.eclipse.actf.model.ui.editors.ie.WebBrowserEditor;
+import org.eclipse.actf.model.ui.util.ModelServiceUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
@@ -244,17 +248,24 @@ public class PreviewPanel implements IUNIT, SyncTimeEventListener,
 	 * @purpose : Get current URL from Text field
 	 */
 	public String getURLMovie() {
-		// return current URL of Preview movie
-		return (WebBrowserFactory.getInstance().getUrlNavigaor());
+		IModelService model = ModelServiceUtils.getActiveModelService();
+		if(model instanceof IWebBrowserACTF){
+			return model.getURL();
+		}
+		return "about:blank";
 	}
 
 	/**
 	 * @category Setter Method
 	 * @purpose Set new URL to Text field
 	 */
-	public void setURLMovie(String newURL) {
-		// Pop new URL to navigator
-		WebBrowserFactory.getInstance().setUrlNavigaor(newURL);
+	public void setURLMovie(String newURL) {		
+		IModelService model = ModelServiceUtils.getActiveModelService();
+		if(model instanceof IWebBrowserACTF){
+			((IWebBrowserACTF) model).navigate(newURL);
+		}else{
+			ModelServiceUtils.launch(newURL, WebBrowserEditor.ID);
+		}
 	}
 
 	/**
@@ -537,7 +548,11 @@ public class PreviewPanel implements IUNIT, SyncTimeEventListener,
 		// ///imeLineView.getInstance().resetTimeLine();
 
 		// reload media content
-		WebBrowserFactory.getInstance().getInstWebBrowser().navigateRefresh();
+		IModelService model = ModelServiceUtils.getActiveModelService();
+		if(model instanceof IWebBrowserACTF){
+			((IWebBrowserACTF) model).navigateRefresh();
+		}
+		
 		// Stop TTS engine
 		instParentView.reqStopVoicePlayer();
 

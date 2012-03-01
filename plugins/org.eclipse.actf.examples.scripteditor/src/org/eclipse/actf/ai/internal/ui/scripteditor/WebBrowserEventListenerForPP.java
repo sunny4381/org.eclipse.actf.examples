@@ -19,11 +19,12 @@ public class WebBrowserEventListenerForPP implements
 
 	public void beforeNavigate(IWebBrowserACTF webBrowser, String url,
 			String targetFrameName, boolean isInNavigation) {
-		mediaSearchRequest();
+		mediaSearchRequest(webBrowser);
 	}
 
 	public void browserDisposed(IWebBrowserACTF webBrowser, String title) {
-		mediaSearchRequest();
+		//System.out.println("dispose: "+webBrowser);
+		mediaController.removeWebBrowser(webBrowser);
 	}
 
 	public void dispose() {
@@ -42,21 +43,20 @@ public class WebBrowserEventListenerForPP implements
 	}
 
 	public void getFocus(IWebBrowserACTF webBrowser) {
-		// TODO Auto-generated method stub
-
+		changeCurrentWebBrowser(webBrowser);
 	}
 
 	public void navigateComplete(IWebBrowserACTF webBrowser, String url) {
-		mediaSearchRequest();
+		mediaSearchRequest(webBrowser);
 	}
 
 	public void navigateStop(IWebBrowserACTF webBrowser) {
-		mediaSearchRequest();
+		mediaSearchRequest(webBrowser);
 	}
 
 	public void newWindow(IWebBrowserACTF webBrowser) {
-		// TODO Auto-generated method stub
-
+		System.out.println("new window: "+webBrowser);
+		changeCurrentWebBrowser(webBrowser);
 	}
 
 	public void progressChange(IWebBrowserACTF webBrowser, int progress,
@@ -67,11 +67,11 @@ public class WebBrowserEventListenerForPP implements
 	}
 
 	public void refreshComplete(IWebBrowserACTF webBrowser) {
-		mediaSearchRequest();
+		mediaSearchRequest(webBrowser);
 	}
 
 	public void refreshStart(IWebBrowserACTF webBrowser) {
-		mediaSearchRequest();
+		mediaSearchRequest(webBrowser);
 	}
 
 	public void rootDocumentComplete(IWebBrowserACTF webBrowser) {
@@ -85,20 +85,21 @@ public class WebBrowserEventListenerForPP implements
 			VolumeLevelCanvas.getInstance().setStatusCanvasVolumeLevel(1);
 		}
 
-		mediaSearchRequest();
+		mediaSearchRequest(webBrowser);
 	}
 
 	public void titleChange(IWebBrowserACTF webBrowser, String title) {
 		// for YouTube
-		mediaSearchRequest();
+		mediaSearchRequest(webBrowser);
 	}
 
-	private void mediaSearchRequest() {
-		// System.out.println("req");
-		WebBrowserFactory web = WebBrowserFactory.getInstance();
-		if (web != null) {
-			web.mediaSearchRequest();
-		}
+	WebBrowserFactory mediaController = WebBrowserFactory.getInstance();
+	
+	private void mediaSearchRequest(IWebBrowserACTF webBrowser) {
+		mediaController.mediaSearchRequest(webBrowser);
 	}
 
+	private void changeCurrentWebBrowser(IWebBrowserACTF webBrowser){
+		mediaController.setCurrentWebBrowser(webBrowser);
+	}
 }

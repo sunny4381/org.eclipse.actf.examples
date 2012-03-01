@@ -10,20 +10,15 @@
  *******************************************************************************/
 package org.eclipse.actf.ai.scripteditor.util;
 
+import java.util.HashMap;
+
 import org.eclipse.actf.model.dom.dombycom.AnalyzedResult;
 import org.eclipse.actf.model.dom.dombycom.INodeEx;
 import org.eclipse.actf.model.dom.dombycom.INodeExVideo;
 import org.eclipse.actf.model.dom.dombycom.INodeExVideo.VideoState;
 import org.eclipse.actf.model.ui.IModelService;
-import org.eclipse.actf.model.ui.IModelServiceHolder;
 import org.eclipse.actf.model.ui.editor.browser.IWebBrowserACTF;
-import org.eclipse.actf.model.ui.editor.browser.WebBrowserEventUtil;
-import org.eclipse.actf.model.ui.editors.ie.WebBrowserEditor;
 import org.eclipse.actf.model.ui.util.ModelServiceUtils;
-import org.eclipse.ui.IEditorInput;
-import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.IEditorSite;
-import org.eclipse.ui.PartInitException;
 import org.w3c.dom.Node;
 
 /**
@@ -31,8 +26,7 @@ import org.w3c.dom.Node;
  * @category Factory class for FlashPlayer
  * 
  */
-public class WebBrowserFactory extends WebBrowserEditor implements
-		IModelServiceHolder {
+public class WebBrowserFactory {
 
 	// Media sample unit time(100msec) to Local unit time(1msec)
 	private static final int SEC2MSEC = 1000;
@@ -41,123 +35,55 @@ public class WebBrowserFactory extends WebBrowserEditor implements
 	private static WebBrowserFactory ownInst = null;
 
 	// for Browser (dummy)
-	private IWebBrowserACTF browserPreview = null;
+	private IWebBrowserACTF curBrowser = null;
+	private MediaInfo curMediaInfo = null;
+
+	private class MediaInfo {
+		Node curRoot = null;
+		INodeExVideo[] videos = new INodeExVideo[0];
+		boolean checkFlag = false;
+		int counter = 0;
+	};
+
+	private HashMap<IWebBrowserACTF, MediaInfo> mediaMap = new HashMap<IWebBrowserACTF, WebBrowserFactory.MediaInfo>();
 
 	/**
-	 * Creates a new Internet Explorer Editor.
+	 * Creates a new MediaController.
 	 */
-	private WebBrowserFactory(String targetURL) {
-		// Spawn WebBrowser
-		initFactory(targetURL);
-	}
-
-	private void initFactory(String targetURL) {
-		// Launch WebBrowser
-		ModelServiceUtils.launch(targetURL, WebBrowserEditor.ID); //$NON-NLS-1$
-
-		// TODO check by using instanceof
-		browserPreview = (IWebBrowserACTF) ModelServiceUtils
-				.getActiveModelService();
-	}
-
-	/**
-	 * @category Getter method : Get own Instance
-	 */
-	static public WebBrowserFactory getInstance(String targetURL) {
-		// 1st check current Own Instance
-		if (ownInst == null) {
-			synchronized (WebBrowserFactory.class) {
-				// 2nd check current Own instance
-				if (ownInst == null) {
-					// New own class at once
-					ownInst = new WebBrowserFactory(targetURL);
-				}
-			}
-		}
-		// return own instance
-		return (ownInst);
+	private WebBrowserFactory() {
 	}
 
 	static public WebBrowserFactory getInstance() {
 		// return own instance
-		// TODO need to create instance if onwInst is null
+		if (ownInst == null) {
+			ownInst = new WebBrowserFactory();
+		}
 		return (ownInst);
 	}
 
-	/**
-	 * @category Getter method : Get Instance of Web Browser
-	 */
-	public IWebBrowserACTF getInstWebBrowser() {
-		// return instance of Web Browser
-		return (browserPreview);
+	public void setCurrentWebBrowser(IWebBrowserACTF webBrowser) {
+		curBrowser = webBrowser;
+		curMediaInfo = getMediaInfo(webBrowser);
+	}
+	
+	public void removeWebBrowser(IWebBrowserACTF webBrowser){
+		mediaMap.remove(webBrowser);
+		curBrowser = null;
+		curMediaInfo = null;
 	}
 
-	/**
-	 * Dummy ********************************************************* /**
-	 * 
-	 * @category Getter method : Get current URL from navigator
-	 */
-	public String getUrlNavigaor() {
-		// return current URL from navigator
-		return (browserPreview.getURL());
+	public void mediaSearchRequest(IWebBrowserACTF webBrowser) {
+		getMediaInfo(webBrowser).checkFlag = true;
 	}
 
-	/**
-	 * @category Setter method : Set URL to navigator
-	 */
-	public void setUrlNavigaor(String nextUrl) {
-		try {
-			// return current URL from navigator
-			browserPreview.navigate(nextUrl);
-		} catch (Exception e) {
-			System.out.println("setUrlNavigaor() : Exception = " + e);
+	private MediaInfo getMediaInfo(IWebBrowserACTF webBrowser) {
+		if (mediaMap.containsKey(webBrowser)) {
+			return mediaMap.get(webBrowser);
 		}
-	}
 
-	/**
-	 * Dummy *********************************************************
-	 * 
-	 * 
-	 * /**
-	 * 
-	 * @override
-	 */
-	public void dispose() {
-		WebBrowserEventUtil.browserDisposed(browserPreview, getPartName());
-	}
-
-	public void setFocus() {
-		// TODO
-		super.setFocus();
-	}
-
-	public void init(IEditorSite site, IEditorInput input)
-			throws PartInitException {
-		// TODO
-		super.init(site, input);
-	}
-
-	public IModelService getModelService() {
-		return (this.browserPreview);
-	}
-
-	public IEditorPart getEditorPart() {
-		// TODO Auto-generated method stub
-		return (this);
-	}
-
-	public void setEditorTitle(String title) {
-		// TODO Auto-generated method stub
-		setPartName(title);
-	}
-
-	private Node curRoot = null;
-	private INodeExVideo[] videos = new INodeExVideo[0];
-	private boolean checkFlag = false;
-	private int counter = 0;
-
-	public void mediaSearchRequest() {
-		checkFlag = true;
+		MediaInfo tmp = new MediaInfo();
+		mediaMap.put(webBrowser, tmp);
+		return tmp;
 	}
 
 	private void checkVideo() {
@@ -167,12 +93,21 @@ public class WebBrowserFactory extends WebBrowserEditor implements
 		// searchVideo();
 		// }
 
-		if (checkFlag) {
+		if (curBrowser == null){
+			IModelService model = ModelServiceUtils.getActiveModelService();
+			if(model instanceof IWebBrowserACTF){
+				setCurrentWebBrowser((IWebBrowserACTF)model);
+			}else{
+				return;
+			}
+		}
+
+		if (curMediaInfo.checkFlag) {
 			searchVideo();
-		} else if (videos.length == 0) {
-			counter++;
-			if (counter >= 50) {
-				checkFlag = true;
+		} else if (curMediaInfo.videos.length == 0) {
+			curMediaInfo.counter++;
+			if (curMediaInfo.counter >= 50) {
+				curMediaInfo.checkFlag = true;
 				searchVideo();
 			}
 		}
@@ -181,25 +116,39 @@ public class WebBrowserFactory extends WebBrowserEditor implements
 	public void searchVideo() {
 		// for cache
 		// checkFlag becomes true when mediaSearchRequest() is called.
-		if (checkFlag == false) {
+		if (curBrowser == null) {
+			IModelService model = ModelServiceUtils.getActiveModelService();
+			if(model instanceof IWebBrowserACTF){
+				setCurrentWebBrowser((IWebBrowserACTF)model);
+			}else{
+				return;
+			}
+		}
+
+		if (curMediaInfo.checkFlag == false) {
 			return;
 		}
 
 		AnalyzedResult analyzedResult = new AnalyzedResult();
-		curRoot = browserPreview.getLiveDocument().getDocumentElement();
-		if (curRoot instanceof INodeEx) {
-			analyzedResult = ((INodeEx) curRoot).analyze(analyzedResult);
+		curMediaInfo.curRoot = curBrowser.getLiveDocument()
+				.getDocumentElement();
+		if (curMediaInfo.curRoot instanceof INodeEx) {
+			analyzedResult = ((INodeEx) curMediaInfo.curRoot)
+					.analyze(analyzedResult);
 		}
-		videos = analyzedResult.getVideoNodes();
-		checkFlag = false;
-		counter = 0;
+		curMediaInfo.videos = analyzedResult.getVideoNodes();
+		curMediaInfo.checkFlag = false;
+		curMediaInfo.counter = 0;
 	}
 
 	public boolean pauseMedia() {
 		searchVideo();
 		boolean r = true;
-		for (int i = 0; i < videos.length; i++) {
-			r &= videos[i].pauseMedia();
+		if (curMediaInfo == null) {
+			return r;
+		}
+		for (int i = 0; i < curMediaInfo.videos.length; i++) {
+			r &= curMediaInfo.videos[i].pauseMedia();
 		}
 		return r;
 	}
@@ -207,8 +156,11 @@ public class WebBrowserFactory extends WebBrowserEditor implements
 	public boolean playMedia() {
 		searchVideo();
 		boolean r = true;
-		for (int i = 0; i < videos.length; i++) {
-			r &= videos[i].playMedia();
+		if (curMediaInfo == null) {
+			return r;
+		}
+		for (int i = 0; i < curMediaInfo.videos.length; i++) {
+			r &= curMediaInfo.videos[i].playMedia();
 		}
 		return r;
 	}
@@ -216,19 +168,22 @@ public class WebBrowserFactory extends WebBrowserEditor implements
 	public boolean rewindMedia() {
 		searchVideo();
 		boolean r = true;
-		for (int i = 0; i < videos.length; i++) {
+		if (curMediaInfo == null) {
+			return r;
+		}
+		for (int i = 0; i < curMediaInfo.videos.length; i++) {
 			// r &= videos[i].fastReverse();
-			r &= videos[i].stopMedia();
+			r &= curMediaInfo.videos[i].stopMedia();
 		}
 		return r;
 	}
 
 	public int getCurrentPosition() {
 		checkVideo();// TODO cache
-		if (videos.length > 0) {
+		if (curMediaInfo != null && curMediaInfo.videos.length > 0) {
 			int localTime = 0;
-			for (int i = 0; i < videos.length; i++) {
-				double realTime = videos[i].getCurrentPosition();
+			for (int i = 0; i < curMediaInfo.videos.length; i++) {
+				double realTime = curMediaInfo.videos[i].getCurrentPosition();
 				localTime = (int) (realTime * SEC2MSEC);
 			}
 			return (localTime);
@@ -240,10 +195,10 @@ public class WebBrowserFactory extends WebBrowserEditor implements
 	public boolean setCurrentPosition(int pos) {
 		checkVideo();
 		boolean result = true;
-		if (videos.length > 0) {
+		if (curMediaInfo != null && curMediaInfo.videos.length > 0) {
 			double readTime = pos / SEC2MSEC;
-			for (int i = 0; i < videos.length; i++) {
-				result = videos[i].setCurrentPosition(readTime) & result;
+			for (int i = 0; i < curMediaInfo.videos.length; i++) {
+				result = curMediaInfo.videos[i].setCurrentPosition(readTime) & result;
 			}
 			return result;
 		} else {
@@ -273,7 +228,7 @@ public class WebBrowserFactory extends WebBrowserEditor implements
 		// ** Dummy **** Movie time (EndTime) ********************
 		// TODO cache
 		checkVideo();
-		if (videos.length > 0) {
+		if (curMediaInfo != null && curMediaInfo.videos.length > 0) {
 			return (600000);
 		} else {
 			return (0);
@@ -284,11 +239,11 @@ public class WebBrowserFactory extends WebBrowserEditor implements
 
 	public int getVideoStatus() {
 		checkVideo();// TODO cache
-		if (videos.length > 0) {
+		if (curMediaInfo != null && curMediaInfo.videos.length > 0) {
 			int currentStatus = 0;
-			for (int i = 0; i < videos.length; i++) {
+			for (int i = 0; i < curMediaInfo.videos.length; i++) {
 				// PickUP current status
-				VideoState vs = videos[i].getCurrentState();
+				VideoState vs = curMediaInfo.videos[i].getCurrentState();
 				// exchange data type
 				switch (vs) {
 				case STATE_PLAY:

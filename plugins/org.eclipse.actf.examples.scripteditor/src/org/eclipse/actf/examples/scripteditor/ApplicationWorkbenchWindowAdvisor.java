@@ -15,6 +15,8 @@ import java.net.URL;
 import org.eclipse.actf.ai.internal.ui.scripteditor.PreviewPanel;
 import org.eclipse.actf.ai.scripteditor.util.WebBrowserFactory;
 import org.eclipse.actf.model.flash.proxy.FlashCacheUtil;
+import org.eclipse.actf.model.ui.editors.ie.WebBrowserEditor;
+import org.eclipse.actf.model.ui.util.ModelServiceUtils;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.application.ActionBarAdvisor;
@@ -60,7 +62,8 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 			strUrl = helpUrl.toString();
 		}
 
-		WebBrowserFactory.getInstance(strUrl);
+		WebBrowserFactory.getInstance();
+		ModelServiceUtils.launch(strUrl, WebBrowserEditor.ID);
 		PreviewPanel.getInstance().setURLMovie(strUrl);
 
 		// Store parent shell instance
