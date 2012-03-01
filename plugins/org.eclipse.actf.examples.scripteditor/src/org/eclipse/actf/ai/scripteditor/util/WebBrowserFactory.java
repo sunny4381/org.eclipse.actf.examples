@@ -250,6 +250,14 @@ public class WebBrowserFactory extends WebBrowserEditor implements
 			return false;
 		}
 	}
+	
+	public void showCurrentImage(){
+		int status = getVideoStatus();
+		if(status==2 || status==3){
+			playMedia();
+			pauseMedia();
+		}		
+	}
 
 	public int getTotalLength() {
 

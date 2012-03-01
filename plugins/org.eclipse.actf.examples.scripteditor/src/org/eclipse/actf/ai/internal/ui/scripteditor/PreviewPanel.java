@@ -606,6 +606,9 @@ public class PreviewPanel implements IUNIT, SyncTimeEventListener,
 					setLocationPreviewSlider(ps.getMaximum(),
 							storeCurrentTimeLineSlider);
 				}
+
+				WebBrowserFactory.getInstance().showCurrentImage();
+
 				// drop current event
 				return;
 			}

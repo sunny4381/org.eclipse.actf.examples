@@ -612,6 +612,7 @@ public class TimeLineCanvas extends Canvas implements IUNIT,
 				eventManager.fireMouseDragEvent(new MouseDragEvent(
 						MouseDragEvent.MOUSE_DRAG_END, this));
 			}
+			WebBrowserFactory.getInstance().showCurrentImage();
 		}
 	}
 

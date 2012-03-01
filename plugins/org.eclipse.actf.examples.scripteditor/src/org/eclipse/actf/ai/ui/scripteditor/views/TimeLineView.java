@@ -31,6 +31,7 @@ import org.eclipse.actf.ai.scripteditor.data.XMLFileSaveUtil;
 import org.eclipse.actf.ai.scripteditor.util.ScriptFileDropListener;
 import org.eclipse.actf.ai.scripteditor.util.SoundMixer;
 import org.eclipse.actf.ai.scripteditor.util.VoicePlayerFactory;
+import org.eclipse.actf.ai.scripteditor.util.WebBrowserFactory;
 import org.eclipse.actf.examples.scripteditor.ScriptEditorShutdownListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
@@ -1091,6 +1092,9 @@ public class TimeLineView extends ViewPart implements IUNIT,
 		// Get target Start Time data by parameter(index)
 		int nextStartTime = instScriptData.getScriptStartTime(index);
 
+		if (nextStartTime < 0)
+			nextStartTime = 0;
+
 		// PickUP current size of scroll bar
 		Point scPos = getCurrentSizeScrollBar();
 
@@ -1147,6 +1151,8 @@ public class TimeLineView extends ViewPart implements IUNIT,
 
 		// Update location of current Composite
 		childComposite.setLocation(nextCentre, nowPon.y);
+		
+		WebBrowserFactory.getInstance().setCurrentPosition(nextStartTime);
 	}
 
 	/**
