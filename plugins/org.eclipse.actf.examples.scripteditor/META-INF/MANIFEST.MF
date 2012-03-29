@@ -14,11 +14,12 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.ui.views,
  org.eclipse.actf.ai.voice,
  org.eclipse.actf.ai.tts.protalker,
+ org.eclipse.actf.ai.tts.msp,
  org.eclipse.actf.ai.tts.sapi,
  org.eclipse.actf.model.ui.editors.ie,
  org.eclipse.actf.model.dom.dombycom,
  org.eclipse.actf.util.vocab,
- org.eclipse.actf.examples.scripteditor.doc;bundle-version="0.0.1"
+ org.eclipse.actf.examples.scripteditor.doc
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Bundle-localization: plugin
