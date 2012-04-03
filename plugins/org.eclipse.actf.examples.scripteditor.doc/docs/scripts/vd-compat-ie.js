@@ -51,7 +51,7 @@
         case 2: // Paused
           media.paused = true;
           media.ended = false;
-          media.dispatchEvent({ type: 'pause', target: media });
+//        media.dispatchEvent({ type: 'pause', target: media });
           break;
         case 3: // Playing
           media.paused = false;
@@ -136,12 +136,14 @@
     this.__wmpMedia__.controls.currentPosition = this.currentTime;
     this.__wmpMedia__.controls.play();
     this.paused = false;
+    this.dispatchEvent({ type: 'play', target: this });
   };
 
   var pause = function () {
     this.currentTime = this.__wmpMedia__.controls.currentPosition;
     this.__wmpMedia__.controls.pause();
     this.paused = true;
+    this.dispatchEvent({ type: 'pause', target: this });
   };
 
   var preloaders = 0;

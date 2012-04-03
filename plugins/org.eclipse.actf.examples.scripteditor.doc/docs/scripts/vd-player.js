@@ -360,7 +360,7 @@
       toggleButton.__update__(paused = true);
     }, false);
 
-    video.addEventListener('playing', function (e) {
+    video.addEventListener('play', function (e) {
       toggleButton.disabled = false;
       stopButton.disabled = false;
       backButton.disabled = false;
