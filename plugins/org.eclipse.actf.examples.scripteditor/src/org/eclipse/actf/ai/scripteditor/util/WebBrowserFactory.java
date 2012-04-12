@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 IBM Corporation and Others
+ * Copyright (c) 2009, 2012 IBM Corporation and Others
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -216,24 +216,26 @@ public class WebBrowserFactory {
 
 	public int getTotalLength() {
 
-		/**
-		 * Pending *************************************** analyze(); // TODO
-		 * cache INodeExVideo[] videos = analyzedResult.getVideoNodes();
-		 * if(videos.length > 0){ int localTime = 0; for(int i = 0; i <
-		 * videos.length; i++){ double realTime = videos[0].getTotalLength();
-		 * localTime = (int)(realTime * SEC2MSEC); } return(localTime); } else {
-		 * return(0); } Pending
-		 ***************************************/
-
-		// ** Dummy **** Movie time (EndTime) ********************
 		// TODO cache
 		checkVideo();
 		if (curMediaInfo != null && curMediaInfo.videos.length > 0) {
-			return (600000);
+			double max = 0;
+			double tmp = 0;
+			for (int i=0; i<curMediaInfo.videos.length;i++){
+				tmp = curMediaInfo.videos[i].getTotalLength();
+				if(tmp>max){
+					max = tmp;
+				}
+			}
+			int length = (int) Math.ceil(max * 1000);
+						
+			if(length==0){
+				length = 600000;
+			}						
+			return (length);
 		} else {
 			return (0);
 		}
-		// ** Dummy **** max value(EndTime) = 10min ********************
 
 	}
 
