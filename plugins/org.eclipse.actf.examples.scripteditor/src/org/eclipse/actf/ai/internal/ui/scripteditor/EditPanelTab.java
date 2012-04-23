@@ -1178,6 +1178,9 @@ public class EditPanelTab implements IUNIT, SyncTimeEventListener {
 	 */
 	public void repaintTextEndTime() {
 		// PickUP current text
+		if(scaleVoiceSpeed.isDisposed()){
+			return;
+		}
 		int extendSpeed = scaleVoiceSpeed.getSelection();
 		int extendLang = currentDescLang;
 		String currentDesc = textAreaDescription.getText();

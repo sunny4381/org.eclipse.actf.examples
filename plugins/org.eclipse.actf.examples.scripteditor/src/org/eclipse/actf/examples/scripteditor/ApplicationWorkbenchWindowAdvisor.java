@@ -15,6 +15,7 @@ import java.net.URL;
 import org.eclipse.actf.ai.internal.ui.scripteditor.PreviewPanel;
 import org.eclipse.actf.ai.scripteditor.util.WebBrowserFactory;
 import org.eclipse.actf.model.flash.proxy.FlashCacheUtil;
+import org.eclipse.actf.model.flash.proxy.ProxySettingUtil;
 import org.eclipse.actf.model.ui.editors.ie.WebBrowserEditor;
 import org.eclipse.actf.model.ui.util.ModelServiceUtils;
 import org.eclipse.swt.graphics.Point;
@@ -48,7 +49,9 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 	public void postWindowOpen() {
 		super.postWindowOpen();
 		FlashCacheUtil.checkCache();
-
+		
+		ProxySettingUtil.setCurrentMode(ProxySettingUtil.PROXY_NONE);
+		
 		// Launch Web Browser
 		String strUrl = "about:blank";
 		URL helpUrl = PlatformUI

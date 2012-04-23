@@ -11,6 +11,7 @@
 package org.eclipse.actf.ai.internal.ui.scripteditor;
 
 import org.eclipse.actf.ai.scripteditor.util.WebBrowserFactory;
+import org.eclipse.actf.model.flash.proxy.FlashCacheUtil;
 import org.eclipse.actf.model.ui.editor.browser.IWebBrowserACTF;
 import org.eclipse.actf.model.ui.editor.browser.IWebBrowserACTFEventListener;
 
@@ -19,11 +20,18 @@ public class WebBrowserEventListenerForPP implements
 
 	public void beforeNavigate(IWebBrowserACTF webBrowser, String url,
 			String targetFrameName, boolean isInNavigation) {
+
+		//System.out.println(isInNavigation +" : "+targetFrameName+" : "+url);
+		if (isInNavigation && url != null
+				&& (url.startsWith("http") || url.startsWith("file"))) {
+			FlashCacheUtil.clearCache(true, null);
+		}
+
 		mediaSearchRequest(webBrowser);
 	}
 
 	public void browserDisposed(IWebBrowserACTF webBrowser, String title) {
-		//System.out.println("dispose: "+webBrowser);
+		// System.out.println("dispose: "+webBrowser);
 		mediaController.removeWebBrowser(webBrowser);
 	}
 
@@ -55,7 +63,7 @@ public class WebBrowserEventListenerForPP implements
 	}
 
 	public void newWindow(IWebBrowserACTF webBrowser) {
-		System.out.println("new window: "+webBrowser);
+		System.out.println("new window: " + webBrowser);
 		changeCurrentWebBrowser(webBrowser);
 	}
 
@@ -94,12 +102,12 @@ public class WebBrowserEventListenerForPP implements
 	}
 
 	WebBrowserFactory mediaController = WebBrowserFactory.getInstance();
-	
+
 	private void mediaSearchRequest(IWebBrowserACTF webBrowser) {
 		mediaController.mediaSearchRequest(webBrowser);
 	}
 
-	private void changeCurrentWebBrowser(IWebBrowserACTF webBrowser){
+	private void changeCurrentWebBrowser(IWebBrowserACTF webBrowser) {
 		mediaController.setCurrentWebBrowser(webBrowser);
 	}
 }
