@@ -13,16 +13,16 @@ package org.eclipse.actf.examples.scripteditor;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
+import org.eclipse.actf.ui.util.AbstractUIPluginACTF;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 
 /**
  * The activator class controls the plug-in life cycle
  */
-public class Activator extends AbstractUIPlugin {
+public class Activator extends AbstractUIPluginACTF {
 
 	// The plug-in ID
 	public static final String PLUGIN_ID = "org.eclipse.actf.examples.scripteditor";
