@@ -71,6 +71,13 @@
                style="push">
          </action>
          <action
+               class="org.eclipse.actf.examples.scripteditor.actions.ExportHTMLAction"
+               id="org.eclipse.actf.examples.scripteditor.ExportHTMLAction"
+               label="Export HTML"
+               menubarPath="file/impExportGroup"
+               style="push">
+         </action>
+         <action
                class="org.eclipse.actf.examples.scripteditor.actions.FileCSVExportAction"
                id="org.eclipse.actf.examples.scripteditor.FileCSVExporttAction"
                label="%scripteditor.action.csv.export"

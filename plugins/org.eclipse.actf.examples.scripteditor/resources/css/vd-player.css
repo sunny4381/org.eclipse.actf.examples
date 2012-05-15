@@ -1,0 +1,69 @@
+.vd-container {
+	position: relative;
+	display: inline-block;
+	text-align: center;
+	background: #808080;
+	min-width: 480px;
+}
+
+.vd-container {
+	position: relative;
+	display: inline-block;
+	text-align: center;
+}
+
+.vd-container .vd-descriptions {
+	position: relative;
+	height: 1px;
+	padding: 0;
+	margin: 0;
+	text-align: left;
+	border-bottom: solid 1px #404040;
+	background: #ffffff;
+	min-width: 480px;
+	overflow: hidden;
+}
+
+.vd-container .vd-descriptions.vd-show {
+	height: 4em;
+	padding: 0.25ex 0;
+}
+
+.vd-container .vd-descriptions-config {
+	text-align: right;
+	background: #ffffff;
+	min-width: 480px;
+}
+
+.vd-container .vd-captions {
+	position: absolute;
+	width: 96%;
+	margin: 2%;
+	padding: 0;
+	color: white;
+	font-size: 150%;
+	font-family: sans-serif;
+	text-align: center;
+	left: 0;
+	bottom: 1em;
+	text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+}
+
+.vd-container .vd-controls {
+	position: relative;
+	background: #404040;
+	margin: 0;
+	padding: 0;
+	color: white;
+	font-family: sans-serif;
+	text-align: right;
+}
+
+.vd-container .vd-controls button {
+	float: left;
+}
+
+.vd-container .vd-controls span {
+	line-height: 1.5;
+}
+

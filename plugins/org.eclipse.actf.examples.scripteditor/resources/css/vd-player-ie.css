@@ -1,0 +1,19 @@
+.vd-container {
+/*	display: inline !important;*/
+	zoom: 1 !important;
+}
+
+.vd-container .vd-captions span {
+	background: black !important;
+}
+
+.vd-container, .vd-container .vd-controls, .vd-container .vd-descriptions, .vd-container .vd-descriptions-config {
+	zoom: 1 !important;
+	width: 480px !important;
+}
+
+.vd-prefetcher {
+	position: absolute !important;
+	left: -65535px !important;
+}
+
