@@ -214,6 +214,16 @@ public class WebBrowserFactory {
 		}		
 	}
 
+	public String getVideoURL(){
+		// TODO cache
+		checkVideo();
+		if (curMediaInfo != null && curMediaInfo.videos.length > 0) {
+			//TODO
+			return curMediaInfo.videos[0].getVideoURL();
+		}
+		return null;
+	}
+	
 	public int getTotalLength() {
 
 		// TODO cache
@@ -226,9 +236,11 @@ public class WebBrowserFactory {
 				if(tmp>max){
 					max = tmp;
 				}
+//				System.out.println(curMediaInfo.videos[i].getVideoURL());
 			}
 			int length = (int) Math.ceil(max * 1000);
-						
+
+			//TODO
 			if(length==0){
 				length = 600000;
 			}						

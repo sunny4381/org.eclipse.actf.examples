@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.actf.ai.scripteditor.util;
 
+import java.io.File;
+
+import org.eclipse.actf.ai.tts.ITTSEngine;
 import org.eclipse.actf.ai.ui.scripteditor.views.IUNIT;
 import org.eclipse.actf.ai.voice.IVoice;
 import org.eclipse.actf.ai.voice.IVoiceEventListener;
@@ -103,6 +106,10 @@ public class VoicePlayerFactory implements IUNIT {
 		return (VE_NOSUPPORT);
 	}
 
+	public void setLang(String language){
+		voice.getTTSEngine().setLanguage(language);
+	}
+	
 	/**
 	 * Setter methods
 	 */
@@ -196,7 +203,19 @@ public class VoicePlayerFactory implements IUNIT {
 		// return current Mora's counter
 		return (mora);
 	}
+	
+	public boolean canSpeakToFile(){
+		return voice.getTTSEngine().canSpeakToFile();
+	}
 
+	public boolean speakToFile(String target, File targetFile){
+		ITTSEngine engine = voice.getTTSEngine();
+		if(engine.canSpeakToFile()){
+			return(engine.speakToFile(target, targetFile));
+		}
+		return false;
+	}
+	
 	/**
 	 * Local class implements IVoiceEventListener
 	 */

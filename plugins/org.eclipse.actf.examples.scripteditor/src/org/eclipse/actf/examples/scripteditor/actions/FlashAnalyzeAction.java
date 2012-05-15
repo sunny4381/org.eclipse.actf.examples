@@ -11,6 +11,9 @@
 package org.eclipse.actf.examples.scripteditor.actions;
 
 import org.eclipse.actf.ai.scripteditor.util.WebBrowserFactory;
+import org.eclipse.actf.model.ui.IModelService;
+import org.eclipse.actf.model.ui.editor.browser.IWebBrowserACTF;
+import org.eclipse.actf.model.ui.util.ModelServiceUtils;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.IWorkbenchWindow;
@@ -28,6 +31,10 @@ public class FlashAnalyzeAction implements IWorkbenchWindowActionDelegate {
 		// System.out.println("Flash reload");
 		WebBrowserFactory web = WebBrowserFactory.getInstance();
 		if (web != null) {
+			IModelService model = ModelServiceUtils.getActiveModelService();
+			if(model instanceof IWebBrowserACTF){
+				web.setCurrentWebBrowser((IWebBrowserACTF)model);
+			}
 			web.searchVideo();
 		}
 	}
