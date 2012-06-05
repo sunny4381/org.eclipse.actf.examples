@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: ACTF HTML evaluation example Fragment (Incubation)
+Bundle-Name: ACTF HTML evaluation example Fragment
 Bundle-SymbolicName: org.eclipse.actf.examples.adesigner.eval.html;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Vendor: Eclipse.org

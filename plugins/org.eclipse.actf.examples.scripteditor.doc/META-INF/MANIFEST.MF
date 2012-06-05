@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: ACTF ScriptEditor Help Plug-in (Incubation)
+Bundle-Name: ACTF ScriptEditor Help Plug-in
 Bundle-SymbolicName: org.eclipse.actf.examples.scripteditor.doc;singleton:=true
 Bundle-Version: 0.0.1.qualifier
 Bundle-Vendor: Eclipse.org

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="org.eclipse.actf.examples.adesigner"
-      label="ACTF Example aDesigner feature (Incubation)"
+      label="ACTF Example aDesigner feature"
       version="1.0.0.qualifier"
       provider-name="Eclipse.org"
       plugin="org.eclipse.actf.examples.adesigner"
