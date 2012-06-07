@@ -49,9 +49,9 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 	public void postWindowOpen() {
 		super.postWindowOpen();
 		FlashCacheUtil.checkCache();
-		
+
 		ProxySettingUtil.setCurrentMode(ProxySettingUtil.PROXY_NONE);
-		
+
 		// Launch Web Browser
 		String strUrl = "about:blank";
 		URL helpUrl = PlatformUI

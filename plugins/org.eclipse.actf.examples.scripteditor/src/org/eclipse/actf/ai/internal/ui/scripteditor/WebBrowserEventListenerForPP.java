@@ -21,7 +21,7 @@ public class WebBrowserEventListenerForPP implements
 	public void beforeNavigate(IWebBrowserACTF webBrowser, String url,
 			String targetFrameName, boolean isInNavigation) {
 
-		//System.out.println(isInNavigation +" : "+targetFrameName+" : "+url);
+		// System.out.println(isInNavigation +" : "+targetFrameName+" : "+url);
 		if (isInNavigation && url != null
 				&& (url.startsWith("http") || url.startsWith("file"))) {
 			FlashCacheUtil.clearCache(true, null);

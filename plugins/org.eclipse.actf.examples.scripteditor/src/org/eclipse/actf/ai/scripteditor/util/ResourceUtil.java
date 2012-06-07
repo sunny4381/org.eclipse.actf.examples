@@ -44,9 +44,9 @@ public class ResourceUtil {
 				"resources/css/vd-player-ie.css"), path + "vd-player-ie.css",
 				true);
 
-		FileUtils.copyFile(bundleBlind, new Path(
-				"resources/css/vd-player.css"), path + "vd-player.css",
-				true);
+		FileUtils.copyFile(bundleBlind,
+				new Path("resources/css/vd-player.css"),
+				path + "vd-player.css", true);
 
 	}
 }

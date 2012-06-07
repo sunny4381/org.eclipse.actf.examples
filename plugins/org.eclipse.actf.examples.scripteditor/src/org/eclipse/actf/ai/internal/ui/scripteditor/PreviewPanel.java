@@ -249,7 +249,7 @@ public class PreviewPanel implements IUNIT, SyncTimeEventListener,
 	 */
 	public String getURLMovie() {
 		IModelService model = ModelServiceUtils.getActiveModelService();
-		if(model instanceof IWebBrowserACTF){
+		if (model instanceof IWebBrowserACTF) {
 			return model.getURL();
 		}
 		return "about:blank";
@@ -259,11 +259,11 @@ public class PreviewPanel implements IUNIT, SyncTimeEventListener,
 	 * @category Setter Method
 	 * @purpose Set new URL to Text field
 	 */
-	public void setURLMovie(String newURL) {		
+	public void setURLMovie(String newURL) {
 		IModelService model = ModelServiceUtils.getActiveModelService();
-		if(model instanceof IWebBrowserACTF){
+		if (model instanceof IWebBrowserACTF) {
 			((IWebBrowserACTF) model).navigate(newURL);
-		}else{
+		} else {
 			ModelServiceUtils.launch(newURL, WebBrowserEditor.ID);
 		}
 	}
@@ -549,10 +549,10 @@ public class PreviewPanel implements IUNIT, SyncTimeEventListener,
 
 		// reload media content
 		IModelService model = ModelServiceUtils.getActiveModelService();
-		if(model instanceof IWebBrowserACTF){
+		if (model instanceof IWebBrowserACTF) {
 			((IWebBrowserACTF) model).navigateRefresh();
 		}
-		
+
 		// Stop TTS engine
 		instParentView.reqStopVoicePlayer();
 

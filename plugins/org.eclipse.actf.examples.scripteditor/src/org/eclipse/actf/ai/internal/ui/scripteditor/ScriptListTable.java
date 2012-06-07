@@ -81,11 +81,6 @@ public class ScriptListTable {
 
 	}
 
-	/**
-	 * @category
-	 
-	 
-	 */
 	private void initTable() {
 
 		// Set Layout for ScriptList Table

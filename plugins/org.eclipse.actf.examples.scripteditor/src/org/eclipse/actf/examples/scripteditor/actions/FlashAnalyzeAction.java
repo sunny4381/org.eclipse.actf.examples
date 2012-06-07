@@ -32,8 +32,8 @@ public class FlashAnalyzeAction implements IWorkbenchWindowActionDelegate {
 		WebBrowserFactory web = WebBrowserFactory.getInstance();
 		if (web != null) {
 			IModelService model = ModelServiceUtils.getActiveModelService();
-			if(model instanceof IWebBrowserACTF){
-				web.setCurrentWebBrowser((IWebBrowserACTF)model);
+			if (model instanceof IWebBrowserACTF) {
+				web.setCurrentWebBrowser((IWebBrowserACTF) model);
 			}
 			web.searchVideo();
 		}

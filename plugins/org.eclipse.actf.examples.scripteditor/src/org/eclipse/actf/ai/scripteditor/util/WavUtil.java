@@ -20,7 +20,8 @@ import javax.sound.sampled.DataLine;
 public class WavUtil {
 
 	/**
-	 * @param file target WAV file
+	 * @param file
+	 *            target WAV file
 	 * @return length of WAV file in Microsecond
 	 */
 	public static long getMicrosecondLength(File file) {
@@ -36,9 +37,10 @@ public class WavUtil {
 		}
 		return result;
 	}
-	
+
 	/**
-	 * @param file target WAV file
+	 * @param file
+	 *            target WAV file
 	 * @return length of WAV file in Millisecond
 	 */
 	public static double getMillisecondLength(File file) {
@@ -46,11 +48,12 @@ public class WavUtil {
 		if (result == -1) {
 			return -1;
 		}
-		return result / (double)1000;
+		return result / (double) 1000;
 	}
 
 	/**
-	 * @param file target WAV file
+	 * @param file
+	 *            target WAV file
 	 * @return length of WAV file in Second
 	 */
 	public static double getLength(File file) {
@@ -58,7 +61,7 @@ public class WavUtil {
 		if (result == -1) {
 			return -1;
 		}
-		return result / (double)1000000;
+		return result / (double) 1000000;
 	}
 
 }

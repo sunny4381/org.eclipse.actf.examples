@@ -162,9 +162,9 @@ public class ExportHTMLAction implements IWorkbenchWindowActionDelegate {
 			String dirName = saveFilepath.substring(0, index + 1);
 			String fileName;
 			if (last > 0) {
-				fileName = saveFilepath.substring(index+1, last);
+				fileName = saveFilepath.substring(index + 1, last);
 			} else {
-				fileName = saveFilepath.substring(index+1);
+				fileName = saveFilepath.substring(index + 1);
 			}
 
 			exportHTML(saveFilepath, fileName + "_ad.xml", true);
@@ -181,8 +181,8 @@ public class ExportHTMLAction implements IWorkbenchWindowActionDelegate {
 			TTMLUtil.exportTTML(adFilepath, false);
 
 			adFilepath = dirName + fileName + "_ad_p.xml";
-			TTMLUtil.exportTTMLandWAV(adFilepath, dirName + "ad_files" + File.separator,
-					fileName, null, false);
+			TTMLUtil.exportTTMLandWAV(adFilepath, dirName + "ad_files"
+					+ File.separator, fileName, null, false);
 		}
 	}
 

@@ -65,8 +65,8 @@ public class WebBrowserFactory {
 		curBrowser = webBrowser;
 		curMediaInfo = getMediaInfo(webBrowser);
 	}
-	
-	public void removeWebBrowser(IWebBrowserACTF webBrowser){
+
+	public void removeWebBrowser(IWebBrowserACTF webBrowser) {
 		mediaMap.remove(webBrowser);
 		curBrowser = null;
 		curMediaInfo = null;
@@ -93,11 +93,11 @@ public class WebBrowserFactory {
 		// searchVideo();
 		// }
 
-		if (curBrowser == null){
+		if (curBrowser == null) {
 			IModelService model = ModelServiceUtils.getActiveModelService();
-			if(model instanceof IWebBrowserACTF){
-				setCurrentWebBrowser((IWebBrowserACTF)model);
-			}else{
+			if (model instanceof IWebBrowserACTF) {
+				setCurrentWebBrowser((IWebBrowserACTF) model);
+			} else {
 				return;
 			}
 		}
@@ -118,9 +118,9 @@ public class WebBrowserFactory {
 		// checkFlag becomes true when mediaSearchRequest() is called.
 		if (curBrowser == null) {
 			IModelService model = ModelServiceUtils.getActiveModelService();
-			if(model instanceof IWebBrowserACTF){
-				setCurrentWebBrowser((IWebBrowserACTF)model);
-			}else{
+			if (model instanceof IWebBrowserACTF) {
+				setCurrentWebBrowser((IWebBrowserACTF) model);
+			} else {
 				return;
 			}
 		}
@@ -198,32 +198,33 @@ public class WebBrowserFactory {
 		if (curMediaInfo != null && curMediaInfo.videos.length > 0) {
 			double readTime = pos / SEC2MSEC;
 			for (int i = 0; i < curMediaInfo.videos.length; i++) {
-				result = curMediaInfo.videos[i].setCurrentPosition(readTime) & result;
+				result = curMediaInfo.videos[i].setCurrentPosition(readTime)
+						& result;
 			}
 			return result;
 		} else {
 			return false;
 		}
 	}
-	
-	public void showCurrentImage(){
+
+	public void showCurrentImage() {
 		int status = getVideoStatus();
-		if(status==2 || status==3){
+		if (status == 2 || status == 3) {
 			playMedia();
 			pauseMedia();
-		}		
+		}
 	}
 
-	public String getVideoURL(){
+	public String getVideoURL() {
 		// TODO cache
 		checkVideo();
 		if (curMediaInfo != null && curMediaInfo.videos.length > 0) {
-			//TODO
+			// TODO
 			return curMediaInfo.videos[0].getVideoURL();
 		}
 		return null;
 	}
-	
+
 	public int getTotalLength() {
 
 		// TODO cache
@@ -231,19 +232,19 @@ public class WebBrowserFactory {
 		if (curMediaInfo != null && curMediaInfo.videos.length > 0) {
 			double max = 0;
 			double tmp = 0;
-			for (int i=0; i<curMediaInfo.videos.length;i++){
+			for (int i = 0; i < curMediaInfo.videos.length; i++) {
 				tmp = curMediaInfo.videos[i].getTotalLength();
-				if(tmp>max){
+				if (tmp > max) {
 					max = tmp;
 				}
-//				System.out.println(curMediaInfo.videos[i].getVideoURL());
+				// System.out.println(curMediaInfo.videos[i].getVideoURL());
 			}
 			int length = (int) Math.ceil(max * 1000);
 
-			//TODO
-			if(length==0){
+			// TODO
+			if (length == 0) {
 				length = 600000;
-			}						
+			}
 			return (length);
 		} else {
 			return (0);

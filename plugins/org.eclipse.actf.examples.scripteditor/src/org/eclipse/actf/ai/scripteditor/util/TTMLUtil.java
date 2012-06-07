@@ -158,7 +158,7 @@ public class TTMLUtil {
 
 				String strDesc = instScriptData.getScriptData(i);
 
-				// TODO diff duration with next item				
+				// TODO diff duration with next item
 				writer.print("    <p xml:id=\"description" + i + "\" begin=\""
 						+ strStartTime);
 				if (instScriptData.getExtendExtended(i)) {

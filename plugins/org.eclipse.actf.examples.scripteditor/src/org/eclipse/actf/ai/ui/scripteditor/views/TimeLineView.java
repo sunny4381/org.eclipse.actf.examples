@@ -1151,7 +1151,7 @@ public class TimeLineView extends ViewPart implements IUNIT,
 
 		// Update location of current Composite
 		childComposite.setLocation(nextCentre, nowPon.y);
-		
+
 		WebBrowserFactory.getInstance().setCurrentPosition(nextStartTime);
 	}
 
