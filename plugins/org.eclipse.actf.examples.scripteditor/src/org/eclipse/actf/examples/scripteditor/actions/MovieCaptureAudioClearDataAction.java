@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 IBM Corporation and Others
+ * Copyright (c) 2009, 2012 IBM Corporation and Others
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -19,32 +19,12 @@ import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 public class MovieCaptureAudioClearDataAction implements
 		IWorkbenchWindowActionDelegate {
 
-	/**
-	 * Local data
-	 */
-	// instance of each ViewPart class
 	private VolumeLevelCanvas instParentView = null;
 
-	/**
-	 * Local method : PickUP instance of parent Canvas class
-	 */
-	private void pickupInstViewPart() {
+	public void run(IAction action) {
 		if (instParentView == null) {
 			instParentView = VolumeLevelCanvas.getInstance();
 		}
-	}
-
-	/**
-	 * Management PopUP window for preference of capture audio (non-Javadoc)
-	 */
-
-	/**
-	 * 
-	 * @see org.eclipse.ui.IActionDelegate#run(org.eclipse.jface.action.IAction)
-	 */
-	public void run(IAction action) {
-		// Store instance of parent Canvas class
-		pickupInstViewPart();
 
 		// Clear capture data
 		instParentView.cleanupMovieAudioLevel();

@@ -26,9 +26,9 @@
                style="push">
          </action>
          <action
-               class="org.eclipse.actf.examples.scripteditor.actions.FileCloseAction"
+               class="org.eclipse.actf.examples.scripteditor.actions.ClearAction"
                id="org.eclipse.actf.examples.scripteditor.FileCloseAction"
-               label="%scripteditor.action.close"
+               label="%scripteditor.action.clear"
                menubarPath="file/fileCloseGroup"
                style="push">
          </action>
@@ -77,6 +77,7 @@
                menubarPath="file/impExportGroup"
                style="push">
          </action>
+<!-- TODO recover         
          <action
                class="org.eclipse.actf.examples.scripteditor.actions.FileCSVExportAction"
                id="org.eclipse.actf.examples.scripteditor.FileCSVExporttAction"
@@ -91,7 +92,8 @@
                menubarPath="file/impExportGroup"
                style="push">
          </action>
-      </actionSet>
+--> 
+      </actionSet>     
       <actionSet
             id="org.eclipse.actf.examples.scripteditor.MultimediaActionSet"
             label="MultimediaActionSet"
@@ -148,9 +150,14 @@
    <extension
          point="org.eclipse.ui.perspectives">
       <perspective
-            name="ScriptEditor Perspective"
+            name="Audio Description Perspective"
             class="org.eclipse.actf.examples.scripteditor.Perspective"
             id="org.eclipse.actf.examples.scripteditor.perspective">
+      </perspective>
+      <perspective
+        	class="org.eclipse.actf.examples.scripteditor.Perspective2"
+        	id="org.eclipse.actf.examples.scripteditor.perspective2"
+        	name="Script Editor Perspective">
       </perspective>
    </extension>
 
@@ -174,12 +181,10 @@
             id="org.eclipse.actf.examples.scripteditor.EditPanelView"
             name="%scripteditor.view.editpanel">
       </view>
-      <view
-            class="org.eclipse.actf.ai.ui.scripteditor.views.ScriptListView"
-            icon="icons/setting.png"
-            id="org.eclipse.actf.examples.scripteditor.ScriptListView"
+	  <view class="org.eclipse.actf.ai.ui.scripteditor.views.GuideListView"
+            icon="icons/setting.png" id="org.eclipse.actf.examples.scripteditor.GuideListView"
             name="%scripteditor.view.scriptlist">
-      </view>
+	  </view>
       <view
             class="org.eclipse.actf.ai.ui.scripteditor.views.TimeLineView"
             icon="icons/timeline.gif"

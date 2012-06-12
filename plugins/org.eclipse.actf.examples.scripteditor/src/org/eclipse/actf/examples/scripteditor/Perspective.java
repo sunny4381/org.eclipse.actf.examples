@@ -11,12 +11,13 @@
 package org.eclipse.actf.examples.scripteditor;
 
 import org.eclipse.actf.ai.ui.scripteditor.views.EditPanelView;
-import org.eclipse.actf.ai.ui.scripteditor.views.ScriptListView;
+import org.eclipse.actf.ai.ui.scripteditor.views.GuideListView;
 import org.eclipse.actf.ai.ui.scripteditor.views.TimeLineView;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
 
 public class Perspective implements IPerspectiveFactory {
+	public static String ID = "org.eclipse.actf.examples.scripteditor.perspective";
 
 	public void createInitialLayout(IPageLayout layout) {
 		String editorArea = layout.getEditorArea();
@@ -25,10 +26,10 @@ public class Perspective implements IPerspectiveFactory {
 
 		// Create each ViewPart
 		layout.addStandaloneView(EditPanelView.VIEW_ID, false,
-				IPageLayout.BOTTOM, 0.72f, editorArea);
-		layout.addStandaloneView(ScriptListView.VIEW_ID, true,
-				IPageLayout.RIGHT, 0.7f, editorArea);
+				IPageLayout.BOTTOM, 0.8f, editorArea);
+		layout.addStandaloneView(GuideListView.VIEW_ID, true,
+				IPageLayout.RIGHT, 0.63f, editorArea);
 		layout.addStandaloneView(TimeLineView.VIEW_ID, true,
-				IPageLayout.BOTTOM, 0.7f, editorArea);
+				IPageLayout.BOTTOM, 0.65f, editorArea);
 	}
 }

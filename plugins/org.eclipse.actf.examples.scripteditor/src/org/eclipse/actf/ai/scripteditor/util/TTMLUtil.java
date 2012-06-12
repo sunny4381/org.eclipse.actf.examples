@@ -15,16 +15,17 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.util.List;
 
-import org.eclipse.actf.ai.internal.ui.scripteditor.XMLFileMessageBox;
-import org.eclipse.actf.ai.scripteditor.data.ScriptData;
-import org.eclipse.actf.ai.ui.scripteditor.views.IUNIT;
+import org.eclipse.actf.ai.scripteditor.data.IScriptData;
+import org.eclipse.actf.ai.scripteditor.data.ScriptDataManager;
 import org.eclipse.actf.util.FileUtils;
 import org.eclipse.swt.SWT;
 
 public class TTMLUtil {
 
-	private static ScriptData instScriptData = ScriptData.getInstance();
+	private static ScriptDataManager scriptDataMgr = ScriptDataManager
+			.getInstance();
 
 	/**
 	 * Export AudioDescription data in TTML format
@@ -60,7 +61,7 @@ public class TTMLUtil {
 
 			if (warnOverwrite && file.exists()) {
 				XMLFileMessageBox warningExistFile = new XMLFileMessageBox(
-						IUNIT.MB_STYLE_OVERWR, ttmlPathname);
+						XMLFileMessageBox.MB_STYLE_OVERWR, ttmlPathname);
 				int ret = warningExistFile.open();
 				if (ret != SWT.YES)
 					return;
@@ -133,35 +134,40 @@ public class TTMLUtil {
 			}
 
 			// Write all ScriptData
-			for (int i = 0; i < instScriptData.getLengthScriptList(); i++) {
-				int startTime = instScriptData.getScriptStartTime(i);
+			List<IScriptData> scriptList = scriptDataMgr.getDataList();
+			int i = 0;
+			for (IScriptData scriptData : scriptList) {
+				if (scriptData.getType() != IScriptData.TYPE_AUDIO) {
+					continue;
+				}
+				int startTime = scriptData.getStartTime();
 				int frame = (startTime % 1000) / (1000 / 30);
 				String frameS = (frame > 9) ? Integer.toString(frame) : "0"
 						+ frame;
 
-				String strStartTime = instScriptData
-						.makeFormatHHMMSS(startTime / 1000) + ":" + frameS;
-				int endTime = instScriptData.getScriptEndTime(i);
+				String strStartTime = TimeFormatUtil
+						.makeFormatHHMMSS_short(startTime / 1000) + ":" + frameS;
+				int endTime = scriptData.getEndTime();
 
 				int duration = endTime - startTime;
 				frame = (endTime % 1000) / (1000 / 30);
 				frameS = (frame > 9) ? Integer.toString(frame) : "0" + frame;
 
-				String StrEndTime = instScriptData
-						.makeFormatHHMMSS(endTime / 1000) + ":" + frameS;
+				String StrEndTime = TimeFormatUtil
+						.makeFormatHHMMSS_short(endTime / 1000) + ":" + frameS;
 
 				frame = (duration % 1000) / (1000 / 30);
 				frameS = (frame > 9) ? Integer.toString(frame) : "0" + frame;
 
-				String strDuration = instScriptData
-						.makeFormatHHMMSS(duration / 1000) + ":" + frameS;
+				String strDuration = TimeFormatUtil
+						.makeFormatHHMMSS_short(duration / 1000) + ":" + frameS;
 
-				String strDesc = instScriptData.getScriptData(i);
+				String strDesc = scriptData.getDescription();
 
 				// TODO diff duration with next item
 				writer.print("    <p xml:id=\"description" + i + "\" begin=\""
 						+ strStartTime);
-				if (instScriptData.getExtendExtended(i)) {
+				if (scriptData.isExtended()) {
 					writer.print("\" tvd:extended=\"true\" dur=\""
 							+ strDuration + "\"");
 				} else {
@@ -191,15 +197,18 @@ public class TTMLUtil {
 								+ ".*\"");
 					}
 					if (voice.canSpeakToFile()) {
-						String strGender = instScriptData.getExtendGender(i) ? "male"
+						String strGender = scriptData.getVgGender() ? "male"
 								: "female";
 						voice.setGender(strGender);
-						voice.setSpeed(instScriptData.getExtendSpeed(i));
-						voice.speakToFile(instScriptData.getScriptData(i),
-								new File(adWavDirpath + ad_file + ".wav"));
+
+						// TODO need convert
+						voice.setSpeed(scriptData.getVgPlaySpeed());
+						voice.speakToFile(strDesc, new File(adWavDirpath
+								+ ad_file + ".wav"));
 					}
 				}
 				writer.println(">" + canonicalize(strDesc) + "</p>");
+				i++;
 			}
 
 			writer.println("  </div>" + LINE_SEP + " </body>" + LINE_SEP

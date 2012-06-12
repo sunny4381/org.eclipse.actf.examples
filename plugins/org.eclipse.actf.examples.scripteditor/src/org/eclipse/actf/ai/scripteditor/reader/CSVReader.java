@@ -13,7 +13,6 @@ package org.eclipse.actf.ai.scripteditor.reader;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -23,14 +22,25 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
-import org.eclipse.actf.ai.internal.ui.scripteditor.XMLFileMessageBox;
-import org.eclipse.actf.ai.scripteditor.data.ScriptData;
+import org.eclipse.actf.ai.internal.ui.scripteditor.event.EventManager;
+import org.eclipse.actf.ai.internal.ui.scripteditor.event.SyncTimeEvent;
+import org.eclipse.actf.ai.scripteditor.data.DataUtil;
+import org.eclipse.actf.ai.scripteditor.data.IScriptData;
+import org.eclipse.actf.ai.scripteditor.data.ScriptDataFactory;
+import org.eclipse.actf.ai.scripteditor.data.event.DataEventManager;
+import org.eclipse.actf.ai.scripteditor.data.event.GuideListEvent;
+import org.eclipse.actf.ai.scripteditor.data.event.LabelEvent;
 import org.eclipse.actf.ai.scripteditor.preferences.CSVRulePreferenceUtil;
 import org.eclipse.actf.ai.scripteditor.util.SoundMixer;
+import org.eclipse.actf.ai.scripteditor.util.TimeFormatUtil;
+import org.eclipse.actf.ai.scripteditor.util.VoicePlayerFactory;
+import org.eclipse.actf.ai.scripteditor.util.WavUtil;
+import org.eclipse.actf.ai.scripteditor.util.WebBrowserFactory;
+import org.eclipse.actf.ai.scripteditor.util.XMLFileMessageBox;
 import org.eclipse.actf.ai.ui.scripteditor.views.EditPanelView;
 import org.eclipse.actf.ai.ui.scripteditor.views.IUNIT;
-import org.eclipse.actf.ai.ui.scripteditor.views.ScriptListView;
 import org.eclipse.actf.ai.ui.scripteditor.views.TimeLineView;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
@@ -40,42 +50,56 @@ import org.eclipse.ui.PlatformUI;
 public class CSVReader implements IUNIT {
 
 	// process status
-	private static final int CSV_PROC_IDLE = 0; // 0 : idle mode
-	private static final int CSV_PROC_LOAD = 1; // 1 : now loading CSV file (as
-												// String data)
-	private static final int CSV_PROC_ANALYZE = 2; // 2 : now analyzing loaded
-													// data
-	private static final int CSV_PROC_SAVE = 3; // 3 : now saving to ScriptList
-	private static final int CSV_SUB_PROC_CAT = 11; // 11 : Sub mode : now cat
-													// string mode
+	private static final int CSV_PROC_IDLE = 0; // idle mode
+	private static final int CSV_PROC_LOAD = 1; // loading CSV file (as String
+												// data)
+	private static final int CSV_PROC_ANALYZE = 2; // analyzing loaded data
+	private static final int CSV_PROC_SAVE = 3; // saving to ScriptList
+
+	// private static final int CSV_SUB_PROC_CAT = 11;
+	// Sub mode : now cat string mode
 
 	// sub status of analyze mode
-	private static final int CSV_ANA_IDLE = 0; // 0 : idle mode
-	private static final int CSV_ANA_STIME = 1; // 1 : now analyzing start time
-												// value
-	private static final int CSV_ANA_WAV = 2; // 2 : now analyzing URI value of
-												// WAV file path
-	private static final int CSV_ANA_WAIT_CONFIRM = 3; // 3 : now waiting
-														// confirm message box
-														// process
-	private static final int CSV_ANA_EXT_ENA = 4; // 4 : now analyzing enable
-													// status of Extend
-	private static final int CSV_ANA_EXT_GEN = 5; // 5 : now analyzing gender of
-													// Extend
-	private static final int CSV_ANA_EXT_LANG = 6; // 6 : now analyzing language
-													// of Extend
-	private static final int CSV_ANA_EXT_SPEED = 7; // 7 : now analyzing speed
-													// of Extend
-	private static final int CSV_ANA_EXT_PITCH = 8; // 8 : now analyzing pitch
-													// of Extend
-	private static final int CSV_ANA_EXT_VOL = 9; // 9 : now analyzing volume of
-													// Extend
-	private static final int CSV_ANA_EXT_WENA = 10; // 10 : now analyzing WAV
-													// enable status of Extend
-	private static final int CSV_ANA_EXT_WSPEED = 11; // 11 : now analyzing WAV
-														// speed of Extend
-	private static final int CSV_ANA_DESC = 12; // 12 : now analyzing
-												// description value
+	// 0 : idle mode
+	private static final int CSV_ANA_IDLE = 0;
+	// 1 : now analyzing start time
+	private static final int CSV_ANA_STIME = 1;
+	// 2 : now analyzing end time
+	private static final int CSV_ANA_ETIME = 2;
+	// 3 : now analyzing description
+	private static final int CSV_ANA_DESC = 3;
+	// 4 : now analyzing scenario
+	private static final int CSV_ANA_SCENARIO = 4;
+	// 5 : now analyzing speaker
+	private static final int CSV_ANA_SPEKER = 5;
+	// 6 : now analyzing caption
+	private static final int CSV_ANA_CAPTION = 6;
+	// 7 : now analyzing caption
+	private static final int CSV_ANA_COMMENT = 7;
+	// 8 : now analyzing data type
+	private static final int CSV_ANA_TYPE = 8;
+	// 9 : now analyzing data type
+	private static final int CSV_ANA_CHILD = 9;
+	// 10 : now analyzing URI value of WAV file path
+	private static final int CSV_ANA_WAV = 10;
+	// 11 : now waiting confirm message box process
+	private static final int CSV_ANA_WAIT_CONFIRM = 11;
+	// 12 : now analyzing enable status of Extend
+	private static final int CSV_ANA_EXT_ENA = 12;
+	// 13 : now analyzing gender of Extend
+	private static final int CSV_ANA_EXT_GEN = 13;
+	// 14 : now analyzing language of Extend
+	private static final int CSV_ANA_EXT_LANG = 14;
+	// 15 : now analyzing speed of Extend
+	private static final int CSV_ANA_EXT_SPEED = 15;
+	// 16 : now analyzing pitch of Extend
+	private static final int CSV_ANA_EXT_PITCH = 16;
+	// 17 : now analyzing volume of Extend
+	private static final int CSV_ANA_EXT_VOL = 17;
+	// 18 : now analyzing WAV enable status of Extend
+	private static final int CSV_ANA_EXT_WENA = 18;
+	// 19 : now analyzing WAV speed of Extend
+	private static final int CSV_ANA_EXT_WSPEED = 19;
 
 	// parse of TIME format
 	private static final String FORMAT_STIME_MMSSmmm = "mm:ss:mmm";
@@ -95,13 +119,20 @@ public class CSVReader implements IUNIT {
 
 	// variables for analyze process
 	private int bkup_startTime = -1;
+	private int bkup_endTime = -1;
 	private String bkup_description = null;
+	private String bkup_scenario = null;
+	private String bkup_speaker = null;
+	private String bkup_caption = null;
+	private String bkup_comment = null;
+	private String bkup_dataType = null;
+	private String bkup_child = null;
 	private URI bkup_wavUri = null;
 	private int bkup_wavDuration = -1;
 	// variables for extended information
 	private boolean bkup_ext_extended = false;
 	private boolean bkup_ext_gender = true;
-	private int bkup_ext_lang = 0;
+	private String bkup_ext_lang = "en-US"; // TODO use locale
 	private int bkup_ext_speed = 50;
 	private int bkup_ext_pitch = 50;
 	private int bkup_ext_volume = 50;
@@ -110,14 +141,21 @@ public class CSVReader implements IUNIT {
 
 	// variables for save process
 	private ArrayList<Integer> list_startTime;
+	private ArrayList<Integer> list_endTime;
 	private ArrayList<String> list_description;
+	private ArrayList<String> list_scenario;
+	private ArrayList<String> list_speaker;
+	private ArrayList<String> list_capton;
+	private ArrayList<String> list_comment;
+	private ArrayList<String> list_dataType;
+	private ArrayList<String> list_child;
 	private ArrayList<URI> list_wavUri;
 	private ArrayList<Integer> list_wavStartTime;
 	private ArrayList<Integer> list_wavDuration;
 	// variables for extend information
 	private ArrayList<Boolean> list_ext_extended;
 	private ArrayList<Boolean> list_ext_gender;
-	private ArrayList<Integer> list_ext_lang;
+	private ArrayList<String> list_ext_lang;
 	private ArrayList<Integer> list_ext_speed;
 	private ArrayList<Integer> list_ext_pitch;
 	private ArrayList<Integer> list_ext_volume;
@@ -128,7 +166,6 @@ public class CSVReader implements IUNIT {
 	private InputStream inCsvStream;
 	private BufferedReader bufCsvReader;
 	private ArrayList<String> rawCsvDataList = null;
-	private StringBuilder rawCsvCatString = null;
 	private int maxAnalyzeData = 0;
 	private int currentAnalyzeData = 0;
 	// private boolean nowExceptionNoWavFile = false;
@@ -138,6 +175,10 @@ public class CSVReader implements IUNIT {
 	private boolean currentActive = false;
 	private int currentProcess = CSV_PROC_IDLE;
 
+	private DataEventManager dataEventManager = null;
+	private EventManager eventManager = null;
+	static List<IScriptData> dataList = new ArrayList<IScriptData>();
+
 	/**
 	 * Constructor
 	 */
@@ -146,14 +187,21 @@ public class CSVReader implements IUNIT {
 		rawCsvDataList = new ArrayList<String>();
 		// Allocate array list for save process
 		list_startTime = new ArrayList<Integer>();
+		list_endTime = new ArrayList<Integer>();
 		list_description = new ArrayList<String>();
+		list_scenario = new ArrayList<String>();
+		list_speaker = new ArrayList<String>();
+		list_capton = new ArrayList<String>();
+		list_comment = new ArrayList<String>();
+		list_dataType = new ArrayList<String>();
+		list_child = new ArrayList<String>();
 		list_wavUri = new ArrayList<URI>();
 		list_wavStartTime = new ArrayList<Integer>();
 		list_wavDuration = new ArrayList<Integer>();
 		// Allocate array list for extend information
 		list_ext_extended = new ArrayList<Boolean>();
 		list_ext_gender = new ArrayList<Boolean>();
-		list_ext_lang = new ArrayList<Integer>();
+		list_ext_lang = new ArrayList<String>();
 		list_ext_speed = new ArrayList<Integer>();
 		list_ext_pitch = new ArrayList<Integer>();
 		list_ext_volume = new ArrayList<Integer>();
@@ -163,6 +211,9 @@ public class CSVReader implements IUNIT {
 		currentProcess = CSV_PROC_IDLE;
 		currentStatus = CSV_ANA_IDLE;
 		currentActive = false;
+
+		dataEventManager = DataEventManager.getInstance();
+		eventManager = EventManager.getInstance();
 	}
 
 	/**
@@ -211,7 +262,14 @@ public class CSVReader implements IUNIT {
 			// clear array list
 			rawCsvDataList.clear();
 			list_startTime.clear();
+			list_endTime.clear();
 			list_description.clear();
+			list_scenario.clear();
+			list_speaker.clear();
+			list_capton.clear();
+			list_comment.clear();
+			list_dataType.clear();
+			list_child.clear();
 			list_wavUri.clear();
 			list_wavStartTime.clear();
 			list_wavDuration.clear();
@@ -226,13 +284,20 @@ public class CSVReader implements IUNIT {
 			list_ext_wav_speed.clear();
 			// reset all variables
 			bkup_startTime = -1;
+			bkup_endTime = -1;
 			bkup_description = null;
+			bkup_scenario = null;
+			bkup_speaker = null;
+			bkup_caption = null;
+			bkup_comment = null;
+			bkup_dataType = null;
+			bkup_child = null;
 			bkup_wavUri = null;
 			bkup_wavDuration = -1;
 			// reset all extend variables
 			bkup_ext_extended = false;
 			bkup_ext_gender = true;
-			bkup_ext_lang = 0;
+			bkup_ext_lang = "en-US"; // TODO use locale
 			bkup_ext_speed = 50;
 			bkup_ext_pitch = 50;
 			bkup_ext_volume = 50;
@@ -266,91 +331,38 @@ public class CSVReader implements IUNIT {
 			// load current line from CSV file
 			String rawLineData = bufCsvReader.readLine();
 			if (rawLineData != null) {
-				// Store line string to temporary buffer
-				String[] tempLineData = rawLineData.split(",");
-				// Store splitting string with trimming blank code
-				for (int i = 0; i < tempLineData.length; i++) {
-					// trim blank code of current string
-					String trimLineData = tempLineData[i].trim();
-					if (trimLineData.length() == 0) {
-						// undo parent data (may be, all blank code)
-						trimLineData = tempLineData[i];
+				String[] tempLineData = null;
+				// CSV_SUB_PROC_CAT mode is not used.
+				while (true) {
+					String tmp = rawLineData.trim().replaceAll("&", "")
+							.replaceAll("\"\"", "&");
+					if (tmp.endsWith("\"") || tmp.endsWith(",&")) {
+						break;
 					}
-					// Check double quotation code for cat string
-					int index = trimLineData.indexOf("\"");
-					if (index >= 0) {
-						// Trim double quotation code from current string
-						String trimLineData2 = trimLineData
-								.replaceAll("\"", "");
-						// Initialize StringBuilder for cat string
-						rawCsvCatString = new StringBuilder(trimLineData2);
-						// Blanch to cat string mode
-						currentProcess = CSV_SUB_PROC_CAT;
-					} else {
-						// append all splitting string to array list
-						rawCsvDataList.add(trimLineData);
+					String tmpRaw = bufCsvReader.readLine();
+					if (tmpRaw == null) {
+						break;
 					}
+					rawLineData += (System.getProperty("line.separator") + tmpRaw);
 				}
-			} else {
-				// End of File
-				result = true;
-			}
-		} else {
-			// forced exit
-			result = true;
-		}
-		// return result
-		return (result);
-	}
-
-	/**
-	 * @category Local method : Cat string during load line data from CSV file
-	 * @return result process : TRUE:Finished process, FALSE:Active process
-	 * @throws IOException
-	 */
-	private boolean catStringCSVData() throws IOException {
-		boolean result = false;
-		if (bufCsvReader != null) {
-			// load current line from CSV file
-			String rawLineData = bufCsvReader.readLine();
-			if (rawLineData != null) {
 				// Store line string to temporary buffer
-				String[] tempLineData = rawLineData.split(",");
+				// TODO use regexp
+				tempLineData = rawLineData.split("\",\"", -1);
 				// Store splitting string with trimming blank code
 				for (int i = 0; i < tempLineData.length; i++) {
 					// trim blank code of current string
-					String trimLineData = tempLineData[i].trim();
-					if (trimLineData.length() == 0) {
+					String trimLineData = tempLineData[i]
+							.replaceAll("^[\\s\"]?+", "")
+							.replaceAll("[\\s\"]?+$", "")
+							.replaceAll("\"\"", "\"");
+					trimLineData = trimLineData.replaceAll("&2c", ",")
+							.replaceAll("&amp;", "&");
+					if (trimLineData.trim().length() > 0) {
 						// undo parent data (may be, all blank code)
-						trimLineData = tempLineData[i];
+						trimLineData = trimLineData.trim();
 					}
-
-					// Check cat string mode
-					if (currentProcess == CSV_SUB_PROC_CAT) {
-						// Check double quotation code for cat string
-						int index = trimLineData.indexOf("\"");
-						if (index >= 0) {
-							// Trim double quotation code from current string
-							String trimLineData2 = trimLineData.replaceAll(
-									"\"", "");
-							rawCsvCatString.append(trimLineData2);
-							// append all splitting string to array list
-							rawCsvDataList.add(rawCsvCatString.toString());
-							rawCsvCatString = null;
-							// Recovery status to loading mode
-							currentProcess = CSV_PROC_LOAD;
-							// End of current process
-							result = true;
-						} else {
-							// Cat string with line separator
-							rawCsvCatString.append(trimLineData);
-							rawCsvCatString.append(System
-									.getProperty("line.separator"));
-						}
-					} else {
-						// append all splitting string to array list
-						rawCsvDataList.add(trimLineData);
-					}
+					// Trim double quotation code from current string
+					rawCsvDataList.add(trimLineData);
 				}
 			} else {
 				// End of File
@@ -375,21 +387,39 @@ public class CSVReader implements IUNIT {
 
 		// PickUP next string
 		String nowStr = rawCsvDataList.get(currentAnalyzeData);
-
 		// Status 1 : Check format is StartTime(3pattern match)
 		if (isFormatStartTime(nowStr, FORMAT_STIME_MMSSmmm)
 				|| isFormatStartTime(nowStr, FORMAT_STIME_MMSS)
 				|| isFormatStartTime(nowStr, FORMAT_STIME_HHMMSSmmm)) {
 
 			// check current status
-			if (currentStatus >= CSV_ANA_STIME) {
-				// exchange null data to blank code
-				if (bkup_description == null)
+			if (currentStatus >= CSV_ANA_ETIME) {
+				if (bkup_description == null) {
 					bkup_description = DEF_STR_DESC;
+				}
+				if (bkup_scenario == null) {
+					bkup_scenario = "";
+				}
+				if (bkup_speaker == null) {
+					bkup_speaker = "";
+				}
+				if (bkup_caption == null) {
+					bkup_caption = "";
+				}
+				if (bkup_comment == null) {
+					bkup_comment = "";
+				}
 
 				// store current data as script data to own temporary buffer
 				list_startTime.add(bkup_startTime);
+				list_endTime.add(bkup_endTime);
 				list_description.add(bkup_description);
+				list_scenario.add(bkup_scenario);
+				list_speaker.add(bkup_speaker);
+				list_capton.add(bkup_caption);
+				list_comment.add(bkup_comment);
+				list_dataType.add(bkup_dataType);
+				list_child.add(bkup_child);
 				// store current data as WAV information to own temporary buffer
 				if (bkup_wavUri != null) {
 					list_wavUri.add(bkup_wavUri);
@@ -414,29 +444,55 @@ public class CSVReader implements IUNIT {
 				bkup_wavDuration = -1;
 				// Initialize Extended area for next start time
 				bkup_ext_extended = false;
-				bkup_ext_gender = true;
-				bkup_ext_lang = EditPanelView.getInstance()
-						.getInstanceTabEditPanel().getLangDescription();
 				bkup_ext_speed = 50;
 				bkup_ext_pitch = 50;
 				bkup_ext_volume = 50;
 				bkup_ext_wav_enable = false;
 				bkup_ext_wav_speed = 1.0f;
+				// TODO gender, lang
 			}
 
-			// Exchange data format to ScriptData
-			bkup_startTime = parseIntStartTime(nowStr);
-			// Check result
-			if (bkup_startTime >= 0) {
-				// Change mode own process
-				currentStatus = CSV_ANA_STIME;
+			if (currentStatus != CSV_ANA_STIME) {
+				bkup_startTime = parseIntStartEndTime(nowStr);
+				if (bkup_startTime >= 0) {
+					currentStatus = CSV_ANA_STIME;
+				} else {
+					currentStatus = CSV_ANA_IDLE;
+				}
 			} else {
-				// illegal data
-				currentStatus = CSV_ANA_IDLE;
+				bkup_endTime = parseIntStartEndTime(nowStr);
+				if (bkup_endTime >= 0) {
+					currentStatus = CSV_ANA_ETIME;
+				} else {
+					currentStatus = CSV_ANA_IDLE;
+				}
 			}
-		}
-		// Status 2 : Check format is WAV file path
-		else if (currentStatus == CSV_ANA_STIME) {
+		} else if (currentStatus == CSV_ANA_STIME) {
+			if (nowStr.trim().length() == 0) {
+				currentStatus = CSV_ANA_ETIME;
+			}
+		} else if (currentStatus == CSV_ANA_ETIME) {
+			bkup_description = nowStr;
+			currentStatus = CSV_ANA_DESC;
+		} else if (currentStatus == CSV_ANA_DESC) {
+			bkup_scenario = nowStr;
+			currentStatus = CSV_ANA_SCENARIO;
+		} else if (currentStatus == CSV_ANA_SCENARIO) {
+			bkup_speaker = nowStr;
+			currentStatus = CSV_ANA_SPEKER;
+		} else if (currentStatus == CSV_ANA_SPEKER) {
+			bkup_caption = nowStr;
+			currentStatus = CSV_ANA_CAPTION;
+		} else if (currentStatus == CSV_ANA_CAPTION) {
+			bkup_comment = nowStr;
+			currentStatus = CSV_ANA_COMMENT;
+		} else if (currentStatus == CSV_ANA_COMMENT) {
+			bkup_dataType = nowStr;
+			currentStatus = CSV_ANA_TYPE;
+		} else if (currentStatus == CSV_ANA_TYPE) {
+			bkup_child = nowStr;
+			currentStatus = CSV_ANA_CHILD;
+		} else if (currentStatus == CSV_ANA_CHILD) {
 			// Check format is WAV file path
 			if (isFormatWavPath(nowStr)) {
 				// Exchange data format to URI
@@ -461,16 +517,16 @@ public class CSVReader implements IUNIT {
 									String wavInfo = LN_SEPARATOR
 											+ LN_SEPARATOR
 											+ "    Start Time : "
-											+ ScriptData.getInstance()
-													.makeFormatMMSSMS(
-															bkup_startTime)
+											+ TimeFormatUtil
+													.makeFormatHHMMSSMS_short(bkup_startTime)
 											+ LN_SEPARATOR
 											+ "    WAV file   : "
 											+ targetWavFile + LN_SEPARATOR;
 
 									// Display confirmation message box
 									XMLFileMessageBox wavMB = new XMLFileMessageBox(
-											MB_STYLE_WAV_CONFIRM, wavInfo);
+											XMLFileMessageBox.MB_STYLE_WAV_CONFIRM,
+											wavInfo);
 									int mode = wavMB.open();
 									// Check result
 									if (mode == SWT.YES) {
@@ -505,7 +561,7 @@ public class CSVReader implements IUNIT {
 				currentStatus = CSV_ANA_WAV;
 			}
 		}
-		// Status 4 : PickUP enable status of Extend
+		// Status 4 : Extended
 		else if (currentStatus == CSV_ANA_WAV) {
 			bkup_ext_extended = false;
 			if ((nowStr != null) && ("1".equals(nowStr))) {
@@ -515,27 +571,25 @@ public class CSVReader implements IUNIT {
 			// Change mode to own process
 			currentStatus = CSV_ANA_EXT_ENA;
 		}
-		// Status 5 : PickUP gender of Extend
+		// Status 5 : gender
 		else if (currentStatus == CSV_ANA_EXT_ENA) {
 			bkup_ext_gender = true;
 			if ((nowStr != null) && ("female".equals(nowStr))) {
 				// Set female
 				bkup_ext_gender = false;
 			}
-			// Change mode to own process
 			currentStatus = CSV_ANA_EXT_GEN;
-		}
-		// Status 6 : PickUP language of Extend
-		else if (currentStatus == CSV_ANA_EXT_GEN) {
-			bkup_ext_lang = EditPanelView.getInstance()
-					.getInstanceTabEditPanel().getLangDescription();
+		} else if (currentStatus == CSV_ANA_EXT_GEN) {
+			bkup_ext_lang = "en-US"; // TODO
 			if (nowStr != null) {
 				// Check limit
 				if ("ja".equals(nowStr) || "en".equals(nowStr)) {
 					// Set language
-					bkup_ext_lang = ("ja".equals(nowStr) ? DESC_LANG_JA
-							: DESC_LANG_EN);
+					bkup_ext_lang = ("ja".equals(nowStr) ? "ja-JP" : "en-US");
+				} else {
+					bkup_ext_lang = nowStr;
 				}
+
 			}
 			// Change mode to own process
 			currentStatus = CSV_ANA_EXT_LANG;
@@ -543,7 +597,7 @@ public class CSVReader implements IUNIT {
 		// Status 7 : PickUP Speed of Extend
 		else if (currentStatus == CSV_ANA_EXT_LANG) {
 			bkup_ext_speed = 50;
-			if (nowStr != null) {
+			if (nowStr != null && nowStr.length() > 0) {
 				// Set speed
 				bkup_ext_speed = Integer.parseInt(nowStr);
 				// Check limit
@@ -558,7 +612,7 @@ public class CSVReader implements IUNIT {
 		// Status 8 : PickUP Pitch of Extend
 		else if (currentStatus == CSV_ANA_EXT_SPEED) {
 			bkup_ext_pitch = 50;
-			if (nowStr != null) {
+			if (nowStr != null && nowStr.length() > 0) {
 				// Set pitch
 				bkup_ext_pitch = Integer.parseInt(nowStr);
 				// Check limit
@@ -573,7 +627,7 @@ public class CSVReader implements IUNIT {
 		// Status 9 : PickUP Volume of Extend
 		else if (currentStatus == CSV_ANA_EXT_PITCH) {
 			bkup_ext_volume = 50;
-			if (nowStr != null) {
+			if (nowStr != null && nowStr.length() > 0) {
 				// Set volume
 				bkup_ext_volume = Integer.parseInt(nowStr);
 				// Check limit
@@ -605,7 +659,7 @@ public class CSVReader implements IUNIT {
 			bkup_ext_wav_speed = 1.0f;
 			// Check exist WAV file
 			if (bkup_wavUri != null) {
-				if (nowStr != null) {
+				if (nowStr != null && nowStr.length() > 0) {
 					// Set WAV speed
 					bkup_ext_wav_speed = Float.valueOf(nowStr) / 100.0f;
 					// Check limit
@@ -617,16 +671,6 @@ public class CSVReader implements IUNIT {
 			}
 			// Change mode to own process
 			currentStatus = CSV_ANA_EXT_WSPEED;
-		}
-		// Status 12 : PickUP string of description
-		else if (currentStatus == CSV_ANA_EXT_WSPEED) {
-			// Check null string
-			if (!nowStr.equals("")) {
-				// This is description string
-				bkup_description = nowStr;
-			}
-			// Change mode to own process
-			currentStatus = CSV_ANA_DESC;
 		}
 		// Status 5 : Wait confirm message box
 		else if (currentStatus == CSV_ANA_WAIT_CONFIRM) {
@@ -647,10 +691,31 @@ public class CSVReader implements IUNIT {
 					// exchange null data to blank code
 					if (bkup_description == null)
 						bkup_description = DEF_STR_DESC;
+					if (bkup_description == null)
+						bkup_description = DEF_STR_DESC;
+					if (bkup_scenario == null)
+						bkup_scenario = DEF_STR_DESC;
+					if (bkup_speaker == null)
+						bkup_speaker = DEF_STR_DESC;
+					if (bkup_caption == null)
+						bkup_caption = DEF_STR_DESC;
+					if (bkup_comment == null)
+						bkup_comment = DEF_STR_DESC;
+					if (bkup_dataType == null)
+						bkup_comment = "D";
+					if (bkup_child == null)
+						bkup_child = "";
 
 					// store current data as script data to own temporary buffer
 					list_startTime.add(bkup_startTime);
+					list_endTime.add(bkup_endTime);
 					list_description.add(bkup_description);
+					list_scenario.add(bkup_scenario);
+					list_speaker.add(bkup_speaker);
+					list_capton.add(bkup_caption);
+					list_comment.add(bkup_comment);
+					list_dataType.add(bkup_dataType);
+					list_child.add(bkup_child);
 					// store current data as WAV information to own temporary
 					// buffer
 					if (bkup_wavUri != null) {
@@ -697,9 +762,7 @@ public class CSVReader implements IUNIT {
 				result = true;
 			}
 		} catch (ParseException pe) {
-			// System.out.println("isFormatStartTime() : " +pe);
 		}
-		// return result
 		return (result);
 	}
 
@@ -730,36 +793,6 @@ public class CSVReader implements IUNIT {
 	}
 
 	/**
-	 * @category Check format is Local path
-	 * @param strUrl
-	 *            : string of URL
-	 * @return result : TRUE:local path, FALSE:otherwise format
-	 */
-	private boolean isFormatLocalUri(String strOrg) {
-		boolean result = false;
-
-		try {
-			// trimming blank code
-			String strUri = strOrg.trim();
-			// MakeUP URI data
-			URI uri = getResource(strUri);
-			// Check current string format is URL
-			if (uri != null) {
-				// Check current URL is local path
-				int index = uri.toString().indexOf("file:/");
-				if (index >= 0) {
-					// this is local path
-					result = true;
-				}
-			}
-		} catch (Exception ue) {
-			// System.out.println("isFormatLocalUri() : " +ue);
-		}
-		// return result
-		return (result);
-	}
-
-	/**
 	 * @category Check format is WAV file path
 	 * @param strUrl
 	 *            : string of URL
@@ -767,26 +800,17 @@ public class CSVReader implements IUNIT {
 	 */
 	private boolean isFormatWavPath(String strWavPath) {
 		boolean result = false;
-
 		try {
 			// Check URL format
 			if (isFormatUrl(strWavPath)) {
-				// Check WAV file
-				int index = strWavPath.indexOf(".wav");
-				if (index >= 0) {
-					// Check WAV header information
-					if (SoundMixer.getInstance().isWavFormat(strWavPath)) {
-						// this is WAV file path
+				if (strWavPath.trim().toLowerCase().endsWith(".wav") == true) {
+					if (WavUtil.isWavFormat(strWavPath)) {
 						result = true;
 					}
 				}
 			}
-		} catch (FileNotFoundException fnfe) {
-			// Catch File not found Exception
 		} catch (Exception ue) {
-			// System.out.println("isFormatWavPath() : " +ue);
 		}
-		// return result
 		return (result);
 	}
 
@@ -801,7 +825,7 @@ public class CSVReader implements IUNIT {
 
 		try {
 			// Check WAV header information
-			if (SoundMixer.getInstance().isWavFormat(strWavPath)) {
+			if (WavUtil.isWavFormat(strWavPath)) {
 				// PickUP file header from current WAV file
 				SoundMixer.getInstance()
 						.storeWavHeader(getResource(strWavPath));
@@ -825,24 +849,19 @@ public class CSVReader implements IUNIT {
 		String wavFileName = null;
 
 		try {
-			// Request FileDialog (Choice open file name)
+			// TODO : "Display.getCurrent().getActiveShell()" is null
 			FileDialog openDialog = new FileDialog(Display.getCurrent()
 					.getActiveShell(), SWT.OPEN);
 			openDialog.setFilterExtensions(EXTENSIONS);
 			wavFileName = openDialog.open();
-
-			// Check null (file name)
 			if (wavFileName != null) {
-				// check file header
-				if (!SoundMixer.getInstance().isWavFormat(wavFileName)) {
-					// invalid file again!
+				if (!WavUtil.isWavFormat(wavFileName)) {
 					wavFileName = null;
 				}
 			}
 		} catch (Exception we) {
+			we.printStackTrace();
 		}
-
-		// return result
 		return (wavFileName);
 	}
 
@@ -869,64 +888,38 @@ public class CSVReader implements IUNIT {
 	 *            : string time data
 	 * @return integer time data(millisecond)
 	 */
-	private int parseIntStartTime(String strStartTime) {
+	private int parseIntStartEndTime(String strStartTime) {
 		int startTime = -1;
 
+		// split time code
+		String[] splitStr = strStartTime.split(":");
 		// Check pattern format of StartTime (SS:MM:mmm)
-		if (isFormatStartTime(strStartTime, FORMAT_STIME_MMSSmmm)) {
-			// split time code
-			String[] splitStr = strStartTime.split(":");
+		if (splitStr.length == 3
+				&& isFormatStartTime(strStartTime, FORMAT_STIME_MMSSmmm)) {
 			// MakeUP integer time data
-			if (splitStr.length == 3) {
-				int mm = Integer.parseInt(splitStr[0].trim());
-				int ss = Integer.parseInt(splitStr[1].trim());
-				int msec = Integer.parseInt(splitStr[2].trim());
-				startTime = (((mm * 60) + ss) * MSEC) + msec;
-			}
+			int mm = Integer.parseInt(splitStr[0].trim());
+			int ss = Integer.parseInt(splitStr[1].trim());
+			int msec = Integer.parseInt(splitStr[2].trim());
+			startTime = (((mm * 60) + ss) * MSEC) + msec;
 		}
 		// Check pattern format of StartTime (SS:MM)
-		else if (isFormatStartTime(strStartTime, FORMAT_STIME_MMSS)) {
-			// split time code
-			String[] splitStr = strStartTime.split(":");
+		else if (splitStr.length == 2
+				&& isFormatStartTime(strStartTime, FORMAT_STIME_MMSS)) {
 			// MakeUP integer time data
-			if (splitStr.length == 2) {
-				int mm = Integer.parseInt(splitStr[0].trim());
-				int ss = Integer.parseInt(splitStr[1].trim());
-				startTime = ((mm * 60) + ss) * MSEC;
-			}
+			int mm = Integer.parseInt(splitStr[0].trim());
+			int ss = Integer.parseInt(splitStr[1].trim());
+			startTime = ((mm * 60) + ss) * MSEC;
 		}
 		// Check pattern format of StartTime (HH:SS:MM:mmm)
-		else if (isFormatStartTime(strStartTime, FORMAT_STIME_HHMMSSmmm)) {
-			// split time code
-			String[] splitStr = strStartTime.split(":");
-			// MakeUP integer time data
-			if (splitStr.length == 4) {
-				int hh = Integer.parseInt(splitStr[0].trim());
-				int mm = Integer.parseInt(splitStr[1].trim());
-				int ss = Integer.parseInt(splitStr[2].trim());
-				int msec = Integer.parseInt(splitStr[3].trim());
-				startTime = (((hh * 3600) + (mm * 60) + ss) * MSEC) + msec;
-			}
+		else if (splitStr.length == 4
+				&& isFormatStartTime(strStartTime, FORMAT_STIME_HHMMSSmmm)) {
+			int hh = Integer.parseInt(splitStr[0].trim());
+			int mm = Integer.parseInt(splitStr[1].trim());
+			int ss = Integer.parseInt(splitStr[2].trim());
+			int msec = Integer.parseInt(splitStr[3].trim());
+			startTime = (((hh * 3600) + (mm * 60) + ss) * MSEC) + msec;
 		}
-
-		// return result
 		return (startTime);
-	}
-
-	/**
-	 * @category Check exist all elements for script data
-	 * @return result : TRUE:exist all elements, FALSE:no yet
-	 */
-	private boolean isExistAllElements() {
-		boolean result = false;
-
-		// Check exist all elements for script data
-		if ((bkup_startTime >= 0) && (bkup_description != null)) {
-			// exist all elements
-			result = true;
-		}
-		// return result
-		return (result);
 	}
 
 	/**
@@ -940,31 +933,58 @@ public class CSVReader implements IUNIT {
 		// Check preference setting of CSV save rule
 		if (CSV_SAVE_RULE_RENEWAL == CSVRulePreferenceUtil
 				.getPreferenceCsvSaveRule()) {
+			// TODO check
 			// clear current script & WAV list
-			ScriptData.getInstance().clearScriptData();
-			ScriptData.getInstance().cleanupWavList();
+			// ScriptDataOld.getInstance().clearScriptData();
+			// ScriptDataOld.getInstance().cleanupWavList();
+			//
+			// scriptManager.clearScriptData();
 		}
 
+		dataList.clear();
 		// restore list data to script & WAV list
 		for (int i = 0; i < list_startTime.size(); i++) {
 			// PickUP current data from temporary list
 			int startTime = list_startTime.get(i);
+			int endTime = list_endTime.get(i);
 			String description = list_description.get(i);
+			String scenario = list_scenario.get(i);
+			String speaker = list_speaker.get(i);
+			String capton = list_capton.get(i);
+			String comment = list_comment.get(i);
+			String dataType = list_dataType.get(i);
+
+			// String child = list_child.get(i);
 			// PickUP current Extend data from temporary list
 			boolean extended = list_ext_extended.get(i);
 			boolean gender = list_ext_gender.get(i);
-			int lang = list_ext_lang.get(i);
-			int speed = list_ext_speed.get(i);
+			String lang = list_ext_lang.get(i);
+			int speed = list_ext_speed.get(i).intValue();
 			int pitch = list_ext_pitch.get(i);
 			int volume = list_ext_volume.get(i);
+			IScriptData data = ScriptDataFactory.createNewData();
+			data.setStartTime(startTime);
 
-			// Update ScriptList
-			EditPanelView
-					.getInstance()
-					.getInstanceTabEditPanel()
-					.appendScriptData(startTime, description, extended, gender,
-							lang, speed, pitch, volume);
-
+			if ("D".equalsIgnoreCase(dataType) == true) {
+				data.setType(IScriptData.TYPE_AUDIO);
+				data.setDescription(description);
+			} else if ("C".equalsIgnoreCase(dataType) == true) {
+				data.setType(IScriptData.TYPE_CAPTION);
+				data.setCaption(capton);
+			} else {
+				data.setType(IScriptData.TYPE_SCENARIO);
+				data.setScenario(scenario);
+			}
+			data.setCharacter(speaker);
+			data.setScriptComment(comment);
+			data.setVgGender(gender);
+			data.setExtended(extended);
+			data.setVgPlaySpeed(speed);
+			data.setVgPitch(pitch);
+			data.setVgVolume(volume);
+			data.setLang(lang);
+			data.setMark(NO_MARK);
+			data.setDataCommit(true);
 			// Check exist WAV file
 			int indexWav = list_wavStartTime.indexOf(startTime);
 			if (indexWav >= 0) {
@@ -974,15 +994,66 @@ public class CSVReader implements IUNIT {
 				// PickUP target WAV Extend information from temporary list
 				boolean wavEnable = list_ext_wav_enable.get(indexWav);
 				float wavSpeed = list_ext_wav_speed.get(indexWav);
-
-				// Update WAV file list
-				EditPanelView
-						.getInstance()
-						.getInstanceTabEditPanel()
-						.appendDataWavList(startTime, wavDuration, wavUri,
-								wavEnable, wavSpeed);
+				data.setWavURI(wavUri);
+				data.setWavEnabled(wavEnable);
+				data.setWavPlaySpeed(wavSpeed);
+				data.setWavEndTime(data.getStartTime() + wavDuration);
+				// TODO : Update WAV file list
+				// // EditPanelView.getInstance().getInstanceTabEditPanel()
+				// // .appendDataWavList(startTime, wavDuration, wavUri,
+				// // wavEnable, wavSpeed);
 			}
+
+			int length = VoicePlayerFactory.getInstance().getSpeakLength(data);
+			if (length > 0) {
+				data.setEndTime(data.getStartTime() + length);
+				data.setEndTimeAccurate(true);
+			} else {
+				if (endTime > startTime) {
+					data.setEndTime(endTime);
+				} else if ((description.trim().length() > 0)) {
+					data.setEndTime(startTime
+							+ DataUtil.sumMoraCount(description, lang));
+				}
+			}
+
+			dataList.add(data);
+
 		}
+		PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
+			public void run() {
+				// Repaint all screen by new Script
+				// list
+				TimeLineView.getInstance().synchronizeAllTimeLine(0);
+				eventManager.fireSyncTimeEvent(new SyncTimeEvent(0, this)); // Rewind
+				WebBrowserFactory.getInstance().setCurrentPosition(0); // Rewind
+																		// low
+																		// level
+																		// function
+				dataEventManager.fireLabelEvent(new LabelEvent(
+						LabelEvent.CLEAR_LABEL, null, this)); // clear exists
+
+				if (CSV_SAVE_RULE_RENEWAL == CSVRulePreferenceUtil
+						.getPreferenceCsvSaveRule()) {
+					dataEventManager.fireGuideListEvent(new GuideListEvent(
+							GuideListEvent.CLEAR_DATA, null, this)); // clear
+																		// exists
+				}
+
+				for (IScriptData data : dataList) {
+					dataEventManager.fireGuideListEvent(new GuideListEvent(
+							GuideListEvent.ADD_DATA, data, this));
+				}
+				// AudioEvent.PUT_AUDIO_LABEL check overlay each times , so it
+				// takes long time.
+				// Therefore, must use PUT_ALL_LABEL which check all labels
+				// overlay at once.
+				dataEventManager.fireLabelEvent(new LabelEvent(
+						LabelEvent.PUT_ALL_LABEL, null, this));
+			}
+		});
+
+		// Close process of file reader
 		// finish own process
 		result = true;
 
@@ -994,25 +1065,25 @@ public class CSVReader implements IUNIT {
 	 * @category Local method : post process for CSV file reader
 	 */
 	private void postCSVReader() {
-		// Repaint Script List
-		ScriptListView.getInstance().getInstScriptList().reloadScriptList();
-		// Initialize Edit Panel contents
-		EditPanelView.getInstance().getInstanceTabEditPanel()
-				.initDispEditPanel();
-		// initialize all parameters
-		EditPanelView.getInstance().getInstanceTabSelWAVFile()
-				.initDescriptionStruct();
+		if (EditPanelView.getInstance() != null) {
+			if (EditPanelView.getInstance().getInstanceTabEditPanel() != null) {
+				EditPanelView.getInstance().getInstanceTabEditPanel()
+						.initDispEditPanel();
+			}
+			if (EditPanelView.getInstance().getInstanceTabSelWAVFile() != null) {
+				// initialize all parameters
+				EditPanelView.getInstance().getInstanceTabSelWAVFile()
+						.initDescriptionData();
+				EditPanelView.getInstance().getInstanceTabSelWAVFile()
+						.initDispSelWavFile();
+			}
+		}
 		// initialize own screen
-		EditPanelView.getInstance().getInstanceTabSelWAVFile()
-				.initDispSelWavFile();
-		// Expand Composite of TimeLine
-		TimeLineView.getInstance().reqExpandTimeLine();
-		// Repaint image of TimeLine Scale
-		TimeLineView.getInstance().reqRedrawTimeLineCanvas(1);
-		// Repaint TimeLine's Audio Label
-		TimeLineView.getInstance().refreshScriptAudio();
-		// Reset location of TimeLine
-		TimeLineView.getInstance().rewindActionTimeLine();
+		if (TimeLineView.getInstance() != null) {
+			TimeLineView.getInstance().reqExpandTimeLine();
+			TimeLineView.getInstance().reqRedrawTimeLineCanvas(1);
+			TimeLineView.getInstance().rewindActionTimeLine();
+		}
 	}
 
 	/**
@@ -1038,9 +1109,9 @@ public class CSVReader implements IUNIT {
 							// change next mode
 							currentProcess++;
 						}
-					} else if (currentProcess == CSV_SUB_PROC_CAT) {
-						// Cat string mode for splitting a few line
-						catStringCSVData();
+						// } else if (currentProcess == CSV_SUB_PROC_CAT) {
+						// // Cat string mode for splitting a few line
+						// catStringCSVData();
 					} else if (currentProcess == CSV_PROC_ANALYZE) {
 						// Analyzing string data
 						boolean result = analyzeCSVData();
@@ -1058,21 +1129,16 @@ public class CSVReader implements IUNIT {
 							PlatformUI.getWorkbench().getDisplay()
 									.asyncExec(new Runnable() {
 										public void run() {
-											// Repaint all screen by new Script
-											// list
 											postCSVReader();
 										}
 									});
-
-							// Close process of file reader
 							closeCSVReader();
 						}
 					}
-					// idle own thread
-					Thread.yield();
+					// Thread.yield();
 				}
 			} catch (Exception e) {
-				// forced call post process
+				e.printStackTrace();
 				closeCSVReader();
 			}
 		}

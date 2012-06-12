@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 IBM Corporation and Others
+ * Copyright (c) 2011, 2012 IBM Corporation and Others
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -17,25 +17,23 @@ import java.util.concurrent.TimeUnit;
 
 import org.eclipse.actf.ai.internal.ui.scripteditor.event.EventManager;
 import org.eclipse.actf.ai.internal.ui.scripteditor.event.TimerEvent;
-import org.eclipse.actf.ai.ui.scripteditor.views.IUNIT;
 import org.eclipse.actf.ui.util.PlatformUIUtil;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
 
-public class ScriptEditorTimerUtil implements Runnable, IUNIT {
+public class ScriptEditorTimerUtil implements Runnable {
+
+	public static final int TL_SYNC_TIME_BASE = 20;
 
 	private static ScriptEditorTimerUtil ownInst = null;
 
-	// private SynchronizeTimeLineTimer instTimerSynchronizeTimeLine = null;
 	private static ScheduledExecutorService schedulerSynchronizeTimeLine = null;
 	private static ScheduledFuture<?> futureSynchronizeTimeLine = null;
 
 	// for Event Managing
 	private static EventManager eventManager = null;
-
-	public static final int TL_SYNC_TIME_BASE = 10;
 
 	private static Display display = null;
 

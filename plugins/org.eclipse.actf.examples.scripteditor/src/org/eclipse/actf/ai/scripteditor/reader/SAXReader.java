@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 IBM Corporation and Others
+ * Copyright (c) 2009, 2012 IBM Corporation and Others
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,13 +12,23 @@ package org.eclipse.actf.ai.scripteditor.reader;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-import org.eclipse.actf.ai.internal.ui.scripteditor.EditPanelTab;
-import org.eclipse.actf.ai.internal.ui.scripteditor.VolumeLevelCanvas;
+import org.eclipse.actf.ai.internal.ui.scripteditor.FileInfoStore;
+import org.eclipse.actf.ai.scripteditor.data.DataUtil;
+import org.eclipse.actf.ai.scripteditor.data.IScriptData;
+import org.eclipse.actf.ai.scripteditor.data.ScriptDataFactory;
+import org.eclipse.actf.ai.scripteditor.data.ScriptDataManager;
+import org.eclipse.actf.ai.scripteditor.data.event.DataEventManager;
+import org.eclipse.actf.ai.scripteditor.data.event.GuideListEvent;
+import org.eclipse.actf.ai.scripteditor.util.TimeFormatUtil;
+import org.eclipse.actf.ai.scripteditor.util.VoicePlayerFactory;
+import org.eclipse.actf.ai.ui.scripteditor.views.IUNIT;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -29,10 +39,9 @@ import org.xml.sax.helpers.DefaultHandler;
  * 
  */
 public class SAXReader extends DefaultHandler {
-	// Local data
+
 	private SAXParserFactory spf;
 	private SAXParser sp;
-	private EditPanelTab instParent;
 
 	// XML TAGs
 	private static final String XML_TAG_URI = "targetSite";
@@ -41,6 +50,9 @@ public class SAXReader extends DefaultHandler {
 	private static final String XML_TAG_START = "start";
 	private static final String XML_TAG_DURATION = "duration";
 	private static final String XML_TAG_DESC = "description";
+	private static final String XML_TAG_CAPTION = "caption";
+	private static final String XML_TAG_SCENARIO = "scenario";
+	private static final String XML_TAG_COMMENT = "comment";
 	private static final String XML_ATTR_SPEED = "speed";
 	private static final String XML_ATTR_GENDER = "gender";
 	private static final String XML_ATTR_EXTENDED = "extended";
@@ -61,8 +73,12 @@ public class SAXReader extends DefaultHandler {
 	private String bkup_extended = "false";
 	private String bkup_speed = "50";
 	private String bkup_gender = "male";
-	private String bkup_lang = "en";
+	private String bkup_lang = "en-US"; // TODO use locale
 	private String bkup_vollvl_loc = "";
+	private String bkup_scenario = "";
+	private String bkup_caption = "";
+	private String bkup_comment = "";
+	private int bkup_dataType;
 
 	// for WAV file
 	private boolean statWavTag = false;
@@ -73,44 +89,48 @@ public class SAXReader extends DefaultHandler {
 	private String bkup_wav_speed = "100";
 
 	// process status
-	private static final int SAX_STAT_IDLE = 0; // 0 : wait get element
-	private static final int SAX_STAT_URI = 1; // 1 : now loading "URI" value
-	private static final int SAX_STAT_SITEM = 2; // 2 : start loading "item"
-	// node
-	private static final int SAX_STAT_START = 3; // 3 : now loading "start"
-	// value
-	private static final int SAX_STAT_DURATION = 4; // 4 : now loading
-	// "duration" value
-	private static final int SAX_STAT_DESC = 5; // 5 : now loading "description"
-	// value
-	private static final int SAX_STAT_WAVE = 6; // 6 : now loading "wave" value
-	private static final int SAX_STAT_EITEM = 7; // 7 : end of item, and Write
-	// to ScriptData
-	private static final int SAX_STAT_VOLLVL = 8; // 8 : now loading
-	// "volumeLevel" value
+	private static final int SAX_STAT_IDLE = 0; // wait get element
+	private static final int SAX_STAT_URI = 1; // loading "URI" value
+	private static final int SAX_STAT_SITEM = 2; // start loading "item" node
+	private static final int SAX_STAT_START = 3; // loading "start" value
+	private static final int SAX_STAT_DURATION = 4; // loading "duration" value
+	private static final int SAX_STAT_DESC = 5; // loading "description" value
+	private static final int SAX_STAT_WAVE = 6; // loading "wave" value
 
-	// own mode
+	// private static final int SAX_STAT_EITEM = 7; // end of item, write to
+	// // ScriptData
+
+	private static final int SAX_STAT_VOLLVL = 8; // loading "volumeLevel" value
+
+	private static final int SAX_STAT_SCENARIO = 9; //
+
+	private static final int SAX_STAT_CAPTION = 10; //
+	private static final int SAX_STAT_COMMENT = 11; //
+
 	private int currentStatus = SAX_STAT_IDLE;
 	private int currentChildStatus = SAX_STAT_IDLE;
+
+	private ScriptDataManager scriptManager = null;
+	private DataEventManager dataEventManager = null;
 
 	/**
 	 * @throws IOException
 	 * @category Start Loading XML file by SAX I/F
 	 */
-	public void startSAXReader(String fname, EditPanelTab parent)
-			throws SAXException, ParserConfigurationException {
+	public void startSAXReader(String fname) throws SAXException,
+			ParserConfigurationException {
 		try {
-			// Store parent instance
-			instParent = parent;
+			if (scriptManager == null) {
+				scriptManager = ScriptDataManager.getInstance();
+			}
+			if (dataEventManager == null) {
+				dataEventManager = DataEventManager.getInstance();
+			}
 
-			// MakeUP SAX parser
 			spf = SAXParserFactory.newInstance();
 			sp = spf.newSAXParser();
-			// Load XML file by DefaultHandler
 			sp.parse(new File(fname), this);
-		} catch (IOException ioe) {
-		} catch (SAXException se) {
-		} catch (ParserConfigurationException pe) {
+		} catch (Exception e) {
 		}
 	}
 
@@ -118,10 +138,8 @@ public class SAXReader extends DefaultHandler {
 	 * @category Get URI string
 	 */
 	public String getUri() {
-		// check string (never return null code)
 		if (bkup_uri == null)
 			bkup_uri = URI_BLANK;
-		// return current URI string
 		return (bkup_uri);
 	}
 
@@ -160,10 +178,14 @@ public class SAXReader extends DefaultHandler {
 				bkup_start = "00:00:000";
 				bkup_duration = "00:00:000";
 				bkup_desc = "";
+				bkup_scenario = "";
+				bkup_caption = "";
+				bkup_comment = "";
+				bkup_dataType = IScriptData.TYPE_AUDIO;
 				bkup_extended = "false";
 				bkup_speed = "50";
 				bkup_gender = "male";
-				bkup_lang = "en";
+				bkup_lang = "en-US"; // TODO
 				// for WAV file
 				statWavTag = false;
 				bkup_wav_ena = false;
@@ -234,14 +256,22 @@ public class SAXReader extends DefaultHandler {
 				// Store attribute(local) to local area
 				for (int i = 0; i < attr.getLength(); i++) {
 					if (XML_ATTR_LOCAL.equals(attr.getQName(i))) {
-						// Store "local" value
 						bkup_vollvl_loc = attr.getValue(i);
 					}
 				}
 				// Change status
 				currentStatus = SAX_STAT_VOLLVL;
+			} else if (XML_TAG_SCENARIO.equals(qName)) {
+				bkup_scenario = "";
+				currentChildStatus = SAX_STAT_SCENARIO;
+			} else if (XML_TAG_CAPTION.equals(qName)) {
+				bkup_caption = "";
+				currentChildStatus = SAX_STAT_CAPTION;
+			} else if (XML_TAG_COMMENT.equals(qName)) {
+				bkup_comment = "";
+				currentChildStatus = SAX_STAT_COMMENT;
 			}
-		} catch (Exception ee) {
+		} catch (Exception e) {
 
 		}
 
@@ -256,20 +286,29 @@ public class SAXReader extends DefaultHandler {
 		// Get value of "start" node of "item" element
 		if ((currentChildStatus == SAX_STAT_START)
 				&& (currentStatus == SAX_STAT_SITEM)) {
-			// Store value
 			bkup_start = new String(ch, offset, length);
 		}
 		// Get value of "duration" node of "item" element
 		else if ((currentChildStatus == SAX_STAT_DURATION)
 				&& (currentStatus == SAX_STAT_SITEM)) {
-			// Store value
 			bkup_duration = new String(ch, offset, length);
 		}
 		// Get value of "description" node of "item" element
 		else if ((currentChildStatus == SAX_STAT_DESC)
 				&& (currentStatus == SAX_STAT_SITEM)) {
-			// Store value
 			bkup_desc += new String(ch, offset, length);
+			bkup_dataType = IScriptData.TYPE_AUDIO;
+		} else if ((currentChildStatus == SAX_STAT_SCENARIO)
+				&& (currentStatus == SAX_STAT_SITEM)) {
+			bkup_scenario += new String(ch, offset, length);
+			bkup_dataType = IScriptData.TYPE_SCENARIO;
+		} else if ((currentChildStatus == SAX_STAT_CAPTION)
+				&& (currentStatus == SAX_STAT_SITEM)) {
+			bkup_caption += new String(ch, offset, length);
+			bkup_dataType = IScriptData.TYPE_CAPTION;
+		} else if ((currentChildStatus == SAX_STAT_COMMENT)
+				&& (currentStatus == SAX_STAT_SITEM)) {
+			bkup_comment += new String(ch, offset, length);
 		}
 	}
 
@@ -285,18 +324,52 @@ public class SAXReader extends DefaultHandler {
 			String strPitch = new String("50");
 			String strVolume = new String("50");
 
-			// Update ScriptList
-			instParent.appendScriptData(bkup_start, bkup_duration, bkup_desc,
-					bkup_extended, bkup_gender, bkup_speed, strPitch,
-					strVolume, bkup_lang);
+			IScriptData data = ScriptDataFactory.createNewData();
+			data.setStartTimeString(bkup_start);
+			data.setScenario(bkup_scenario);
+			data.setDescription(bkup_desc);
+			data.setCaption(bkup_caption);
+			data.setScriptComment(bkup_comment);
+			data.setExtended(Boolean.parseBoolean(bkup_extended));
+			data.setVgGender("male".equalsIgnoreCase(bkup_gender));
+			data.setVgPlaySpeed(Integer.parseInt(bkup_speed));
+			data.setVgPitch(Integer.parseInt(strPitch));
+			data.setVgVolume(Integer.parseInt(strVolume));
 
-			// Check exist "wave" tag
-			if (statWavTag) {
-				// Update WAV file list
-				instParent.appendDataWavList(bkup_start, bkup_wav_duration,
-						bkup_wav_loc, bkup_wav_speed, bkup_wav_ena);
-				statWavTag = false;
+			// TODO backward compatibility
+			if ("ja".equals(bkup_lang)) {
+				bkup_lang = "ja-JP";
+			} else if ("en".equals(bkup_lang)) {
+				bkup_lang = "en-US";
 			}
+			data.setLang(bkup_lang);
+			data.setDataCommit(true);
+			// data.setType(DataUtil.checkDataType(data));
+			data.setType(bkup_dataType);
+			if (statWavTag) {
+				data.setWavEndTime(data.getStartTime()
+						+ TimeFormatUtil.parseIntStartTime(bkup_wav_duration));
+				data.setWavPlaySpeed(Float.parseFloat(bkup_wav_speed) / 100);
+				try {
+					data.setWavURI(new URI(bkup_wav_loc));
+					data.setWavEnabled(bkup_wav_ena);
+				} catch (URISyntaxException e) {
+					// TODO : preference, existence?
+					data.setDataCommit(false);
+				}
+			}
+			
+			int length = VoicePlayerFactory.getInstance().getSpeakLength(data);
+			if (length > 0) {
+				data.setEndTime(data.getStartTime() + length);
+				data.setEndTimeAccurate(true);
+			} else {
+				data.setEndTime(data.getStartTime()
+						+ TimeFormatUtil.parseIntStartTime(bkup_duration));
+			}
+			
+			dataEventManager.fireGuideListEvent(new GuideListEvent(
+					GuideListEvent.ADD_DATA, data, this));
 
 			// Clear status
 			currentStatus = SAX_STAT_IDLE;
@@ -321,8 +394,7 @@ public class SAXReader extends DefaultHandler {
 			// Store URI of volume level temporary file
 			if (bkup_vollvl_loc != null) {
 				try {
-					VolumeLevelCanvas.getInstance().setSavePathVolLvl(
-							bkup_vollvl_loc);
+					FileInfoStore.setVolumeLevelFilePath(bkup_vollvl_loc);
 				} catch (Exception ee) {
 				}
 			}

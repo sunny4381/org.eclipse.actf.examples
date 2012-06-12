@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 IBM Corporation and Others
+ * Copyright (c) 2009, 2012 IBM Corporation and Others
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,9 +12,7 @@ package org.eclipse.actf.examples.scripteditor;
 
 import org.eclipse.actf.ai.internal.ui.scripteditor.PreviewPanel;
 import org.eclipse.actf.model.ui.editor.actions.FavoritesMenu;
-import org.eclipse.jface.action.ICoolBarManager;
 import org.eclipse.jface.action.IMenuManager;
-import org.eclipse.jface.action.IStatusLineManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.swt.events.MenuAdapter;
@@ -34,9 +32,6 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 	private static ApplicationActionBarAdvisor ownInst = null;
 	private MenuManager fileMenu = null;
 
-	// Action of Cool bar
-	// private IWorkbenchAction coolbarAction;
-	// Action of Favorites
 	private FavoritesMenu favoritesMenu;
 
 	private IWorkbenchAction _preferenceAction;
@@ -46,6 +41,8 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 	private IWorkbenchAction _aboutAction;
 
 	private IWorkbenchAction _quitAction;
+
+	private IWorkbenchAction _perspectiveAction;
 
 	// private IWorkbenchAction _closeAction;
 
@@ -60,10 +57,6 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 
 	protected void makeActions(IWorkbenchWindow window) {
 		favoritesMenu = new FavoritesMenu(window, true);
-		/**
-		 * introAction = ActionFactory.INTRO.create(window);
-		 * register(introAction);
-		 **/
 
 		this._preferenceAction = ActionFactory.PREFERENCES.create(window);
 
@@ -73,17 +66,13 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 
 		this._quitAction = ActionFactory.QUIT.create(window);
 
+		this._perspectiveAction = ActionFactory.OPEN_PERSPECTIVE_DIALOG
+				.create(window);
+
 		// this._closeAction = ActionFactory.CLOSE.create(window);
 	}
 
 	protected void fillMenuBar(IMenuManager menuBar) {
-		/**
-		 * MenuManager helpMenu = new MenuManager("&Help",
-		 * IWorkbenchActionConstants.M_HELP); menuBar.add(helpMenu);
-		 * 
-		 * // Help helpMenu.add(introAction);
-		 **/
-
 		// File Menu
 		fileMenu = new MenuManager(
 				Activator.getResourceString("scripteditor.menu.file"),
@@ -134,6 +123,8 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 				IWorkbenchActionConstants.M_WINDOW);
 		windowMenu.add(new Separator(IWorkbenchActionConstants.NAV_START));
 		windowMenu.add(new Separator(IWorkbenchActionConstants.NAV_END));
+		windowMenu.add(_perspectiveAction);
+		windowMenu.add(new Separator());
 		windowMenu.add(new Separator());
 		windowMenu.add(_preferenceAction);
 		menuBar.add(windowMenu);
@@ -160,45 +151,28 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 	 * SetUP FileMenu listener
 	 */
 	public void setFileMenuListener() {
-		// SetUP MenuListener for file menu
-		fileMenu.getMenu().addMenuListener(new FileMenuAdapter());
-	}
+		fileMenu.getMenu().addMenuListener(new MenuAdapter() {
+			public void menuShown(MenuEvent e) {
+				boolean newStat = PreviewPanel.getInstance()
+						.getCurrentStatusMedia();
+				Menu menu = (Menu) e.getSource();
+				MenuItem[] items = menu.getItems();
+				for (int i = 0; i < items.length; i++) {
+					// Check index of file menu items
+					String str = items[i].getText();
+					if (str != "") {
+						if (!Activator.getResourceString(
+								"scripteditor.action.reload").equals(str)
+								&& !Activator.getResourceString(
+										"scripteditor.action.exit").equals(str)) {
 
-	/**
-	 * Local class : FileMenu Listener
-	 * 
-	 */
-	private class FileMenuAdapter extends MenuAdapter {
-		public void menuShown(MenuEvent e) {
-			boolean newStat = PreviewPanel.getInstance()
-					.getCurrentStatusMedia();
-			Menu menu = (Menu) e.getSource();
-			MenuItem[] items = menu.getItems();
-			for (int i = 0; i < items.length; i++) {
-				// Check index of file menu items
-				String str = items[i].getText();
-				if (str != "") {
-					if (!Activator.getResourceString(
-							"scripteditor.action.reload").equals(str)
-							&& !Activator.getResourceString(
-									"scripteditor.action.exit").equals(str)) {
-
-						// SetUP new status to current item
-						items[i].setEnabled(newStat);
+							// SetUP new status to current item
+							items[i].setEnabled(newStat);
+						}
 					}
 				}
 			}
-		}
-	}
-
-	@Override
-	public void fillStatusLine(IStatusLineManager statusLine) {
-		super.fillStatusLine(statusLine);
-	}
-
-	@Override
-	protected void fillCoolBar(ICoolBarManager coolBar) {
-		super.fillCoolBar(coolBar);
+		});
 	}
 
 }

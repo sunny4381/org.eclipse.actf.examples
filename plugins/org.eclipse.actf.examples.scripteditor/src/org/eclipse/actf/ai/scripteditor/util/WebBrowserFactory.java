@@ -12,12 +12,17 @@ package org.eclipse.actf.ai.scripteditor.util;
 
 import java.util.HashMap;
 
+import org.eclipse.actf.ai.internal.ui.scripteditor.event.EventManager;
+import org.eclipse.actf.ai.internal.ui.scripteditor.event.SyncTimeEvent;
+import org.eclipse.actf.ai.internal.ui.scripteditor.event.SyncTimeEventListener;
 import org.eclipse.actf.model.dom.dombycom.AnalyzedResult;
 import org.eclipse.actf.model.dom.dombycom.INodeEx;
 import org.eclipse.actf.model.dom.dombycom.INodeExVideo;
 import org.eclipse.actf.model.dom.dombycom.INodeExVideo.VideoState;
 import org.eclipse.actf.model.ui.IModelService;
 import org.eclipse.actf.model.ui.editor.browser.IWebBrowserACTF;
+import org.eclipse.actf.model.ui.editor.browser.WebBrowserEventUtil;
+import org.eclipse.actf.model.ui.editors.ie.WebBrowserEditor;
 import org.eclipse.actf.model.ui.util.ModelServiceUtils;
 import org.w3c.dom.Node;
 
@@ -26,7 +31,8 @@ import org.w3c.dom.Node;
  * @category Factory class for FlashPlayer
  * 
  */
-public class WebBrowserFactory {
+public class WebBrowserFactory extends WebBrowserEditor implements
+		SyncTimeEventListener {
 
 	// Media sample unit time(100msec) to Local unit time(1msec)
 	private static final int SEC2MSEC = 1000;
@@ -38,6 +44,8 @@ public class WebBrowserFactory {
 	private IWebBrowserACTF curBrowser = null;
 	private MediaInfo curMediaInfo = null;
 
+	private static EventManager eventManager = null;
+
 	private class MediaInfo {
 		Node curRoot = null;
 		INodeExVideo[] videos = new INodeExVideo[0];
@@ -47,14 +55,24 @@ public class WebBrowserFactory {
 
 	private HashMap<IWebBrowserACTF, MediaInfo> mediaMap = new HashMap<IWebBrowserACTF, WebBrowserFactory.MediaInfo>();
 
+	public static void navigate(String url) {
+		IModelService model = ModelServiceUtils.getActiveModelService();
+		if (model instanceof IWebBrowserACTF) {
+			((IWebBrowserACTF) model).navigate(url);
+		} else {
+			ModelServiceUtils.launch(url, WebBrowserEditor.ID);
+		}
+	}
+
 	/**
 	 * Creates a new MediaController.
 	 */
 	private WebBrowserFactory() {
+		eventManager = EventManager.getInstance();
+		eventManager.addSyncTimeEventListener(this);
 	}
 
-	static public WebBrowserFactory getInstance() {
-		// return own instance
+	public static WebBrowserFactory getInstance() {
 		if (ownInst == null) {
 			ownInst = new WebBrowserFactory();
 		}
@@ -86,12 +104,19 @@ public class WebBrowserFactory {
 		return tmp;
 	}
 
+	/*
+	 * @override
+	 */
+	public void dispose() {
+		if (curBrowser == null) {
+			WebBrowserEventUtil.browserDisposed(curBrowser, getPartName());
+			// TODO need to confirm
+		}
+		eventManager.removeSyncTimeEventListener(this);
+	}
+
 	private void checkVideo() {
 		// TODO support diff (dombycom)
-		// Node root = browserPreview.getLiveDocument().getDocumentElement();
-		// if(curRoot != root){
-		// searchVideo();
-		// }
 
 		if (curBrowser == null) {
 			IModelService model = ModelServiceUtils.getActiveModelService();
@@ -282,6 +307,23 @@ public class WebBrowserFactory {
 		} else {
 			// unknown(or No including media)
 			return (-1);
+		}
+	}
+
+	public void handleSyncTimeEvent(SyncTimeEvent e) {
+		// Synchronize TimeLine view
+		if (e.getEventType() == SyncTimeEvent.ADJUST_TIME_LINE) {
+			boolean result = setCurrentPosition(e.getCurrentTime());
+			if (result == false) {
+				System.out
+						.println("WebBrowserFactory.setCurrentPosition method error");
+			}
+			playMedia();
+			try {
+				Thread.sleep(1);
+			} catch (Exception ee) {
+			}
+			pauseMedia();
 		}
 	}
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 IBM Corporation and Others
+ * Copyright (c) 2009, 2012 IBM Corporation and Others
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,54 +11,46 @@
 package org.eclipse.actf.ai.scripteditor.util;
 
 import java.io.File;
+import java.util.Set;
+import java.util.TreeSet;
 
+import org.eclipse.actf.ai.scripteditor.data.IScriptData;
+import org.eclipse.actf.ai.tts.ISAPIEngine;
 import org.eclipse.actf.ai.tts.ITTSEngine;
-import org.eclipse.actf.ai.ui.scripteditor.views.IUNIT;
 import org.eclipse.actf.ai.voice.IVoice;
 import org.eclipse.actf.ai.voice.IVoiceEventListener;
 import org.eclipse.actf.ai.voice.VoiceUtil;
+import org.eclipse.actf.examples.scripteditor.Activator;
 
 /**
  * 
  * @category Voice Player
  * 
  */
-public class VoicePlayerFactory implements IUNIT {
+public class VoicePlayerFactory {
 
-	// for Voice Engine
-	private static IVoice voice = VoiceUtil.getVoice();
-	private int currentVoicePlayerStatus = -1;
+	public static final int NOT_SUPPORTED = -1;
+	public static Set<String> langSet = new TreeSet<String>(ISAPIEngine.LANGID_MAP.keySet());	//TODO
 
-	// Local data
-	static private VoicePlayerFactory ownInst = null;
-
-	// Define
 	private static final int VP_EVENT_FIN_SPEAK = 99;
 	private static final int TTSFLAG_DEFAULT = 0;
-	private static final String JA_KUTEN_CODE1 = "\uff61";
-	private static final String JA_KUTEN_CODE2 = "\u3002";
-	private static final String JA_TOUTEN_CODE1 = "\uff64";
-	private static final String JA_TOUTEN_CODE2 = "\u3001";
-	private static final int JA_KUTEN_COUNT = 5;
-	private static final int JA_TOUTEN_COUNT = 2;
 
-	// MORA
-	private static final float JA_KANJI_MORA = 1.545f;
-	private static final float JA_KANA_MORA = 0.988f;
-	private static final float EN_CHAR_MORA = 0.347f;
+	private static IVoice voice = VoiceUtil.getVoice();
+	private static VoicePlayerFactory ownInst = null;
 
-	/**
-	 * Constructor
-	 */
-	public VoicePlayerFactory() {
-		// Store own instance
+	private int currentVoicePlayerStatus = -1;
+	private File tmpFile;
+	
+
+	private VoicePlayerFactory() {
 		ownInst = this;
-		// SetUP Voice engine event listener
 		voice.setEventListener(new MyVoiceEventListener());
 	}
 
-	static public VoicePlayerFactory getInstance() {
-		// return current Instance of VoicePlayerFactory
+	public static VoicePlayerFactory getInstance() {
+		if (ownInst == null) {
+			ownInst = new VoicePlayerFactory();
+		}
 		return (ownInst);
 	}
 
@@ -72,38 +64,27 @@ public class VoicePlayerFactory implements IUNIT {
 	 * @category Speak voice
 	 */
 	public void speak(String voiceMessage) {
-		// speak motion with flush(TRUE)
 		voice.speak(voiceMessage, true);
 		addSpeakIndex(VP_EVENT_FIN_SPEAK);
 	}
 
 	public void stop() {
-		// voice.stop();
-		voice.speak("", TTSFLAG_FLUSH);
-	}
-
-	public void pause() {
-	}
-
-	public void resume() {
+		voice.speak("", true);
 	}
 
 	/**
 	 * Getter methods
 	 */
 	public int getSpeed() {
-		// Get Voice Speed param.
 		return (voice.getSpeed());
 	}
 
 	public int getPitch() {
-		// Get Voice Speed param.
-		return (VE_NOSUPPORT);
+		return (NOT_SUPPORTED);
 	}
 
 	public int getVolume() {
-		// Get Voice Speed param.
-		return (VE_NOSUPPORT);
+		return (NOT_SUPPORTED);
 	}
 
 	public void setLang(String language) {
@@ -118,7 +99,6 @@ public class VoicePlayerFactory implements IUNIT {
 	}
 
 	public void setSpeed(int speed) {
-		// Set Voice Speed param.
 		voice.setSpeed(speed);
 	}
 
@@ -129,79 +109,11 @@ public class VoicePlayerFactory implements IUNIT {
 	}
 
 	public void setPlayVoiceStatus(int stat) {
-		// Set next status
 		currentVoicePlayerStatus = stat;
 	}
 
 	public boolean getPlayVoiceStatus() {
-		// Return status of current ProTalker engine
 		return (((currentVoicePlayerStatus > -1) ? true : false));
-	}
-
-	/**
-	 * Sum Mora's count of Description for English
-	 */
-	public float sumMoraCountEn(String strDesc) {
-		// return code
-		float mora = 0;
-		// Sum count of Mora
-		String desc = strDesc.trim().replaceAll("^[\\s　]*", "")
-				.replaceAll("[\\s　]*$", "");
-		mora = desc.length() * EN_CHAR_MORA;
-		// return current Mora's counter
-		return (mora);
-	}
-
-	/**
-	 * Sum Mora's count of Description for Japanese
-	 */
-	public float sumMoraCountJp(String strDesc) {
-		// return code
-		float mora = 0;
-		// Count character
-		String desc = strDesc.trim().replaceAll("^[\\s　]*", "")
-				.replaceAll("[\\s　]*$", "");
-		for (int i = 0; i < desc.length(); i++) {
-			char c = strDesc.charAt(i);
-			if ((c >= 0x20) && (c <= 0x7E)) {
-				// ASCII code
-				mora += EN_CHAR_MORA;
-			} else if ((c >= 0xFF61) && (c <= 0xFF9F)) {
-				String str = String.valueOf(c);
-				if (JA_KUTEN_CODE1.equals(str)) {
-					// Ku-ten
-					mora += JA_KUTEN_COUNT;
-				} else if (JA_TOUTEN_CODE1.equals(str)) {
-					// Tou-ten
-					mora += JA_TOUTEN_COUNT;
-				} else {
-					// JIS-KANA
-					mora += JA_KANA_MORA;
-				}
-			} else {
-				String str = String.valueOf(c);
-				if (JA_KUTEN_CODE2.equals(str)) {
-					// Ku-ten
-					mora += JA_KUTEN_COUNT;
-				} else if (JA_TOUTEN_CODE2.equals(str)) {
-					// Tou-ten
-					mora += JA_TOUTEN_COUNT;
-				} else {
-					if (c >= 0x4e9c) {
-						// Kanji char
-						mora += JA_KANJI_MORA;
-					} else if (0x3041 <= c && c <= 0x30f6) {
-						// Hiragana or Katakana
-						mora += JA_KANA_MORA;
-					} else {
-						mora += EN_CHAR_MORA;
-					}
-				}
-			}
-		}
-
-		// return current Mora's counter
-		return (mora);
 	}
 
 	public boolean canSpeakToFile() {
@@ -240,4 +152,38 @@ public class VoicePlayerFactory implements IUNIT {
 			}
 		}
 	}
+
+	public void speak(IScriptData data) {
+		setLang(data.getLang());
+		setGender((data.getVgGender() ? "male" : "female"));
+		setSpeed(data.getVgPlaySpeed());
+		setPitch(data.getVgPitch());
+		setVolume(data.getVgVolume());
+
+		speak(data.getDescription());
+	}
+
+	public int getSpeakLength(IScriptData data) {
+		int length = -1;
+		setLang(data.getLang());
+		setGender((data.getVgGender() ? "male" : "female"));
+		setSpeed(data.getVgPlaySpeed());
+		setPitch(data.getVgPitch());
+		setVolume(data.getVgVolume());
+
+		if (canSpeakToFile()) {
+			if (tmpFile == null) {
+				try {
+					tmpFile = Activator.getDefault().createTempFile("test",
+							".wav");
+				} catch (Exception e) {
+					return length;
+				}
+			}
+			speakToFile(data.getDescription(), tmpFile);
+			length = (int) WavUtil.getMillisecondLength(tmpFile);
+		}
+		return length;
+	}
+
 }

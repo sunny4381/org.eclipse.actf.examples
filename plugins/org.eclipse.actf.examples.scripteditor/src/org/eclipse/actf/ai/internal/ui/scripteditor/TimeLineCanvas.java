@@ -14,6 +14,7 @@ import org.eclipse.actf.ai.internal.ui.scripteditor.event.EventManager;
 import org.eclipse.actf.ai.internal.ui.scripteditor.event.MouseDragEvent;
 import org.eclipse.actf.ai.internal.ui.scripteditor.event.SyncTimeEvent;
 import org.eclipse.actf.ai.internal.ui.scripteditor.event.SyncTimeEventListener;
+import org.eclipse.actf.ai.scripteditor.util.TimeFormatUtil;
 import org.eclipse.actf.ai.scripteditor.util.WebBrowserFactory;
 import org.eclipse.actf.ai.ui.scripteditor.views.IUNIT;
 import org.eclipse.actf.ai.ui.scripteditor.views.TimeLineView;
@@ -24,10 +25,8 @@ import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseMoveListener;
-import org.eclipse.swt.events.MouseTrackAdapter;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
-import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
@@ -82,50 +81,36 @@ public class TimeLineCanvas extends Canvas implements IUNIT,
 	public TimeLineCanvas(Composite parent) {
 		super(parent, SWT.NONE);
 
-		// store own instance
 		ownInst = this;
 
-		// Initialize Canvas & Create Graphics Context.
 		initializeCanvas(parent);
-
-		// Store TimeLine view instance
 		instParentView = TimeLineView.getInstance();
-		// store event lister
-		eventManager = EventManager.getInstance();
-		// Add synchronized TimeEvent Listener
-		eventManager.addSyncTimeEventListener(this);
-		parent.addDisposeListener(new DisposeListener() {
 
-			@Override
+		eventManager = EventManager.getInstance();
+		eventManager.addSyncTimeEventListener(ownInst);
+		parent.addDisposeListener(new DisposeListener() {
 			public void widgetDisposed(DisposeEvent e) {
-				// TODO other components
 				eventManager.removeSyncTimeEventListener(ownInst);
 			}
 		});
 	}
 
 	static public TimeLineCanvas getInstance(Composite parent) {
-
-		// 1st check current Instance
 		if (ownInst == null) {
 			synchronized (TimeLineCanvas.class) {
 				// 2nd check current instance
 				if (ownInst == null) {
-					// New own class at once
 					ownInst = new TimeLineCanvas(parent);
 				}
 			}
 		}
-		// return current Instance of VoluemLevel Canvas
 		return (ownInst);
 	}
 
 	static public TimeLineCanvas getInstance() {
-		// return current Instance of VoluemLevel Canvas
 		return (ownInst);
 	}
 
-	// Initialize for Canvas class & object
 	private void initializeCanvas(Composite parent) {
 		try {
 			// next status : Idle mode
@@ -149,8 +134,7 @@ public class TimeLineCanvas extends Canvas implements IUNIT,
 			// MakeUP MouseListener for Adjusting TimeLine position
 			addMouseListener(new TimeLineMouseDragAdapter());
 
-			// SetUP MouseTrackListener for Mouse Cursor type
-			addMouseTrackListener(new TimeLineMouseTrackAdapter());
+			addMouseTrackListener(new MouseCursorTrackAdapter());
 
 			// SetUP MouseMoveListener
 			addMouseMoveListener(new TimeLineMouseMoveListener());
@@ -159,34 +143,10 @@ public class TimeLineCanvas extends Canvas implements IUNIT,
 			displayTimeLineToolTip(0);
 
 		} catch (Exception ef) {
-			System.out.println("initializeCanvas() : Exception = " + ef);
+			ef.printStackTrace();
 		}
 	}
 
-	/**
-	 * @category Setter Method
-	 * @purpose Synchronized Time Line
-	 */
-	public void synchronizeTimeLine(int nowTime) {
-		// Redraw marker on TimeLIne
-		updatePositionMarkerTimeLine(nowTime);
-	}
-
-	/**
-	 * Setter method : Set current location of TimeLine
-	 */
-	public void refreshTimeLine(int nowCnt) {
-		// Update counter of location of TimeLine
-		currentTimeLineLocation = nowCnt;
-
-		// Repaint Canvas
-		setStatusCanvasTimeLine(1);
-		this.redraw();
-	}
-
-	/**
-	 * Local method : SetUP & Display tool tip of TimeLine
-	 */
 	private void displayTimeLineToolTip(int nowPosition) {
 		// Calculate time from now cursor position
 		int nowTime = (nowPosition * TIME2PIXEL)
@@ -195,83 +155,17 @@ public class TimeLineCanvas extends Canvas implements IUNIT,
 			nowTime = 0;
 
 		// MakeUP string of TimeLine
-		String strToolTip = "TimeLine : " + makeFormatMMSSMS(nowTime) + " ";
+		String strToolTip = "TimeLine : "
+				+ TimeFormatUtil.makeFormatHHMMSSMS_short(nowTime) + " ";
 
 		// Update ToolTip
 		ownInst.setToolTipText(strToolTip);
 	}
 
 	/**
-	 * @category Local method : Make String of TimeLine
-	 * @param totalSec
-	 * @return
-	 */
-	private String makeFormatMMSSMS(int totalSec) {
-
-		String formTime = new String();
-		Integer mm;
-		Integer ss;
-		Integer ms;
-
-		// Make format "MM:SS.MS"
-		if (totalSec <= 0) {
-			// default
-			formTime = "00:00.00";
-		} else {
-			// Integer to String
-			mm = (totalSec / 1000) / 60;
-			ss = (totalSec / 1000) % 60;
-			ms = totalSec % 1000;
-			formTime = "";
-
-			// MM
-			if (mm < 10)
-				formTime = formTime + "0";
-			formTime = formTime + mm.toString();
-			// separator
-			formTime += ":";
-			// SS
-			if (ss < 10)
-				formTime = formTime + "0";
-			formTime = formTime + ss.toString();
-			// separator
-			formTime += ".";
-			// millisecond
-			Integer ms100 = ms / 10;
-			if (ms < 10)
-				formTime = formTime + "00";
-			else if ((ms < 100) && (ms >= 10))
-				formTime = formTime + "0" + ms.toString();
-			else
-				formTime = formTime + ms100.toString();
-		}
-
-		// return String data
-		return (formTime);
-	}
-
-	/**
-	 * Update marker position of TimeLine
-	 */
-	private void updatePositionMarkerTimeLine(int currentTime) {
-
-		// Store current time(adjust scale refresh)
-		// previousTime = this.currentTime;
-		this.currentTime = currentTime
-				- (currentTimeLineLocation * TL_DEF_SCROL_COMP_SCALE);
-		if (this.currentTime < 0)
-			this.currentTime = 0;
-
-		// Change mode & Request repaint Canvas
-		// ////setStatusCanvasTimeLine(2);
-		this.redraw();
-	}
-
-	/**
-	 * Getter method : Get current time line marker X position
+	 * Returns current time line marker X position
 	 */
 	public int getCurrentPositionMarkerTimeLine() {
-		// return current position of time line marker X position
 		return (currentTime + (currentTimeLineLocation * TL_DEF_SCROL_COMP_SCALE));
 	}
 
@@ -279,43 +173,19 @@ public class TimeLineCanvas extends Canvas implements IUNIT,
 	 * Initialize marker position of TimeLine
 	 */
 	public void initPositionMarkerTimeLine() {
-		// Initialize time parameters
-		// previousTime = 0;
 		currentTime = 0;
-
-		// Initialize mode & Request repaint Canvas
-		setStatusCanvasTimeLine(1);
+		currentProcStatus = 1;
 		this.redraw();
-	}
-
-	/**
-	 * Adjust max size of TimeLine
-	 */
-	public void adjustMaxSizeTimeLine(int maxTime) {
-		// Adjust max time parameters
-		this.maxTime = maxTime;
-
-		// Adjust size mode & Request repaint Canvas
-		setStatusCanvasTimeLine(3);
-		this.redraw();
-	}
-
-	/**
-	 * Setter methods : Set Status to internal flag
-	 */
-	public void setStatusCanvasTimeLine(int nextStatus) {
-		// Store next status
-		currentProcStatus = nextStatus;
 	}
 
 	/**
 	 * Draw marker of TimeLine on Canvas
 	 */
 	private void drawMarkerTimeLine(PaintEvent e) {
-		// MakeUP new & previous position as pixel
+		// new & previous position as pixel
 		int newX = currentTime / TIME2PIXEL;
 
-		// draw marker image as new position
+		// draw marker image
 		e.gc.drawImage(imgMarkerAlpha, (newX - (markerWidth >> 1)), 1);
 		e.gc.drawImage(imgMarkerTimeLine, (newX - (markerWidth >> 1)), 1);
 	}
@@ -355,7 +225,8 @@ public class TimeLineCanvas extends Canvas implements IUNIT,
 		// Initial SetUP Time text
 		int nextTimeCount = 0;
 		int timeWidth = 18;
-		wgc.drawString(this.makeFormatMMSSMS(startTimeLine), -timeWidth, 5);
+		wgc.drawString(TimeFormatUtil.makeFormatHHMMSSMS_short(startTimeLine),
+				-timeWidth, 5);
 		for (int i = 0; i <= newCanvas.x; i += TL_DEF_SCALESIZE) {
 			for (int j = 0; j < TL_DEF_SCALESIZE; j += 5) {
 				// draw scale line
@@ -369,8 +240,9 @@ public class TimeLineCanvas extends Canvas implements IUNIT,
 			if ((nextTimeCount % 2) == 0) {
 				// Draw Time Text by current TimeLine
 				int nowTime = startTimeLine + (nextTimeCount * MSEC);
-				wgc.drawString(this.makeFormatMMSSMS(nowTime), i
-						+ TL_DEF_SCALESIZE - timeWidth, 5);
+				wgc.drawString(
+						TimeFormatUtil.makeFormatHHMMSSMS_short(nowTime), i
+								+ TL_DEF_SCALESIZE - timeWidth, 5);
 			}
 		}
 
@@ -392,7 +264,7 @@ public class TimeLineCanvas extends Canvas implements IUNIT,
 	 */
 	private void adjustSizeCanvasTimeLine(PaintEvent e) {
 		// PickUP TimeLine info.
-		int startTimeLine = instParentView.getStartTimeLine();
+		int startTimeLine = 0; // instParentView.getStartTimeLine();
 		int endTimeLine = instParentView.getMaxTimeLine();
 
 		// Check max size & adjust parameter
@@ -426,7 +298,8 @@ public class TimeLineCanvas extends Canvas implements IUNIT,
 		// Initial SetUP Time text
 		int nextTimeCount = 0;
 		int timeWidth = 18;
-		wgc.drawString(this.makeFormatMMSSMS(startTimeLine), -timeWidth, 5);
+		wgc.drawString(TimeFormatUtil.makeFormatHHMMSSMS_short(startTimeLine),
+				-timeWidth, 5);
 		for (int i = 0; i <= nowCanvas.x; i += TL_DEF_SCALESIZE) {
 			for (int j = 0; j < TL_DEF_SCALESIZE; j += 5) {
 				// draw scale line
@@ -440,8 +313,9 @@ public class TimeLineCanvas extends Canvas implements IUNIT,
 			if ((nextTimeCount % 2) == 0) {
 				// Draw Time Text by current TimeLine
 				int nowTime = (i + TL_DEF_SCALESIZE) * TIME2PIXEL;
-				wgc.drawString(this.makeFormatMMSSMS(nowTime), i
-						+ TL_DEF_SCALESIZE - timeWidth, 5);
+				wgc.drawString(
+						TimeFormatUtil.makeFormatHHMMSSMS_short(nowTime), i
+								+ TL_DEF_SCALESIZE - timeWidth, 5);
 			}
 		}
 
@@ -461,13 +335,9 @@ public class TimeLineCanvas extends Canvas implements IUNIT,
 	 * Redraw Canvas (update position marker of TimeLine)
 	 */
 	private void redrawCanvasTimeLine(PaintEvent e) {
-
-		// Initial draw TimeLine
 		if (offImage != null) {
 			e.gc.drawImage(offImage, e.x, e.y, e.width, e.height, e.x, e.y,
 					e.width, e.height);
-
-			// Draw marker of TimeLine
 			drawMarkerTimeLine(e);
 		}
 	}
@@ -512,35 +382,6 @@ public class TimeLineCanvas extends Canvas implements IUNIT,
 	}
 
 	/**
-	 * Local Class extends MouseTrackAdapter for TimeLine
-	 */
-	class TimeLineMouseTrackAdapter extends MouseTrackAdapter {
-		// mouse cursor enter into parent area
-		public void mouseEnter(MouseEvent e) {
-			// Changer Cursor image from ARROW type to HAND type
-			Canvas parentCanvas = (Canvas) e.getSource();
-			parentCanvas.setCursor(new Cursor(null, SWT.CURSOR_HAND));
-		}
-
-		// mouse cursor exit parent area
-		public void mouseExit(MouseEvent e) {
-			// Reset Cursor image to default type (ARROW)
-			Canvas parentCanvas = (Canvas) e.getSource();
-			parentCanvas.setCursor(new Cursor(null, SWT.CURSOR_ARROW));
-		}
-	}
-
-	/**
-	 * Local method : Pre check Mouse drag event
-	 */
-	private void precheckMouseDraggedEvent(MouseEvent e) {
-		// Get current System time
-		timePushMouseLButton = e.time;
-		// Drag start
-		currentDragStatus = true;
-	}
-
-	/**
 	 * Local method : Move Mouse drag position
 	 */
 	private void moveMouseDraggedEvent(MouseEvent e) {
@@ -548,7 +389,6 @@ public class TimeLineCanvas extends Canvas implements IUNIT,
 		int nowTime = (e.x * TIME2PIXEL)
 				+ (currentTimeLineLocation * TL_DEF_SCROL_COMP_SCALE);
 		int maxTime = instParentView.getMaxTimeLine();
-
 		// check min limit of time line
 		if (nowTime < 0) {
 			// adjust minimum value of time line
@@ -575,39 +415,30 @@ public class TimeLineCanvas extends Canvas implements IUNIT,
 	 */
 	class TimeLineMouseDragAdapter extends MouseAdapter {
 
-		// Mouse event : Clicked
 		public void mouseDown(MouseEvent e) {
-			// Check mouse 'Left' button
 			if (!statusMouseDragged && (e.button == 1)) {
-				// pre-check Mouse drag action
-				precheckMouseDraggedEvent(e);
+				// Get current System time
+				timePushMouseLButton = e.time;
+				// Drag start
+				currentDragStatus = true;
 
 				eventManager.fireMouseDragEvent(new MouseDragEvent(
 						MouseDragEvent.MOUSE_DRAG_START, this));
 			}
 		}
 
-		// Mouse event : Purge
 		public void mouseUp(MouseEvent e) {
-			// Check mouse 'Left' button
 			if (!statusMouseDragged && (e.button == 1) && currentDragStatus) {
-				// Get current System time
 				long timeReleaseMouseLButton = e.time;
-				// Check short single click action
 				if ((timeReleaseMouseLButton - timePushMouseLButton) < TL_SINGLE_CLICK_TIME) {
-					// goto single click button action
 					moveMouseDraggedEvent(e);
 				}
-				// Reset status flag
 				currentDragStatus = false;
 
 				eventManager.fireMouseDragEvent(new MouseDragEvent(
 						MouseDragEvent.MOUSE_SET_DRAG_STATUS,
 						currentDragStatus, this));
-			}
-			// Check mouse 'Left' button
-			else if (statusMouseDragged && (e.button == 1)) {
-				// Finish Mouse drag action
+			} else if (statusMouseDragged && (e.button == 1)) {
 				statusMouseDragged = false;
 				eventManager.fireMouseDragEvent(new MouseDragEvent(
 						MouseDragEvent.MOUSE_DRAG_END, this));
@@ -620,32 +451,36 @@ public class TimeLineCanvas extends Canvas implements IUNIT,
 	 * Local Class extends MouseMoveListener for mouse cursor
 	 */
 	class TimeLineMouseMoveListener implements MouseMoveListener {
-		// Mouse event : Drag control or Update ToolTip of TimeLine(current
-		// time)
 		public void mouseMove(MouseEvent e) {
 			// Check mouse 'Left' button
 			if (statusMouseDragged) {
-				// Move marker image of TimeLine
 				moveMouseDraggedEvent(e);
-			}
-			// Check mouse 'Left' button
-			else if (!statusMouseDragged && currentDragStatus) {
-				// Start Mouse drag action
+			} else if (!statusMouseDragged && currentDragStatus) {
 				statusMouseDragged = true;
 				currentDragStatus = false;
 			}
-
-			// Update ToolTip of TimeLine
 			displayTimeLineToolTip(e.x);
 		}
 	}
 
 	public void handleSyncTimeEvent(SyncTimeEvent e) {
-		// Synchronize TimeLine view
-		if (e.getEventType() == SyncTimeEvent.SYNCHRONIZE_TIME_LINE) {
-			synchronizeTimeLine(e.getCurrentTime());
-		} else if (e.getEventType() == SyncTimeEvent.REFRESH_TIME_LINE) {
-			refreshTimeLine(e.getCurrentTime());
+		switch (e.getEventType()) {
+		case SyncTimeEvent.SYNCHRONIZE_TIME_LINE:
+		case SyncTimeEvent.ADJUST_TIME_LINE:
+			this.currentTime = e.getCurrentTime()
+					- (currentTimeLineLocation * TL_DEF_SCROL_COMP_SCALE);
+			if (this.currentTime < 0) {
+				this.currentTime = 0;
+			}
+			this.redraw();
+			break;
+		case SyncTimeEvent.REFRESH_TIME_LINE:
+			// Update counter of location of TimeLine
+			currentTimeLineLocation = e.getCurrentTime();
+			currentProcStatus = 1;
+			this.redraw();
+			break;
+		default:
 		}
 	}
 

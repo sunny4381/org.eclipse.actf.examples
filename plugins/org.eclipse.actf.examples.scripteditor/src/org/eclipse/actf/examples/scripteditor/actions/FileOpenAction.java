@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 IBM Corporation and Others
+ * Copyright (c) 2009, 2012 IBM Corporation and Others
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,14 +11,17 @@
 package org.eclipse.actf.examples.scripteditor.actions;
 
 import org.eclipse.actf.ai.internal.ui.scripteditor.EditPanelTab;
+import org.eclipse.actf.ai.internal.ui.scripteditor.FileInfoStore;
 import org.eclipse.actf.ai.internal.ui.scripteditor.PreviewPanel;
-import org.eclipse.actf.ai.internal.ui.scripteditor.XMLFileMessageBox;
-import org.eclipse.actf.ai.scripteditor.data.ScriptData;
-import org.eclipse.actf.ai.scripteditor.data.XMLFileSaveUtil;
+import org.eclipse.actf.ai.scripteditor.data.ScriptDataManager;
+import org.eclipse.actf.ai.scripteditor.data.event.DataEventManager;
+import org.eclipse.actf.ai.scripteditor.data.event.GuideListEvent;
+import org.eclipse.actf.ai.scripteditor.data.event.LabelEvent;
 import org.eclipse.actf.ai.scripteditor.reader.SAXReader;
+import org.eclipse.actf.ai.scripteditor.util.WebBrowserFactory;
+import org.eclipse.actf.ai.scripteditor.util.XMLFileMessageBox;
+import org.eclipse.actf.ai.scripteditor.util.XMLFileSaveUtil;
 import org.eclipse.actf.ai.ui.scripteditor.views.EditPanelView;
-import org.eclipse.actf.ai.ui.scripteditor.views.IUNIT;
-import org.eclipse.actf.ai.ui.scripteditor.views.ScriptListView;
 import org.eclipse.actf.ai.ui.scripteditor.views.TimeLineView;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
@@ -28,106 +31,78 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 
-public class FileOpenAction implements IWorkbenchWindowActionDelegate, IUNIT {
+public class FileOpenAction implements IWorkbenchWindowActionDelegate {
 
-	/**
-	 * Local data
-	 */
-	// instance of each ViewPart class
-	private ScriptData instScriptData = null;
+	private ScriptDataManager scriptManager = null;
+	private DataEventManager dataEventManager = null;
 	private EditPanelTab instEditPanelTab = null;
 	private TimeLineView instTimeLine = null;
-	private PreviewPanel instPreviewPanel = null;
-	private ScriptListView instScriptList = null;
 
-	// parameters
 	private String[] EXTENSIONS = { "*.xml", "*" };
 	private String saveFileName = "";
-	private String currentURLMovie = "about:blank";
+	private String currentURL = "about:blank";
 
-	/**
-	 * The constructor.
-	 */
 	public FileOpenAction() {
 	}
 
-	/**
-	 * Local method : PickUP instance of each ViewPart class
-	 */
-	private void pickupInstViewPart() {
-		// Check each instance of parent Class
+	private void init() {
 		if (instEditPanelTab == null) {
-			instEditPanelTab = EditPanelView.getInstance()
-					.getInstanceTabEditPanel();
+			if (EditPanelView.getInstance() != null) {
+				instEditPanelTab = EditPanelView.getInstance()
+						.getInstanceTabEditPanel();
+			}
 		}
 		if (instTimeLine == null) {
 			instTimeLine = TimeLineView.getInstance();
 		}
-		if (instPreviewPanel == null) {
-			instPreviewPanel = PreviewPanel.getInstance();
+		if (scriptManager == null) {
+			scriptManager = ScriptDataManager.getInstance();
 		}
-		if (instScriptList == null) {
-			instScriptList = ScriptListView.getInstance();
-		}
-		if (instScriptData == null) {
-			instScriptData = ScriptData.getInstance();
+		if (dataEventManager == null) {
+			dataEventManager = DataEventManager.getInstance();
 		}
 	}
 
-	// **
-	// * Private method : Pre-Process for Load data
-	// *
-	private void preProcessLoadFile() {
-		// Clear ScriptData class
-		instScriptData.clearScriptData();
-		// Clear volume level file path
-		instTimeLine.reqStoreVolLvlFilePath(null);
+	private void preProcess() {
+		FileInfoStore.setVolumeLevelFilePath(null);
+		dataEventManager.fireLabelEvent(new LabelEvent(LabelEvent.CLEAR_LABEL,
+				null, this)); // clear current data
+		dataEventManager.fireGuideListEvent(new GuideListEvent(
+				GuideListEvent.CLEAR_DATA, null, this));
 	}
 
-	// **
-	// * Private method : Post-Process for Load data
-	// *
-	private void postProcessLoadFile() {
-		// Repaint Script List
-		instScriptList.getInstScriptList().reloadScriptList();
-		// Initialize Edit Panel contents
-		instEditPanelTab.initDispEditPanel();
+	private void postProcess() {
+		dataEventManager.fireLabelEvent(new LabelEvent(
+				LabelEvent.PUT_ALL_LABEL, null, this));
+
+		if (instEditPanelTab != null) {
+			instEditPanelTab.initDispEditPanel();
+		}
 		// initialize all parameters
-		EditPanelView.getInstance().getInstanceTabSelWAVFile()
-				.initDescriptionStruct();
-		// initialize own screen
-		EditPanelView.getInstance().getInstanceTabSelWAVFile()
-				.initDispSelWavFile();
-		// Reset URL for Preview Movie
-		instPreviewPanel.setURLMovie(currentURLMovie);
-		// Store current opened XML file path
-		instTimeLine.reqStoreXMLFilePath(saveFileName);
-		// Expand Composite of TimeLine
+		if (EditPanelView.getInstance() != null) {
+			EditPanelView.getInstance().getInstanceTabSelWAVFile()
+					.initDescriptionData();
+			// initialize own screen
+			EditPanelView.getInstance().getInstanceTabSelWAVFile()
+					.initDispSelWavFile();
+		}
+		WebBrowserFactory.navigate(currentURL);
+		XMLFileSaveUtil.getInstance().setFilePath(saveFileName);
 		instTimeLine.reqExpandTimeLine();
-		// Repaint image of TimeLine Scale
 		instTimeLine.reqRedrawTimeLineCanvas(1);
-		// Load volume level value to buffer
 		instTimeLine.reqLoadVolumeLevelData();
-		// Repaint image of TimeLine Scale
 		instTimeLine.reqRedrawVolumeLevelCanvas(2);
-		// Repaint TimeLine's Audio Label
 		instTimeLine.refreshScriptAudio();
-		// Reset location of TimeLine
 		instTimeLine.rewindActionTimeLine();
 	}
 
-	// **
-	// * Private method : Load data from Open file.
-	// *
 	private void loadFile(String fname) {
 		SAXReader loader = null;
 
 		try {
-			// Load XML file by DefaultHandler
 			loader = new SAXReader();
-			loader.startSAXReader(fname, instEditPanelTab);
-			// PickUP URI String
-			currentURLMovie = loader.getUri();
+			loader.startSAXReader(fname);
+			currentURL = loader.getUri();
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -135,51 +110,33 @@ public class FileOpenAction implements IWorkbenchWindowActionDelegate, IUNIT {
 		}
 	}
 
-	/**
-	 * The action has been activated. The argument of the method represents the
-	 * 'real' action sitting in the workbench UI.
-	 * 
-	 * @see IWorkbenchWindowActionDelegate#run
-	 */
 	public void run(IAction action) {
 		boolean start_flg = true;
 
-		// Store instance of each ViewPart class
-		pickupInstViewPart();
+		init();
 
 		// Check exist unsaved data Before Open file
-		if (instScriptData.getStatusSaveScripts() > 0) {
-			// Display confirmation message box
+		if (scriptManager.isSaveRequired() > 0) {
 			XMLFileMessageBox confModifyMB = new XMLFileMessageBox(
-					MB_STYLE_MODIFY, null);
+					XMLFileMessageBox.MB_STYLE_MODIFY, null);
 			int result = confModifyMB.open();
-			// Check result
 			if (result == SWT.YES) {
-				// Save current data to XML file
-				XMLFileSaveUtil saveFH = new XMLFileSaveUtil();
+				XMLFileSaveUtil saveFH = XMLFileSaveUtil.getInstance();
 				String filePath = saveFH.open();
 				saveFH.save(filePath, true);
 			} else if (result == SWT.CANCEL) {
-				// cancel close action
 				start_flg = false;
 			}
 		}
-		// Check status
 		if (start_flg) {
-			// Request FileDialog (Choice open file name)
 			FileDialog openDialog = new FileDialog(Display.getCurrent()
 					.getActiveShell(), SWT.OPEN);
 			openDialog.setFilterExtensions(EXTENSIONS);
 			saveFileName = openDialog.open();
-
-			// Check null (file name)
 			if (saveFileName != null) {
-				// Pre-Process for loading
-				preProcessLoadFile();
-				// Load file(XML format)
+				preProcess();
 				loadFile(saveFileName);
-				// Post-Process for loading
-				postProcessLoadFile();
+				postProcess();
 			}
 		}
 	}

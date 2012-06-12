@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.actf.ai.internal.ui.scripteditor.event;
 
+import java.util.Calendar;
 import java.util.EventObject;
 
 /**
@@ -18,6 +19,7 @@ import java.util.EventObject;
 public class TimerEvent extends EventObject {
 
 	private static final long serialVersionUID = 6939507005105789334L;
+	long time;
 
 	/**
 	 * @category Constructor
@@ -28,7 +30,16 @@ public class TimerEvent extends EventObject {
 	 *            event source
 	 */
 	public TimerEvent(Object source) {
+		this(Calendar.getInstance().getTimeInMillis(), source);
+	}
+
+	public TimerEvent(long time, Object source) {
 		super(source);
+		this.time = time;
+	}
+
+	public long getTime() {
+		return time;
 	}
 
 }

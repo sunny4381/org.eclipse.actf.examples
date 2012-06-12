@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 IBM Corporation and Others
+ * Copyright (c) 2009, 2012 IBM Corporation and Others
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,18 +8,26 @@
  * Contributors:
  *    IBM Corporation - initial API and implementation
  *******************************************************************************/
-package org.eclipse.actf.ai.internal.ui.scripteditor;
+package org.eclipse.actf.ai.scripteditor.util;
 
 import java.io.File;
 
-import org.eclipse.actf.ai.ui.scripteditor.views.IUNIT;
+import org.eclipse.actf.ai.internal.ui.scripteditor.Messages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.ui.PlatformUI;
 
-public class XMLFileMessageBox implements IUNIT {
+public class XMLFileMessageBox {
 
-	// Local data
+	public static final int MB_STYLE_CONFIRM = 1; // Confirmation
+	public static final int MB_STYLE_OVERWR = 2; // Overwrite confirmation
+	public static final int MB_STYLE_NODESC = 3; // No exist description
+	public static final int MB_STYLE_NOEXIST = 4; // No exist script ID
+	public static final int MB_STYLE_MODIFY = 5; // Modify current script list
+	public static final int MB_STYLE_WAV_CONFIRM = 6; // WAV file confirmation
+	public static final int MB_STYLE_ACCESS_DENIED = 7; // Access denied during
+														// playing movie
+
 	private MessageBox msgBox = null;
 
 	/**
@@ -36,39 +44,39 @@ public class XMLFileMessageBox implements IUNIT {
 			String strMessage = "";
 
 			// MakeUP style of MessageBox
-			if (mode == MB_STYLE_CONFIRM) {
+			if (mode == XMLFileMessageBox.MB_STYLE_CONFIRM) {
 				// Confirmation message box
 				strMessage = getFileName(filePath);
 				style = style | SWT.ICON_WARNING | SWT.CANCEL;
 				strTitle = Messages.xml_dialog_title_confirm;
 				strMessage += Messages.xml_dialog_save_confirm;
-			} else if (mode == MB_STYLE_OVERWR) {
+			} else if (mode == XMLFileMessageBox.MB_STYLE_OVERWR) {
 				// Overwrite message box
 				strMessage = getFileName(filePath);
 				style = style | SWT.ICON_WARNING;
 				strTitle = Messages.xml_dialog_title_overwrite;
 				strMessage += Messages.xml_dialog_save_overwrite;
-			} else if (mode == MB_STYLE_NODESC) {
+			} else if (mode == XMLFileMessageBox.MB_STYLE_NODESC) {
 				// No exist description message box
 				style = SWT.ICON_ERROR | SWT.OK;
 				strTitle = Messages.xml_dialog_title_error;
 				strMessage = Messages.xml_dialog_script_nodesc;
-			} else if (mode == MB_STYLE_NOEXIST) {
+			} else if (mode == XMLFileMessageBox.MB_STYLE_NOEXIST) {
 				// No exist script message box
 				style = SWT.ICON_ERROR | SWT.OK;
 				strTitle = Messages.xml_dialog_title_error;
 				strMessage = Messages.xml_dialog_script_noexist;
-			} else if (mode == MB_STYLE_MODIFY) {
+			} else if (mode == XMLFileMessageBox.MB_STYLE_MODIFY) {
 				// Modify script data message box
 				style = style | SWT.ICON_WARNING | SWT.CANCEL;
 				strTitle = Messages.xml_dialog_title_modify;
 				strMessage = Messages.xml_dialog_save_modify;
-			} else if (mode == MB_STYLE_WAV_CONFIRM) {
+			} else if (mode == XMLFileMessageBox.MB_STYLE_WAV_CONFIRM) {
 				// Modify script data message box
 				style = SWT.ICON_WARNING | SWT.YES | SWT.NO;
 				strTitle = Messages.xml_dialog_title_confirm;
 				strMessage = Messages.xml_dialog_wav_confirm + filePath;
-			} else if (mode == MB_STYLE_ACCESS_DENIED) {
+			} else if (mode == XMLFileMessageBox.MB_STYLE_ACCESS_DENIED) {
 				// No exist script message box
 				style = SWT.ICON_WARNING | SWT.OK;
 				strTitle = Messages.xml_dialog_title_confirm;
@@ -122,8 +130,6 @@ public class XMLFileMessageBox implements IUNIT {
 			}
 		} catch (Exception ee) {
 		}
-
-		// return result
 		return (result);
 	}
 

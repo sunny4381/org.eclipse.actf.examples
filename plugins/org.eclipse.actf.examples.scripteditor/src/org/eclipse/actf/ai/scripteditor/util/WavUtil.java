@@ -12,6 +12,7 @@ package org.eclipse.actf.ai.scripteditor.util;
 
 import java.io.File;
 
+import javax.sound.sampled.AudioFileFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -62,6 +63,28 @@ public class WavUtil {
 			return -1;
 		}
 		return result / (double) 1000000;
+	}
+
+	/**
+	 * Check WAV file format
+	 * 
+	 * @param fname
+	 *            target file
+	 * @return true if target file is WAV
+	 */
+	public static boolean isWavFormat(String fname) {
+		boolean result = false;
+		File fh;
+
+		try {
+			fh = new File(fname);
+			AudioFileFormat aff = AudioSystem.getAudioFileFormat(fh);
+			if (AudioFileFormat.Type.WAVE == aff.getType()) {
+				result = true;
+			}
+		} catch (Exception e) {
+		}
+		return (result);
 	}
 
 }

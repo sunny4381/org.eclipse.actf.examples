@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.actf.ai.scripteditor.preferences;
 
+//import org.eclipse.actf.ai.internal.ui.scripteditor.EventEx;
+//import org.eclipse.actf.ai.internal.ui.scripteditor.EventManager;
 import org.eclipse.actf.ai.internal.ui.scripteditor.Messages;
 import org.eclipse.actf.ai.internal.ui.scripteditor.VolumeLevelCanvas;
 import org.eclipse.actf.ai.scripteditor.util.SoundMixer;
@@ -150,8 +152,10 @@ public class CapturePreferencePage extends FieldEditorPreferencePage implements
 			if (CapturePreferenceConstants.GAIN_VOLLVL_NAME.equals(eve
 					.getProperty())) {
 				// update value by new preference settings
+
+				VolumeLevelCanvas.getInstance().setCurrentVolLvlGain();
 				int newValue = CapturePreferenceUtil.getPreferenceVolLvlGain();
-				VolumeLevelCanvas.getInstance().setCurrentVolLvlGain(newValue);
+				// VolumeLevelCanvas.getInstance().setCurrentVolLvlGain(newValue);
 				// Repaint own Composite cause of changed text of volume gain
 				// value
 				gainLabel.setText(makeupGainSliderValue(newValue));

@@ -24,6 +24,7 @@ public class SyncTimeEvent extends EventObject {
 
 	public static final int SYNCHRONIZE_TIME_LINE = 0;
 	public static final int REFRESH_TIME_LINE = 1;
+	public static final int ADJUST_TIME_LINE = 2;
 	private int currentTime;
 	private int eventType;
 

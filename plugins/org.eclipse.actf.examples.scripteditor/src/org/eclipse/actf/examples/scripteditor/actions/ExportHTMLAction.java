@@ -16,11 +16,10 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 
-import org.eclipse.actf.ai.internal.ui.scripteditor.XMLFileMessageBox;
 import org.eclipse.actf.ai.scripteditor.util.ResourceUtil;
 import org.eclipse.actf.ai.scripteditor.util.TTMLUtil;
 import org.eclipse.actf.ai.scripteditor.util.WebBrowserFactory;
-import org.eclipse.actf.ai.ui.scripteditor.views.IUNIT;
+import org.eclipse.actf.ai.scripteditor.util.XMLFileMessageBox;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.swt.SWT;
@@ -46,7 +45,7 @@ public class ExportHTMLAction implements IWorkbenchWindowActionDelegate {
 
 			if (warnOverwrite && file.exists()) {
 				XMLFileMessageBox warningExistFile = new XMLFileMessageBox(
-						IUNIT.MB_STYLE_OVERWR, filepath);
+						XMLFileMessageBox.MB_STYLE_OVERWR, filepath);
 				int ret = warningExistFile.open();
 				if (ret != SWT.YES)
 					return;
@@ -116,7 +115,6 @@ public class ExportHTMLAction implements IWorkbenchWindowActionDelegate {
 			writer.println("        <track kind=\"metadata\" data-kind=\"descriptions\" src=\""
 					+ adFilename
 					+ "\" srclang=\"en\" label=\"Audio Description\" default>"); // TODO
-																					// lang
 			writer.println("    </video>");
 			writer.println("<!-- HTML5 movie main end-->");
 			writer.println("");

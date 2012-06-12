@@ -26,7 +26,7 @@ public class EventManager {
 	 * 
 	 * @return instance
 	 */
-	public static EventManager getInstance() {
+	public static synchronized EventManager getInstance() {
 		if (ownInst == null) {
 			ownInst = new EventManager();
 		}

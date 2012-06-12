@@ -12,7 +12,6 @@ package org.eclipse.actf.ai.scripteditor.util;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URI;
 
@@ -65,7 +64,6 @@ public class SoundMixer implements IUNIT {
 	private float currentWavSampRate;
 	private int currentWavSampBit;
 	private boolean currentWavBigEndian;
-	private String currentWavFormat;
 	private int currentWavBytePerSec;
 	private int currentWavDurationTime;
 	private int currentWavDataLength;
@@ -409,14 +407,15 @@ public class SoundMixer implements IUNIT {
 							inStream.length);
 					if (size >= 0) {
 						// put WAV data to source line
-						int len = lineWavPlayer.write(inStream, 0, size);
+						lineWavPlayer.write(inStream, 0, size);
 					} else {
 						// End of WAV data
 						stopPlaySound();
 						break;
 					}
 					// yield own thread
-					Thread.yield();
+					// need to check
+					// Thread.yield();
 				}
 			} catch (IOException e) {
 				// System.out.println("IOException : " +e);
@@ -539,36 +538,6 @@ public class SoundMixer implements IUNIT {
 	}
 
 	/**
-	 * Getter method : Check type WAV format of current file
-	 * 
-	 * @throws IOException
-	 * @throws UnsupportedAudioFileException
-	 */
-	public boolean isWavFormat(String fname) throws FileNotFoundException {
-		boolean result = false;
-		File fh;
-
-		try {
-			// open target file
-			fh = new File(fname);
-			// Get audio format from target file
-			AudioFileFormat aff = AudioSystem.getAudioFileFormat(fh);
-			// check audio format as WAV?
-			if (AudioFileFormat.Type.WAVE == aff.getType()) {
-				// target file type is WAV format
-				result = true;
-			}
-		} catch (UnsupportedAudioFileException e1) {
-			// System.out.println("UnsupportedAudioFileException : "+e1);
-		} catch (IOException e2) {
-			// System.out.println("IOException : "+e2);
-		}
-
-		// return result
-		return (result);
-	}
-
-	/**
 	 * Getter method : MakeUP string of WAV header information
 	 */
 	public String makeFormatWavInfo(String wfname) {
@@ -629,7 +598,7 @@ public class SoundMixer implements IUNIT {
 			currentWavSampRate = af.getSampleRate();
 			currentWavSampBit = af.getSampleSizeInBits();
 			currentWavBigEndian = af.isBigEndian();
-			currentWavFormat = af.toString();
+			// currentWavFormat = af.toString();
 
 			// Calculate byte per second of current WAV file
 			currentWavBytePerSec = (int) (currentWavSampRate * currentWavCh * (currentWavSampBit / 8));

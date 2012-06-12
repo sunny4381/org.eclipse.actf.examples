@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 IBM Corporation and Others
+ * Copyright (c) 2009, 2012 IBM Corporation and Others
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -18,31 +18,15 @@ import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 
 public class MovieReloadAction implements IWorkbenchWindowActionDelegate {
 
-	/**
-	 * Local data
-	 */
-	// instance of each ViewPart class
 	private PreviewPanel instPreviewPanel = null;
 
-	/**
-	 * The constructor.
-	 */
 	public MovieReloadAction() {
 	}
 
-	/**
-	 * Local method : PickUP instance of each ViewPart class
-	 */
-	private void pickupInstViewPart() {
+	public void run(IAction action) {
 		if (instPreviewPanel == null) {
 			instPreviewPanel = PreviewPanel.getInstance();
 		}
-	}
-
-	public void run(IAction action) {
-		// Store instance of each ViewPart class
-		pickupInstViewPart();
-		// Reload movie by Web Browser
 		instPreviewPanel.reload();
 	}
 

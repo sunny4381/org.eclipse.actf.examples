@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 IBM Corporation and Others
+ * Copyright (c) 2009, 2012 IBM Corporation and Others
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,7 +11,6 @@
 package org.eclipse.actf.ai.internal.ui.scripteditor;
 
 import java.io.File;
-import java.net.URI;
 import java.util.ArrayList;
 
 import org.eclipse.actf.ai.internal.ui.scripteditor.event.EventManager;
@@ -22,6 +21,7 @@ import org.eclipse.actf.ai.internal.ui.scripteditor.event.TimerEventListener;
 import org.eclipse.actf.ai.scripteditor.preferences.CapturePreferenceUtil;
 import org.eclipse.actf.ai.scripteditor.util.SoundMixer;
 import org.eclipse.actf.ai.scripteditor.util.TempFileUtil;
+import org.eclipse.actf.ai.scripteditor.util.VoicePlayerFactory;
 import org.eclipse.actf.ai.ui.scripteditor.views.EditPanelView;
 import org.eclipse.actf.ai.ui.scripteditor.views.IUNIT;
 import org.eclipse.actf.ai.ui.scripteditor.views.TimeLineView;
@@ -41,12 +41,12 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 
-//========================================
-// Canvas class for Volume Level content
 public class VolumeLevelCanvas extends Canvas implements IUNIT,
 		SyncTimeEventListener, TimerEventListener {
 
-	// instance of own class
+	// Sampling : 20msec
+	private static final int SAMPLING_RATE = 20;
+
 	static private VolumeLevelCanvas ownInst = null;
 
 	// Process Status flag
@@ -56,13 +56,9 @@ public class VolumeLevelCanvas extends Canvas implements IUNIT,
 	// 3:Re-Draw off-image on Screen
 	private int currentProcStatus = 0;
 
-	// Off Image
 	private Image offImage = null;
 
-	// private label object
-	// /private Label labelBorderTimeLine;
 	private int borderLinePosX = 0;
-	// private int previousBorderLinePosX = 0;
 
 	// sampling audio level data
 	private ArrayList<Integer> sampleVolumeLevel;
@@ -70,16 +66,13 @@ public class VolumeLevelCanvas extends Canvas implements IUNIT,
 	private ArrayList<Integer> volumeLevelCaptureAudio;
 	private int previewVoiceTotalTime = 0;
 	private float currentVolLvlGain = 1.0f;
-	private URI savePathVolLvl = null;
 
 	// capture mode flag
-	// TRUE : capture audio mode
-	// FALSE : normal mode
+	// TRUE : capture mode / FALSE : normal mode
 	private boolean currentCaptureMode = true;
+	// Sampling Timer Task
+	private boolean samplingFlag = false; // sampling mode
 
-	private int timerUtilCounter = 0;
-
-	// current location of TimeLine
 	private int currentTimeLineLocation = 0;
 
 	private int ownFreeRunTimeCount = 0;
@@ -91,46 +84,25 @@ public class VolumeLevelCanvas extends Canvas implements IUNIT,
 	private int previousDrawSize = 0;
 	private Point previousCanvasSize;
 
-	// parent view info.
 	private TimeLineView instParentView;
-
 	private EventManager eventManager = null;
 
-	/**
-	 * @category Constructor
-	 */
-	public VolumeLevelCanvas(Composite parent) {
+	private VolumeLevelCanvas(Composite parent) {
 		super(parent, SWT.BORDER);
 
-		// store own instance
 		ownInst = this;
-
 		eventManager = EventManager.getInstance();
 
-		// Initialize Canvas & Create Graphics Context.
 		initializeCanvas(parent);
 
-		// Store TimeLine view instance
 		instParentView = TimeLineView.getInstance();
-
-		// Stand-by Capture timer
-		if (getCurrentCaptureMode()) {
-			// Start Timer
-			startTimerCaptureAudio();
-		}
-
-		// Initialize value by Preference setting
-		setCurrentVolLvlGain(CapturePreferenceUtil.getPreferenceVolLvlGain());
+		setCurrentVolLvlGain();
 
 		// setup event listeners
-		eventManager.addSyncTimeEventListener(this);
-		eventManager.addTimerEventListener(this);
-
+		eventManager.addSyncTimeEventListener(ownInst);
+		eventManager.addTimerEventListener(ownInst);
 		parent.addDisposeListener(new DisposeListener() {
-
-			@Override
 			public void widgetDisposed(DisposeEvent e) {
-				// TODO other components
 				eventManager.removeSyncTimeEventListener(ownInst);
 				eventManager.removeTimerEventListener(ownInst);
 			}
@@ -139,27 +111,21 @@ public class VolumeLevelCanvas extends Canvas implements IUNIT,
 	}
 
 	static public VolumeLevelCanvas getInstance(Composite parent) {
-
-		// 1st check current Instance
 		if (ownInst == null) {
 			synchronized (VolumeLevelCanvas.class) {
 				// 2nd check current instance
 				if (ownInst == null) {
-					// New own class at once
 					ownInst = new VolumeLevelCanvas(parent);
 				}
 			}
 		}
-		// return current Instance of VoluemLevel Canvas
 		return (ownInst);
 	}
 
 	static public VolumeLevelCanvas getInstance() {
-		// return current Instance of VoluemLevel Canvas
 		return (ownInst);
 	}
 
-	// Initialize for Canvas class & object
 	private void initializeCanvas(Composite parent) {
 		try {
 			// next status : Idle mode
@@ -179,149 +145,88 @@ public class VolumeLevelCanvas extends Canvas implements IUNIT,
 
 			// Store current Canvas size
 			previousCanvasSize = this.getSize();
-		} catch (Exception ef) {
-			System.out.println("initializeCanvas : Exception = " + ef);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
 	/**
-	 * @category Setter Method
-	 * @purpose Synchronized Time Line
 	 */
 	public void synchronizeTimeLine(int nowTime) {
-		// Calculate current x-point by now TimeLine
+		// Calculate current x-point
 		int x = (nowTime - (currentTimeLineLocation * TL_DEF_SCROL_COMP_SCALE))
 				/ TIME2PIXEL;
-
-		// Update location for border of TimeLine
+		// Update location
 		setLocationBorderTimeLine(x);
 	}
 
 	/**
-	 * Setter method : Set current location of TimeLine
 	 */
-	public void refreshTimeLine(int nowCnt) {
+	private void refreshTimeLine(int nowCnt) {
 		// Update counter of location of TimeLine
 		currentTimeLineLocation = nowCnt;
-
-		// Repaint Canvas
 		setStatusCanvasVolumeLevel(2);
 	}
 
 	/**
-	 * Setter methods : Set Status to internal flag
 	 */
 	public void setStatusCanvasVolumeLevel(int nextStatus) {
-		// Store next status
 		currentProcStatus = nextStatus;
 		redraw();
 	}
 
 	private void setLocationBorderTimeLine(int x) {
-		// Get current Canvas size
-		// Point nowCanvas = this.getSize();
-
-		// Store current time
-		// previousBorderLinePosX = borderLinePosX;
-
 		// Update current time(position)
 		borderLinePosX = x - 1;
 		if (borderLinePosX < 0)
 			borderLinePosX = 0;
-		// Paint event
-		// ///redraw(previousBorderLinePosX, 0, 4, nowCanvas.y, true);
 		redraw();
 	}
 
 	/**
-	 * Getter method : Get current sampling data length
-	 */
-	public int getSamplingLengthVolumeLevel() {
-		// Return current sampling data length
-		// ///return (sampleVolumeLevel.size());
-		return (previewVoiceTotalTime);
-	}
-
-	/**
-	 * Setter method : Reset sampling data length
 	 */
 	public void clearSamplingLengthVolumeLevel() {
-		// Return current sampling data length
 		previewVoiceTotalTime = 0;
 	}
 
 	/**
-	 * Getter method : Get current capture audio mode
 	 * 
-	 * @return
+	 * @return true if capture enabled
 	 */
-	public boolean getCurrentCaptureMode() {
-		// return current capture mode
+	public boolean isCaptureEnabled() {
 		return (currentCaptureMode);
 	}
 
 	/**
-	 * Getter method : Get current capture audio mode
-	 * 
-	 * @return
+	 * Enable/disable capture
 	 */
-	public void setCurrentCaptureMode(boolean stat) {
-		// update capture mode
+	public void setCaptureEnabled(boolean stat) {
 		currentCaptureMode = stat;
 	}
 
 	/**
-	 * Setter method : Set Gain of volume level by Preference setting
-	 * 
-	 * @param newGain
-	 *            : new Gain value by Preference setting
+	 * Set Gain of volume level based on settings in preference
 	 */
-	public void setCurrentVolLvlGain(int newGain) {
+	public void setCurrentVolLvlGain() {
 		// Calculate new Gain value
-		currentVolLvlGain = (float) newGain / 100.0f;
+		currentVolLvlGain = (float) CapturePreferenceUtil
+				.getPreferenceVolLvlGain() / 100.0f;
 	}
 
 	/**
-	 * Setter method : initialize ArrayList of captured audio level
+	 * clear audio level
 	 */
 	public void cleanupMovieAudioLevel() {
-		// CleanUP ArrayList of captured audio level
 		startTimeCaptureAudio.clear();
 		volumeLevelCaptureAudio.clear();
 	}
 
-	public int getSamplingLengthMovieAudioLevel() {
+	private int getSamplingLengthMovieAudioLevel() {
 		int result = -1;
 		if (!startTimeCaptureAudio.isEmpty()) {
-			// Get current size
 			result = startTimeCaptureAudio.size();
 		}
-		// Return current sampling data length
 		return (result);
-	}
-
-	/**
-	 * Local method : clear previous border line area
-	 * 
-	 * @param e
-	 */
-	// private void clearPreviousBorderLine(PaintEvent e) {
-	// // Get current Canvas size
-	// Point nowCanvas = this.getSize();
-	// // Clear previous border line area by off-image(original data)
-	// e.gc.drawImage(offImage, previousBorderLinePosX, 0, 2, nowCanvas.y,
-	// previousBorderLinePosX, 0, 2, nowCanvas.y);
-	// }
-
-	/**
-	 * Local method : draw border line
-	 */
-	private void drawBorderLine(PaintEvent e) {
-		// Get current Canvas size
-		Point nowCanvas = this.getSize();
-		// Draw border line(current TimeLine)
-		e.gc.setBackground(e.display.getSystemColor(SWT.COLOR_BLUE));
-		e.gc.fillRectangle(borderLinePosX, 0, 2, nowCanvas.y);
 	}
 
 	/**
@@ -360,7 +265,6 @@ public class VolumeLevelCanvas extends Canvas implements IUNIT,
 		wgc.drawLine(0, newCanvas.y >> 1, newCanvas.x, newCanvas.y >> 1);
 
 		// Initial draw TimeLine
-		// ///e.gc.drawImage(offImage, 0, 0);
 		e.gc.drawImage(offImage, e.x, e.y, e.width, e.height, e.x, e.y,
 				e.width, e.height);
 
@@ -394,7 +298,8 @@ public class VolumeLevelCanvas extends Canvas implements IUNIT,
 		// Get current Canvas size
 		int ht = newCanvas.y;
 		int cHt = ht >> 1;
-		int adjHt = (32767 / (cHt + 1)) + 1;
+		// int adjHt = (32767 / (cHt + 1)) + 1;
+		int adjHt = 378;
 
 		// Dispose current off image
 		if (offImage != null) {
@@ -442,6 +347,8 @@ public class VolumeLevelCanvas extends Canvas implements IUNIT,
 		for (int i = startIndex; i < datasize; i++) {
 			// pickup next level data
 			audioLevel = volumeLevelCaptureAudio.get(i);
+			// audioLevel = volumeLevelCaptureAudio.get(i)*4; // for TEST
+			// System.out.println("drawMediaAudioLevel() : audioLevel="+audioLevel);
 			// adjust level size by current window height
 			audioLevel = audioLevel / adjHt;
 			if (audioLevel < 0)
@@ -477,7 +384,7 @@ public class VolumeLevelCanvas extends Canvas implements IUNIT,
 		// Set next paint mode (Check parent play mode)
 		if (TL_STAT_PLAY == instParentView.getStatusTimeLine()) {
 			// Check Capture audio mode
-			if (getCurrentCaptureMode()) {
+			if (isCaptureEnabled()) {
 				// Update Status : 3 (Append Volume Level mode)
 				currentProcStatus = 3;
 			} else {
@@ -510,7 +417,8 @@ public class VolumeLevelCanvas extends Canvas implements IUNIT,
 			Point nowCanvas = this.getSize();
 			int ht = nowCanvas.y;
 			int cHt = ht >> 1;
-			int adjHt = (32767 / (cHt + 1)) + 1;
+			// int adjHt = (32767 / (cHt + 1)) + 1;
+			int adjHt = 378;
 
 			// Set foreground color for Script data line.
 			wgc.setForeground(new Color(e.display, 120, 150, 255));
@@ -605,7 +513,7 @@ public class VolumeLevelCanvas extends Canvas implements IUNIT,
 		int dx = 0;
 
 		// initialize start drawing point
-		int startTimeLine = TimeLineView.getInstance().getStartTimeLine();
+		int startTimeLine = 0; // TimeLineView.getInstance().getStartTimeLine();
 
 		// Draw sampling audio level data
 		for (int nowStartTime = startTimeLine / IUNIT.MSEC; nowStartTime < sampleVolumeLevel
@@ -672,60 +580,33 @@ public class VolumeLevelCanvas extends Canvas implements IUNIT,
 					drawPreviewDataVolumeLevel(e);
 				}
 
-				// Clear previous border line area
-				// ///clearPreviousBorderLine(e);
 				// Draw border line(current TimeLine)
-				drawBorderLine(e);
+				Point nowCanvas = ownInst.getSize();
+				e.gc.setBackground(e.display.getSystemColor(SWT.COLOR_BLUE));
+				e.gc.fillRectangle(borderLinePosX, 0, 2, nowCanvas.y);
 
 				// release GC resource
 				e.gc.dispose();
 			} catch (Exception ee) {
-				System.out.println(">>VolumeCanvas::paintControl() : " + ee);
+				ee.printStackTrace();
 			}
 		}
 	}
 
-	public void samplingTimerTask() {
-		// if(currentSamplingMode == false) {
-		// return;
-		// }
-		// Check status of Audio preview
-		if (instParentView.isSamplingScriptAudio()) {
-			previewVoiceTotalTime++;
-		} else {
-
-			// Request draw Canvas
-			// ///setStatusCanvasVolumeLevel(11);
-
-			// Check current status(Not Play Extended text)
-			if (TL_STAT_EXTENDED != instParentView.getStatusTimeLine()) {
-				// Request redraw Canvas
-				final IWorkbench workbench = PlatformUI.getWorkbench();
-				final Display display = workbench.getDisplay();
-				display.asyncExec(new Runnable() {
-					public void run() {
-
-						// Repaint EndTime
-						EditPanelView.getInstance().getInstanceTabEditPanel()
-								.repaintTextEndTime();
-					}
-				});
-			}
-		}
+	public void startSampling() {
+		samplingFlag = true;
+		previewVoiceTotalTime = 0; // Initialize total time.
 	}
 
-	private boolean startTimerCaptureAudio() {
-		currentCaptureMode = true;
-		return true;
+	public void stopSampling() {
+		samplingFlag = false;
 	}
 
 	/**
 	 * Local method : update own free running timer counter (for Capture audio)
 	 */
 	private void updateFreeRunCounter(int duration) {
-		// pickup current TimeLine
 		int nowParentTimeLine = instParentView.getCurrentTimeLine();
-		// check modified TimeLine
 		if (previousParentTimeLine != nowParentTimeLine) {
 			// Adjust own free-run counter by current TimeLine
 			previousParentTimeLine = nowParentTimeLine;
@@ -750,22 +631,18 @@ public class VolumeLevelCanvas extends Canvas implements IUNIT,
 
 		// pickup captured data each 20msec
 		int audioLevel = SoundMixer.getInstance().pickupCaptureAudioLevel();
-		// Calculate Quantization start time
+		audioLevel = audioLevel * TL_AUDIO_AMPLIFY_LEVEL; // amplify volume
+															// level graph
 		int quantumStartTime = currentTime - (currentTime % TIME2PIXEL);
 
-		// check data
 		if (audioLevel >= 0) {
 			// null check
 			if (!(startTimeCaptureAudio.isEmpty())) {
-				// Search target data(StartTime)
 				int index = startTimeCaptureAudio.indexOf(quantumStartTime);
-				// exist data
 				if (index >= 0) {
 					// update raw audio data(exist data)
 					volumeLevelCaptureAudio.set(index, audioLevel);
-				}
-				// new data
-				else {
+				} else {
 					// append raw audio data(new data)
 					startTimeCaptureAudio.add(quantumStartTime);
 					volumeLevelCaptureAudio.add(audioLevel);
@@ -778,32 +655,14 @@ public class VolumeLevelCanvas extends Canvas implements IUNIT,
 		}
 	}
 
-	private void captureAudioTimerTask() {
-		// check current status
-		if (getCurrentCaptureMode()
-				&& (TL_STAT_PLAY == instParentView.getStatusTimeLine())) {
-			// Adjust free run counter
-			updateFreeRunCounter(TL_AUDIO_SAMPLE_TIME);
-
-			// Store data of Captured audio level
-			updateCaptureAudio(ownFreeRunTimeCount);
-		}
-	}
-
-	/*********************************************************
-	 * File in/out management
-	 * 
-	 ********************************************************/
 	/**
-	 * Save volume level data to temporary file
+	 * @category Save volume level data to temporary file
 	 */
 	public void saveVolumeLevelTempFile() {
 		try {
 			String fpath = null;
-			// Check exist data
 			if (getSamplingLengthMovieAudioLevel() > 0) {
-				// Check exit target file
-				if (savePathVolLvl == null) {
+				if (FileInfoStore.getVolumeLevelFilePath() == null) {
 					// Create new temporary file for volume level
 					File fh = TempFileUtil.createTempFile(DIR_TEMP_VOLLVL,
 							FILE_TEMP_VOLLVL_PREFIX, FILE_TEMP_VOLLVL_SUFFIX);
@@ -811,9 +670,9 @@ public class VolumeLevelCanvas extends Canvas implements IUNIT,
 						// Get string of absolute file path(temporary file)
 						fpath = fh.getAbsolutePath();
 					}
+					FileInfoStore.setVolumeLevelFilePath(fpath);
 				} else {
-					// PickUP target file path
-					fpath = savePathVolLvl.getPath();
+					fpath = FileInfoStore.getVolumeLevelFilePath().getPath();
 					fpath = fpath.replace("/", "\\");
 				}
 
@@ -821,62 +680,34 @@ public class VolumeLevelCanvas extends Canvas implements IUNIT,
 					// Start write volume level data thread
 					TempFileUtil.writeStreamTempFile(startTimeCaptureAudio,
 							volumeLevelCaptureAudio, fpath);
-					savePathVolLvl = TempFileUtil.getResource(fpath);
 				}
 			}
 		} catch (Exception ee) {
-			System.out.println("saveVolumeLevelTempFile() : " + ee);
+			ee.printStackTrace();
 		}
 	}
 
 	/**
-	 * Get save path of volume level(temporary file)
-	 * 
-	 * @return
-	 */
-	public URI getSavePathVolLvl() {
-		// return result
-		return (savePathVolLvl);
-	}
-
-	/**
-	 * Set save path of volume level(temporary file)
-	 */
-	public void setSavePathVolLvl(String fpath) {
-		// Update URI value
-		savePathVolLvl = null;
-		if (fpath != null) {
-			savePathVolLvl = TempFileUtil.getResource(fpath);
-		}
-	}
-
-	/**
-	 * Check enable status for clear volume level data action
-	 * 
+	 * @category Check enable status for clear volume level data action
 	 * @return status : TRUE:enable clear action, FALSE:disable clear action
 	 */
 	public boolean isEnableClearVolLvl() {
 		boolean result = false;
 
-		// Check volume level file path
-		if (savePathVolLvl == null) {
-			// enable clear action
+		if (FileInfoStore.getVolumeLevelFilePath() == null) {
 			result = true;
 		}
-
-		// return result
 		return (result);
 	}
 
 	/**
-	 * 
+	 * @category Load volume level value from temporary file
 	 * @param strPathVolLvl
 	 *            : source path of temporary file
 	 */
 	public void loadVolumeLevelTempFile() {
-		if (savePathVolLvl != null) {
-			// trim URI string
-			String fpath = savePathVolLvl.getPath();
+		if (FileInfoStore.getVolumeLevelFilePath() != null) {
+			String fpath = FileInfoStore.getVolumeLevelFilePath().getPath();
 			fpath = fpath.replace("/", "\\");
 			try {
 				// CleanUP buffer of captured audio
@@ -890,7 +721,6 @@ public class VolumeLevelCanvas extends Canvas implements IUNIT,
 						if (startTime >= 0) {
 							// read volume level value
 							int volLvl = TempFileUtil.readIntValueTempFile();
-
 							// append raw audio data(new data)
 							startTimeCaptureAudio.add(startTime);
 							volumeLevelCaptureAudio.add(volLvl);
@@ -907,28 +737,76 @@ public class VolumeLevelCanvas extends Canvas implements IUNIT,
 		}
 	}
 
+	private void samplingTimerTask() {
+		if (samplingFlag == false) {
+			return;
+		}
+		if (VoicePlayerFactory.getInstance().getPlayVoiceStatus()) {
+			previewVoiceTotalTime++; // TODO use actual time
+		} else {
+			if (samplingFlag == false) { // stopped
+				return;
+			}
+
+			System.out.println("count:" + previewVoiceTotalTime);
+
+			if (TL_STAT_EXTENDED != instParentView.getStatusTimeLine()) {
+				// Request redraw Canvas
+				final IWorkbench workbench = PlatformUI.getWorkbench();
+				final Display display = workbench.getDisplay();
+				display.asyncExec(new Runnable() {
+					public void run() {
+						// Repaint EndTime
+						if (EditPanelView.getInstance() != null) {
+							EditPanelView
+									.getInstance()
+									.getInstanceTabEditPanel()
+									.updateEndTime(
+											previewVoiceTotalTime
+													* SAMPLING_RATE);
+							samplingFlag = false;
+						}
+					}
+				});
+			}
+		}
+	}
+
+	private void captureAudioTimerTask() {
+		if (isCaptureEnabled()
+				&& (TL_STAT_PLAY == instParentView.getStatusTimeLine())) {
+			updateFreeRunCounter(SAMPLING_RATE);
+			updateCaptureAudio(ownFreeRunTimeCount);
+		}
+	}
+
 	public void handleSyncTimeEvent(SyncTimeEvent e) {
 		// Synchronize TimeLine view
 		if (e.getEventType() == SyncTimeEvent.SYNCHRONIZE_TIME_LINE) {
 			synchronizeTimeLine(e.getCurrentTime());
+			// } else if (e.getEventType() == SyncTimeEvent.ADJUST_TIME_LINE) {
+			// synchronizeTimeLine(e.getCurrentTime());
 		} else if (e.getEventType() == SyncTimeEvent.REFRESH_TIME_LINE) {
 			refreshTimeLine(e.getCurrentTime());
 		}
 	}
 
 	/**
-	 * 
+	 * Timer Utility handling
 	 */
+	static long previousTimerUtilEventTime = -1L;
+
 	public void handleTimerUtilEvent(TimerEvent e) {
-		timerUtilCounter += ScriptEditorTimerUtil.TL_SYNC_TIME_BASE;
-		if (timerUtilCounter >= TL_AUDIO_SAMPLE_TIME) {
-			// if(currentSamplingMode == true){
+		long time = e.getTime();
+		// if(previousTimerUtilEventTime == -1L) {
+		// previousTimerUtilEventTime = time;
+		// }
+		if ((time - previousTimerUtilEventTime) >= (SAMPLING_RATE - 4)) {
 			samplingTimerTask();
-			// }
-			// if(currentCaptureMode == true) {
+
 			captureAudioTimerTask();
-			// }
-			timerUtilCounter = 0;
+			previousTimerUtilEventTime = time;
 		}
 	}
+
 }

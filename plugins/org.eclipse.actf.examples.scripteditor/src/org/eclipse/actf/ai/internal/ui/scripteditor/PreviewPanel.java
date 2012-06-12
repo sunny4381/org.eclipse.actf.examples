@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 IBM Corporation and Others
+ * Copyright (c) 2009, 2012 IBM Corporation and Others
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -17,25 +17,20 @@ import org.eclipse.actf.ai.internal.ui.scripteditor.event.PlayerControlEvent;
 import org.eclipse.actf.ai.internal.ui.scripteditor.event.PlayerControlEventListener;
 import org.eclipse.actf.ai.internal.ui.scripteditor.event.SyncTimeEvent;
 import org.eclipse.actf.ai.internal.ui.scripteditor.event.SyncTimeEventListener;
-import org.eclipse.actf.ai.scripteditor.data.ScriptData;
 import org.eclipse.actf.ai.scripteditor.util.SoundMixer;
+import org.eclipse.actf.ai.scripteditor.util.TimeFormatUtil;
 import org.eclipse.actf.ai.scripteditor.util.WebBrowserFactory;
-import org.eclipse.actf.ai.ui.scripteditor.views.EditPanelView;
 import org.eclipse.actf.ai.ui.scripteditor.views.IUNIT;
 import org.eclipse.actf.ai.ui.scripteditor.views.TimeLineView;
 import org.eclipse.actf.examples.scripteditor.Activator;
 import org.eclipse.actf.model.ui.IModelService;
 import org.eclipse.actf.model.ui.editor.browser.IWebBrowserACTF;
-import org.eclipse.actf.model.ui.editors.ie.WebBrowserEditor;
 import org.eclipse.actf.model.ui.util.ModelServiceUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
-import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseTrackAdapter;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
@@ -48,20 +43,12 @@ import org.eclipse.swt.widgets.Slider;
 public class PreviewPanel implements IUNIT, SyncTimeEventListener,
 		MouseDragEventListener, PlayerControlEventListener {
 
-	/**
-	 * Local data
-	 */
-	// Parent instance
 	static private TimeLineView instParentView = null;
-	// Own instance
 	static private PreviewPanel ownInst = null;
-
-	// instance of ScriptData class
-	static private ScriptData instScriptData = null;
 
 	// action status(0:Idle(Stop/Pause), 1:Play)
 	private int currentActionStatus = 0;
-	private boolean currentSamplingAudioMode = false;
+	private boolean isInSampling = false;
 	private boolean currentStatusMedia = true;
 
 	// for timeline drag
@@ -89,26 +76,19 @@ public class PreviewPanel implements IUNIT, SyncTimeEventListener,
 	 * Constructor
 	 */
 	private PreviewPanel() {
-		// store ScriptData class instance
-		instScriptData = ScriptData.getInstance();
-		// store parent class instance
 		instParentView = TimeLineView.getInstance();
-		// store event lister
 		eventManager = EventManager.getInstance();
 	}
 
 	static public PreviewPanel getInstance() {
-		// 1st check current Instance
 		if (ownInst == null) {
-			synchronized (PreviewPanel.class) {
+			synchronized (PreviewPanel.class) { // TODO check
 				// 2nd check current instance
 				if (ownInst == null) {
-					// New own class at once
 					ownInst = new PreviewPanel();
 				}
 			}
 		}
-		// return current Instance of own class
 		return (ownInst);
 	}
 
@@ -118,13 +98,11 @@ public class PreviewPanel implements IUNIT, SyncTimeEventListener,
 	public void initPreviewPanel(Display parentDisp, Composite parentComposite) {
 
 		try {
-			// Button : "Rewind"
 			FormData buttonRewindLData = new FormData();
 			buttonRewindLData.width = 25;
 			buttonRewindLData.height = 23;
 			buttonRewindLData.left = new FormAttachment(0, 1000, 4);
 			buttonRewindLData.top = new FormAttachment(0, 1000, 2);
-			// buttonRewindLData.bottom = new FormAttachment(1000, 1000, -4);
 			buttonRewind = new Button(parentComposite, SWT.PUSH | SWT.CENTER);
 			buttonRewind.setLayoutData(buttonRewindLData);
 			// //buttonRewind.setText("Rewind");
@@ -134,74 +112,63 @@ public class PreviewPanel implements IUNIT, SyncTimeEventListener,
 			buttonRewind.setToolTipText("Rewind movie");
 
 			// Rewind event listener
-			buttonRewind.addSelectionListener(new RewindButtonAdapter());
-			// Tracking mouse cursor listener
-			buttonRewind
-					.addMouseTrackListener(new ButtonMouseCursorTrackAdapter());
+			buttonRewind.addSelectionListener(new SelectionAdapter() {
+				public void widgetSelected(SelectionEvent e) {
+					rewindMedia();
+					currentStatusMedia = true;
+				}
+			});
+			buttonRewind.addMouseTrackListener(new MouseCursorTrackAdapter());
 
-			// Button : "Play" or "Pause"
 			FormData buttonPlayLData = new FormData();
 			buttonPlayLData.width = 24;
 			buttonPlayLData.height = 23;
 			buttonPlayLData.left = new FormAttachment(0, 1000, 31);
 			buttonPlayLData.top = new FormAttachment(0, 1000, 2);
-			// buttonPlayLData.bottom = new FormAttachment(1000, 1000, -4);
 			buttonPlay = new Button(parentComposite, SWT.PUSH | SWT.CENTER);
 			buttonPlay.setLayoutData(buttonPlayLData);
 			// Initial draw button image by current status
 			redrawPlayButton(currentActionStatus);
 
 			// Play event listener
-			buttonPlay.addSelectionListener(new PlayButtonAdapter());
-			// Tracking mouse cursor listener
-			buttonPlay
-					.addMouseTrackListener(new ButtonMouseCursorTrackAdapter());
+			buttonPlay.addSelectionListener(new SelectionAdapter() {
+				public void widgetSelected(SelectionEvent e) {
+					playPauseMedia();
+				}
+			});
+			buttonPlay.addMouseTrackListener(new MouseCursorTrackAdapter());
 
-			// Label : TimeLine for Preview's slider
 			FormData labelTimeLinePreviewLData = new FormData();
-			// labelTimeLinePreviewLData.width = 84;
-			// labelTimeLinePreviewLData.height = 12;
 			labelTimeLinePreviewLData.top = new FormAttachment(0, 1000, 8);
-			// labelTimeLinePreviewLData.bottom = new FormAttachment(1000, 1000,
-			// -8);
 			labelTimeLinePreviewLData.right = new FormAttachment(1000, 1000, -4);
 			timelinePreview = new Label(parentComposite, SWT.NONE);
 			timelinePreview.setLayoutData(labelTimeLinePreviewLData);
 			timelinePreview.setText("00:00/00:00");
 
-			// Slider : (Time Line) Create Slider
 			FormData sliderPreviewLayoutData = new FormData();
-			// sliderPreviewLayoutData.width = 488;
 			sliderPreviewLayoutData.height = 14;
 			sliderPreviewLayoutData.left = new FormAttachment(0, 1000, 60);
 			sliderPreviewLayoutData.top = new FormAttachment(0, 1000, 6);
-			// sliderPreviewLayoutData.right = new FormAttachment(1000, 1000,
-			// -4);
 			sliderPreviewLayoutData.right = new FormAttachment(timelinePreview,
 					-5);
-			// sliderPreviewLayoutData.bottom = new FormAttachment(1000, 1000,
-			// -8);
 			sliderPreview = new Slider(parentComposite, SWT.HORIZONTAL);
 			sliderPreview.setLayoutData(sliderPreviewLayoutData);
-			// Initialize location of preview's slider
 			sliderPreview.setMinimum(0);
 			sliderPreview.setIncrement(TIME2PIXEL);
 			setLocationPreviewSlider(TL_DEF_ETIME, 0);
 
-			// Add SelectionListener
 			sliderPreview
 					.addSelectionListener(new SliderPreviewSelectionAdapter());
-			// Tracking mouse cursor listener
-			sliderPreview
-					.addMouseTrackListener(new SliderMouseCursorTrackAdapter());
+			sliderPreview.addMouseTrackListener(new MouseCursorTrackAdapter());
 
+			// initialize event listeners
 			eventManager.addSyncTimeEventListener(this);
 			eventManager.addMouseDragEventListener(this);
 			eventManager.addPlayerControlEvenListener(this);
 			parentComposite.addDisposeListener(new DisposeListener() {
 				@Override
 				public void widgetDisposed(DisposeEvent e) {
-					// TODO other components
+					// remove EventListener
 					eventManager.removeSyncTimeEventListener(ownInst);
 					eventManager.removeMouseDragEventListener(ownInst);
 					eventManager.removePlayerControlEventListener(ownInst);
@@ -209,20 +176,17 @@ public class PreviewPanel implements IUNIT, SyncTimeEventListener,
 			});
 
 		} catch (Exception e) {
-			System.out.println("PreviewPanelView() : Exception = " + e);
+			e.printStackTrace();
 		}
 	}
 
 	/**
-	 * Getter method : Get instance button of Play
+	 * Get Play button
 	 */
 	public Button getPlayButton() {
 		return (buttonPlay);
 	}
 
-	/**
-	 * Setter method : Set location of slider
-	 */
 	private void setLocationPreviewSlider(int movieEndTime, int currentTime) {
 		// SetUP location of Preview's slider
 		sliderPreview.setMaximum(movieEndTime);
@@ -232,79 +196,12 @@ public class PreviewPanel implements IUNIT, SyncTimeEventListener,
 	}
 
 	/**
-	 * Setter method : Enable control of "Play/Pause" button
-	 * 
-	 * @param stat
-	 *            = true : Set enable button (status is Play mode) = false : Set
-	 *            disable button (status is Pause or Idle mode)
-	 */
-	public void setEnablePlayPause(boolean stat) {
-		// Control enable of "Play/Pause" button
-		buttonPlay.setEnabled(stat);
-	}
-
-	/**
-	 * @category Getter Method
-	 * @purpose : Get current URL from Text field
-	 */
-	public String getURLMovie() {
-		IModelService model = ModelServiceUtils.getActiveModelService();
-		if (model instanceof IWebBrowserACTF) {
-			return model.getURL();
-		}
-		return "about:blank";
-	}
-
-	/**
-	 * @category Setter Method
-	 * @purpose Set new URL to Text field
-	 */
-	public void setURLMovie(String newURL) {
-		IModelService model = ModelServiceUtils.getActiveModelService();
-		if (model instanceof IWebBrowserACTF) {
-			((IWebBrowserACTF) model).navigate(newURL);
-		} else {
-			ModelServiceUtils.launch(newURL, WebBrowserEditor.ID);
-		}
-	}
-
-	/**
-	 * @category Getter method
-	 * @purpose Get current video status
-	 * 
-	 *          STATE_UNKNOWN STATE_PLAY STATE_STOP STATE_PAUSE
-	 *          STATE_FASTFORWARD STATE_FASTREVERSE STATE_WAITING
-	 */
-	public int getVideoStatus() {
-		// return current video status
-		return (WebBrowserFactory.getInstance().getVideoStatus());
-	}
-
-	/**
-	 * @category Getter method
-	 * @purpose Get current video position(play time)
-	 */
-	public int getVideoCurrentPosition() {
-		// return current video status
-		return (WebBrowserFactory.getInstance().getCurrentPosition());
-	}
-
-	/**
-	 * @category Getter method
-	 * @purpose Get current video size(end time)
-	 */
-	public int getVideoTotalTime() {
-		// return current video status
-		return (WebBrowserFactory.getInstance().getTotalLength());
-	}
-
-	/**
 	 * @category Setter Method
 	 * @purpose Synchronized Time Line
 	 */
 	public void synchronizeTimeLine(int nowTime) {
 		// PickUP End TimeLine
-		int movieTotalTime = instParentView.getEndTimeLine();
+		int movieTotalTime = WebBrowserFactory.getInstance().getTotalLength();
 
 		// Update Time Display of own view
 		timelinePreview.setText(getStringTimeLine(nowTime, movieTotalTime));
@@ -313,23 +210,11 @@ public class PreviewPanel implements IUNIT, SyncTimeEventListener,
 		setLocationPreviewSlider(movieTotalTime, nowTime);
 	}
 
-	/**
-	 * @category Local method
-	 * @param nowTime
-	 * @param endTime
-	 * @return
-	 */
 	private String getStringTimeLine(int nowTime, int endTime) {
-
-		// MakeUP string of current time line of Volume Level
-		// 1)current time line
-		String strCurrentTime = new String(instScriptData.makeFormatMM(nowTime)
-				+ ":" + instScriptData.makeFormatSS(nowTime));
-		// 2)end time line
-		String strEndTime = new String(instScriptData.makeFormatMM(endTime)
-				+ ":" + instScriptData.makeFormatSS(endTime));
-
-		// Return string of current time line of VolumeLevel
+		String strCurrentTime = new String(TimeFormatUtil.makeFormatMM(nowTime)
+				+ ":" + TimeFormatUtil.makeFormatSS(nowTime));
+		String strEndTime = new String(TimeFormatUtil.makeFormatMM(endTime)
+				+ ":" + TimeFormatUtil.makeFormatSS(endTime));
 		return (strCurrentTime + "/" + strEndTime);
 	}
 
@@ -361,48 +246,13 @@ public class PreviewPanel implements IUNIT, SyncTimeEventListener,
 	}
 
 	/**
-	 * Getter method : Check current status of Sampling Audio
-	 */
-	public boolean isSamplingAudioMode() {
-		return (currentSamplingAudioMode);
-	}
-
-	/**
-	 * Setter method : Set status of Sampling Audio
-	 */
-	public void setSamplingAudioMode(boolean stat) {
-		currentSamplingAudioMode = stat;
-	}
-
-	/**
-	 * Local Class implements SelectionAdapter
-	 */
-	class PlayButtonAdapter extends SelectionAdapter {
-		// Event Play/Pause movie
-		public void widgetSelected(SelectionEvent e) {
-			playPauseMedia();
-		}
-	}
-
-	/**
 	 * Get current status for media play
 	 * 
 	 * @return current status (TRUE:now playing, FALSE:otherwise)
 	 */
 	public boolean getCurrentStatusMedia() {
-		// return result
+		// TODO use WebBrowserFactory
 		return (currentStatusMedia);
-	}
-
-	/**
-	 * Set new status for media play
-	 * 
-	 * @param newStat
-	 *            : new status (TRUE:now playing, FALSE:otherwise)
-	 */
-	public void setCurrentStatusMedia(boolean newStat) {
-		// Update status
-		currentStatusMedia = newStat;
 	}
 
 	/**
@@ -412,109 +262,67 @@ public class PreviewPanel implements IUNIT, SyncTimeEventListener,
 		// Update status flag
 		currentActionStatus = ~currentActionStatus;
 
-		// Check next status(action)
 		if (currentActionStatus == 0) {
-			// Close captured voice module
 			SoundMixer.getInstance().stopCaptureSound();
 			SoundMixer.getInstance().stopPlaySound();
 
-			// Pause MoviePlayer
+			// Pause media
 			WebBrowserFactory.getInstance().pauseMedia();
-			// Pause VoicePlayer
 			instParentView.switchActionTimeLine(false);
-			// Stop TTS engine
 			instParentView.reqStopVoicePlayer();
 
-			// redraw captured audio level to Canvas
+			// redraw captured audio level
 			instParentView.reqRedrawVolumeLevelCanvas(4);
-			// Set status "normal mode"
-			setSamplingAudioMode(false);
-
+			// Set normal mode
+			isInSampling = false;
 			// SetUP enable status for File Menu
-			setCurrentStatusMedia(true);
+			currentStatusMedia = true;
 		} else {
 			// Check current buffer status
 			int paintStatus;
-			if (VolumeLevelCanvas.getInstance().getCurrentCaptureMode()) {
-				// Start captured voice module
+			if (VolumeLevelCanvas.getInstance().isCaptureEnabled()) {
+				// Start
 				SoundMixer.getInstance().startCaptureSound(SM_PMODE_CAPTURE);
-				// Set status "Sampling mode"
-				setSamplingAudioMode(true);
+
+				// Set sampling mode
+				isInSampling = true;
 				// Set paint mode = 2 : Redraw capture data
 				paintStatus = 2;
 			} else {
 				// Set paint mode = 4 : Redraw current off image
 				paintStatus = 4;
 			}
-			// Initial draw captured audio level to Canvas
 			instParentView.reqRedrawVolumeLevelCanvas(paintStatus);
 
-			// Start MoviePlayer
+			// Start media
 			WebBrowserFactory.getInstance().playMedia();
-			// Start VoicePlayer
 			instParentView.switchActionTimeLine(true);
-
 			// SetUP disable status for File Menu
-			setCurrentStatusMedia(false);
+			currentStatusMedia = false;
 		}
-
-		// SetUP new button image
 		redrawPlayButton(currentActionStatus);
 
-		// Control enabled "Preview" button of EditPanel view
-		EditPanelView.getInstance().getInstanceTabEditPanel()
-				.setEnablePreview(currentActionStatus);
-		EditPanelView.getInstance().getInstanceTabSelWAVFile()
-				.setEnablePreview(currentActionStatus);
+		// TODO disable preview while playing movie
+		// EditPanelView panelView = EditPanelView.getInstance();
+		// if (panelView != null) {
+		// panelView.getInstanceTabEditPanel().setEnablePreview(
+		// currentActionStatus);
+		// panelView.getInstanceTabSelWAVFile().setEnablePreview(
+		// currentActionStatus);
+		// }
 
-		// Return current status
 		return (currentActionStatus);
-	}
-
-	/**
-	 * Setter method : Request Extended text control
-	 */
-	public void controlExtendedPlay(boolean stat) {
-		// TRUE : Start Extended voice, Suspend all time line
-		if (stat) {
-			// Pause MoviePlayer
-			WebBrowserFactory.getInstance().pauseMedia();
-		}
-		// FALSE : Finish Extended voice, Resume all time line
-		else {
-			// Start MoviePlayer
-			WebBrowserFactory.getInstance().playMedia();
-		}
-	}
-
-	/**
-	 * Local Class implements SelectionAdapter
-	 */
-	class RewindButtonAdapter extends SelectionAdapter {
-		// Event Play/Pause movie
-		public void widgetSelected(SelectionEvent e) {
-			// Rewind media content
-			rewindMedia();
-			// SetUP enable status for File Menu
-			setCurrentStatusMedia(true);
-		}
 	}
 
 	public void rewindMedia() {
 		// Set status "normal mode"
-		setSamplingAudioMode(false);
+		isInSampling = false;
 		// Rewind VoicePlayer
 		instParentView.switchActionTimeLine(false);
 		instParentView.rewindActionTimeLine();
 		currentActionStatus = 0;
 		redrawPlayButton(currentActionStatus);
 		sliderPreview.setSelection(0);
-
-		// Control enabled "Preview" button of EditPanel view
-		EditPanelView.getInstance().getInstanceTabEditPanel()
-				.setEnablePreview(currentActionStatus);
-		EditPanelView.getInstance().getInstanceTabSelWAVFile()
-				.setEnablePreview(currentActionStatus);
 
 		// Close captured voice module
 		SoundMixer.getInstance().stopCaptureSound();
@@ -528,7 +336,7 @@ public class PreviewPanel implements IUNIT, SyncTimeEventListener,
 		instParentView.reqRewindTimeLine();
 
 		// SetUP enable status for File Menu
-		setCurrentStatusMedia(true);
+		currentStatusMedia = true;
 
 		// Change paint mode : Redraw off image
 		// ///instParentView.reqRedrawVolumeLevelCanvas(4);
@@ -538,45 +346,18 @@ public class PreviewPanel implements IUNIT, SyncTimeEventListener,
 	 * Reload media
 	 */
 	public void reload() {
-
-		// CleanUP buffer of captured audio
-		instParentView.reqCleanupCaptureData();
-		// redraw captured audio level to Canvas
+		instParentView.cleanupCaptureData();
 		instParentView.reqRedrawVolumeLevelCanvas(1);
-
-		// Reset all time line
-		// ///imeLineView.getInstance().resetTimeLine();
 
 		// reload media content
 		IModelService model = ModelServiceUtils.getActiveModelService();
 		if (model instanceof IWebBrowserACTF) {
 			((IWebBrowserACTF) model).navigateRefresh();
 		}
-
 		// Stop TTS engine
 		instParentView.reqStopVoicePlayer();
-
 		// SetUP enable status for File Menu
-		setCurrentStatusMedia(true);
-	}
-
-	/**
-	 * Local Class extends MouseTrackAdapter for Button
-	 */
-	class ButtonMouseCursorTrackAdapter extends MouseTrackAdapter {
-		// mouse cursor enter into parent area
-		public void mouseEnter(MouseEvent e) {
-			// Changer Cursor image from ARROW type to HAND type
-			Button parentButton = (Button) e.getSource();
-			parentButton.setCursor(new Cursor(null, SWT.CURSOR_HAND));
-		}
-
-		// mouse cursor exit parent area
-		public void mouseExit(MouseEvent e) {
-			// Reset Cursor image to default type (ARROW)
-			Button parentButton = (Button) e.getSource();
-			parentButton.setCursor(new Cursor(null, SWT.CURSOR_ARROW));
-		}
+		currentStatusMedia = true;
 	}
 
 	/**
@@ -654,28 +435,6 @@ public class PreviewPanel implements IUNIT, SyncTimeEventListener,
 		}
 	}
 
-	/**
-	 * Local Class extends MouseTrackAdapter for Slider
-	 */
-	class SliderMouseCursorTrackAdapter extends MouseTrackAdapter {
-		// mouse cursor enter into parent area
-		public void mouseEnter(MouseEvent e) {
-			// Changer Cursor image from ARROW type to HAND type
-			Slider parentSlider = (Slider) e.getSource();
-			parentSlider.setCursor(new Cursor(null, SWT.CURSOR_HAND));
-		}
-
-		// mouse cursor exit parent area
-		public void mouseExit(MouseEvent e) {
-			// Reset Cursor image to default type (ARROW)
-			Slider parentSlider = (Slider) e.getSource();
-			parentSlider.setCursor(new Cursor(null, SWT.CURSOR_ARROW));
-		}
-	}
-
-	/**
-	 * pause video while user drags a timeline.
-	 */
 	void pauseForDargging() {
 		if (currentDragStatus == true) {
 			return;
@@ -687,9 +446,6 @@ public class PreviewPanel implements IUNIT, SyncTimeEventListener,
 		}
 	}
 
-	/**
-	 * resume video after user dragged a timeline.
-	 */
 	void resumeAfterDragging() {
 		if (currentDragStatus == false) {
 			return;
@@ -704,8 +460,6 @@ public class PreviewPanel implements IUNIT, SyncTimeEventListener,
 		// Synchronize TimeLine view
 		if (e.getEventType() == SyncTimeEvent.SYNCHRONIZE_TIME_LINE) {
 			synchronizeTimeLine(e.getCurrentTime());
-		} else if (e.getEventType() == SyncTimeEvent.REFRESH_TIME_LINE) {
-
 		}
 	}
 

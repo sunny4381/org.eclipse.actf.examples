@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 IBM Corporation and Others
+ * Copyright (c) 2009, 2012 IBM Corporation and Others
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,47 +10,33 @@
  *******************************************************************************/
 package org.eclipse.actf.examples.scripteditor.actions;
 
-import org.eclipse.actf.ai.scripteditor.data.XMLFileSaveUtil;
-import org.eclipse.actf.ai.ui.scripteditor.views.IUNIT;
-import org.eclipse.actf.ai.ui.scripteditor.views.TimeLineView;
+import org.eclipse.actf.ai.scripteditor.util.XMLFileSaveUtil;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 
-public class FileSaveAction implements IWorkbenchWindowActionDelegate, IUNIT {
+public class FileSaveAction implements IWorkbenchWindowActionDelegate {
 
-	/**
-	 * Local data
-	 */
 	private String saveFileName = "";
 
-	/**
-	 * The constructor.
-	 */
 	public FileSaveAction() {
 	}
 
 	public void run(IAction action) {
 
 		try {
-			// Create save class
-			XMLFileSaveUtil saveFH = new XMLFileSaveUtil();
-
-			// Check exist opened file
-			saveFileName = TimeLineView.getInstance().reqGetXMLFilePath();
+			XMLFileSaveUtil saveFH = XMLFileSaveUtil.getInstance();
+			saveFileName = saveFH.getFilePath();
 			if (!XMLFileSaveUtil.exists(saveFileName)) {
-				// Request FileDialog (Choice open file name)
 				saveFileName = saveFH.open();
 			}
 
-			// Check null (file name)
 			if (saveFileName != null) {
-				// Save script data to XML file
 				saveFH.save(saveFileName, false);
 			}
-		} catch (Exception ee) {
-			// System.out.println("FileSaveAction::run() : " +ee);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 

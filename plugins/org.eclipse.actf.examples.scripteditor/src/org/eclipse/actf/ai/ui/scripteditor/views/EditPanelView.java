@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2011 IBM Corporation and Others
+ * Copyright (c) 2009, 2012 IBM Corporation and Others
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,10 @@ package org.eclipse.actf.ai.ui.scripteditor.views;
 
 import org.eclipse.actf.ai.internal.ui.scripteditor.EditPanelTab;
 import org.eclipse.actf.ai.internal.ui.scripteditor.SelectWAVFileTab;
+import org.eclipse.actf.ai.scripteditor.data.IScriptData;
+import org.eclipse.actf.ai.scripteditor.data.event.DataEventManager;
+import org.eclipse.actf.ai.scripteditor.data.event.GuideListEvent;
+import org.eclipse.actf.ai.scripteditor.data.event.GuideListEventListener;
 import org.eclipse.actf.ai.scripteditor.util.ScriptFileDropListener;
 import org.eclipse.actf.examples.scripteditor.Activator;
 import org.eclipse.swt.SWT;
@@ -21,6 +25,8 @@ import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DropTarget;
 import org.eclipse.swt.dnd.FileTransfer;
 import org.eclipse.swt.dnd.Transfer;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
@@ -30,14 +36,11 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
-public class EditPanelView extends ViewPart implements IUNIT {
+public class EditPanelView extends ViewPart implements GuideListEventListener {
 	public static final String VIEW_ID = "org.eclipse.actf.examples.scripteditor.EditPanelView";
 
-	/**
-	 * Local data
-	 */
-	// Own class instance
 	static private EditPanelView ownInst = null;
+
 	private CTabFolder ownTabFolder;
 
 	// Child class instance
@@ -47,29 +50,22 @@ public class EditPanelView extends ViewPart implements IUNIT {
 	// Tab Item instance
 	private CTabItem instEditPanelTabItem = null;
 	private CTabItem instSelectWAVFileTabItem = null;
+	//
+	private DataEventManager dataEventManager = null;
 
 	/**
      * 
      */
 	public EditPanelView() {
 		super();
-
-		// store own instance
 		ownInst = this;
+		dataEventManager = DataEventManager.getInstance();
 	}
 
 	static public EditPanelView getInstance() {
-		// return current own instance
 		return (ownInst);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.eclipse.ui.IWorkbenchPart#createPartControl(org.eclipse.swt.widgets
-	 * .Composite)
-	 */
 	public void createPartControl(Composite parent) {
 		// Create own instance of Composite
 		ownTabFolder = new CTabFolder(parent, SWT.NONE);
@@ -79,6 +75,15 @@ public class EditPanelView extends ViewPart implements IUNIT {
 
 		// Add listener for load meta file
 		initDDListener(ownTabFolder);
+
+		dataEventManager.addGuideListEventListener(ownInst);
+		parent.addDisposeListener(new DisposeListener() {
+			@Override
+			public void widgetDisposed(DisposeEvent e) {
+				// TODO other components
+				dataEventManager.removeGuideListEventListener(ownInst);
+			}
+		});
 	}
 
 	/**
@@ -89,15 +94,21 @@ public class EditPanelView extends ViewPart implements IUNIT {
 	}
 
 	/**
+	 * Cleans up all resources created by this ViewPart.
+	 */
+	public void dispose() {
+		super.dispose();
+		ownInst = null;
+	}
+
+	/**
 	 * Initialize Screen
 	 */
 	private void initTabFolder() {
 
 		try {
-			// current display
 			Display display = PlatformUI.getWorkbench().getDisplay();
 
-			// **<Edit panel>***********************************
 			FormLayout editPanelLayout = new FormLayout();
 			ownTabFolder.setLayout(editPanelLayout);
 			FormData editPanelLData = new FormData(925, 128);
@@ -108,10 +119,9 @@ public class EditPanelView extends ViewPart implements IUNIT {
 			ownTabFolder.setLayoutData(editPanelLData);
 			// otherwise setting
 			ownTabFolder.setSimple(false);
-			ownTabFolder.setMaximizeVisible(false);// do not display maximize
-													// button
-			ownTabFolder.setMinimizeVisible(false);// do not display minimize
-													// button
+			ownTabFolder.setMaximizeVisible(false);
+			ownTabFolder.setMinimizeVisible(false);
+
 			ownTabFolder
 					.setSelectionBackground(new Color[] {
 							new Color(display, 216, 228, 251),
@@ -132,7 +142,6 @@ public class EditPanelView extends ViewPart implements IUNIT {
 			instSelectWAVFileTabItem.setImage(Activator.getImageDescriptor(
 					"/icons/micx16.gif").createImage());
 
-			// spawn child class
 			instEditPanelTab = new EditPanelTab(ownTabFolder);
 			instSelectWAVFileTab = new SelectWAVFileTab(ownTabFolder);
 
@@ -142,11 +151,12 @@ public class EditPanelView extends ViewPart implements IUNIT {
 					.getOwnComposite());
 
 			// 1st Initialized current Window
+			ownTabFolder.setSelection(0);
 			ownTabFolder.layout();
 			ownTabFolder.pack();
 
 		} catch (Exception e) {
-			System.out.println("EditPanelView : Exception = " + e);
+			e.printStackTrace();
 		}
 	}
 
@@ -154,26 +164,17 @@ public class EditPanelView extends ViewPart implements IUNIT {
 	 * Initialize Drop&Drop Listener
 	 */
 	private void initDDListener(Composite parent) {
-		// Initial setup DnD target control
 		DropTarget targetDnD = new DropTarget(parent, DND.DROP_DEFAULT
 				| DND.DROP_COPY);
 		targetDnD.setTransfer(new Transfer[] { FileTransfer.getInstance() });
 		targetDnD.addDropListener(new ScriptFileDropListener());
 	}
 
-	/**
-	 * Getter method : Get instance of tab item : EditPanel
-	 */
 	public EditPanelTab getInstanceTabEditPanel() {
-		// return instance of tab item : EditPanel
 		return (instEditPanelTab);
 	}
 
-	/**
-	 * Getter method : Get instance of tab item : SelectWAVFile
-	 */
 	public SelectWAVFileTab getInstanceTabSelWAVFile() {
-		// return instance of tab item : SelectWAVFile
 		return (instSelectWAVFileTab);
 	}
 
@@ -185,12 +186,28 @@ public class EditPanelView extends ViewPart implements IUNIT {
 		if (sw) {
 			// Forced select Edit tab
 			ownTabFolder.setSelection(instEditPanelTabItem);
-			// exchange mode to multiple items selection to WAV file select tab
+			// change mode to multiple items selection to WAV file select tab
 			instSelectWAVFileTab.setEnabledTab(false);
 		} else {
-			// exchange mode to normal to WAV file select tab
+			// change mode to normal to WAV file select tab
 			instSelectWAVFileTab.setEnabledTab(true);
 		}
 	}
 
+	public void handleGuideListEvent(GuideListEvent e) {
+		if (e.getEventType() == GuideListEvent.SET_DATA) {
+			IScriptData data = e.getData();
+			instEditPanelTab.setMultiSelectMode(false);
+			instEditPanelTab.repaintTextScriptData(data);
+			instSelectWAVFileTab.setScreenData(data);
+			if (data.isWavEnabled()) {
+				ownTabFolder.setSelection(1);
+			} else {
+				ownTabFolder.setSelection(0);
+			}
+		} else if (e.getEventType() == GuideListEvent.DESELECT_DATA) {
+			instEditPanelTab.initDispEditPanel();
+		}
+
+	}
 }
