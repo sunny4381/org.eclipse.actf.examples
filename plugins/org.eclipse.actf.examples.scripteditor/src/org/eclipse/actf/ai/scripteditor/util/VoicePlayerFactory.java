@@ -30,7 +30,8 @@ import org.eclipse.actf.examples.scripteditor.Activator;
 public class VoicePlayerFactory {
 
 	public static final int NOT_SUPPORTED = -1;
-	public static Set<String> langSet = new TreeSet<String>(ISAPIEngine.LANGID_MAP.keySet());	//TODO
+	public static Set<String> langSet = new TreeSet<String>(
+			ISAPIEngine.LANGID_MAP.keySet()); // TODO
 
 	private static final int VP_EVENT_FIN_SPEAK = 99;
 	private static final int TTSFLAG_DEFAULT = 0;
@@ -40,7 +41,6 @@ public class VoicePlayerFactory {
 
 	private int currentVoicePlayerStatus = -1;
 	private File tmpFile;
-	
 
 	private VoicePlayerFactory() {
 		ownInst = this;
@@ -181,7 +181,13 @@ public class VoicePlayerFactory {
 				}
 			}
 			speakToFile(data.getDescription(), tmpFile);
-			length = (int) WavUtil.getMillisecondLength(tmpFile);
+			SoundMixer sm = SoundMixer.getInstance();
+			try {
+				sm.storeWavHeader(tmpFile.toURI());
+				length = sm.getDurationTimeWav();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 		return length;
 	}
