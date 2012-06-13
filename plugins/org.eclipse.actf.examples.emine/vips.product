@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?pde version="3.5"?>
+
+<product name="eMINE VIPS" id="org.eclipse.actf.examples.emine.vips" application="org.eclipse.actf.examples.emine.EmineSampleApplication" version="0.9.2.qualifier" useFeatures="true" includeLaunchers="true">
+
+   <aboutInfo>
+      <image path="/org.eclipse.actf.examples.emine/about.gif"/>
+      <text>
+         %About.Text
+      </text>
+   </aboutInfo>
+
+   <configIni use="default">
+   </configIni>
+
+   <launcherArgs>
+      <vmArgs>-Xmx256m</vmArgs>
+      <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts</vmArgsMac>
+   </launcherArgs>
+
+   <windowImages i32="/org.eclipse.actf.examples.emine/icons/excla_32.png"/>
+
+   <launcher>
+      <solaris/>
+      <win useIco="true">
+         <ico path="/org.eclipse.actf.examples.emine/icons/actf.ico"/>
+         <bmp/>
+      </win>
+   </launcher>
+
+
+   <vm>
+   </vm>
+
+
+   <plugins>
+   </plugins>
+
+   <features>
+      <feature id="org.eclipse.actf.examples.emine" version="0.9.2.qualifier"/>
+   </features>
+
+
+</product>

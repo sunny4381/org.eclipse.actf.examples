@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+   <extension
+         id="EmineSampleApplication"
+         point="org.eclipse.core.runtime.applications">
+      <application>
+         <run
+               class="org.eclipse.actf.examples.emine.EmineSampleApplication">
+         </run>
+      </application>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectives">
+      <perspective
+            class="org.eclipse.actf.examples.emine.ui.perspectives.HTMLPerspective"
+            icon="icons/perspectives/html.png"
+            id="org.eclipse.actf.examples.emine.ui.perspectives.HTMLPerspective"
+            name="%emine.HTMLPerspective.name"/>
+   </extension>
+
+   
+      <extension
+            point="org.eclipse.ui.actionSets">
+         <actionSet
+               id="org.eclipse.actf.examples.emine.ui.actionSet"
+               label="emineClientActionSet"
+               visible="true">
+            <action
+                  class="org.eclipse.actf.examples.emine.ui.actions.OpenAction"
+                  id="org.eclipse.actf.examples.emine.ui.actions.OpenAction"
+                  definitionId="org.eclipse.actf.examples.emine.actions.OpenAction"
+                  label="%emine.action.open"
+                  menubarPath="file/fileGroup"
+                  style="push"/>
+         </actionSet>
+      </extension>
+         
+   
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            id="org.eclipse.actf.examples.emine.actions.OpenAction"
+            name="%emine.action.open"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.bindings">
+      <key
+            commandId="org.eclipse.actf.examples.emine.actions.OpenAction"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="CTRL+O"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            category="org.eclipse.actf.visualization.ui.views"
+            class="org.eclipse.actf.examples.emine.ui.views.VIPSVisualizerView"
+            id="org.eclipse.actf.examples.emine.ui.views.VIPSVisualizerView"
+            name="VIPS Visualizer View">
+      </view>
+   </extension>
+   <extension
+         id="vips"
+         point="org.eclipse.core.runtime.products">
+      <product
+            application="org.eclipse.actf.examples.emine.EmineSampleApplication"
+            name="eMINE VIPS">
+         <property
+               name="windowImages"
+               value="icons/excla_32.png">
+         </property>
+         <property
+               name="aboutText"
+               value="%About.Text">
+         </property>
+         <property
+               name="aboutImage"
+               value="about.gif">
+         </property>
+         <property
+               name="appName"
+               value="eMINE VIPS">
+         </property>
+      </product>
+   </extension>
+
+</plugin>
