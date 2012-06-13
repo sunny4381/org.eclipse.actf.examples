@@ -11,8 +11,8 @@
 package org.eclipse.actf.examples.scripteditor.actions;
 
 import org.eclipse.actf.ai.internal.ui.scripteditor.EditPanelTab;
-import org.eclipse.actf.ai.internal.ui.scripteditor.FileInfoStore;
 import org.eclipse.actf.ai.internal.ui.scripteditor.SelectWAVFileTab;
+import org.eclipse.actf.ai.internal.ui.scripteditor.VolumeLevelCanvas;
 import org.eclipse.actf.ai.scripteditor.data.ScriptDataManager;
 import org.eclipse.actf.ai.scripteditor.data.event.DataEventManager;
 import org.eclipse.actf.ai.scripteditor.data.event.GuideListEvent;
@@ -79,7 +79,7 @@ public class ClearAction implements IWorkbenchWindowActionDelegate {
 			instSelWavTab.initDispSelWavFile();
 		}
 		XMLFileSaveUtil.getInstance().setFilePath(null);
-		FileInfoStore.setVolumeLevelFilePath(null);
+		VolumeLevelCanvas.setVolumeLevelFilePath(null);
 
 		instTimeLine.reqExpandTimeLine();
 		instTimeLine.reqRedrawTimeLineCanvas(1);

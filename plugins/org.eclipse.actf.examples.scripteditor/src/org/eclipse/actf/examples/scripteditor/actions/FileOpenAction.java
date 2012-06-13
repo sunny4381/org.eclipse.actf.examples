@@ -11,8 +11,8 @@
 package org.eclipse.actf.examples.scripteditor.actions;
 
 import org.eclipse.actf.ai.internal.ui.scripteditor.EditPanelTab;
-import org.eclipse.actf.ai.internal.ui.scripteditor.FileInfoStore;
 import org.eclipse.actf.ai.internal.ui.scripteditor.PreviewPanel;
+import org.eclipse.actf.ai.internal.ui.scripteditor.VolumeLevelCanvas;
 import org.eclipse.actf.ai.scripteditor.data.ScriptDataManager;
 import org.eclipse.actf.ai.scripteditor.data.event.DataEventManager;
 import org.eclipse.actf.ai.scripteditor.data.event.GuideListEvent;
@@ -64,7 +64,7 @@ public class FileOpenAction implements IWorkbenchWindowActionDelegate {
 	}
 
 	private void preProcess() {
-		FileInfoStore.setVolumeLevelFilePath(null);
+		VolumeLevelCanvas.setVolumeLevelFilePath(null);
 		dataEventManager.fireLabelEvent(new LabelEvent(LabelEvent.CLEAR_LABEL,
 				null, this)); // clear current data
 		dataEventManager.fireGuideListEvent(new GuideListEvent(

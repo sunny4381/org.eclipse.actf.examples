@@ -83,6 +83,7 @@ public class WavUtil {
 				result = true;
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		return (result);
 	}

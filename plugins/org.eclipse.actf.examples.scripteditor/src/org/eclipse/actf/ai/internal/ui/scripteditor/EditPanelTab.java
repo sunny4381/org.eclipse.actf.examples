@@ -27,6 +27,7 @@ import org.eclipse.actf.ai.scripteditor.util.TimeFormatUtil;
 import org.eclipse.actf.ai.scripteditor.util.VoicePlayerFactory;
 import org.eclipse.actf.ai.scripteditor.util.XMLFileMessageBox;
 import org.eclipse.actf.ai.scripteditor.util.XMLFileSaveUtil;
+import org.eclipse.actf.ai.tts.ITTSEngine;
 import org.eclipse.actf.ai.ui.scripteditor.views.EditPanelView;
 import org.eclipse.actf.ai.ui.scripteditor.views.IUNIT;
 import org.eclipse.actf.ai.ui.scripteditor.views.TimeLineView;
@@ -63,8 +64,8 @@ public class EditPanelTab implements IUNIT, SyncTimeEventListener {
 
 	private VoicePlayerFactory voice = VoicePlayerFactory.getInstance();
 
-	private String[] langList = VoicePlayerFactory.langSet
-			.toArray(new String[VoicePlayerFactory.langSet.size()]);
+	private String[] langList = ITTSEngine.LANGSET
+			.toArray(new String[ITTSEngine.LANGSET.size()]);
 
 	ScrolledComposite ownComposite;
 

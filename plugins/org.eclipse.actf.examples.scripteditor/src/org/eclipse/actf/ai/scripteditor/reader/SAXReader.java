@@ -19,8 +19,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-import org.eclipse.actf.ai.internal.ui.scripteditor.FileInfoStore;
-import org.eclipse.actf.ai.scripteditor.data.DataUtil;
+import org.eclipse.actf.ai.internal.ui.scripteditor.VolumeLevelCanvas;
 import org.eclipse.actf.ai.scripteditor.data.IScriptData;
 import org.eclipse.actf.ai.scripteditor.data.ScriptDataFactory;
 import org.eclipse.actf.ai.scripteditor.data.ScriptDataManager;
@@ -28,7 +27,6 @@ import org.eclipse.actf.ai.scripteditor.data.event.DataEventManager;
 import org.eclipse.actf.ai.scripteditor.data.event.GuideListEvent;
 import org.eclipse.actf.ai.scripteditor.util.TimeFormatUtil;
 import org.eclipse.actf.ai.scripteditor.util.VoicePlayerFactory;
-import org.eclipse.actf.ai.ui.scripteditor.views.IUNIT;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -394,7 +392,7 @@ public class SAXReader extends DefaultHandler {
 			// Store URI of volume level temporary file
 			if (bkup_vollvl_loc != null) {
 				try {
-					FileInfoStore.setVolumeLevelFilePath(bkup_vollvl_loc);
+					VolumeLevelCanvas.setVolumeLevelFilePath(bkup_vollvl_loc);
 				} catch (Exception ee) {
 				}
 			}

@@ -11,7 +11,7 @@
 package org.eclipse.actf.ai.scripteditor.util;
 
 import org.eclipse.actf.ai.internal.ui.scripteditor.EditPanelTab;
-import org.eclipse.actf.ai.internal.ui.scripteditor.FileInfoStore;
+import org.eclipse.actf.ai.internal.ui.scripteditor.VolumeLevelCanvas;
 import org.eclipse.actf.ai.scripteditor.data.ScriptDataManager;
 import org.eclipse.actf.ai.scripteditor.reader.CSVReader;
 import org.eclipse.actf.ai.scripteditor.reader.SAXReader;
@@ -88,7 +88,7 @@ public class DragDropFileReader {
 	// *
 	private void preProcessLoadFile() {
 		scriptManager.clearData();
-		FileInfoStore.setVolumeLevelFilePath(null);
+		VolumeLevelCanvas.setVolumeLevelFilePath(null);
 	}
 
 	private void postProcessLoadFile() {

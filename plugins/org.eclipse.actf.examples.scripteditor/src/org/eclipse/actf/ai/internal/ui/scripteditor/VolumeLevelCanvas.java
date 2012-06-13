@@ -10,7 +10,12 @@
  *******************************************************************************/
 package org.eclipse.actf.ai.internal.ui.scripteditor;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.net.URI;
 import java.util.ArrayList;
 
 import org.eclipse.actf.ai.internal.ui.scripteditor.event.EventManager;
@@ -25,6 +30,7 @@ import org.eclipse.actf.ai.scripteditor.util.VoicePlayerFactory;
 import org.eclipse.actf.ai.ui.scripteditor.views.EditPanelView;
 import org.eclipse.actf.ai.ui.scripteditor.views.IUNIT;
 import org.eclipse.actf.ai.ui.scripteditor.views.TimeLineView;
+import org.eclipse.actf.examples.scripteditor.Activator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
@@ -46,6 +52,7 @@ public class VolumeLevelCanvas extends Canvas implements IUNIT,
 
 	// Sampling : 20msec
 	private static final int SAMPLING_RATE = 20;
+	private static URI savePathVolLvl = null;
 
 	static private VolumeLevelCanvas ownInst = null;
 
@@ -662,23 +669,23 @@ public class VolumeLevelCanvas extends Canvas implements IUNIT,
 		try {
 			String fpath = null;
 			if (getSamplingLengthMovieAudioLevel() > 0) {
-				if (FileInfoStore.getVolumeLevelFilePath() == null) {
+				if (VolumeLevelCanvas.getVolumeLevelFilePath() == null) {
 					// Create new temporary file for volume level
-					File fh = TempFileUtil.createTempFile(DIR_TEMP_VOLLVL,
-							FILE_TEMP_VOLLVL_PREFIX, FILE_TEMP_VOLLVL_SUFFIX);
+					File fh = Activator.getDefault().createTempFile(
+							"temp", ".lvl");
 					if (fh != null) {
 						// Get string of absolute file path(temporary file)
 						fpath = fh.getAbsolutePath();
 					}
-					FileInfoStore.setVolumeLevelFilePath(fpath);
+					VolumeLevelCanvas.setVolumeLevelFilePath(fpath);
 				} else {
-					fpath = FileInfoStore.getVolumeLevelFilePath().getPath();
+					fpath = VolumeLevelCanvas.getVolumeLevelFilePath().getPath();
 					fpath = fpath.replace("/", "\\");
 				}
 
 				if (fpath != null) {
 					// Start write volume level data thread
-					TempFileUtil.writeStreamTempFile(startTimeCaptureAudio,
+					writeStreamTempFile(startTimeCaptureAudio,
 							volumeLevelCaptureAudio, fpath);
 				}
 			}
@@ -694,7 +701,7 @@ public class VolumeLevelCanvas extends Canvas implements IUNIT,
 	public boolean isEnableClearVolLvl() {
 		boolean result = false;
 
-		if (FileInfoStore.getVolumeLevelFilePath() == null) {
+		if (VolumeLevelCanvas.getVolumeLevelFilePath() == null) {
 			result = true;
 		}
 		return (result);
@@ -706,27 +713,27 @@ public class VolumeLevelCanvas extends Canvas implements IUNIT,
 	 *            : source path of temporary file
 	 */
 	public void loadVolumeLevelTempFile() {
-		if (FileInfoStore.getVolumeLevelFilePath() != null) {
-			String fpath = FileInfoStore.getVolumeLevelFilePath().getPath();
+		String fpath = VolumeLevelCanvas.getVolumeLevelFilePath().getPath();
+		if (fpath != null) {
 			fpath = fpath.replace("/", "\\");
 			try {
 				// CleanUP buffer of captured audio
 				cleanupMovieAudioLevel();
 
 				// load volume level data from temporary file
-				if (TempFileUtil.openInputStreamTempFile(fpath)) {
+				if (openInputStreamTempFile(fpath)) {
 					while (true) {
 						// read start time value
-						int startTime = TempFileUtil.readIntValueTempFile();
+						int startTime = readIntValueTempFile();
 						if (startTime >= 0) {
 							// read volume level value
-							int volLvl = TempFileUtil.readIntValueTempFile();
+							int volLvl = readIntValueTempFile();
 							// append raw audio data(new data)
 							startTimeCaptureAudio.add(startTime);
 							volumeLevelCaptureAudio.add(volLvl);
 						} else {
 							// detect End of File
-							TempFileUtil.closeInputStreamTempFile();
+							closeInputStreamTempFile();
 							break;
 						}
 					}
@@ -809,4 +816,124 @@ public class VolumeLevelCanvas extends Canvas implements IUNIT,
 		}
 	}
 
+	//-----------------------------------//
+	
+	// Local data
+	private FileOutputStream fos = null;
+	private DataInputStream dis = null;
+	private DataOutputStream dos = null;
+	private WriteStreamTempFileThread instWriteThread = null;
+	private boolean statusActiveThread = false;
+	private ArrayList<Integer> listStartTime = null;
+	private ArrayList<Integer> listVolLvl = null;
+	
+	private void writeStreamTempFile(ArrayList<Integer> srcData1,
+			ArrayList<Integer> srcData2, String desFilePath) {
+		// Check current status of copy thread
+		if (!statusActiveThread) {
+			dos = null;
+			try {
+				dos = new DataOutputStream(new FileOutputStream(desFilePath));
+				// Deep copy from source data list
+				listStartTime = new ArrayList<Integer>(srcData1);
+				listVolLvl = new ArrayList<Integer>(srcData2);
+				// start write thread
+				statusActiveThread = true;
+				instWriteThread = new WriteStreamTempFileThread();
+				instWriteThread.start();
+			} catch (Exception ee) {
+			}
+		}
+	}
+
+	private boolean openInputStreamTempFile(String srcFilePath) {
+		// Check current status of copy thread
+		if (!statusActiveThread) {
+			dis = null;
+			try {
+				dis = new DataInputStream(new FileInputStream(srcFilePath));
+				if (dis != null) {
+					statusActiveThread = true;
+				}
+			} catch (Exception ee) {
+			}
+		}
+		return (statusActiveThread);
+	}
+
+	private int readIntValueTempFile() {
+		int result = -1;
+		try {
+			result = dis.readInt();
+		} catch (Exception e) {
+		}
+		return (result);
+	}
+
+	private void closeInputStreamTempFile() {
+		try {
+			dis.close();
+		} catch (Exception e) {
+		} finally {
+			statusActiveThread = false;
+		}
+	}
+
+	public static void setVolumeLevelFilePath(String fpath) {
+		// Update URI value
+		savePathVolLvl = null;
+		if (fpath != null) {
+			savePathVolLvl = TempFileUtil.getResource(fpath);
+		}
+	}
+
+	public static URI getVolumeLevelFilePath() {
+		return savePathVolLvl;
+	}
+
+	private class WriteStreamTempFileThread extends Thread {
+		/**
+		 * @category Thread{@link #run()}
+		 */
+		public void run() {
+			int location = 0;
+			int max = listStartTime.size();
+			try {
+				while (statusActiveThread) {
+					location++;
+					if (location < max) {
+						dos.writeInt(listStartTime.get(location));// start time
+						dos.writeInt(listVolLvl.get(location));// volume level
+					} else {
+						closeThread();
+						break;
+					}
+					// Thread yield
+					Thread.yield();
+				}
+			} catch (Exception ee) {
+			}
+		}
+
+		/**
+		 * @category Setter method : Close run() method
+		 */
+		private void closeThread() {
+			// Reset status flag
+			statusActiveThread = false;
+			instWriteThread = null;
+			// Close all file stream
+			try {
+				dos.close();
+				fos.close();
+				listStartTime.clear();
+				listVolLvl.clear();
+				listStartTime = null;
+				listVolLvl = null;
+			} catch (Exception ee) {
+
+			}
+		}
+	}
+	
 }

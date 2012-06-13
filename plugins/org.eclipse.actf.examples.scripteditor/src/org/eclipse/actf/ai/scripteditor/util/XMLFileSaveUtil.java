@@ -15,7 +15,7 @@ import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 
-import org.eclipse.actf.ai.internal.ui.scripteditor.FileInfoStore;
+import org.eclipse.actf.ai.internal.ui.scripteditor.VolumeLevelCanvas;
 import org.eclipse.actf.ai.scripteditor.data.ScriptDataManager;
 import org.eclipse.actf.ai.ui.scripteditor.views.TimeLineView;
 import org.eclipse.actf.model.ui.IModelService;
@@ -152,8 +152,8 @@ public class XMLFileSaveUtil {
 
 			writer.write("  </alternative>" + LINE_SEP);
 
-			if (FileInfoStore.getVolumeLevelFilePath() != null) {
-				String strPath = FileInfoStore.getVolumeLevelFilePath()
+			if (VolumeLevelCanvas.getVolumeLevelFilePath() != null) {
+				String strPath = VolumeLevelCanvas.getVolumeLevelFilePath()
 						.getPath();
 				writer.write("  " + LINE_SEP);
 				writer.write("  <volumeLevel local=\"" + strPath + "\"/>"

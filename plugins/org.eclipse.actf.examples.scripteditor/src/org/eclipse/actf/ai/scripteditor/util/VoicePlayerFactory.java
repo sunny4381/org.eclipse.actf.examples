@@ -30,8 +30,6 @@ import org.eclipse.actf.examples.scripteditor.Activator;
 public class VoicePlayerFactory {
 
 	public static final int NOT_SUPPORTED = -1;
-	public static Set<String> langSet = new TreeSet<String>(
-			ISAPIEngine.LANGID_MAP.keySet()); // TODO
 
 	private static final int VP_EVENT_FIN_SPEAK = 99;
 	private static final int TTSFLAG_DEFAULT = 0;
