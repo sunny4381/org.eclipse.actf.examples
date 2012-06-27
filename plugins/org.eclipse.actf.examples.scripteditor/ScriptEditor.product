@@ -38,15 +38,15 @@
 
    <plugins>
       <plugin id="com.ibm.icu"/>
-      <plugin id="org.apache.commons.jxpath"/>
-      <plugin id="org.eclipse.actf.ai.audio.io"/>
-      <plugin id="org.eclipse.actf.ai.fennec"/>
-      <plugin id="org.eclipse.actf.ai.navigator"/>
-      <plugin id="org.eclipse.actf.ai.query"/>
+      <plugin id="org.apache.commons.jxpath" fragment=""/>
+      <plugin id="org.eclipse.actf.ai.audio.io" fragment=""/>
+      <plugin id="org.eclipse.actf.ai.fennec" fragment=""/>
+      <plugin id="org.eclipse.actf.ai.navigator" fragment=""/>
+      <plugin id="org.eclipse.actf.ai.query" fragment=""/>
       <plugin id="org.eclipse.actf.ai.tts.protalker"/>
       <plugin id="org.eclipse.actf.ai.tts.sapi"/>
       <plugin id="org.eclipse.actf.ai.voice"/>
-      <plugin id="org.eclipse.actf.ai.xmlstore"/>
+      <plugin id="org.eclipse.actf.ai.xmlstore" fragment=""/>
       <plugin id="org.eclipse.actf.core"/>
       <plugin id="org.eclipse.actf.examples.scripteditor"/>
       <plugin id="org.eclipse.actf.model.dom.dombycom"/>
@@ -90,6 +90,7 @@
 
    <features>
       <feature id="org.eclipse.actf.examples.scripteditor" version="0.1.0.qualifier"/>
+      <feature id="org.eclipse.help"/>
    </features>
 
 

@@ -19,7 +19,6 @@
 
    <windowImages i32="/org.eclipse.actf.examples.michecker/icons/excla_32.png"/>
 
-
    <launcher name="miChecker">
       <solaris/>
       <win useIco="true">
@@ -28,16 +27,15 @@
       </win>
    </launcher>
 
-
    <vm>
    </vm>
-
 
    <plugins>
    </plugins>
 
    <features>
       <feature id="org.eclipse.actf.examples.michecker"/>
+      <feature id="org.eclipse.help"/>
    </features>
 
 
