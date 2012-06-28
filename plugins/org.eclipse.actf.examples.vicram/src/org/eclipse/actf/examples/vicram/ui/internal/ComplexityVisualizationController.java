@@ -15,8 +15,8 @@ import java.io.File;
 import java.util.List;
 
 import org.eclipse.actf.examples.vicram.VicramPlugin;
-import org.eclipse.actf.examples.vicram.vicramtest.Complexity;
-import org.eclipse.actf.examples.vicram.vicramtest.Visualization;
+import org.eclipse.actf.examples.vicram.complexity.Complexity;
+import org.eclipse.actf.examples.vicram.complexity.Visualization;
 import org.eclipse.actf.mediator.Mediator;
 import org.eclipse.actf.model.ui.IModelService;
 import org.eclipse.actf.model.ui.ModelServiceImageCreator;

@@ -8,7 +8,7 @@
  * Contributors:
  *    Eleni Michailidou - initial API and implementation
  *******************************************************************************/
-package org.eclipse.actf.examples.vicram.vicramtest;
+package org.eclipse.actf.examples.vicram.complexity;
 
 /*
  * GridVarables is a helper method that stores the variables for each grid defined in Visualization.java

@@ -8,7 +8,7 @@
  * Contributors:
  *    Eleni Michailidou - initial API and implementation
  *******************************************************************************/
-package org.eclipse.actf.examples.vicram.vicramtest;
+package org.eclipse.actf.examples.vicram.complexity;
 
 import java.util.StringTokenizer;
 
