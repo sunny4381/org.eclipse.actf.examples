@@ -8,7 +8,7 @@
  * Contributors:
  *    Kentarou FUKUDA - initial API and implementation
  *******************************************************************************/
-package org.eclipse.actf.examples.simplevisualizer;
+package org.eclipse.actf.examples.vicram;
 
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.IMenuManager;
@@ -41,8 +41,8 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 		configurer.setShowCoolBar(true);
 		configurer.setShowMenuBar(true);
 		configurer.setShowStatusLine(true);
-		configurer.setTitle(SimpleVisualizerPlugin
-				.getResourceString("simplevizualizer.window.title")); //$NON-NLS-1$
+		configurer.setTitle(VicramPlugin
+				.getResourceString("vicram.window.title")); //$NON-NLS-1$
 	}
 
 	public void postWindowOpen() {

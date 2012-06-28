@@ -8,7 +8,7 @@
  * Contributors:
  *    Kentarou FUKUDA - initial API and implementation
  *******************************************************************************/
-package org.eclipse.actf.examples.simplevisualizer.ui.internal;
+package org.eclipse.actf.examples.vicram.ui.internal;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;

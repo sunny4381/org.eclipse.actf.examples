@@ -9,9 +9,9 @@
  *    Kentarou FUKUDA - initial API and implementation
  *******************************************************************************/
 
-package org.eclipse.actf.examples.simplevisualizer.ui.actions;
+package org.eclipse.actf.examples.vicram.ui.actions;
 
-import org.eclipse.actf.examples.simplevisualizer.ui.dialogs.URLOpenDialog;
+import org.eclipse.actf.examples.vicram.ui.dialogs.URLOpenDialog;
 import org.eclipse.actf.model.ui.util.ModelServiceUtils;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;

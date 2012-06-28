@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 University of Manchester and Others
+ * Copyright (c) 2009, 2012 University of Manchester and Others
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,13 +8,13 @@
  * Contributors:
  *    Eleni Michailidou - initial API and implementation
  *******************************************************************************/
-package org.eclipse.actf.examples.simplevisualizer.vicramtest;
+package org.eclipse.actf.examples.vicram.vicramtest;
 
 /*
  * GridVarables is a helper method that stores the variables for each grid defined in Visualization.java
  * The method also implements compareTo method that sorts an array based on a ascending order of TLC, images and then wordCount
  */
-public class GridVariables implements Comparable {
+public class GridVariables implements Comparable<GridVariables> {
 	public int TLC, images;
 	double wordCount;
 	public int row = -1;
@@ -41,9 +41,9 @@ public class GridVariables implements Comparable {
 	}
 
 	// this allows java to srt the objects
-	public int compareTo(Object anotherGridVariables) throws ClassCastException {
-		if (!(anotherGridVariables instanceof GridVariables))
-			throw new ClassCastException("A GridVariables object expected.");
+	public int compareTo(GridVariables anotherGridVariables) {
+		// if (!(anotherGridVariables instanceof GridVariables))
+		// throw new ClassCastException("A GridVariables object expected.");
 		int anotherGridTLC = ((GridVariables) anotherGridVariables).TLC;
 		int anotherGridImg = ((GridVariables) anotherGridVariables).images;
 		double anotherGridWC = ((GridVariables) anotherGridVariables).wordCount;
@@ -57,8 +57,7 @@ public class GridVariables implements Comparable {
 				return -1;
 			} else
 				return 1;
-		}
-		else if (this.TLC >= anotherGridTLC) {
+		} else if (this.TLC >= anotherGridTLC) {
 			return -1;
 		} else
 			return 1;

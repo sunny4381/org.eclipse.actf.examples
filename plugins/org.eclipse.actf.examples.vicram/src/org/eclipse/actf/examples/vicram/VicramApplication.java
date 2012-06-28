@@ -8,14 +8,14 @@
  * Contributors:
  *    Kentarou FUKUDA - initial API and implementation
  *******************************************************************************/
-package org.eclipse.actf.examples.simplevisualizer;
+package org.eclipse.actf.examples.vicram;
 
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
 
-public class SimpleVisualizerApplication implements IApplication {
+public class VicramApplication implements IApplication {
 
 	/*
 	 * (non-Javadoc)

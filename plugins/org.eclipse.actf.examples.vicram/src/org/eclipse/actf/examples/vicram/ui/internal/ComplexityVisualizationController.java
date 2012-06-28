@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 IBM Corporation, University of Manchester and Others
+ * Copyright (c) 2009, 2012 IBM Corporation, University of Manchester and Others
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -9,20 +9,18 @@
  *    Kentarou FUKUDA - initial API and implementation
  *    Eleni Michailidou - initial API and implementation     
  *******************************************************************************/
-package org.eclipse.actf.examples.simplevisualizer.ui.internal;
+package org.eclipse.actf.examples.vicram.ui.internal;
 
 import java.io.File;
 import java.util.List;
 
-import org.eclipse.actf.examples.simplevisualizer.SimpleVisualizerPlugin;
-import org.eclipse.actf.examples.simplevisualizer.vicramtest.Complexity;
-import org.eclipse.actf.examples.simplevisualizer.vicramtest.Visualization;
+import org.eclipse.actf.examples.vicram.VicramPlugin;
+import org.eclipse.actf.examples.vicram.vicramtest.Complexity;
+import org.eclipse.actf.examples.vicram.vicramtest.Visualization;
 import org.eclipse.actf.mediator.Mediator;
 import org.eclipse.actf.model.ui.IModelService;
 import org.eclipse.actf.model.ui.ModelServiceImageCreator;
-import org.eclipse.actf.model.ui.ModelServiceSizeInfo;
 import org.eclipse.actf.model.ui.editor.browser.IWebBrowserACTF;
-import org.eclipse.actf.model.ui.editor.browser.IWebBrowserStyleInfo;
 import org.eclipse.actf.model.ui.util.ModelServiceUtils;
 import org.eclipse.actf.visualization.IVisualizationConst;
 import org.eclipse.actf.visualization.eval.EvaluationResultImpl;
@@ -72,14 +70,14 @@ public class ComplexityVisualizationController implements IVisualizationConst {
 		isInVisualize = false;
 
 		try {
-			File dumpImgFile = SimpleVisualizerPlugin.getDefault()
+			File dumpImgFile = VicramPlugin.getDefault()
 					.createTempFile(PREFIX_SCREENSHOT, SUFFIX_BMP);
 			screenshotFile = dumpImgFile.getAbsolutePath();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		try {
-			File htmlFile = SimpleVisualizerPlugin.getDefault().createTempFile(
+			File htmlFile = VicramPlugin.getDefault().createTempFile(
 					PREFIX_REPORT, SUFFIX_HTML);
 			reportFile = htmlFile.getAbsolutePath();
 		} catch (Exception e) {
@@ -91,8 +89,8 @@ public class ComplexityVisualizationController implements IVisualizationConst {
 	private void prepareActions() {
 
 		overlayAction = new Action("Complexity Visualization",
-				SimpleVisualizerPlugin.imageDescriptorFromPlugin(
-						SimpleVisualizerPlugin.PLUGIN_ID,
+				VicramPlugin.imageDescriptorFromPlugin(
+						VicramPlugin.PLUGIN_ID,
 						"/icons/action16/overlay16.gif")) {
 			public void run() {
 				doVisualize();
@@ -195,11 +193,6 @@ public class ComplexityVisualizationController implements IVisualizationConst {
 		vizCanvas.showImage(baseImage.getImageData(), modelService);
 
 		if (modelService instanceof IWebBrowserACTF) {
-			IWebBrowserACTF browser = (IWebBrowserACTF) modelService;
-			vizView.setStatusMessage("Getting styleInfo from Live DOM.");
-
-			IWebBrowserStyleInfo style = browser.getStyleInfo();
-			ModelServiceSizeInfo sizeInfo = style.getSizeInfo(true);
 			StringBuffer tmpSB = new StringBuffer(4096);
 			// EM - Call calculate method
 			tmpSB.append(Complexity.calculate());
@@ -208,7 +201,7 @@ public class ComplexityVisualizationController implements IVisualizationConst {
 			// tmpSB.append("Web page size: [" + sizeInfo.toString() + "]"
 			// + FileUtils.LINE_SEP + FileUtils.LINE_SEP);
 
-			// set styleInfo as a summary report
+			// set summary report
 			evalResult.setSummaryReportText(tmpSB.toString());
 			// set summary of the page as a report
 			evalResult.setSummaryReportUrl(reportFile);

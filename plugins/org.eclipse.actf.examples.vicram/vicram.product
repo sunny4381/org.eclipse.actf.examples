@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?pde version="3.4"?>
+<?pde version="3.5"?>
 
-<product name="Visual Complexity Rankings and Accessibility Metrics (ViCRAM)" id="org.eclipse.actf.examples.vicram.ViCRAM" application="org.eclipse.actf.examples.vicram.SimpleVisualizerApplication" version="0.9.2.qualifier" useFeatures="true">
+<product name="Visual Complexity Rankings and Accessibility Metrics (ViCRAM)" id="org.eclipse.actf.examples.vicram.ViCRAM" application="org.eclipse.actf.examples.vicram.VicramApplication" version="1.0.0.qualifier" useFeatures="true" includeLaunchers="true">
 
    <aboutInfo>
       <image path="/org.eclipse.actf.examples.vicram/about.gif"/>
@@ -20,7 +20,6 @@
 
    <windowImages i32="/org.eclipse.actf.examples.vicram/icons/excla_32.png"/>
 
-
    <launcher>
       <solaris/>
       <win useIco="true">
@@ -29,7 +28,6 @@
       </win>
    </launcher>
 
-
    <vm>
    </vm>
 
@@ -37,7 +35,8 @@
    </plugins>
 
    <features>
-      <feature id="org.eclipse.actf.examples.vicram" version="0.9.2.qualifier"/>
+      <feature id="org.eclipse.actf.examples.vicram" version="1.0.0.qualifier"/>
    </features>
+
 
 </product>

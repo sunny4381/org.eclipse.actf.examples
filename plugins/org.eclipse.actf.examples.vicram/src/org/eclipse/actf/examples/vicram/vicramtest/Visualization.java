@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 University of Manchester and Others
+ * Copyright (c) 2009, 2012 University of Manchester and Others
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,9 +8,8 @@
  * Contributors:
  *    Eleni Michailidou - initial API and implementation
  *******************************************************************************/
-package org.eclipse.actf.examples.simplevisualizer.vicramtest;
+package org.eclipse.actf.examples.vicram.vicramtest;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.StringTokenizer;
 
@@ -38,9 +37,7 @@ public class Visualization {
 	private static int[][] newOverlayPixels;
 	private static int webPageHeight, webPageWidth;
 	private static IModelService modelService;
-	private static int TLC, wordCount, images;
 	private static Element docLiveElement;
-	private static ArrayList[][] nodeGridArray;
 	public static int gridSize = 200;
 	public static int rows = 10;
 	public static int columns = 10;
@@ -56,10 +53,8 @@ public class Visualization {
 	private static double[][] gridVCSarray;
 	private static double gridVCS;
 	private static double visVCS;
-	private static String words;
 	private static int gridTLC;
 	private static boolean flag;
-	private static GridVariables[][] calcVCS;
 	private static int gridHeight;
 	private static int gridWidth;
 	public static String gridDescription;
@@ -368,13 +363,13 @@ public class Visualization {
 				display = (String) style.get("display");
 				borderWidth = (String) style.get("borderWidth");
 				if (node.getNodeName().equalsIgnoreCase("div")) {
-					int borderLen = borderWidth.length();
+					//int borderLen = borderWidth.length();
 					boolean isPx = borderWidth.contains("px");
 					int px = 0;
 					if (isPx == true) {
 						StringTokenizer borderToken = new StringTokenizer(
 								borderWidth, " ");
-						String pixels = "";
+						//String pixels = "";
 						String borderPx = "";
 						while (borderToken.hasMoreTokens() == true) {
 							String token = borderToken.nextToken();
@@ -663,7 +658,7 @@ public class Visualization {
 		int coloursBasedScore = colourLen - pageColour;
 		int gridsPerColour = (numGrids - minScore) / coloursBasedScore;
 		int counter2 = 0;
-		int counterMaxIndex = 0;// this can go up to 3 inclusive
+		//int counterMaxIndex = 0;// this can go up to 3 inclusive
 		int gridColour = pageColour;
 		// System.out.println(colourLen+"gridsPerColour= "+ gridsPerColour +
 		// ", coloursBasedScore = "+ coloursBasedScore+ ", page colour="+

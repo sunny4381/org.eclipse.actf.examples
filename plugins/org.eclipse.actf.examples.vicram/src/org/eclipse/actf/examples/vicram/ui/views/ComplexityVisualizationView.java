@@ -8,9 +8,9 @@
  * Contributors:
  *    Kentarou FUKUDA - initial API and implementation
  *******************************************************************************/
-package org.eclipse.actf.examples.simplevisualizer.ui.views;
+package org.eclipse.actf.examples.vicram.ui.views;
 
-import org.eclipse.actf.examples.simplevisualizer.ui.internal.ComplexityVisualizationController;
+import org.eclipse.actf.examples.vicram.ui.internal.ComplexityVisualizationController;
 import org.eclipse.actf.mediator.MediatorEvent;
 import org.eclipse.actf.visualization.ui.IVisualizationView;
 import org.eclipse.actf.visualization.ui.VisualizationStatusLineContributionItem;

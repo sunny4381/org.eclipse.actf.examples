@@ -9,7 +9,7 @@
  *    Kentarou FUKUDA - initial API and implementation
  *******************************************************************************/
 
-package org.eclipse.actf.examples.simplevisualizer.ui.perspectives;
+package org.eclipse.actf.examples.vicram.ui.perspectives;
 
 import java.net.MalformedURLException;
 import java.net.URL;

@@ -9,7 +9,7 @@
  *    Kentarou FUKUDA - initial API and implementation
  *******************************************************************************/
 
-package org.eclipse.actf.examples.simplevisualizer;
+package org.eclipse.actf.examples.vicram;
 
 import org.eclipse.actf.model.ui.editor.actions.FavoritesMenu;
 import org.eclipse.actf.ui.util.ProgressContribution;
@@ -82,8 +82,8 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 	protected void fillMenuBar(IMenuManager menuBar) {
 
 		// File
-		MenuManager fileMenu = new MenuManager(SimpleVisualizerPlugin
-				.getResourceString("simplevizualizer.menu.file"),
+		MenuManager fileMenu = new MenuManager(VicramPlugin
+				.getResourceString("vicram.menu.file"),
 				IWorkbenchActionConstants.M_FILE);
 		fileMenu.add(new Separator("fileGroup"));
 		fileMenu.add(new Separator());
@@ -99,8 +99,8 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 		menuBar.add(fileMenu);
 
 		// Tool
-		MenuManager toolMenu = new MenuManager(SimpleVisualizerPlugin
-				.getResourceString("simplevizualizer.menu.viz"), "visualization");
+		MenuManager toolMenu = new MenuManager(VicramPlugin
+				.getResourceString("vicram.menu.viz"), "visualization");
 		menuBar.add(toolMenu);
 
 		// Favorite
@@ -110,12 +110,12 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 		menuBar.add(new GroupMarker(IWorkbenchActionConstants.MB_ADDITIONS));
 
 		// Window
-		MenuManager windowMenu = new MenuManager(SimpleVisualizerPlugin
-				.getResourceString("simplevizualizer.menu.window"),
+		MenuManager windowMenu = new MenuManager(VicramPlugin
+				.getResourceString("vicram.menu.window"),
 				IWorkbenchActionConstants.M_WINDOW);
 		windowMenu.add(new Separator());
-		MenuManager navigationMenu = new MenuManager(SimpleVisualizerPlugin
-				.getResourceString("simplevizualizer.menu.navigation"),
+		MenuManager navigationMenu = new MenuManager(VicramPlugin
+				.getResourceString("vicram.menu.navigation"),
 				"navigationMenu");
 		windowMenu.add(navigationMenu);
 		navigationMenu.add(_showViewMenuAction);
@@ -133,8 +133,8 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 		windowMenu.add(_preferenceAction);
 		menuBar.add(windowMenu);
 
-		MenuManager helpMenu = new MenuManager(SimpleVisualizerPlugin
-				.getResourceString("simplevizualizer.menu.help"),
+		MenuManager helpMenu = new MenuManager(VicramPlugin
+				.getResourceString("vicram.menu.help"),
 				IWorkbenchActionConstants.M_HELP);
 		helpMenu.add(new Separator(IWorkbenchActionConstants.HELP_START));
 		helpMenu.add(new Separator(IWorkbenchActionConstants.HELP_END));

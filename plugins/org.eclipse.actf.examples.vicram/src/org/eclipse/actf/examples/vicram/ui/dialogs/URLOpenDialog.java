@@ -8,9 +8,9 @@
  * Contributors:
  *    Kentarou FUKUDA - initial API and implementation
  *******************************************************************************/
-package org.eclipse.actf.examples.simplevisualizer.ui.dialogs;
+package org.eclipse.actf.examples.vicram.ui.dialogs;
 
-import org.eclipse.actf.examples.simplevisualizer.ui.internal.Messages;
+import org.eclipse.actf.examples.vicram.ui.internal.Messages;
 import org.eclipse.actf.ui.util.IDialogConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;

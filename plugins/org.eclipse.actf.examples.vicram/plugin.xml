@@ -2,25 +2,20 @@
 <?eclipse version="3.0"?>
 <plugin>
    <extension
-         id="SimpleVisualizerApplication"
+         id="VicramApplication"
          point="org.eclipse.core.runtime.applications">
       <application>
          <run
-               class="org.eclipse.actf.examples.simplevisualizer.SimpleVisualizerApplication">
+               class="org.eclipse.actf.examples.vicram.VicramApplication">
          </run>
       </application>
    </extension>
    <extension
          point="org.eclipse.ui.perspectives">
       <perspective
-            class="org.eclipse.actf.examples.simplevisualizer.ui.perspectives.HTMLPerspective"
-            icon="icons/perspectives/html.png"
-            id="org.eclipse.actf.examples.simplevisualizer.ui.perspectives.HTMLPerspective"
-            name="%simplevizualizer.HTMLPerspective.name"/>
-      <perspective
-            class="org.eclipse.actf.examples.simplevisualizer.ui.perspectives.ComplexityVisualizationPerspective"
+            class="org.eclipse.actf.examples.vicram.ui.perspectives.ComplexityVisualizationPerspective"
             icon="icons/perspectives/sample.gif"
-            id="org.eclipse.actf.examples.simplevisualizer.ui.perspectives.ComplexityVisualizationPerspective"
+            id="org.eclipse.actf.examples.vicram.ui.perspectives.ComplexityVisualizationPerspective"
             name="Complexity Visualization Perspective">
       </perspective>
    </extension>
@@ -28,12 +23,7 @@
    <extension
          point="org.eclipse.ui.perspectiveExtensions">
       <perspectiveExtension
-            targetID="org.eclipse.actf.examples.simplevisualizer.ui.perspectives.HTMLPerspective">
-         <perspectiveShortcut id="org.eclipse.actf.examples.simplevisualizer.ui.perspectives.ComplexityVisualizationPerspective"/>
-      </perspectiveExtension>
-      <perspectiveExtension
-            targetID="org.eclipse.actf.examples.simplevisualizer.ui.perspectives.ComplexityVisualizationPerspective">
-         <perspectiveShortcut id="org.eclipse.actf.examples.simplevisualizer.ui.perspectives.HTMLPerspective"/>
+            targetID="org.eclipse.actf.examples.vicram.ui.perspectives.ComplexityVisualizationPerspective">
          <view
                closeable="false"
                id="org.eclipse.actf.visualization.ui.report.views.SummaryReportView"
@@ -50,7 +40,7 @@
          </view>
          <view
                closeable="false"
-               id="org.eclipse.actf.examples.simplevisualizer.ui.views.ComplexityVisualizationView"
+               id="org.eclipse.actf.examples.vicram.ui.views.ComplexityVisualizationView"
                ratio="0.5f"
                relationship="top"
                relative="org.eclipse.actf.visualization.ui.report.views.SummaryReportView">
@@ -61,14 +51,14 @@
       <extension
             point="org.eclipse.ui.actionSets">
          <actionSet
-               id="org.eclipse.actf.examples.simplevizualizer.ui.actionSet"
-               label="simplevizualizerClientActionSet"
+               id="org.eclipse.actf.examples.vicram.ui.actionSet"
+               label="vicramActionSet"
                visible="true">
             <action
-                  class="org.eclipse.actf.examples.simplevisualizer.ui.actions.OpenAction"
-                  id="org.eclipse.actf.examples.simplevizualizer.ui.actions.OpenAction"
-                  definitionId="org.eclipse.actf.examples.simplevizualizer.actions.OpenAction"
-                  label="%simplevizualizer.action.open"
+                  class="org.eclipse.actf.examples.vicram.ui.actions.OpenAction"
+                  id="org.eclipse.actf.examples.vicram.ui.actions.OpenAction"
+                  definitionId="org.eclipse.actf.examples.vicram.actions.OpenAction"
+                  label="%vicram.action.open"
                   menubarPath="file/fileGroup"
                   style="push"/>
          </actionSet>
@@ -78,13 +68,13 @@
    <extension
          point="org.eclipse.ui.commands">
       <command
-            id="org.eclipse.actf.examples.simplevizualizer.actions.OpenAction"
-            name="%simplevizualizer.action.open"/>
+            id="org.eclipse.actf.examples.vicram.actions.OpenAction"
+            name="%vicram.action.open"/>
    </extension>
    <extension
          point="org.eclipse.ui.bindings">
       <key
-            commandId="org.eclipse.actf.examples.simplevizualizer.actions.OpenAction"
+            commandId="org.eclipse.actf.examples.vicram.actions.OpenAction"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="CTRL+O"/>
    </extension>
@@ -92,7 +82,7 @@
          id="ViCRAM"
          point="org.eclipse.core.runtime.products">
       <product
-            application="org.eclipse.actf.examples.vicram.SimpleVisualizerApplication"
+            application="org.eclipse.actf.examples.vicram.VicramApplication"
             name="Visual Complexity Rankings and Accessibility Metrics (ViCRAM)">
          <property
                name="windowImages"
@@ -116,24 +106,10 @@
          point="org.eclipse.ui.views">
       <view
             category="org.eclipse.actf.visualization.ui.views"
-            class="org.eclipse.actf.examples.simplevisualizer.ui.views.SimpleVisualizerView"
-            id="org.eclipse.actf.examples.simplevisualizer.ui.views.SimpleVisualizerView"
-            name="Simple Visualizer View">
-      </view>
-      <view
-            category="org.eclipse.actf.visualization.ui.views"
-            class="org.eclipse.actf.examples.simplevisualizer.ui.views.ComplexityVisualizationView"
-            id="org.eclipse.actf.examples.simplevisualizer.ui.views.ComplexityVisualizationView"
+            class="org.eclipse.actf.examples.vicram.ui.views.ComplexityVisualizationView"
+            id="org.eclipse.actf.examples.vicram.ui.views.ComplexityVisualizationView"
             name="Complexity Visualization View">
       </view>
-   </extension>
-   <extension
-         id="vicram"
-         point="org.eclipse.core.runtime.products">
-      <product
-            application="org.eclipse.actf.examples.vicram.SimpleVisualizerApplication"
-            name="%simplevizualizer.window.title">
-      </product>
    </extension>
 
 </plugin>

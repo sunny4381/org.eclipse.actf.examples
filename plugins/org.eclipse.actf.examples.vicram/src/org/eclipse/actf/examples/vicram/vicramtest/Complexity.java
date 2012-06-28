@@ -8,20 +8,15 @@
  * Contributors:
  *    Eleni Michailidou - initial API and implementation
  *******************************************************************************/
-package org.eclipse.actf.examples.simplevisualizer.vicramtest;
+package org.eclipse.actf.examples.vicram.vicramtest;
 
-import java.util.Map;
 import java.util.StringTokenizer;
 
 import org.eclipse.actf.model.dom.dombycom.IElementEx;
 import org.eclipse.actf.model.dom.dombycom.INodeEx;
 import org.eclipse.actf.model.dom.dombycom.IStyle;
 import org.eclipse.actf.model.ui.IModelService;
-import org.eclipse.actf.model.ui.editor.browser.ICurrentStyles;
-import org.eclipse.actf.model.ui.editor.browser.IWebBrowserACTF;
-import org.eclipse.actf.model.ui.editor.browser.IWebBrowserStyleInfo;
 import org.eclipse.actf.model.ui.util.ModelServiceUtils;
-import org.eclipse.swt.graphics.Rectangle;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -38,12 +33,9 @@ public class Complexity {
 	public static boolean insideTableRow = false;
 	public static boolean insideTableCol = false;
 	public static String linkedString, unlinkedString;
-	private static int tableStyle;
 	private static String backgroundColor;
 	private static String display;
 	private static String backgroundColorParent;
-	private static int TLC1;
-	private static int TLC2;
 	private static int layoutTable;
 	private static int div;
 	private static boolean findName = true;
@@ -61,23 +53,21 @@ public class Complexity {
 	private static int borderLen;
 	private static boolean visibleBorder;
 	private static boolean isPx;
-	private static Rectangle rectangle;
-	private static Map<String, ICurrentStyles> styleMap;
-	private static Object xpath;
+	//private static Map<String, ICurrentStyles> styleMap;
 	private static boolean veryComplex;
 	public static double VCS;
 
 	/*
 	 * 
 	 * 1. Calculates the level of complexity and aesthetics of Web pages
-	 * Equations: VisualComplexity = 1.743 + 0.097 (TLC) + 0.053 (Words) + 0.003 (Images)
+	 * Equations: VisualComplexity = 1.743 + 0.097 (TLC) + 0.053 (Words) + 0.003
+	 * (Images)
 	 * 
-	 * THE FINAL Visual Complexity Score is equal to: VisualComplexity/10. 
-	 * If the score is > 10 then VC =10, and denotes extreme complexity due to 
-	 * length of page, a lot of text, a large number of images etc. 
+	 * THE FINAL Visual Complexity Score is equal to: VisualComplexity/10. If
+	 * the score is > 10 then VC =10, and denotes extreme complexity due to
+	 * length of page, a lot of text, a large number of images etc.
 	 * 
-	 * For more details:
-	 * ViCRAM Webpage: http://vicram.cs.manchester.ac.uk
+	 * For more details: ViCRAM Webpage: http://vicram.cs.manchester.ac.uk
 	 */
 	public static String calculate() {
 		/*
@@ -91,25 +81,23 @@ public class Complexity {
 		// initialize modelService and get the style information based on IE
 		// Current Styles method
 		IModelService modelService = ModelServiceUtils.getActiveModelService();
-		if (modelService instanceof IWebBrowserACTF) {
-			IWebBrowserACTF browser = (IWebBrowserACTF) modelService;
-			IWebBrowserStyleInfo style = browser.getStyleInfo();
-			// ModelServiceSizeInfo sizeInfo = style.getSizeInfo(true);
+		// if (modelService instanceof IWebBrowserACTF) {
+		// IWebBrowserACTF browser = (IWebBrowserACTF) modelService;
+		// IWebBrowserStyleInfo style = browser.getStyleInfo();
+		// // ModelServiceSizeInfo sizeInfo = style.getSizeInfo(true);
+		// styleMap = style.getCurrentStyles();
+		// }
 
-			styleMap = style.getCurrentStyles();
-
-		}
 		/*
 		 * A. initialize Document based on DOM and LiveDOM in order to identify
 		 * the number of blocks the page has (TLC) the liveDoc will be used.
 		 * LiveDoc returns the style information as it is currently presented by
-		 * the browser 
+		 * the browser
 		 * 
-		 * B. if the documents are not empty then get respective
-		 * elements, reset variables used as counters and help counters,
-		 * initialize the body Node and recursively pass the docElement and
-		 * docLiveElement to the countElements(node) and countTLC(node)
-		 * respectively
+		 * B. if the documents are not empty then get respective elements, reset
+		 * variables used as counters and help counters, initialize the body
+		 * Node and recursively pass the docElement and docLiveElement to the
+		 * countElements(node) and countTLC(node) respectively
 		 */
 		Document doc = modelService.getDocument();
 		Document docLive = modelService.getLiveDocument();
@@ -129,8 +117,6 @@ public class Complexity {
 			wordCount = 0;
 			blocks = 0;
 			TLC = 0;
-			TLC1 = 0;
-			TLC2 = 0;
 			tables = 0;
 			layoutTable = 0;
 			div = 0;
@@ -181,7 +167,8 @@ public class Complexity {
 			resultsB = "The Visual Complexity Score (VCS) ranges from 0 to 10, with 0 being very visually simple and 10 very visually complex. ";
 			resultsD = "The highlighted green boxes are the identified TLC, which is one of the main complexity factors. For more details please visit the ViCRAM Project Webpages at http://hcw.cs.manchester.ac.uk/research/vicram/";
 			results = "======= Web Page Visual Complexity =======\n\n"
-					+ resultsA + "\n\n" + resultsB + "\n\n" + resultsC + "\n" + resultsD;
+					+ resultsA + "\n\n" + resultsB + "\n\n" + resultsC + "\n"
+					+ resultsD;
 			return results + "\n\n";
 
 		}
@@ -237,7 +224,7 @@ public class Complexity {
 				}
 			}
 		}// ends if (type == Node.ELEMENT_NODE)
-		// Get the word count
+			// Get the word count
 		if (type == Node.TEXT_NODE) {
 			String string = node.getNodeValue();
 			words = " " + string;
@@ -247,8 +234,8 @@ public class Complexity {
 				StringTokenizer total = new StringTokenizer(words,
 						"'?!@#$&*/-,:.<>()~;=_|");
 				while (total.hasMoreTokens() == true) {
-					StringTokenizer token = new StringTokenizer(total
-							.nextToken());
+					StringTokenizer token = new StringTokenizer(
+							total.nextToken());
 					wordCount += token.countTokens();
 				}
 			}
@@ -264,10 +251,8 @@ public class Complexity {
 	 * boolean isTLC - to avoid TLC recognised within TLCs that are basically
 	 * the same (i.e. tables within tables)
 	 * 
-	 * NOTE: The TLCs that the algorithm detects are highlighted
-	 * on the page using the following code: 
-	 * //TLC - highlight 
-	 * ((INodeEx) node).highlight();
+	 * NOTE: The TLCs that the algorithm detects are highlighted on the page
+	 * using the following code: //TLC - highlight ((INodeEx) node).highlight();
 	 */
 
 	public static int countTLC(Node node) {
@@ -277,7 +262,8 @@ public class Complexity {
 
 		int type = node.getNodeType();
 		if (type == Node.DOCUMENT_NODE) {
-			countTLC(((Document) node).getDocumentElement());		}
+			countTLC(((Document) node).getDocumentElement());
+		}
 
 		if (type == Node.ELEMENT_NODE) {
 
@@ -290,13 +276,13 @@ public class Complexity {
 				 * STEP 1. <div> elements If the node is a <div> element & has a
 				 * visible border => we flag that the node has a visibleBorder:
 				 * 1. Get border attributes: borderWidth returns medium or Npx
-				 * (N=number) need to check if the borderWidth is a number and is >0 
+				 * (N=number) need to check if the borderWidth is a number and
+				 * is >0
 				 * 
-				 * 2. If border width contains a number of pixels as Npx,
-				 * we use StringTokenizer to get the string that contains the
-				 * string part with the px string in it some elements have
-				 * different px for left/right etc (e.g - borderWidth = medium
-				 * medium 5px)
+				 * 2. If border width contains a number of pixels as Npx, we use
+				 * StringTokenizer to get the string that contains the string
+				 * part with the px string in it some elements have different px
+				 * for left/right etc (e.g - borderWidth = medium medium 5px)
 				 */
 
 				if (node.getNodeName().equalsIgnoreCase("div")) {
@@ -306,7 +292,6 @@ public class Complexity {
 					if (isPx == true) {
 						StringTokenizer borderToken = new StringTokenizer(
 								borderWidth, " ");
-						String pixels = "";
 						String borderPx = "";
 						while (borderToken.hasMoreTokens() == true) {
 							String token = borderToken.nextToken();
@@ -331,10 +316,10 @@ public class Complexity {
 			 * STEP 2. Node is display=block && has no block children (this step
 			 * is to flag elements such as standaline images) => lastIsImg flag
 			 * 1. Get the NodeList of the current node and find the number of
-			 * children that are type=1 ONLY 
+			 * children that are type=1 ONLY
 			 * 
-			 * 2. If there is only one type 1
-			 * child, we check if it is an <img> and we flag as true
+			 * 2. If there is only one type 1 child, we check if it is an <img>
+			 * and we flag as true
 			 */
 
 			NodeList children = node.getChildNodes();
@@ -360,20 +345,22 @@ public class Complexity {
 
 			/*
 			 * STEP 3. blockChild: Determine if the node has only one child
-			 * (singleChildren - method) and if it is displayed as block or table:
+			 * (singleChildren - method) and if it is displayed as block or
+			 * table:
 			 * 
-			 * 1. Determine if it is a singleChildren (see respective method) 
+			 * 1. Determine if it is a singleChildren (see respective method)
 			 * 
-			 * 2. Determine if it is a blockChild, that is displayed as
-			 * a block or table no matter of the output of singleChildren 
+			 * 2. Determine if it is a blockChild, that is displayed as a block
+			 * or table no matter of the output of singleChildren
 			 * 
-			 * 3. If display=block && blockChild==false => TLC 
+			 * 3. If display=block && blockChild==false => TLC
 			 * 
-			 * 4. else If singleChild==true && isTLC==false => TLC 
+			 * 4. else If singleChild==true && isTLC==false => TLC
 			 * 
-			 * We need to follow these steps because if the last child is an image 
-			 * then it is a TLC BUT then might have multiple TLCs! So, we need to check that the img
-			 * is the ONLY children and that the tag is a series of singles children
+			 * We need to follow these steps because if the last child is an
+			 * image then it is a TLC BUT then might have multiple TLCs! So, we
+			 * need to check that the img is the ONLY children and that the tag
+			 * is a series of singles children
 			 * 
 			 * NOTE: this needs to be visited only once per node so we use a
 			 * boolean flag findName which needs to be reset to true on the main
@@ -394,8 +381,8 @@ public class Complexity {
 						// element child then flag as true
 						// blockChild are blocks!
 						childNode = children.item(i);
-						NodeList childNodeList = childNode.getChildNodes();
-						int length = childNodeList.getLength();
+						//NodeList childNodeList = childNode.getChildNodes();
+						//int length = childNodeList.getLength();
 						singleChildren(node, len);
 						if (childNode instanceof IElementEx) {
 							IStyle childStyle = ((IElementEx) childNode)
@@ -405,7 +392,7 @@ public class Complexity {
 							if (displayChild.equalsIgnoreCase("block")
 									|| display.equalsIgnoreCase("table"))
 								blockChild = true;
-							}
+						}
 					}// end for-loop
 				}// end if not null children
 
@@ -441,35 +428,36 @@ public class Complexity {
 			}// ends if <div> and visible border
 
 			/*
-			 * STEP 5. 
-			 * If a block displayed element has block-displayed children
-			 * THis step leads to a set of substeps described where appropriate (5a-5c). 
+			 * STEP 5. If a block displayed element has block-displayed children
+			 * THis step leads to a set of substeps described where appropriate
+			 * (5a-5c).
 			 * 
 			 * Step 5 is also recursive for some substeps (5c and 5c):
 			 * 
-			 * (i). Node is displayed as block/table or display starts with table 
+			 * (i). Node is displayed as block/table or display starts with
+			 * table
 			 * 
 			 * (ii). If the node is a <div> element, has visible border and is
-			 * not used for Layout => TLC 
+			 * not used for Layout => TLC
 			 * 
-			 * (iii). else if the node is a heading <h1> or <h2> => TLC && flag that
-			 *  is identified as heading
-			 *  
-			 * (iv). else if <h3> && headingTLC==false => TLC 
+			 * (iii). else if the node is a heading <h1> or <h2> => TLC && flag
+			 * that is identified as heading
 			 * 
-			 * (v). else if <h4> && headintTLC==false => TLC 
+			 * (iv). else if <h3> && headingTLC==false => TLC
 			 * 
-			 * (vi). else if the node is a table and has visible border need to 
-			 * make sure if the table is used for data or layout if the table has a 
-			 * caption or a theading => then it would be a data table which 
-			 * we count as one TLC if the table has only visible border for now 
-			 * we count it as a TLC TLC++ if (one of those else if statements): 
-			 * a. dataTable==true && isTLC==false 
+			 * (v). else if <h4> && headintTLC==false => TLC
 			 * 
-			 * b. dataTalbe==false && isLayout==true (table is used
-			 * for layout see respective method) 
+			 * (vi). else if the node is a table and has visible border need to
+			 * make sure if the table is used for data or layout if the table
+			 * has a caption or a theading => then it would be a data table
+			 * which we count as one TLC if the table has only visible border
+			 * for now we count it as a TLC TLC++ if (one of those else if
+			 * statements): a. dataTable==true && isTLC==false
 			 * 
-			 * c. isLayout == false && blockChilNodes==true 
+			 * b. dataTalbe==false && isLayout==true (table is used for layout
+			 * see respective method)
+			 * 
+			 * c. isLayout == false && blockChilNodes==true
 			 * 
 			 * d. nodeName.equalsIgnoreCase("div")
 			 */
@@ -566,8 +554,7 @@ public class Complexity {
 							isTLC = true;
 							// TLC - highlight
 							((INodeEx) node).highlight();
-						}
-						else if (nodeName.equalsIgnoreCase("div")) {
+						} else if (nodeName.equalsIgnoreCase("div")) {
 							TLC++;
 							isTLC = true;
 							// TLC - highlight
@@ -671,26 +658,28 @@ public class Complexity {
 		// table-->tbody-->tr-->td
 		// get the children nodes of the tbody
 		Node tbody = node.getFirstChild();
-		NodeList tbodyNodes = tbody.getChildNodes();
-		// System.out.println(childNodes);
-		for (int i = 0; i < tbodyNodes.getLength(); i++) {
-			Node trnode = tbodyNodes.item(i);
-			String name = trnode.getNodeName();
-			if (name.equalsIgnoreCase("tr")) {
-				rows++;
-				tableRows++;
-			}// ends if
-			// get the children of TR to find TD count
-			NodeList trChildNodes = trnode.getChildNodes();
-			for (int j = 0; j < trChildNodes.getLength(); j++) {
-				Node tdnode = trChildNodes.item(j);
-				String name2 = tdnode.getNodeName();
-				if (name2.equalsIgnoreCase("td")) {
-					tableCols++;
-					columns++;
-				}
-			}// ends j-for
-		}// ends i-for
+		if (tbody != null) {
+			NodeList tbodyNodes = tbody.getChildNodes();
+			// System.out.println(childNodes);
+			for (int i = 0; i < tbodyNodes.getLength(); i++) {
+				Node trnode = tbodyNodes.item(i);
+				String name = trnode.getNodeName();
+				if (name.equalsIgnoreCase("tr")) {
+					rows++;
+					tableRows++;
+				}// ends if
+					// get the children of TR to find TD count
+				NodeList trChildNodes = trnode.getChildNodes();
+				for (int j = 0; j < trChildNodes.getLength(); j++) {
+					Node tdnode = trChildNodes.item(j);
+					String name2 = tdnode.getNodeName();
+					if (name2.equalsIgnoreCase("td")) {
+						tableCols++;
+						columns++;
+					}
+				}// ends j-for
+			}// ends i-for
+		}
 
 		if (tableRows == 1 || tableCols == 1) {
 			layoutTable++;

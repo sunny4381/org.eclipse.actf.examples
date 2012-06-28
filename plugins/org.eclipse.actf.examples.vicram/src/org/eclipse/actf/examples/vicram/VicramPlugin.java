@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 IBM Corporation and Others
+ * Copyright (c) 2006, 2012 IBM Corporation and Others
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -9,7 +9,7 @@
  *    Kentarou FUKUDA - initial API and implementation
  *******************************************************************************/
 
-package org.eclipse.actf.examples.simplevisualizer;
+package org.eclipse.actf.examples.vicram;
 
 import java.io.File;
 import java.util.MissingResourceException;
@@ -20,16 +20,16 @@ import org.eclipse.core.runtime.Platform;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 
-public class SimpleVisualizerPlugin extends AbstractUIPluginACTF {
+public class VicramPlugin extends AbstractUIPluginACTF {
 	public static final String PLUGIN_ID = "org.eclipse.actf.examples.vicram"; //$NON-NLS-1$
 
-	private static SimpleVisualizerPlugin plugin;
+	private static VicramPlugin plugin;
 
 	private static String perspectiveID = null;
 
 	private ResourceBundle _resourceBundle;
 
-	public SimpleVisualizerPlugin() {
+	public VicramPlugin() {
 		plugin = this;
 	}
 
@@ -42,12 +42,12 @@ public class SimpleVisualizerPlugin extends AbstractUIPluginACTF {
 		plugin = null;
 	}
 
-	public static SimpleVisualizerPlugin getDefault() {
+	public static VicramPlugin getDefault() {
 		return plugin;
 	}
 
 	public static String getResourceString(String key) {
-		ResourceBundle bundle = SimpleVisualizerPlugin.getDefault()
+		ResourceBundle bundle = VicramPlugin.getDefault()
 				.getResourceBundle();
 		try {
 			return (null != bundle) ? bundle.getString(key) : key;
