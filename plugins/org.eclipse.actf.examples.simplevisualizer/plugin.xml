@@ -17,47 +17,7 @@
             icon="icons/perspectives/html.png"
             id="org.eclipse.actf.examples.simplevisualizer.ui.perspectives.HTMLPerspective"
             name="%simplevizualizer.HTMLPerspective.name"/>
-      <perspective
-            class="org.eclipse.actf.examples.simplevisualizer.ui.perspectives.ComplexityVisualizationPerspective"
-            icon="icons/perspectives/sample.gif"
-            id="org.eclipse.actf.examples.simplevisualizer.ui.perspectives.ComplexityVisualizationPerspective"
-            name="Complexity Visualization Perspective">
-      </perspective>
    </extension>
-
-   <extension
-         point="org.eclipse.ui.perspectiveExtensions">
-      <perspectiveExtension
-            targetID="org.eclipse.actf.examples.simplevisualizer.ui.perspectives.HTMLPerspective">
-         <perspectiveShortcut id="org.eclipse.actf.examples.simplevisualizer.ui.perspectives.ComplexityVisualizationPerspective"/>
-      </perspectiveExtension>
-      <perspectiveExtension
-            targetID="org.eclipse.actf.examples.simplevisualizer.ui.perspectives.ComplexityVisualizationPerspective">
-         <perspectiveShortcut id="org.eclipse.actf.examples.simplevisualizer.ui.perspectives.HTMLPerspective"/>
-         <view
-               closeable="false"
-               id="org.eclipse.actf.visualization.ui.report.views.SummaryReportView"
-               ratio="0.35f"
-               relationship="bottom"
-               relative="org.eclipse.ui.editorss"
-               visible="true">
-         </view>
-         <view
-               closeable="false"
-               id="org.eclipse.actf.visualization.ui.report.views.DetailedReportView"
-               relationship="stack"
-               relative="org.eclipse.actf.visualization.ui.report.views.SummaryReportView">
-         </view>
-         <view
-               closeable="false"
-               id="org.eclipse.actf.examples.simplevisualizer.ui.views.ComplexityVisualizationView"
-               ratio="0.5f"
-               relationship="top"
-               relative="org.eclipse.actf.visualization.ui.report.views.SummaryReportView">
-         </view>
-      </perspectiveExtension>
-   </extension>
-   
       <extension
             point="org.eclipse.ui.actionSets">
          <actionSet
@@ -119,12 +79,6 @@
             class="org.eclipse.actf.examples.simplevisualizer.ui.views.SimpleVisualizerView"
             id="org.eclipse.actf.examples.simplevisualizer.ui.views.SimpleVisualizerView"
             name="Simple Visualizer View">
-      </view>
-      <view
-            category="org.eclipse.actf.visualization.ui.views"
-            class="org.eclipse.actf.examples.simplevisualizer.ui.views.ComplexityVisualizationView"
-            id="org.eclipse.actf.examples.simplevisualizer.ui.views.ComplexityVisualizationView"
-            name="Complexity Visualization View">
       </view>
    </extension>
 
