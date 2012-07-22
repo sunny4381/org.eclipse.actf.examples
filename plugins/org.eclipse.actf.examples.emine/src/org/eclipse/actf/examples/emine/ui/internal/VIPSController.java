@@ -11,13 +11,11 @@
  *******************************************************************************/
 package org.eclipse.actf.examples.emine.ui.internal;
 
-import java.io.File;
 import java.util.List;
 
 import org.eclipse.actf.examples.emine.EminePlugin;
 import org.eclipse.actf.examples.emine.vips.Segmentation;
 import org.eclipse.actf.model.ui.IModelService;
-import org.eclipse.actf.model.ui.ModelServiceImageCreator;
 import org.eclipse.actf.model.ui.util.ModelServiceUtils;
 import org.eclipse.actf.visualization.IVisualizationConst;
 import org.eclipse.actf.visualization.ui.IPositionSize;
@@ -28,8 +26,6 @@ import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Cursor;
-import org.eclipse.swt.graphics.GC;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -51,7 +47,6 @@ public class VIPSController implements IVisualizationConst {
 	// private Mediator mediator = Mediator.getInstance();
 
 	private boolean isInVisualize;
-	private String screenshotFile;
 
 	public VIPSController(IVisualizationView vizView,
 			Composite parent) {
@@ -63,14 +58,6 @@ public class VIPSController implements IVisualizationConst {
 		prepareActions();
 
 		isInVisualize = false;
-
-		try {
-			File dumpImgFile = EminePlugin.getDefault()
-					.createTempFile(PREFIX_SCREENSHOT, SUFFIX_BMP);
-			screenshotFile = dumpImgFile.getAbsolutePath();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 
 	private void prepareActions() {
@@ -118,6 +105,9 @@ public class VIPSController implements IVisualizationConst {
 		TreeColumn column4 = new TreeColumn(tableTree, SWT.RIGHT);
 		column4.setText("Path");
 		column4.setWidth(200);
+		TreeColumn column6 = new TreeColumn(tableTree, SWT.RIGHT);
+		column6.setText("Heuristics");
+		column6.setWidth(200);
 
 		gridData = new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
@@ -149,27 +139,21 @@ public class VIPSController implements IVisualizationConst {
 		vizCanvas.clear();
 		shell.getDisplay().update();
 
-		vizView.setStatusMessage("Capturing screenshot.");
 		IModelService modelService = ModelServiceUtils.getActiveModelService();
 		if (modelService == null) {
 			return;
 		}
 
-		// generate screenshot and read it as Image
-		ModelServiceImageCreator imgCreator = new ModelServiceImageCreator(
-				modelService);
-		imgCreator.getScreenImageAsBMP(screenshotFile, true);
-		Image baseImage = new Image(shell.getDisplay(), screenshotFile);
-
-		vizView.setStatusMessage("Processing overlay.");
-
-		GC gc = new GC(baseImage);
-		gc.setAlpha(100);
+		vizView.setStatusMessage("Segmenting the page");
 		Segmentation seg = new Segmentation();
-		seg.setGC(gc);
-		seg.setTree(tableTree);
-		seg.calculate();
+		seg.segmentPage();
 
+		vizView.setStatusMessage("Extracting Visual Blocks");
+		seg.extractVisualBlocks();
+
+		vizView.setStatusMessage("Constructing Content Structure");
+		seg.constructContentStructure(tableTree);
+		
 		vizView.setStatusMessage("Segmentation is over.");
 		shell.setCursor(null);
 		isInVisualize = false;
@@ -182,15 +166,4 @@ public class VIPSController implements IVisualizationConst {
 	public void setCurrentModelService(IModelService modelService) {
 		vizCanvas.setCurrentModelService(modelService);
 	}
-
-	// public void getStyleInfo(IModelService modelService) {
-	// if (modelService instanceof IWebBrowserACTF) {
-	// IWebBrowserACTF browser = (IWebBrowserACTF) modelService;
-	// vizView.setStatusMessage("Getting styleInfo from Live DOM.");
-	// IWebBrowserStyleInfo style = browser.getStyleInfo();
-	// ModelServiceSizeInfo sizeInfo = style.getSizeInfo(true);
-	// StringBuffer tmpSB = new StringBuffer(4096);
-	// }
-	// }
-
 }

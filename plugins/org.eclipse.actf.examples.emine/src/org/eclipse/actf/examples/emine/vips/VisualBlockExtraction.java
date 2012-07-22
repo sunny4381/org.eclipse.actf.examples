@@ -11,36 +11,66 @@
 
 package org.eclipse.actf.examples.emine.vips;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.GC;
-import org.eclipse.swt.widgets.Tree;
-import org.eclipse.swt.widgets.TreeItem;
+import org.eclipse.actf.examples.emine.vips.types.VipsBlock;
+import org.eclipse.actf.examples.emine.vips.types.VipsCompositeNode;
+import org.eclipse.actf.examples.emine.vips.types.VipsLineBreak;
+import org.eclipse.actf.examples.emine.vips.types.VipsNode;
 
 public class VisualBlockExtraction {
-
-	private Map<VIPSBlock, WebElement> blockPool;
-
-	private SeparatorDetection detector;
-	private GC gc;
-	private Tree tree;
+	private VipsBlock bodyBlock;
+	private Map<VipsBlock, VipsNode> blockPool;
 	private boolean control = true;
-
-	public VisualBlockExtraction(Map<VIPSBlock, WebElement> blockPool,
-			SeparatorDetection detector, GC gc, Tree tree) {
-		this.blockPool = blockPool;
-		this.detector = detector;
-		this.gc = gc;
-		this.tree = tree;
+	private static final Logger logger = Logger.getLogger(VisualBlockExtraction.class.getName());
+	VipsNode root;
+	
+	
+	public VipsBlock getBodyBlock() {
+		return bodyBlock;
 	}
 
-	public void blockExtraction(VIPSBlock block, WebElement element, int doc) {
+	public void setBodyBlock(VipsBlock bodyBlock) {
+		this.bodyBlock = bodyBlock;
+	}
 
-		if (element.getTag().equals("#TEXT") || !element.isValid()) {
+	public Map<VipsBlock, VipsNode> getBlockPool() {
+		return blockPool;
+	}
+
+	public void setBlockPool(Map<VipsBlock, VipsNode> blockPool) {
+		this.blockPool = blockPool;
+	}
+
+	public VisualBlockExtraction(VipsNode root,
+			SeparatorDetection detector) {
+		this.root = root;
+		blockPool = new HashMap<VipsBlock, VipsNode>();
+		bodyBlock = new VipsBlock();
+		bodyBlock.setBlockName("VB.1");
+		blockPool.put(bodyBlock, root);
+		logger.setLevel(Level.OFF);
+	}
+
+	public void start(){
+		blockExtraction(bodyBlock, root, 1);
+	}
+	
+	public void blockExtraction(VipsBlock block, VipsNode element, int doc) {
+		String blockName = block.getBlockName();
+		
+		if(element == null){
+			return;
+		} else if (element.isTextNode() || !element.isValid()) {
+			logger.info(blockName + " has no block");
 			// no block
 		} else if (element.getChildren().size() == 1) {
-			WebElement child = element.getChildren().get(0);
+			logger.info(blockName + " has only one child");
+			VipsNode child = element.getChildren().get(0);
 			if (child.isTextNode()) {
 				block.setDoc(11);
 				return;
@@ -49,110 +79,412 @@ public class VisualBlockExtraction {
 		} else { // block has more than one children
 			// (a) if all of the children are virtual text nodes, the node will
 			// be a block
-
 			if (element.areAllChildrenVirtualTextNodes()) {
 				// the node will be a block
-				putIntoPool2(block, element, 9);
-			} else if (element.containsBR() || element.containsHR()
-					|| element.containsEmptyListItem()) {
-				block.setDoc(6);
-				WebElement tempElement = new WebElement();
-				for (int i = 0; i < element.getChildren().size(); i++) {
-					WebElement child = element.getChildren().get(i);
-					if (child.getTag().matches("HR|BR")) {
-						createTempElement(block, tempElement, 9);
-						tempElement = new WebElement();
-					} else if (child.getTag().matches("LI")
-							&& !child.hasChildren()) {
-						createTempElement(block, tempElement, 9);
-						tempElement = new WebElement();
-					} else {
-						tempElement.addChild(child);
-					}
-				}
-				createTempElement(block, tempElement, 9);
+				logger.info("All children of " + blockName + " are virtual text node");
+				putIntoPool(block, element, 9);
+			} else if(element.childrenHaveColumns()){ 
+				logger.info(blockName + " children has columns");
+				handleColumnsAtChildren(block, element, 10);
+			} else if(element.rowsHaveDifferentBgColor()){
+				logger.info(blockName + " children has different background colors");
+				handleDifferentBgColorAtChildren(block, element, 10);
 			} else if (element.hasDifferentFontSizeInChildren(0)) {
 				block.setDoc(8);
-				System.out.println(block.getBlockName()
-						+ " has different font size");
+				logger.info(blockName + " has different font size in children");
 				// control = false;
-				handleDifferentFontSize2(block, element, 10);
+				handleDifferentFontSize(block, element, 10);
+			} else if (element.containsLineBreak()){
+				logger.info(blockName + " contains line break");
+				handleLineBreaks(block, element, 6);
+			} else if(element.containsEmptyListItem()) {
+				logger.info(blockName + " contains an empty list item");
+				handleEmptyListItem(block, element, 6);
 			} else if (element.hasDivGroups() && control) {
+				logger.info(blockName + " has different groups of divs in children");
 				handleDivGroups(block, element, 7);
 			} else if (element.hasDifferentFloatInChildren(0)) {
-				System.out.println(block.getBlockName()
-						+ " has different float");
+				logger.info(blockName + " has different float in children");
 				handleDifferentFloat(block, element, 6);
 			} else if (element.hasDifferentMarginInChildren(0)) {
 				block.setDoc(8);
-				System.out.println(block.getBlockName()
-						+ " has different margin");
+				logger.info(blockName + " has different margin in children");
 				handleDifferentMargin(block, element, 8);
-			} else if (element.hasChildContainingImage()) {
-
+			} else if (element.doesContainImage()) {
+				logger.severe(blockName + " has at least one image child");
+				handleImageInChildren(block, element, 8);
+			} else if (element.doesContainLineBreakObject()) {			
+				logger.severe(blockName + " has at least one object child");
+				handleObjectInChildren(block, element, 8);
 			} else {
-				WebElement tempElement = new WebElement();
-				for (int i = 0; i < element.getChildren().size(); i++) {
-					WebElement child = element.getChildren().get(i);
-					if (child.isLineBreakNode()) {
-						createTempElement(block, tempElement, 8);
-						putIntoPool2(block, child, 11);
-						tempElement = new WebElement();
-					} else {
-						tempElement.addChild(child);
-					}
+				logger.info(blockName + " has no property in children");
+				handleNormalForm(block, element, 8);
+			}
+		}
+	}
+
+	/**
+	 * If node is a table and some of its columns have different background color than the
+	 * others, divide the table into the number saparate columns and construct a block for
+	 * each piece.
+	 * 
+	 * @param block
+	 * @param element
+	 * @param doc
+	 */
+	private void handleDifferentBgColorAtChildren(VipsBlock block, VipsNode element, int doc) {
+		String bgColor = "";
+		ArrayList<VipsNode> rows = getClonedChildren(element);
+		VipsNode firstRow = rows.get(0);
+		ArrayList<VipsCompositeNode> composites = new ArrayList<VipsCompositeNode>();
+		/* According to the first row, define the columns with respect to the background colors */
+		for(VipsNode column: firstRow.getChildren()){
+			if(!column.getBackground().equals(bgColor)){
+				/* Add a new composite node, when different bg color found */
+				VipsCompositeNode tmpNode = new VipsCompositeNode();
+				composites.add(tmpNode);
+				bgColor = column.getBackground();
+			}
+			composites.get(composites.size()-1).addChild(column);
+		}
+		
+		/* For the other rows after the first one */
+		for(int i = 1; i < rows.size(); i++){
+			int j = -1;
+			bgColor = "";
+			VipsNode row = rows.get(i);
+			for(VipsNode column: row.getChildren()){
+				if(!column.getBackground().equals(bgColor)){
+					j++;
+					bgColor = column.getBackground();
 				}
-				createTempElement(block, tempElement, 8);
+				composites.get(j).addChild(column);
 			}
+		}
+		
+		for(VipsCompositeNode composite : composites){
+			createCompositeBlock(block, composite, doc);
 		}
 	}
 
-	private void handleDivGroups(VIPSBlock block, WebElement element, int doc) {
-		WebElement tempElement = new WebElement();
-
-		for (int i = 0; i < element.getChildren().size(); i++) {
-			WebElement child = element.getChildren().get(i);
-			if (child.getTag().equals("DIV") || child.isVirtualTextNode(false)) {
-				tempElement.addChild(child);
+	
+	/**
+	 * According to the VIPS Algorithm, if there are some children of a node and two
+	 * or more but not all of these nodes are in the same horizontal line, the nodes
+	 * in the same line must be grouped to form a composite block before block
+	 * extraction.
+	 *  
+	 * @param block
+	 * @param element
+	 * @param doc
+	 */
+	private void handleColumnsAtChildren(VipsBlock block, VipsNode element, int doc) {
+		block.setDoc(6);
+		ArrayList<VipsNode> children = getClonedChildren(element);
+		ArrayList<VipsNode> tmpList = new ArrayList<VipsNode>();
+		VipsCompositeNode tempCompositeNode = new VipsCompositeNode();
+		boolean isWide = false;
+		for(VipsNode child : children){
+			if(child.getStyle() != null && 
+					child.getStyle().getRectangle() != null &&
+					child.getStyle().getRectangle().width < DomStructureConstruction.getWindowSizeX()){
+				if(isWide){
+					if(tempCompositeNode.hasChildren()){
+						tmpList.add(tempCompositeNode);
+					}
+					tempCompositeNode = new VipsCompositeNode();
+				}
+				tempCompositeNode.addChild(child);
+				isWide = false;
 			} else {
-				createTempElement(block, tempElement, doc);
-				tempElement = new WebElement();
-				putIntoPool2(block, child, 11);
+				if(!isWide){
+					if(tempCompositeNode.hasChildren()){
+						tmpList.add(tempCompositeNode);
+					}
+					tempCompositeNode = new VipsCompositeNode();
+				}
+				tempCompositeNode.addChild(child);
+				isWide = true;
 			}
-
 		}
-		createTempElement(block, tempElement, doc);
+		
+		if(tempCompositeNode.hasChildren()){
+			tmpList.add(tempCompositeNode);
+		}
+		
+		processTempList(block, tmpList, doc);
+		tmpList = null;
+		tempCompositeNode = null;
 	}
 
-	private void handleDifferentMargin(VIPSBlock block, WebElement element,
-			int doc) {
-		WebElement tempElement = new WebElement();
+	/**
+	 * Children have no special form
+	 * 
+	 * @param block
+	 * @param element
+	 * @param doc
+	 */
+	private void handleNormalForm(VipsBlock block, VipsNode element, int doc){
+		VipsCompositeNode tempCompositeNode = new VipsCompositeNode();
+		ArrayList<VipsNode> children = getClonedChildren(element);
+		ArrayList<VipsNode> tmpList = new ArrayList<VipsNode>();
+		for (VipsNode child : children) {
+			if (child.isLineBreakNode() || child.isImage() || child.isLineBreakObjet()) {
+				if(tempCompositeNode.hasChildren()){
+					tmpList.add(tempCompositeNode);
+				}
+				putIntoPool(block, child, 11);
+				tempCompositeNode = new VipsCompositeNode();
+			} else {
+				tempCompositeNode.addChild(child);
+			}
+		}
+		if(tempCompositeNode.hasChildren()){
+			tmpList.add(tempCompositeNode);
+		}
+		processTempList(block, tmpList, doc);
+		tmpList = null;
+		tempCompositeNode = null;
+	}
 
-		for (int i = 0; i < element.getChildren().size(); i++) {
-			WebElement child = element.getChildren().get(i);
+	/**
+	 * If a node contains a child whose tag is HR, BR, then the node is divided into two as
+	 * the nodes before the separator and after the separator. For each side of the separator, 
+	 * two new blocks are created and children nodes are put under these blocks. Note that,
+	 * separator does not extract a block under the main block, it just serves to extract
+	 * two blocks which other nodes are put into.
+	 * 
+	 * @param block Parent block for the new blocks
+	 * @param element Parent of the VipsNode objects which construct new blocks
+	 * @param doc DoC value of the new blocks
+	 */
+	private void handleLineBreaks(VipsBlock block, VipsNode element, int doc){
+		block.setDoc(6);
+		ArrayList<VipsNode> children = getClonedChildren(element);
+		ArrayList<VipsNode> tmpList = new ArrayList<VipsNode>();
+		VipsCompositeNode tempCompositeNode = new VipsCompositeNode();
+		ArrayList<VipsLineBreak> lineBreaks = element.getLineBreaks();
+		int itr = 0;
+		for(VipsLineBreak lineBreak : lineBreaks){
+			for(; itr < lineBreak.getIndex(); itr++){
+				tempCompositeNode.addChild(children.get(itr));
+			}
+			if(tempCompositeNode.hasChildren()){
+				tmpList.add(tempCompositeNode);
+			}
+			tempCompositeNode = new VipsCompositeNode();
+		}
+		for(; itr < children.size(); itr++){
+			tempCompositeNode.addChild(children.get(itr));
+		}
+		
+		if(tempCompositeNode.hasChildren()){
+			tmpList.add(tempCompositeNode);
+		}
+		processTempList(block, tmpList, doc);
+		tmpList = null;
+		tempCompositeNode = null;
+	}
+	
+	/**
+	 * If a node contains an empty list item, then the node is divided into two as
+	 * the nodes before the separator and after the separator. For each side of the separator, 
+	 * two new blocks are created and children nodes are put under these blocks. Note that,
+	 * separator does not extract a block under the main block, it just serves to extract
+	 * two blocks which other nodes are put into.
+	 * 
+	 * @param block Parent block for the new blocks
+	 * @param element Parent of the VipsNode objects which construct new blocks
+	 * @param doc DoC value of the new blocks
+	 */
+	private void handleEmptyListItem(VipsBlock block, VipsNode element, int doc){
+		block.setDoc(6);
+		VipsCompositeNode tempCompositeNode = new VipsCompositeNode();
+		ArrayList<VipsNode> children = getClonedChildren(element);
+		ArrayList<VipsNode> tmpList = new ArrayList<VipsNode>();
+		
+		for (int i = 0; i < children.size(); i++) {
+			VipsNode child = children.get(i);
+			if (child.isEmptyListItem()) {
+				if(tempCompositeNode.hasChildren()){
+					tmpList.add(tempCompositeNode);
+				}
+				tempCompositeNode = new VipsCompositeNode();
+			} else {
+				tempCompositeNode.addChild(child);
+			}
+		}
+		
+		if(tempCompositeNode.hasChildren()){
+			tmpList.add(tempCompositeNode);
+		}
+		processTempList(block, tmpList, doc);
+		tmpList = null;
+		tempCompositeNode = null;
+	}
+	
+	/**
+	 * 
+	 * @param block
+	 * @param element
+	 * @param doc
+	 */
+	private void handleDivGroups(VipsBlock block, VipsNode element, int doc) {
+		VipsCompositeNode tempCompositeNode = new VipsCompositeNode();
+		ArrayList<VipsNode> children = getClonedChildren(element);
+		ArrayList<VipsNode> tmpList = new ArrayList<VipsNode>();
+		for (int i = 0; i < children.size(); i++) {
+			VipsNode child = children.get(i);
+			if (child.getTag().equals("DIV") || child.isVirtualTextNode(false)) {
+				tempCompositeNode.addChild(child);
+			} else {
+				if(tempCompositeNode.hasChildren()){
+					tmpList.add(tempCompositeNode);
+				}
+				tempCompositeNode = new VipsCompositeNode();
+				putIntoPool(block, child, 11);
+			}
+		}
+		children = null;
+		if(tempCompositeNode.hasChildren()){
+			tmpList.add(tempCompositeNode);
+		}
+		processTempList(block, tmpList, doc);
+		tmpList = null;
+		tempCompositeNode = null;
+	}
+	
+	/**
+	 * 
+	 * @param block
+	 * @param element
+	 * @param doc
+	 */
+	private void handleImageInChildren(VipsBlock block, VipsNode element, int doc){
+		int count = element.getImageCount();
+		if(count == 1 && element.getChildren().get(0).isImage()){
+			handleNormalForm(block, element, doc);
+		} else {
+			VipsCompositeNode tempCompositeNode = new VipsCompositeNode();
+			ArrayList<VipsNode> children = getClonedChildren(element);
+			ArrayList<VipsNode> tmpList = new ArrayList<VipsNode>();
+			for(VipsNode child : children){
+				if(child.isImage()){
+					if(tempCompositeNode.hasChildren()){
+						tmpList.add(tempCompositeNode);
+					}
+					tempCompositeNode = new VipsCompositeNode();
+					tempCompositeNode.addChild(child);
+				} else {
+					tempCompositeNode.addChild(child);
+				}
+			}
+			if(tempCompositeNode.hasChildren()){
+				tmpList.add(tempCompositeNode);
+			}
+			processTempList(block, tmpList, doc);
+			tmpList = null;
+			tempCompositeNode = null;
+		}
+	}
+	
+	/**
+	 * 
+	 * @param block
+	 * @param element
+	 * @param doc
+	 */
+	private void handleObjectInChildren(VipsBlock block, VipsNode element, int doc){
+		int count = element.getLineBreakObjectCount();
+		if(count == 1 && element.getChildren().get(0).isLineBreakObjet()){
+			handleNormalForm(block, element, doc);
+		} else {
+			VipsCompositeNode tempCompositeNode = new VipsCompositeNode();
+			ArrayList<VipsNode> children = getClonedChildren(element);
+			ArrayList<VipsNode> tmpList = new ArrayList<VipsNode>();
+			for(VipsNode child : children){
+				if(child.isLineBreakObjet()){
+					if(tempCompositeNode.hasChildren()){
+						tmpList.add(tempCompositeNode);
+					}
+					tempCompositeNode = new VipsCompositeNode();
+					tempCompositeNode.addChild(child);
+				} else {
+					tempCompositeNode.addChild(child);
+				}
+			}
+			
+			if(tempCompositeNode.hasChildren()){
+				tmpList.add(tempCompositeNode);
+			}
+			processTempList(block, tmpList, doc);
+			tmpList = null;
+			tempCompositeNode = null;
+		}
+	}
+
+	/**
+	 * If a node has a child, whose at least one of margin-top and margin-bottom values are
+	 * nonzero, divide this node into two blocks. Put the sibling nodes before the node with
+	 * nonzero margin into the first block and put the siblings after the node with nonzero
+	 * margin into the second block.
+	 * <ol> 
+	 * <li>If child has only nonzero margin-top, put the child into second block.</li>
+	 * <li>If child has only nonzero margin-bottom, put the child into first block.</li>
+	 * <li>If child has both nonzero margin-top and nonzero margin-bottom, create a third
+	 * block and put it between two blocks.</li>
+	 * </ol>
+	 * 
+	 * @param block
+	 * @param element
+	 * @param doc
+	 */
+	private void handleDifferentMargin(VipsBlock block, VipsNode element, int doc) {
+		VipsCompositeNode tempCompositeNode = new VipsCompositeNode();
+
+		ArrayList<VipsNode> children = getClonedChildren(element);
+		ArrayList<VipsNode> tmpList = new ArrayList<VipsNode>();
+		for (int i = 0; i < children.size(); i++) {
+			VipsNode child = children.get(i);
 			String childMarginTop = child.getMarginTop();
 			String childMarginBottom = child.getMarginBottom();
 			if (isNonZeroMargin(childMarginTop)
 					&& isNonZeroMargin(childMarginBottom)) {
-				createTempElement(block, tempElement, doc);
-				tempElement = new WebElement();
-				putIntoPool2(block, child, doc);
+				if(tempCompositeNode.hasChildren()){
+					tmpList.add(tempCompositeNode);
+				}
+				tempCompositeNode = new VipsCompositeNode();
+				putIntoPool(block, child, doc);
 			} else if (isNonZeroMargin(childMarginTop)) {
-				createTempElement(block, tempElement, doc);
-				tempElement = new WebElement();
-				tempElement.addChild(child);
+				if(tempCompositeNode.hasChildren()){
+					tmpList.add(tempCompositeNode);
+				}
+				tempCompositeNode = new VipsCompositeNode();
+				tempCompositeNode.addChild(child);
 			} else if (isNonZeroMargin(childMarginBottom)) {
-				tempElement.addChild(child);
-				createTempElement(block, tempElement, doc);
-				tempElement = new WebElement();
+				tempCompositeNode.addChild(child);
+				if(tempCompositeNode.hasChildren()){
+					tmpList.add(tempCompositeNode);
+				}
+				tempCompositeNode = new VipsCompositeNode();
 			} else {
-				tempElement.addChild(child);
+				tempCompositeNode.addChild(child);
 			}
-
 		}
-		createTempElement(block, tempElement, doc);
+		children = null;
+		if(tempCompositeNode.hasChildren()){
+			tmpList.add(tempCompositeNode);
+		}
+		processTempList(block, tmpList, doc);
+		tmpList = null;
+		tempCompositeNode = null;
 	}
 
+	/**
+	 * 
+	 * @param margin
+	 * @return
+	 */
 	private boolean isNonZeroMargin(String margin) {
 		if (margin != null && (margin.equals("0px") || margin.equals("auto")))
 			return false;
@@ -160,254 +492,323 @@ public class VisualBlockExtraction {
 			return true;
 	}
 
-	public void handleDifferentFontSize2(VIPSBlock block, WebElement element,
-			int doc) {
-		int maxFontSize = element.getMaxFontSizeInChildren();
-		WebElement tempElement = new WebElement();
-
-		if (element.getChildren().get(0).getFontSize() == maxFontSize) {
-			int count = element.getCountOfChildrenWithMaxFontSize();
+	/**
+	 * If one of the child node has bigger font size than its previous sibling, divide node into
+	 * two blocks. Put the nodes before the child node with bigger font size into the first
+	 * block, and put the remaining nodes to the second block.
+	 * 
+	 * If the first child of the node has bigger font size than the remaining children, extract
+	 * two blocks, one of which is the first child with bigger font size, and the other contains
+	 * remaining children.
+	 * 
+	 * @param block
+	 * @param vipsNode
+	 * @param doc
+	 */
+	public void handleDifferentFontSize(VipsBlock block, VipsNode vipsNode, int doc) {
+		double maxFontSize = vipsNode.getMaxFontSizeInChildren();
+		VipsCompositeNode tempCompositeNode = new VipsCompositeNode();
+		ArrayList<VipsNode> children = getClonedChildren(vipsNode);
+		int numberOfChildren = children.size();
+		if (children.get(0).getMaxFontSize() == maxFontSize) {
+			/* First child has the maximum font size. */
+			int count = vipsNode.getCountOfChildrenWithMaxFontSize();
 			if (count == 1) {
-				putIntoPool2(block, element.getChildren().get(0), 11);
-				for (int i = 1; i < element.getChildren().size(); i++) {
-					tempElement.addChild(element.getChildren().get(i));
+				/* There is only one child with maximum font size 
+				 * Put the first child into pool and create a composite
+				 * node for the remaining */
+				putIntoPool(block, children.get(0), 11);
+				for (int i = 1; i < numberOfChildren; i++) {
+					tempCompositeNode.addChild(children.get(i));
 				}
-				createTempElement(block, tempElement, 10);
-			} else if (element.areAllMaxFontSizeChildrenAtFront()) {
-				WebElement tempElement2 = new WebElement();
-				WebElement tempElement3 = new WebElement();
-
+				createCompositeBlock(block, tempCompositeNode, 10);
+			} else if (vipsNode.areAllMaxFontSizeChildrenAtFront()) {
+				/* First n children have the maximum font size
+				 * where n is equal to the number of children 
+				 * with maximum font size. */
+				VipsCompositeNode tempCompositeNode2 = new VipsCompositeNode();
+				VipsCompositeNode tempCompositeNode3 = new VipsCompositeNode();
+				/* Create a composite node for the children with max. font size. */
 				for (int i = 0; i < count; i++) {
-					tempElement2.addChild(element.getChildren().get(i));
+					tempCompositeNode2.addChild(children.get(i));
 				}
-				for (int i = count; i < element.getChildren().size(); i++) {
-					tempElement3.addChild(element.getChildren().get(i));
+				/* Create a composite node for the others. */				
+				for (int i = count; i < children.size(); i++) {
+					tempCompositeNode3.addChild(children.get(i));
 				}
-
-				createTempElement(block, tempElement2, 10);
-				createTempElement(block, tempElement3, 10);
+				createCompositeBlock(block, tempCompositeNode2, 10);
+				createCompositeBlock(block, tempCompositeNode3, 10);
 			} else {
+				/* The first child has maximum font size and there are some
+				 * other children which have max. font size. */
 				boolean flag = true;
-				for (int i = 0; i < element.getChildren().size(); i++) {
-					WebElement child = element.getChildren().get(i);
-					int childFontSize = child.getFontSize();
+				for (int i = 0; i < numberOfChildren; i++) {
+					VipsNode child = children.get(i);
+					double childFontSize = child.getMaxFontSize();
 					if (childFontSize == maxFontSize && flag) {
-						createTempElement(block, tempElement, 8);
-						tempElement = new WebElement();
-						tempElement.addChild(child);
+						createCompositeBlock(block, tempCompositeNode, 8);
+						tempCompositeNode = new VipsCompositeNode();
+						tempCompositeNode.addChild(child);
 						flag = false;
 					} else {
-						tempElement.addChild(child);
+						tempCompositeNode.addChild(child);
 						if (childFontSize != maxFontSize)
 							flag = true;
 					}
 				}
-				createTempElement(block, tempElement, 10);
+				createCompositeBlock(block, tempCompositeNode, 10);
 			}
 		} else {
+			/* First child does not have the maximum font size*/
 			boolean flag = true;
-			for (int i = 0; i < element.getChildren().size(); i++) {
-				WebElement child = element.getChildren().get(i);
-				int childFontSize = child.getFontSize();
+			for (int i = 0; i < numberOfChildren; i++) {
+				VipsNode child = children.get(i);
+				double childFontSize = child.getMaxFontSize();
+				
 				if (childFontSize == maxFontSize && flag) {
-					createTempElement(block, tempElement, 10);
-					tempElement = new WebElement();
-					tempElement.addChild(child);
+					createCompositeBlock(block, tempCompositeNode, 10);
+					tempCompositeNode = new VipsCompositeNode();
+					tempCompositeNode.addChild(child);
 					flag = false;
 				} else {
-					tempElement.addChild(child);
+					tempCompositeNode.addChild(child);
 					if (childFontSize != maxFontSize)
 						flag = true;
 				}
 			}
-			createTempElement(block, tempElement, 8);
+			createCompositeBlock(block, tempCompositeNode, 8);
 		}
+		children = null;
 	}
 
-	public void handleDifferentFontSize(VIPSBlock block, WebElement element,
-			int doc) {
-		int fontSize = element.getChildren().get(0).getFontSize();
-		boolean flag = true;
-		WebElement tempElement = new WebElement();
-
-		if (!element.hasDifferentFontSizeInChildren(1)
-				&& element.getChildren().get(0).getFontSize() > element
-						.getChildren().get(1).getFontSize()) {
-			// first one has bigger font size and the others are all the same
-			putIntoPool2(block, element.getChildren().get(0), doc);
-			for (int i = 1; i < element.getChildren().size(); i++) {
-				tempElement.addChild(element.getChildren().get(i));
-			}
-			createTempElement(block, tempElement, doc);
-		} else {
-			for (int i = 0; i < element.getChildren().size(); i++) {
-				WebElement child = element.getChildren().get(i);
-				int childFontSize = child.getFontSize();
-				if (child.isLineBreakNode() && childFontSize != fontSize
-						&& flag) {
-					if (childFontSize > fontSize) {
-						flag = false;
-						createTempElement(block, tempElement, doc);
-						tempElement = new WebElement();
-						tempElement.addChild(child);
-					} else {
-						tempElement.addChild(child);
-					}
-				} else {
-					tempElement.addChild(child);
-				}
-				fontSize = childFontSize;
-			}
-			// if(element.getChildren().size() !=
-			// tempElement.getChildren().size())
-			createTempElement(block, tempElement, doc);
-		}
-	}
-
-	public void handleDifferentFloat(VIPSBlock block, WebElement element,
-			int doc) {
-		WebElement tempElement = new WebElement();
-		WebElement tempLeft = new WebElement();
-		WebElement tempRight = new WebElement();
-		for (int i = 0; i < element.getChildren().size(); i++) {
-			WebElement child = element.getChildren().get(i);
+	/**
+	 * If node has at least one child with float value ”left” or ”right”, create three blocks.
+	 * For each children,
+	 * <ol> 
+	 * <li> If child is left float, put it into the first block.</li>
+	 * <li>If child is right float, put it into the second block.</li>
+	 * <li>If child is not both left and right float, put it into the third block. If first block
+	 * or second block have children, create new blocks for them. Also, create a new
+	 * block for the child without float.</li>
+	 * </ol>
+	 * 
+	 * @param block
+	 * @param vipsNode
+	 * @param doc
+	 */
+	public void handleDifferentFloat(VipsBlock block, VipsNode vipsNode, int doc) {
+		VipsCompositeNode tempCompositeNode = new VipsCompositeNode();
+		VipsCompositeNode tempCompositeNodeForLeft 	  = new VipsCompositeNode();
+		VipsCompositeNode tempCompositeNodeForRight   = new VipsCompositeNode();
+		ArrayList<VipsNode> tmpList   = new ArrayList<VipsNode>();
+		
+		ArrayList<VipsNode> children = getClonedChildren(vipsNode);
+		
+		for (int i = 0; i < children.size(); i++) {
+			VipsNode child = children.get(i);
 			String childFloat = child.getFloatStr();
 			if (childFloat.equals("left")) {
-				tempLeft.setTag(child.getTag());
-				tempLeft.setFloatStr("left");
-				tempLeft.addChild(child);
+				tempCompositeNodeForLeft.setTag(child.getTag());
+				tempCompositeNodeForLeft.setFloatStr("left");
+				tempCompositeNodeForLeft.addChild(child);
 			} else if (childFloat.equals("right")) {
-				tempRight.setTag(child.getTag());
-				tempRight.setFloatStr("right");
-				tempRight.addChild(child);
+				tempCompositeNodeForRight.setTag(child.getTag());
+				tempCompositeNodeForRight.setFloatStr("right");
+				tempCompositeNodeForRight.addChild(child);
 			} else {
-				if (tempLeft.hasChildren())
-					tempElement.addChild(tempLeft);
-				if (tempRight.hasChildren())
-					tempElement.addChild(tempRight);
-				tempElement.addChild(child);
-				if (!tempLeft.hasChildren() && !tempRight.hasChildren())
-					putIntoPool2(block, child, 11);
-				else
-					createTempElement2(block, tempElement, doc);
-				tempLeft = new WebElement();
-				tempRight = new WebElement();
-				tempElement = new WebElement();
+				if (tempCompositeNodeForLeft.hasChildren()){
+					tempCompositeNode.addChild(tempCompositeNodeForLeft);
+				}
+				
+				if (tempCompositeNodeForRight.hasChildren()){
+					tempCompositeNode.addChild(tempCompositeNodeForRight);
+				}
+				
+				tempCompositeNode.addChild(child);
+				if (!tempCompositeNodeForLeft.hasChildren() && !tempCompositeNodeForRight.hasChildren()){
+					putIntoPool(block, child, 11);
+				} else {
+					if(tempCompositeNode.getChildren().size() != 0){
+						tempCompositeNode.setExceptional(true);
+						tmpList.add(tempCompositeNode);
+					}
+				}
+				
+				tempCompositeNodeForLeft = new VipsCompositeNode();
+				tempCompositeNodeForRight = new VipsCompositeNode();
+				tempCompositeNode = new VipsCompositeNode();
 			}
 		}
 
-		if (tempLeft.hasChildren())
-			tempElement.addChild(tempLeft);
-		if (tempRight.hasChildren())
-			tempElement.addChild(tempRight);
-		createTempElement2(block, tempElement, doc);
-		tempLeft = null;
-		tempRight = null;
+		if (tempCompositeNodeForLeft.hasChildren())
+			tempCompositeNode.addChild(tempCompositeNodeForLeft);
+		if (tempCompositeNodeForRight.hasChildren())
+			tempCompositeNode.addChild(tempCompositeNodeForRight);
+		children = null;
+		if(tempCompositeNode.getChildren().size() != 0){
+			tempCompositeNode.setExceptional(true);
+			tmpList.add(tempCompositeNode);
+		}
+		
+		processTempList(block, tmpList, doc);
+		tmpList = null;
+		tempCompositeNodeForLeft = null;
+		tempCompositeNodeForRight = null;
 	}
 
-	public void createTempElement2(VIPSBlock block, WebElement tempElement,
-			int doc) {
-		if (tempElement.getChildren().isEmpty()) {
-			return;
-		} else if (tempElement.getChildren().size() == 1) {
-			createTempElement(block, tempElement.getChildren().get(0), doc);
+	/**
+	 * Composite blocks which does not appear in DOM structure but generated
+	 * for some reason in visual block extraction process causes unnecessarily nested
+	 * blocks, if the parent block has only one composite block as a child.
+	 * 
+	 * Therefore, composite blocks are collected in an ArrayList and then constructed
+	 * at the end of the process.
+	 * 
+	 * @param block
+	 * @param nodeList
+	 * @param doc
+	 */
+	private void processTempList(VipsBlock block, ArrayList<VipsNode> nodeList, int doc){
+		if(nodeList.size() == 1){
+			VipsNode vipsNode = nodeList.get(0);
+			for(VipsNode child : vipsNode.getChildren()){
+				if(child.isCompositeNode()){
+					if(child.isExceptional())
+						createCompositeBlockWithException(block, child, doc);
+					else
+						createCompositeBlock(block, child, doc);
+				} else
+					putIntoPool(block, child, 11);
+			}
 		} else {
-			VIPSBlock newBlock = putIntoPool2(block, tempElement, doc);
-			for (int i = 0; i < tempElement.getChildren().size(); i++) {
-				WebElement child = tempElement.getChildren().get(i);
-				if (child.getFloatStr().equals("none"))
-					putIntoPool2(newBlock, child, 11);
+			for(VipsNode child : nodeList){
+				if(child.isExceptional())
+					createCompositeBlockWithException(block, child, doc);
 				else
-					createTempElement(newBlock, child, 11);
+					createCompositeBlock(block, child, doc);
+			}
+		}
+	}
+	
+	/**
+	 * 
+	 * @param block
+	 * @param vipsNode
+	 * @param doc
+	 * 
+	 * @see VisualBlockExtraction#handleDifferentFloat(VipsBlock, VipsNode, int)
+	 */
+	public void createCompositeBlockWithException(VipsBlock block, VipsNode vipsNode, int doc) {
+		if (vipsNode.getChildren().isEmpty()) {
+			return;
+		} else if (vipsNode.getChildren().size() == 1) {
+			createCompositeBlock(block, vipsNode.getChildren().get(0), doc);
+		} else {
+			ArrayList<VipsNode> children = getClonedChildren(vipsNode);
+			VipsBlock newBlock = putIntoPool(block, vipsNode, doc);
+			
+			for (int i = 0; i < children.size(); i++) {
+				VipsNode child = children.get(i);
+				if (child.getFloatStr().equals("none"))
+					putIntoPool(newBlock, child, 11);
+				else
+					createCompositeBlock(newBlock, child, 11);
 			}
 
-			tempElement.setTag(tempElement.getChildren().get(0).getTag());
-			tempElement.setPath(tempElement.getChildren().get(0).getPath());
-			for (int i = 0; i < tempElement.getChildren().size(); i++) {
-				if (tempElement.getChildren().get(i).getStyle() != null) {
-					tempElement.setStyle(tempElement.getChildren().get(i)
-							.getStyle());
+			vipsNode.setPath(children.get(0).getPath());
+			for (int i = 0; i < children.size(); i++) {
+				if (children.get(i).getStyle() != null) {
+					vipsNode.setStyle(children.get(i).getStyle());
 					break;
 				}
 			}
-			tempElement.detectBordersFromChildren();
+			children = null;
 		}
 	}
 
-	public void createTempElement(VIPSBlock block, WebElement tempElement,
-			int doc) {
-		if (!tempElement.getChildren().isEmpty()) {
-			if (tempElement.getChildren().size() == 1) {
-				tempElement = tempElement.getChildren().get(0);
-			} else {
-				tempElement.setTag(tempElement.getChildren().get(0).getTag());
-				for (int i = 0; i < tempElement.getChildren().size(); i++) {
-					if (tempElement.getChildren().get(i).getStyle() != null) {
-						tempElement.setStyle(tempElement.getChildren().get(i)
-								.getStyle());
-						break;
-					}
-				}
-				tempElement.detectBordersFromChildren();
+	/**
+	 * 
+	 * @param block
+	 * @param tempCompositeNode
+	 * @param doc
+	 * 
+	 * @see VipsCompositeNode
+	 */
+	public void createCompositeBlock(VipsBlock block, VipsNode tempCompositeNode, int doc) {
+		ArrayList<VipsNode> children = getClonedChildren(tempCompositeNode);
+		if (!children.isEmpty()) {
+			/* Prevent unnecessarily nested composite nodes */
+			while(tempCompositeNode.isCompositeNode() && children.size() == 1){
+				tempCompositeNode = children.get(0);
+				children = getClonedChildren(tempCompositeNode);
 			}
-			putIntoPool2(block, tempElement, doc);
+			
+			/*for (int i = 0; i < children.size(); i++) {
+				if (children.get(i).getStyle() != null) {
+					tempCompositeNode.setStyle(children.get(i).getStyle());
+					break;
+				}
+			}*/
+			children = null;
+			putIntoPool(block, tempCompositeNode, doc);
 		}
 	}
 
-	public VIPSBlock putIntoPool2(VIPSBlock parent, WebElement element, int doc) {
-		if (element.getTag().equals("#TEXT") || isInBlockPool(element))
+	/**
+	 * Constructs a new block and put into the block pool
+	 * 
+	 * @param parent
+	 * @param vipsNode
+	 * @param doc
+	 * @return
+	 */
+	public VipsBlock putIntoPool(VipsBlock parent, VipsNode vipsNode, int doc) {
+		/* If node is a textual node or already added in the pool, do not continue */
+		if (vipsNode.isTextNode() || isInBlockPool(vipsNode))
 			return null;
+		
+		/* For some tags, if node has only one child, put the child into the pool */
+		if (vipsNode.getTag().matches("TR|UL") 
+				&& vipsNode.getChildren().size() == 1
+				&& vipsNode.getChildren().get(0).getTag().matches("TD|LI")
+				&& vipsNode.getChildren().get(0).isValid())
+			vipsNode = vipsNode.getChildren().get(0);
 
-		if (element.getTag().matches("TR|UL")
-				&& element.getChildren().size() == 1
-				&& element.getChildren().get(0).getTag().matches("TD|LI")
-				&& element.getChildren().get(0).isValid())
-			element = element.getChildren().get(0);
-
-		VIPSBlock block = new VIPSBlock();
-		blockPool.put(block, element);
+		VipsBlock block = new VipsBlock();
+		blockPool.put(block, vipsNode);
 		parent.addChild(block);
+		block.setParent(parent);
 		block.setDoc(doc);
-		block.setBlockName(parent.getBlockName() + "."
-				+ parent.getChildren().size());
-
-		try {
-			TreeItem item = new TreeItem(parent.getTreeItem(), SWT.ARROW_LEFT);
-			item.setText(new String[] { block.getBlockName(), element.getTag(),
-					Integer.toString(doc),
-					Integer.toString(element.getFontSize()), element.getPath() });
-			block.setTreeItem(item);
-		} catch (Exception e) {
-			System.out.println("Exception: " + e.getMessage());
+		block.setBlockName(parent.getBlockName() + "." + parent.getChildren().size());
+		block.setElement(vipsNode);
+		
+		/* Parent set */
+		if(vipsNode.getParent() != null){
+			vipsNode.getParent().removeChild(vipsNode);
 		}
-
-		blockExtraction(block, element, doc);
-
-		// try{
-		// detector.seperatorDetection(block);
-		// } catch(NullPointerException e){
-		// System.out.println(element.getPath());
-		// }
-		//
-		// block.drawSeparators(gc);
+		
+		/* Recursive call for children */
+		blockExtraction(block, vipsNode, doc);
 		return block;
 	}
 
-	public boolean isInBlockPool(WebElement element) {
-		if (blockPool.values().contains(element)) {
+	public boolean isInBlockPool(VipsNode vipsNode) {
+		if (blockPool.values().contains(vipsNode)) {
 			return true;
 		} else {
 			return false;
 		}
 	}
-
-	public void printBlock(VIPSBlock block, String indent) {
-		System.out.println(indent + blockPool.get(block).getTag() + " "
-				+ blockPool.get(block).getChildren().size() + " "
-				+ block.getDoc() + " " + blockPool.get(block).getPath() + " "
-				+ blockPool.get(block).getFontSize());
-		for (VIPSBlock child : block.getChildren()) {
-			printBlock(child, indent + "    ");
+	
+	@SuppressWarnings("unchecked")
+	private ArrayList<VipsNode> getClonedChildren(VipsNode vipsNode){
+		ArrayList<VipsNode> children = null;
+		Object cloneObject = vipsNode.getChildren().clone();
+		if(cloneObject instanceof ArrayList){
+			children = (ArrayList<VipsNode>) cloneObject;
+		} else {
+			children = new ArrayList<VipsNode>();
 		}
+		return children;
 	}
 }

@@ -13,23 +13,26 @@ package org.eclipse.actf.examples.emine.vips;
 
 import java.util.Map;
 
+import org.eclipse.actf.examples.emine.vips.types.VipsBlock;
+import org.eclipse.actf.examples.emine.vips.types.VipsSeparator;
+import org.eclipse.actf.examples.emine.vips.types.VipsNode;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 
 public class SeparatorDetection {
-	private Map<VIPSBlock, WebElement> blockPool;
+	private Map<VipsBlock, VipsNode> blockPool;
 	private GC gc;
 
 	public void detect() {
 
 	}
 
-	public Map<VIPSBlock, WebElement> getBlockPool() {
+	public Map<VipsBlock, VipsNode> getBlockPool() {
 		return blockPool;
 	}
 
-	public void setBlockPool(Map<VIPSBlock, WebElement> blockPool) {
+	public void setBlockPool(Map<VipsBlock, VipsNode> blockPool) {
 		this.blockPool = blockPool;
 	}
 
@@ -41,9 +44,9 @@ public class SeparatorDetection {
 		this.gc = gc;
 	}
 
-	public void seperatorDetection(VIPSBlock block) {
-		WebElement blockElement = blockPool.get(block);
-		VIPSSeparator blockBorder = new VIPSSeparator();
+	public void seperatorDetection(VipsBlock block) {
+		VipsNode blockElement = blockPool.get(block);
+		VipsSeparator blockBorder = new VipsSeparator();
 		blockBorder.setStartPixel(new Point(blockElement.getStyle()
 				.getRectangle().x, blockElement.getStyle().getRectangle().y));
 		blockBorder.setEndPixel(new Point(blockElement.getStyle()
@@ -51,16 +54,16 @@ public class SeparatorDetection {
 				+ blockElement.getStyle().getRectangle().width, blockElement
 				.getStyle().getRectangle().y
 				+ blockElement.getStyle().getRectangle().height));
-		blockBorder.setType(VIPSSeparator.HORIZONTAL);
+		blockBorder.setType(VipsSeparator.HORIZONTAL);
 		blockBorder.setLeftElement(null);
 		blockBorder.setRightElement(null);
 		block.addSeparator(blockBorder);
 
-		for (VIPSBlock childBlock : block.getChildren()) {
+		for (VipsBlock childBlock : block.getChildren()) {
 			Rectangle blockRect = blockPool.get(childBlock).getStyle()
 					.getRectangle();
 			for (int i = 0; i < block.getSeparators().size(); i++) {
-				VIPSSeparator separator = block.getSeparators().get(i);
+				VipsSeparator separator = block.getSeparators().get(i);
 
 				Rectangle separatorRect = new Rectangle(
 						separator.getStartPixel().x,
@@ -78,34 +81,34 @@ public class SeparatorDetection {
 					} else if (separator.containsRectangle(blockRect)) {
 						// the block is contained in the separator, split the
 						// separator
-						VIPSSeparator above = new VIPSSeparator();
-						VIPSSeparator below = new VIPSSeparator();
-						VIPSSeparator left = new VIPSSeparator();
-						VIPSSeparator right = new VIPSSeparator();
+						VipsSeparator above = new VipsSeparator();
+						VipsSeparator below = new VipsSeparator();
+						VipsSeparator left = new VipsSeparator();
+						VipsSeparator right = new VipsSeparator();
 
 						above.setStartPixel(s1);
 						above.setEndPixel(new Point(s2.x, blockRect.y));
-						above.setType(VIPSSeparator.HORIZONTAL);
+						above.setType(VipsSeparator.HORIZONTAL);
 						above.setLeftElement(separator.getLeftElement());
 						above.setRightElement(blockPool.get(childBlock));
 
 						below.setStartPixel(new Point(s1.x, blockRect.y
 								+ blockRect.height));
 						below.setEndPixel(s2);
-						below.setType(VIPSSeparator.HORIZONTAL);
+						below.setType(VipsSeparator.HORIZONTAL);
 						below.setLeftElement(blockPool.get(childBlock));
 						below.setRightElement(separator.getRightElement());
 
 						left.setStartPixel(s1);
 						left.setEndPixel(new Point(blockRect.x, s2.y));
-						left.setType(VIPSSeparator.VERTICAL);
+						left.setType(VipsSeparator.VERTICAL);
 						left.setLeftElement(separator.getLeftElement());
 						left.setRightElement(blockPool.get(childBlock));
 
 						right.setStartPixel(new Point(blockRect.x
 								+ blockRect.width, s1.y));
 						right.setEndPixel(s2);
-						right.setType(VIPSSeparator.VERTICAL);
+						right.setType(VipsSeparator.VERTICAL);
 						right.setLeftElement(blockPool.get(childBlock));
 						right.setRightElement(separator.getRightElement());
 
@@ -120,17 +123,17 @@ public class SeparatorDetection {
 						Rectangle intersectionRect = blockRect
 								.intersection(separatorRect);
 
-						VIPSSeparator above = new VIPSSeparator();
-						VIPSSeparator below = new VIPSSeparator();
-						VIPSSeparator left = new VIPSSeparator();
-						VIPSSeparator right = new VIPSSeparator();
+						VipsSeparator above = new VipsSeparator();
+						VipsSeparator below = new VipsSeparator();
+						VipsSeparator left = new VipsSeparator();
+						VipsSeparator right = new VipsSeparator();
 
 						if (isRectangleValid(s1.x, s1.y,
 								separator.getEndPixel().x, intersectionRect.y)) {
 							above.setStartPixel(s1);
 							above.setEndPixel(new Point(s2.x,
 									intersectionRect.y));
-							above.setType(VIPSSeparator.HORIZONTAL);
+							above.setType(VipsSeparator.HORIZONTAL);
 							above.setLeftElement(separator.getLeftElement());
 							above.setRightElement(blockPool.get(childBlock));
 							block.getSeparators().add(above);
@@ -142,7 +145,7 @@ public class SeparatorDetection {
 									intersectionRect.y
 											+ intersectionRect.height));
 							below.setEndPixel(s2);
-							below.setType(VIPSSeparator.HORIZONTAL);
+							below.setType(VipsSeparator.HORIZONTAL);
 							below.setLeftElement(blockPool.get(childBlock));
 							below.setRightElement(separator.getRightElement());
 							block.getSeparators().add(below);
@@ -152,7 +155,7 @@ public class SeparatorDetection {
 								s2.y)) {
 							left.setStartPixel(s1);
 							left.setEndPixel(new Point(intersectionRect.x, s2.y));
-							left.setType(VIPSSeparator.VERTICAL);
+							left.setType(VipsSeparator.VERTICAL);
 							left.setLeftElement(separator.getLeftElement());
 							left.setRightElement(blockPool.get(childBlock));
 							block.getSeparators().add(left);
@@ -163,7 +166,7 @@ public class SeparatorDetection {
 							right.setStartPixel(new Point(intersectionRect.x
 									+ intersectionRect.width, s1.y));
 							right.setEndPixel(s2);
-							right.setType(VIPSSeparator.VERTICAL);
+							right.setType(VipsSeparator.VERTICAL);
 							right.setLeftElement(blockPool.get(childBlock));
 							right.setRightElement(separator.getRightElement());
 							block.getSeparators().add(right);
@@ -178,8 +181,8 @@ public class SeparatorDetection {
 
 		// remove the separators that stand at the border of the pool
 		for (int i = 0; i < block.getSeparators().size();) {
-			VIPSSeparator separator = block.getSeparators().get(i);
-			if (separator.getType().equals(VIPSSeparator.HORIZONTAL)) {
+			VipsSeparator separator = block.getSeparators().get(i);
+			if (separator.getType().equals(VipsSeparator.HORIZONTAL)) {
 				if (separator.getStartPixel().y == blockBorder.getStartPixel().y) {
 					block.getSeparators().remove(separator);
 				} else if (separator.getEndPixel().y == blockBorder
