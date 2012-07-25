@@ -10,11 +10,11 @@
  Contributors:
      IBM Corporation - initial API and implementation
 -->
-<toc label="ScriptEditorガイド" topic="docs/index.html">
-	<topic label="Script Editorについて" href="docs/index.html">
+<toc label="Eclipse ACTF Script Editor Lite (EASEL) ガイド" topic="docs/index.html">
+	<topic label="EASELについて" href="docs/index.html">
 	</topic>
 	
-	<topic label="Script Editorの使用法" href="docs/quickstart.html">
+	<topic label="EASELの使用法" href="docs/quickstart.html">
 	</topic>
 	
 	<topic label="各部の詳細" href="docs/panel.html">
