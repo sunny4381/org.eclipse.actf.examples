@@ -12,10 +12,10 @@
 -->
 <toc label="Eclipse ACTF Script Editor Lite (EASEL) Guide" topic="docs/index.html">
 <!--	
-    <topic label="About ScriptEditor" href="docs/index.html">
+    <topic label="About EASEL" href="docs/index.html">
 	</topic>
 	
-	<topic label="Using ScriptEditor" href="docs/quickstart.html">
+	<topic label="Using EASEL" href="docs/quickstart.html">
 	</topic>
 	
 	<topic label="Reference" href="docs/paneldescription.html">
