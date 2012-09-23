@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2012 IBM Corporation and Others
+ * Copyright (c) 2008 IBM Corporation and Others
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,7 +7,8 @@
  *
  * Contributors:
  *    Kentarou FUKUDA - initial API and implementation
- *    Elgin Akpinar -  VIPS implementation
+ *    Sukru Eraslan (METU NCC) - Eye Tracking Data Handling Implementation
+ *    Elgin Akpinar (METU) - VIPS implementation
  *******************************************************************************/
 package org.eclipse.actf.examples.emine.ui.internal;
 
@@ -40,7 +41,6 @@ public class VIPSController implements IVisualizationConst {
 	private Shell shell;
 	private IVisualizationView vizView;
 	private VisualizationCanvas vizCanvas;
-	// private AlphaValueToolbar alphaBar;
 	private Tree tableTree;
 	private Action overlayAction;
 
@@ -88,6 +88,8 @@ public class VIPSController implements IVisualizationConst {
 		gridLayout.horizontalSpacing = gridLayout.verticalSpacing = 0;
 		parent.setLayout(gridLayout);
 
+		PointsToolbar.getToolbar(parent, SWT.BORDER);
+		
 		tableTree = new Tree(parent, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
 		tableTree.setHeaderVisible(true);
 		TreeColumn column1 = new TreeColumn(tableTree, SWT.LEFT);

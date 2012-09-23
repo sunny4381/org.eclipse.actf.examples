@@ -7,6 +7,7 @@
  *
  * Contributors:
  *    Elgin Akpinar (METU) - initial API and implementation
+ *    Sukru Eraslan (METU NCC) - Eye Tracking Data Handling Implementation
  *******************************************************************************/
 
 package org.eclipse.actf.examples.emine.vips.types;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.TreeItem;
 
 
@@ -150,6 +152,34 @@ public class VipsBlock {
 		System.out.println();
 		for (VipsBlock child : getChildren()) {
 			child.printBlock(indent + "  ");
+		}
+	}
+	
+	/**
+	 * in order to find that a point is inside a block,
+	 * we need to check whether the node of the block contains the point.
+	 * 
+	 * @param p
+	 * @return
+	 */
+	public boolean containsPoint(Point p){
+		if(element == null){ /* if node is null, check for children */
+			boolean contains = false;
+			for(VipsBlock child : getChildren()){
+				contains = contains || child.containsPoint(p);
+			}
+			return contains;
+		} else if(element.isCompositeNode()){
+			/* composite nodes are virtual and does not appear in DOM structure.
+			 * therefore, better to check for children, which are more probably in DOM. */
+			boolean contains = false;
+			for(VipsBlock child : getChildren()){
+				contains = contains || child.containsPoint(p);
+			}
+			return contains;
+		} else {
+			/* In other conditions, we can check for the node directly. */
+			return element.containsPoint(p);
 		}
 	}
 }

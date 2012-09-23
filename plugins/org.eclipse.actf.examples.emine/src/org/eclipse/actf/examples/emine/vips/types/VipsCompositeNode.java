@@ -43,19 +43,7 @@ public class VipsCompositeNode extends VipsNode {
 		return false;
 	}
 	
-	public String getPath(){
-		if(path.equals("")){
-			if(hasChildren()){
-				try {
-					String parentPath = children.get(0).getParent().getPath();
-					path = parentPath + "/" + COMPOSITE;
-				} catch (NullPointerException e){
-					
-				}
-				
-			}
-		}
-		
+	public String getPath(){	
 		return path;
 	}
 	

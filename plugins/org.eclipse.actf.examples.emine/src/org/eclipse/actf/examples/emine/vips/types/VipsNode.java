@@ -7,6 +7,7 @@
  *
  * Contributors:
  *    Elgin Akpinar (METU) - initial API and implementation
+ *    Sukru Eraslan (METU NCC) - Eye Tracking Data Handling Implementation
  *******************************************************************************/
 
 package org.eclipse.actf.examples.emine.vips.types;
@@ -16,6 +17,8 @@ import java.util.HashMap;
 import org.eclipse.actf.examples.emine.vips.DomStructureConstruction;
 import org.eclipse.actf.model.dom.dombycom.IElementEx;
 import org.eclipse.actf.model.ui.editor.browser.ICurrentStyles;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.Rectangle;
 
 public class VipsNode {
 	
@@ -444,7 +447,7 @@ public class VipsNode {
 		if (VipsNodeTypes.INVALID_NODES.contains(tag)){
 			return false;
 		} else if(!isRootNode && style != null && (style.getRectangle() == null || 
-								  style.getRectangle().width == 0 || style.getRectangle().height == 0)){
+								  style.getRectangle().width == 0 /*|| style.getRectangle().height == 0*/)){
 			return false;
 		} else if (children == null || children.size() == 0) {
 			return false;
@@ -720,6 +723,58 @@ public class VipsNode {
 		System.out.println(indent + getPath());
 		for (VipsNode child : getChildren()) {
 			child.printNode(indent + "  ");
+		}
+	}
+	
+	/**
+	 * if the point is inside the rectangle draws the borders of a node,
+	 * that is, point is inside the node, returns true.
+	 * 
+	 * @param p Point to search
+	 * @return true only if point and the rectangle of the node matches
+	 */
+	public boolean containsPoint(Point p){
+		if(style != null && style.getRectangle() != null && style.getRectangle().height != 0){
+			Rectangle rect = style.getRectangle();
+			if((rect.x <= p.x && rect.x + rect.width > p.x) && (rect.y <= p.y && rect.y + rect.height > p.y)){
+				return true;
+			}
+		} else {
+			/* if either style or rectangle of the node is null,
+			 * we must check for children. */
+			for(VipsNode child : children){
+				if(child.containsPoint(p)){
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	public void detectBordersFromChildren(){
+		int index = 0;
+		
+		if(getStyle() == null){
+			for(VipsNode child : getChildren()){
+				
+				if(child.getStyle() != null && child.getStyle().getRectangle() != null){
+					setStyle(child.getStyle());
+					 break;
+				}
+				index++;
+			}
+		}
+		
+		for(VipsNode child : getChildren()){
+			if(child.getStyle() != null && child.getStyle().getRectangle() != null){
+				if(getChildren().indexOf(child) == index)
+					continue;
+				getStyle().getRectangle().union(
+						child.getStyle().getRectangle()
+						);
+				
+					getStyle().getRectangle().height += child.getStyle().getRectangle().height;
+			}
 		}
 	}
 }

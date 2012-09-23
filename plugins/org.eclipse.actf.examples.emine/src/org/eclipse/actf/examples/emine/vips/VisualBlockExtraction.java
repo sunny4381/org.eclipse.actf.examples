@@ -7,6 +7,7 @@
  *
  * Contributors:
  *    Elgin Akpinar (METU) - initial API and implementation
+ *    Sukru Eraslan (METU NCC) - Eye Tracking Data Handling Implementation
  *******************************************************************************/
 
 package org.eclipse.actf.examples.emine.vips;
@@ -51,6 +52,7 @@ public class VisualBlockExtraction {
 		this.root = root;
 		blockPool = new HashMap<VipsBlock, VipsNode>();
 		bodyBlock = new VipsBlock();
+		bodyBlock.setElement(root);
 		bodyBlock.setBlockName("VB.1");
 		blockPool.put(bodyBlock, root);
 		logger.setLevel(Level.OFF);
@@ -715,7 +717,7 @@ public class VisualBlockExtraction {
 					createCompositeBlock(newBlock, child, 11);
 			}
 
-			vipsNode.setPath(children.get(0).getPath());
+//			vipsNode.setPath(children.get(0).getPath());
 			for (int i = 0; i < children.size(); i++) {
 				if (children.get(i).getStyle() != null) {
 					vipsNode.setStyle(children.get(i).getStyle());
@@ -749,6 +751,12 @@ public class VisualBlockExtraction {
 					break;
 				}
 			}*/
+			tempCompositeNode.detectBordersFromChildren();
+			
+			for(VipsNode child : children){
+				child.setParent(tempCompositeNode);
+			}
+			
 			children = null;
 			putIntoPool(block, tempCompositeNode, doc);
 		}
@@ -773,7 +781,9 @@ public class VisualBlockExtraction {
 				&& vipsNode.getChildren().get(0).getTag().matches("TD|LI")
 				&& vipsNode.getChildren().get(0).isValid())
 			vipsNode = vipsNode.getChildren().get(0);
-
+		if(vipsNode.isCompositeNode()){
+			vipsNode.setPath(parent.getElement().getPath() + "/COMPOSITE");
+		}
 		VipsBlock block = new VipsBlock();
 		blockPool.put(block, vipsNode);
 		parent.addChild(block);
@@ -785,6 +795,11 @@ public class VisualBlockExtraction {
 		/* Parent set */
 		if(vipsNode.getParent() != null){
 			vipsNode.getParent().removeChild(vipsNode);
+		}
+		
+		if(vipsNode.getStyle() == null || vipsNode.getStyle().getRectangle() == null ||
+				vipsNode.getStyle().getRectangle().height == 0){
+			vipsNode.detectBordersFromChildren();
 		}
 		
 		/* Recursive call for children */

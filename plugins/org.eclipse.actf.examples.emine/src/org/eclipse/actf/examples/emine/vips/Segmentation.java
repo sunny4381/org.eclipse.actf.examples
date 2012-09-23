@@ -7,6 +7,7 @@
  *
  * Contributors:
  *    Elgin Akpinar (METU) - initial API and implementation
+ *    Sukru Eraslan (METU NCC) - Eye Tracking Data Handling Implementation
  *******************************************************************************/
 
 package org.eclipse.actf.examples.emine.vips;
@@ -43,10 +44,12 @@ public class Segmentation {
 	 */
 	public void segmentPage() {
 		domConstruction = new DomStructureConstruction();
+		
 		IModelService modelService = ModelServiceUtils.getActiveModelService();
 		if (modelService instanceof IWebBrowserACTF) {
-			IWebBrowserACTF browser = (IWebBrowserACTF) modelService;			
+			IWebBrowserACTF browser = (IWebBrowserACTF) modelService;
 			IWebBrowserStyleInfo style = browser.getStyleInfo();
+			
 			DomStructureConstruction.setWindowSizeX(style.getSizeInfo(true).getWholeSizeX());
 			DomStructureConstruction.setWindowSizeY(style.getSizeInfo(true).getWholeSizeY());
 			domConstruction.setStyleMap(style.getCurrentStyles());
@@ -63,7 +66,7 @@ public class Segmentation {
 			Element docLiveElement = docLive.getDocumentElement();
 			domConstruction.traverse(docLiveElement, "", 1);
 			domConstruction.setRoot();
-			domConstruction.print();
+//			domConstruction.print();
 		}
 	}
 	
@@ -90,7 +93,9 @@ public class Segmentation {
 		contentConstruction.removeItems();
 		contentConstruction.addBodyBlock(extraction.getBodyBlock());
 		contentConstruction.setNodePool(domConstruction.getNodePool());
+		contentConstruction.setBodyBlock(extraction.getBodyBlock());
 		for(VipsBlock child : extraction.getBodyBlock().getChildren())
 			contentConstruction.constructTree(child);
+//		contentConstruction.detectPoint(new Point(100, 100), extraction.getBodyBlock());
 	}
 }
