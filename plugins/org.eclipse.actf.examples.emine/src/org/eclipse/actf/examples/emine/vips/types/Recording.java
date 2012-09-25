@@ -14,7 +14,7 @@ package org.eclipse.actf.examples.emine.vips.types;
 
 import java.util.ArrayList;
 
-public class Recording {
+public class Recording implements Comparable<Recording>{
     String id;
     String scanPath;
     boolean scanPathDetected;
@@ -64,6 +64,21 @@ public class Recording {
 			}
 		}
 		return scanPath;
+	}
+
+	public int compareTo(Recording recording) {
+		int rec1, rec2;
+		try {
+			rec1 = Integer.parseInt(this.getId());
+		} catch(ClassCastException ex){
+			rec1 = 0;
+		}
+		try {
+			rec2 = Integer.parseInt(recording.getId());
+		} catch(ClassCastException ex){
+			rec2 = 0;
+		}
+		return (rec1 == rec2 ? 0 : (rec1 < rec2 ? -1 : 1));
 	}
    
 }

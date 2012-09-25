@@ -769,11 +769,8 @@ public class VipsNode {
 			if(child.getStyle() != null && child.getStyle().getRectangle() != null){
 				if(getChildren().indexOf(child) == index)
 					continue;
-				getStyle().getRectangle().union(
-						child.getStyle().getRectangle()
-						);
-				
-					getStyle().getRectangle().height += child.getStyle().getRectangle().height;
+				getStyle().getRectangle().union(child.getStyle().getRectangle());
+				//getStyle().getRectangle().height += child.getStyle().getRectangle().height;
 			}
 		}
 	}

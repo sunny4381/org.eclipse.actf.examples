@@ -116,6 +116,7 @@ public class PointsToolbar extends Composite {
 						retrievePoint(1,1);
 						nextPointButton.setEnabled(true);
 					}
+					setRecordingIdLabel();
 				}
 			}
 		});
@@ -211,7 +212,6 @@ public class PointsToolbar extends Composite {
 		if(recIndex < numberOfRecordings){
 			setRecIndex(recIndex + 1);
 			setPointIndex(1);
-			retrievePoint(recIndex, pointIndex);
 			if(!prevRecordButton.isEnabled())
 				prevRecordButton.setEnabled(true);
 			prevPointButton.setEnabled(false);
@@ -221,6 +221,7 @@ public class PointsToolbar extends Composite {
 			if(recIndex == numberOfRecordings)
 				nextRecordButton.setEnabled(false);
 			currentRecording = map.get(recIndex - 1);
+			retrievePoint(recIndex, pointIndex);
 		}
 	}
 	
@@ -228,7 +229,6 @@ public class PointsToolbar extends Composite {
 		if(recIndex > 1){
 			setRecIndex(recIndex - 1);
 			setPointIndex(1);
-			retrievePoint(recIndex, pointIndex);
 			if(!nextRecordButton.isEnabled())
 				nextRecordButton.setEnabled(true);
 			if(recIndex == 1)
@@ -237,6 +237,7 @@ public class PointsToolbar extends Composite {
 			if(numberOfPoints > 1)
 				nextPointButton.setEnabled(true);
 			currentRecording = map.get(recIndex - 1);
+			retrievePoint(recIndex, pointIndex);
 		}
 	}
 	
@@ -336,6 +337,7 @@ public class PointsToolbar extends Composite {
 	}
 
 	public void setRecordingIdLabel() {
-		recordingIdLabel.setText("(" + currentRecording.getId() + ") ");
+		if(currentRecording != null)
+			recordingIdLabel.setText("(" + currentRecording.getId() + ") ");
 	}
 }

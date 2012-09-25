@@ -271,10 +271,10 @@ public class DomStructureConstruction {
 		else
 			return path + "/" + nodeName + "[" + index + "]";
 	}
-
+	
 	public boolean isDisplayable(ICurrentStyles nodeStyle){
 		if (nodeStyle != null){
-			if(nodeStyle.getRectangle() != null && (nodeStyle.getRectangle().height == 0 || nodeStyle.getRectangle().width == 0)) {
+			if(nodeStyle.getRectangle() != null && (/*nodeStyle.getRectangle().height == 0 ||*/ nodeStyle.getRectangle().width == 0)) {
 				return false;
 			} else if (nodeStyle.getDisplay() != null && nodeStyle.getDisplay().toLowerCase().equals("none")) {
 				return false;

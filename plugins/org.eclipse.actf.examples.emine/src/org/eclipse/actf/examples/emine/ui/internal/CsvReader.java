@@ -19,13 +19,14 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 import org.eclipse.actf.examples.emine.vips.types.Fixation;
 import org.eclipse.actf.examples.emine.vips.types.Recording;
 
 public class CsvReader {
-   
+	
     public static ArrayList<Recording> readData(String fileName){
         HashMap<String, Recording> map = new HashMap<String, Recording>();
         
@@ -58,7 +59,7 @@ public class CsvReader {
         for(String key : map.keySet()){
         	list.add(map.get(key));
         }
-        
+        Collections.sort(list);
         return list;
     }
 }
