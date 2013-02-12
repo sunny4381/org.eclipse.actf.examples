@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: miChecker
 Bundle-SymbolicName: org.eclipse.actf.examples.michecker;singleton:=true
-Bundle-Version: 1.0.1.qualifier
+Bundle-Version: 1.0.2.qualifier
 Bundle-Activator: org.eclipse.actf.examples.michecker.MiCheckerPlugin
 Bundle-Vendor: Ministry of Internal Affairs and Communications
 Bundle-Localization: plugin

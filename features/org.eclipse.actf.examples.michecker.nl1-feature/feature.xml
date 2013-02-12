@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.actf.examples.michecker.nl1"
       label="miChecker nl1 feature"
-      version="1.0.1"
+      version="1.0.2"
       provider-name="Ministry of Internal Affairs and Communications"
       os="win32"
       ws="win32">

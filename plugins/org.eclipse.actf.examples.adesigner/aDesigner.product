@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="aDesigner" uid="ACTF aDesigner" id="org.eclipse.actf.examples.adesigner.aDesigner" application="org.eclipse.actf.examples.adesigner.org.eclipse.actf.examples.adesigner.ADesignerApplication" version="1.0.1.qualifier" useFeatures="true" includeLaunchers="true">
+<product name="aDesigner" uid="ACTF aDesigner" id="org.eclipse.actf.examples.adesigner.aDesigner" application="org.eclipse.actf.examples.adesigner.org.eclipse.actf.examples.adesigner.ADesignerApplication" version="1.0.2.qualifier" useFeatures="true" includeLaunchers="true">
 
    <aboutInfo>
       <image path="/org.eclipse.actf.examples.adesigner/about.gif"/>
@@ -39,7 +39,7 @@
    </plugins>
 
    <features>
-      <feature id="org.eclipse.actf.examples.adesigner" version="1.0.1.qualifier"/>
+      <feature id="org.eclipse.actf.examples.adesigner" version="1.0.2.qualifier"/>
       <feature id="org.eclipse.help"/>
    </features>
 

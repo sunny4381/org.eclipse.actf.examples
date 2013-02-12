@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.actf.examples.adesigner"
       label="ACTF Example aDesigner feature"
-      version="1.0.1.qualifier"
+      version="1.0.2.qualifier"
       provider-name="Eclipse.org"
       plugin="org.eclipse.actf.examples.adesigner"
       os="win32"
