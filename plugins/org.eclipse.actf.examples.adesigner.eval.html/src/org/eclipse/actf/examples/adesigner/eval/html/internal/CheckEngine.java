@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2011 IBM Corporation and Others
+ * Copyright (c) 2004, 2013 IBM Corporation and Others
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -1290,12 +1290,11 @@ public class CheckEngine extends HtmlTagUtil {
 			// TODO check if these two items should be shown
 			addCheckerProblem("C_500.0", "(" + Messages.Dynamic + tmpS + ")");
 			addCheckerProblem("C_500.1", "(" + Messages.Dynamic + tmpS + ")");
-			
+
 			addCheckerProblem("C_600.1", "(" + Messages.Dynamic + tmpS + ")");
 			addCheckerProblem("C_600.2", "(" + Messages.Dynamic + tmpS + ")");
 			addCheckerProblem("C_600.6", "(" + Messages.Dynamic + tmpS + ")");
 			addCheckerProblem("C_600.7", "(" + Messages.Dynamic + tmpS + ")");
-
 
 			addCheckerProblem("C_600.16", "(" + Messages.Dynamic + tmpS + ")"); //$NON-NLS-1$
 		}
@@ -1886,7 +1885,6 @@ public class CheckEngine extends HtmlTagUtil {
 		checkObsoluteEle("C_48.2", "strike"); //$NON-NLS-1$
 		checkObsoluteEle("C_48.2", "u"); //$NON-NLS-1$
 		checkObsoluteEle("C_48.2", "s"); //$NON-NLS-1$
-		checkObsoluteEle("C_48.2", "i"); //$NON-NLS-1$
 		// DIR, MENU
 		checkObsoluteEle("C_48.3", "dir"); //$NON-NLS-1$
 		checkObsoluteEle("C_48.3", "menu"); //$NON-NLS-1$
@@ -1896,6 +1894,9 @@ public class CheckEngine extends HtmlTagUtil {
 		checkObsoluteEle("C_48.5", "listing"); //$NON-NLS-1$
 		checkObsoluteEle("C_48.5", "plaintext"); //$NON-NLS-1$
 		checkObsoluteEle("C_48.5", "xmp"); //$NON-NLS-1$
+		//em/strong
+		checkObsoluteEle("C_48.6", "b"); //$NON-NLS-1$
+		checkObsoluteEle("C_48.6", "i"); //$NON-NLS-1$
 	}
 
 	private void item_49() {
@@ -2675,33 +2676,34 @@ public class CheckEngine extends HtmlTagUtil {
 		if (labelList == null)
 			labelList = edu.getElementsList(target, "label"); //$NON-NLS-1$
 		Vector<Node> noTitleControls = new Vector<Node>();
-		Vector<Node> noLabelControls = new Vector<Node>();
+		Vector<Node> noLabelEmptyTitleControls = new Vector<Node>();
 		Vector<Node> implicitLabelControls = new Vector<Node>();
-		for (Element form : formList) { //$NON-NLS-1$
-			// checks for each form element
-			for (Element el : getFormControl(form)) {
+		for (Element body : body_elements) { //$NON-NLS-1$
+			for (Element el : getFormControl(body)) {
 				// checks for each input controls
 				TitleCheckResult res = item_79_title(el);
 				if (res == TitleCheckResult.NO_TITLE)
 					noTitleControls.add(el);
-				item_79_label(el, res, noLabelControls, implicitLabelControls);
+				item_79_label(el, res, noLabelEmptyTitleControls,
+						implicitLabelControls);
 			}
 		}
+
 		if (noTitleControls.size() > 0)
 			addCheckerProblem("C_79.6", "", noTitleControls);
-		if (noLabelControls.size() > 0)
-			addCheckerProblem("C_79.0", "", noLabelControls);
+		if (noLabelEmptyTitleControls.size() > 0)
+			addCheckerProblem("C_79.0", "", noLabelEmptyTitleControls);
 		if (implicitLabelControls.size() > 0)
 			addCheckerProblem("C_79.2", "", implicitLabelControls);
 	}
 
 	private void item_79_label(Element ctrl, TitleCheckResult res,
-			Vector<Node> noLabelControls, Vector<Node> implicitLabelControls) {
+			Vector<Node> noLabelEmptyTitleControls,
+			Vector<Node> implicitLabelControls) {
 		String elType = getFormControlType(ctrl);
 		Element l;
 		if ((l = hasImplicitLabel(ctrl)) != null) {
 			implicitLabelControls.add(l);
-			// addCheckerProblem("C_79.2", l);
 			return;
 		}
 		if (!isLabelable(elType)) {
@@ -2713,8 +2715,9 @@ public class CheckEngine extends HtmlTagUtil {
 		boolean bHasTitle = this.hasTitle(ctrl);
 
 		if (!bHasLabel && !(res == TitleCheckResult.G167)) {
-			noLabelControls.add(ctrl);
-			// addCheckerProblem("C_79.0", ctrl); //$NON-NLS-1$
+			if (res == TitleCheckResult.EMPTY_TITLE) {
+				noLabelEmptyTitleControls.add(ctrl);
+			}
 		} else {
 			// TODO highlight the label as well
 			if (!hasProperLabel(ctrl)) {
@@ -2739,6 +2742,9 @@ public class CheckEngine extends HtmlTagUtil {
 	 */
 	private TitleCheckResult item_79_title(Element ctrl) {
 		if (hasTitle(ctrl)) {
+			if (hasBlankTitle(ctrl)) {
+				return TitleCheckResult.EMPTY_TITLE;
+			}
 			addCheckerProblem("C_79.4", ctrl.getAttribute(ATTR_TITLE), ctrl);
 			return TitleCheckResult.OK;
 		} else {
@@ -3400,16 +3406,15 @@ public class CheckEngine extends HtmlTagUtil {
 
 		addCheckerProblem("C_600.0");
 
-		//moved into mediaCheck
-//		addCheckerProblem("C_600.1");
-//		addCheckerProblem("C_600.2");
-//		addCheckerProblem("C_600.6");
-//		addCheckerProblem("C_600.7");
-		
+		// moved into mediaCheck
+		// addCheckerProblem("C_600.1");
+		// addCheckerProblem("C_600.2");
+		// addCheckerProblem("C_600.6");
+		// addCheckerProblem("C_600.7");
+
 		addCheckerProblem("C_600.3");
 		addCheckerProblem("C_600.4");
 		addCheckerProblem("C_600.5");
-
 
 		addCheckerProblem("C_600.8");
 		addCheckerProblem("C_600.9");
@@ -3570,9 +3575,9 @@ public class CheckEngine extends HtmlTagUtil {
 			}
 		}
 
-		//Special check for body element
-		//http://www.w3.org/TR/html4/sgml/loosedtd.html#bodycolors
-		
+		// Special check for body element
+		// http://www.w3.org/TR/html4/sgml/loosedtd.html#bodycolors
+
 		if (body_elements.length > 0) {
 			Element bodyEl = body_elements[0];
 			boolean color = bodyEl.getAttribute("text").length() > 0;
@@ -3587,11 +3592,11 @@ public class CheckEngine extends HtmlTagUtil {
 			} else if (!color && bgColor) {
 				addCheckerProblem("C_500.18", "", bodyEl);
 			}
-			
-			if(linkColor){
+
+			if (linkColor) {
 				addCheckerProblem("C_500.18", "(link)", bodyEl);
 			}
-			
+
 		}
 	}
 
