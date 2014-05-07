@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.actf.examples.simplevisualizer"
       label="ACTF Example Simple Visualizer feature"
-      version="1.1.0.qualifier"
+      version="1.2.0.qualifier"
       provider-name="Eclipse.org"
       plugin="org.eclipse.actf.examples.simplevisualizer"
       os="win32"
