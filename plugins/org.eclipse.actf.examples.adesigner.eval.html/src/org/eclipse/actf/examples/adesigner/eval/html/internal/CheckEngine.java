@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2013 IBM Corporation and Others
+ * Copyright (c) 2004, 2014 IBM Corporation and Others
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -1354,14 +1354,10 @@ public class CheckEngine extends HtmlTagUtil {
 
 		Set<IStyleSheet> keys = styleSheetsMap.keySet();
 		for (IStyleSheet ss : keys) {
-			try {
-				if (ss.getHref().length() > 0 // avoid duplication
-						&& BLINK_PATTERN.matcher(styleSheetsMap.get(ss))
-								.matches()) {
-					addCheckerProblem("C_33.2", "(" + ss.getHref() + ")");
-				}
-			} catch (Exception e) {
-				//
+			if (ss.getHref() != null && ss.getHref().length() > 0
+			// avoid duplication
+					&& BLINK_PATTERN.matcher(styleSheetsMap.get(ss)).matches()) {
+				addCheckerProblem("C_33.2", "(" + ss.getHref() + ")");
 			}
 		}
 
@@ -3047,16 +3043,13 @@ public class CheckEngine extends HtmlTagUtil {
 
 		Set<IStyleSheet> keys = styleSheetsMap.keySet();
 		for (IStyleSheet ss : keys) {
-			try {
-				if (ss.getHref().length() > 0) { // avoid duplication
-					String style = styleSheetsMap.get(ss);
-					if (BEFORE_PATTERN.matcher(style).matches())
-						addCheckerProblem("C_90.0", "(" + ss.getHref() + ")");
-					if (AFTER_PATTERN.matcher(style).matches())
-						addCheckerProblem("C_90.1", "(" + ss.getHref() + ")");
-				}
-			} catch (Exception e) {
-
+			if (ss.getHref() != null && ss.getHref().length() > 0) {
+				// avoid duplication
+				String style = styleSheetsMap.get(ss);
+				if (BEFORE_PATTERN.matcher(style).matches())
+					addCheckerProblem("C_90.0", "(" + ss.getHref() + ")");
+				if (AFTER_PATTERN.matcher(style).matches())
+					addCheckerProblem("C_90.1", "(" + ss.getHref() + ")");
 			}
 		}
 	}
@@ -3502,63 +3495,60 @@ public class CheckEngine extends HtmlTagUtil {
 
 		Set<IStyleSheet> keys = styleSheetsMap.keySet();
 		for (IStyleSheet ss : keys) {
-			try {
-				if (ss.getHref().length() > 0) { // avoid duplication
-					String style = styleSheetsMap.get(ss);
-					Set<String> colorSelector = new HashSet<String>();
-					Set<String> bgcolorSelector = new HashSet<String>();
-					Set<String> allcolorSelector = new HashSet<String>();
-					Set<String> fixSelector = new HashSet<String>();
+			if (ss.getHref() != null && ss.getHref().length() > 0) {
+				// avoid duplication
+				String style = styleSheetsMap.get(ss);
+				Set<String> colorSelector = new HashSet<String>();
+				Set<String> bgcolorSelector = new HashSet<String>();
+				Set<String> allcolorSelector = new HashSet<String>();
+				Set<String> fixSelector = new HashSet<String>();
 
-					Matcher matcher = STYLEITEM.matcher(style);
-					while (matcher.find()) {
-						String group = matcher.group();
-						boolean color = COLOR.matcher(group).find();
-						boolean bgColor = BGCOLOR.matcher(group).find()
-								|| BGCOLOR2.matcher(group).find();
-						boolean fix = FIXSIZE_PATTERN.matcher(group).find();
+				Matcher matcher = STYLEITEM.matcher(style);
+				while (matcher.find()) {
+					String group = matcher.group();
+					boolean color = COLOR.matcher(group).find();
+					boolean bgColor = BGCOLOR.matcher(group).find()
+							|| BGCOLOR2.matcher(group).find();
+					boolean fix = FIXSIZE_PATTERN.matcher(group).find();
 
-						if (color || bgColor) {
-							String selector = getSelector(group);
-							if (color && !bgColor) {
-								colorSelector.add(selector);
-							} else if (!color && bgColor) {
-								bgcolorSelector.add(selector);
-							} else {
-								allcolorSelector.add(selector);
-							}
+					if (color || bgColor) {
+						String selector = getSelector(group);
+						if (color && !bgColor) {
+							colorSelector.add(selector);
+						} else if (!color && bgColor) {
+							bgcolorSelector.add(selector);
+						} else {
+							allcolorSelector.add(selector);
 						}
-						if (fix) {
-							fixSelector.add(getSelector(group));
-						}
+					}
+					if (fix) {
+						fixSelector.add(getSelector(group));
+					}
 
-						// System.out.println(color + "/" + bgColor + "\t" +
-						// group);
-
-					}
-					if (colorSelector.size() > 0) {
-						addCheckerProblem("C_500.17", "(" + ss.getHref() + ", "
-								+ Messages.Selector + "="
-								+ getSelectors(colorSelector) + ")");
-					}
-					if (bgcolorSelector.size() > 0) {
-						addCheckerProblem("C_500.18", "(" + ss.getHref() + ", "
-								+ Messages.Selector + "="
-								+ getSelectors(bgcolorSelector) + ")");
-					}
-					if (allcolorSelector.size() > 0) {
-						addCheckerProblem("C_8.0", "(" + ss.getHref() + ", "
-								+ Messages.Selector + "="
-								+ getSelectors(allcolorSelector) + ")");
-					}
-					if (fixSelector.size() > 0) {
-						addCheckerProblem("C_500.19", "(" + ss.getHref() + ", "
-								+ Messages.Selector + "="
-								+ getSelectors(fixSelector) + ")");
-					}
+					// System.out.println(color + "/" + bgColor + "\t" +
+					// group);
 
 				}
-			} catch (Exception e) {
+				if (colorSelector.size() > 0) {
+					addCheckerProblem("C_500.17", "(" + ss.getHref() + ", "
+							+ Messages.Selector + "="
+							+ getSelectors(colorSelector) + ")");
+				}
+				if (bgcolorSelector.size() > 0) {
+					addCheckerProblem("C_500.18", "(" + ss.getHref() + ", "
+							+ Messages.Selector + "="
+							+ getSelectors(bgcolorSelector) + ")");
+				}
+				if (allcolorSelector.size() > 0) {
+					addCheckerProblem("C_8.0", "(" + ss.getHref() + ", "
+							+ Messages.Selector + "="
+							+ getSelectors(allcolorSelector) + ")");
+				}
+				if (fixSelector.size() > 0) {
+					addCheckerProblem("C_500.19", "(" + ss.getHref() + ", "
+							+ Messages.Selector + "="
+							+ getSelectors(fixSelector) + ")");
+				}
 
 			}
 		}
