@@ -23,7 +23,10 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.actf.visualization.lowvision,
  org.eclipse.actf.visualization.ui.report,
  org.eclipse.actf.examples.adesigner.eval.html,
- org.eclipse.actf.examples.michecker.doc
+ org.eclipse.actf.examples.michecker.doc,
+ org.eclipse.e4.ui.workbench,
+ org.eclipse.e4.ui.model.workbench,
+ org.eclipse.e4.core.contexts
 Bundle-ActivationPolicy: lazy
 Export-Package: org.eclipse.actf.examples.michecker,
  org.eclipse.actf.examples.michecker.ui.actions

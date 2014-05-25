@@ -1,5 +1,6 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Ministry of Internal Affairs and Communications (MIC).
+ * Copyright (c) 2010, 2014 Ministry of Internal Affairs and Communications (MIC),
+ * IBM Corporation and Others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,6 +8,7 @@
  *
  * Contributors:
  *    Yasuharu GOTOU (MIC) - initial API and implementation
+ *    Kentarou FUKUDA (IBM) - [383882] - Eclipse 4.2 adaptation
  *******************************************************************************/
 
 package org.eclipse.actf.examples.michecker;
@@ -14,6 +16,7 @@ package org.eclipse.actf.examples.michecker;
 import org.eclipse.actf.model.ui.editor.actions.FavoritesMenu;
 import org.eclipse.actf.ui.util.ProgressContribution;
 import org.eclipse.jface.action.GroupMarker;
+import org.eclipse.jface.action.ICoolBarManager;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IStatusLineManager;
 import org.eclipse.jface.action.MenuManager;
@@ -169,6 +172,14 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 				ProgressContribution.PROGRESS_CONTRIBUTION_ID);
 		pc.setVisible(false);
 		statusLine.add(pc);
+	}
+	
+	@Override
+	protected void fillCoolBar(ICoolBarManager coolBar) {
+		super.fillCoolBar(coolBar);
+		
+		//to place actions left side (Quick Access) 
+		coolBar.add(new GroupMarker(IWorkbenchActionConstants.MB_ADDITIONS));
 	}
 
 }

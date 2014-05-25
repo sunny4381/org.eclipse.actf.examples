@@ -28,6 +28,14 @@
          id="org.eclipse.actf.visualization"
          version="0.0.0"/>
 
+   <includes
+         id="org.eclipse.emf.common"
+         version="0.0.0"/>
+
+   <includes
+         id="org.eclipse.emf.ecore"
+         version="0.0.0"/>
+
    <plugin
          id="org.eclipse.ui.forms"
          download-size="0"

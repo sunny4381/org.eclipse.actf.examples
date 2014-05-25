@@ -30,7 +30,10 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.actf.examples.adesigner.eval.odf,
  org.eclipse.actf.examples.adesigner.doc,
  org.eclipse.actf.visualization.blind;visibility:=reexport,
- org.eclipse.actf.ui
+ org.eclipse.actf.ui,
+ org.eclipse.e4.ui.workbench,
+ org.eclipse.e4.ui.model.workbench,
+ org.eclipse.e4.core.contexts
 Bundle-ActivationPolicy: lazy
 Export-Package: org.eclipse.actf.examples.adesigner,
  org.eclipse.actf.examples.adesigner.ui.actions

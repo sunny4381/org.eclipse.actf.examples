@@ -1,5 +1,6 @@
 /*******************************************************************************
- * Copyright (c) 2010, 2011 Ministry of Internal Affairs and Communications (MIC).
+ * Copyright (c) 2010, 2011 Ministry of Internal Affairs and Communications (MIC),
+ * IBM Corporation and Others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,6 +8,7 @@
  *
  * Contributors:
  *    Yasuharu GOTOU (MIC) - initial API and implementation
+ *    Kentarou FUKUDA (IBM) - [383882] - Eclipse 4.2 adaptation
  *******************************************************************************/
 package org.eclipse.actf.examples.michecker;
 
@@ -15,6 +17,8 @@ import org.eclipse.actf.ui.util.PlatformUIUtil;
 import org.eclipse.actf.visualization.eval.guideline.GuidelineHolder;
 import org.eclipse.actf.visualization.eval.guideline.IGuidelineData;
 import org.eclipse.actf.visualization.ui.IVisualizationView;
+import org.eclipse.e4.ui.model.application.ui.basic.MWindow;
+import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.preference.IPreferenceNode;
@@ -24,11 +28,13 @@ import org.eclipse.ui.IPerspectiveDescriptor;
 import org.eclipse.ui.IPerspectiveListener;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPreferenceConstants;
+import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.application.ActionBarAdvisor;
 import org.eclipse.ui.application.IActionBarConfigurer;
 import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 import org.eclipse.ui.application.WorkbenchWindowAdvisor;
+import org.eclipse.ui.internal.WorkbenchWindow;
 
 public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 
@@ -96,6 +102,15 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 				items[i].dispose();
 			}
 		}
+		
+		//hide quick access (for Eclipse 4.2.x)
+		IWorkbenchWindow window = PlatformUI.getWorkbench()
+				.getActiveWorkbenchWindow();
+		MWindow model = ((WorkbenchWindow) window).getModel();
+		EModelService modelService = model.getContext()
+				.get(EModelService.class);
+		modelService.find("SearchField", model).setToBeRendered(false);
+
 
 		PreferenceManager prefManager = getWindowConfigurer()
 				.getWorkbenchConfigurer().getWorkbench().getPreferenceManager();

@@ -25,6 +25,14 @@
          version="0.0.0"/>
 
    <includes
+         id="org.eclipse.emf.ecore"
+         version="0.0.0"/>
+
+   <includes
+         id="org.eclipse.emf.common"
+         version="0.0.0"/>
+
+   <includes
          id="org.eclipse.actf.examples.michecker.nl1"
          version="0.0.0"
          optional="true"/>

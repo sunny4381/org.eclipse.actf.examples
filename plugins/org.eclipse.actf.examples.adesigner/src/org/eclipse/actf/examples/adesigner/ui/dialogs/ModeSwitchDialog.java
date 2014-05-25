@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2009 IBM Corporation and Others
+ * Copyright (c) 2006, 2014 IBM Corporation and Others
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -41,8 +41,9 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IPerspectiveDescriptor;
+import org.eclipse.ui.IPerspectiveRegistry;
+import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
-import org.eclipse.ui.WorkbenchException;
 
 public class ModeSwitchDialog extends TitleAreaDialog {
 
@@ -60,8 +61,8 @@ public class ModeSwitchDialog extends TitleAreaDialog {
 	private IWorkbenchWindow _window;
 
 	private String _selectedPerspectiveID = ADesignerPlugin.getDefault()
-			.getPreferenceStore().getString(
-					IPreferenceConstants.SELECTED_MODE_PERSPECTIVE_ID);
+			.getPreferenceStore()
+			.getString(IPreferenceConstants.SELECTED_MODE_PERSPECTIVE_ID);
 
 	private Composite _selectedComp = null;
 
@@ -273,10 +274,18 @@ public class ModeSwitchDialog extends TitleAreaDialog {
 	protected void okPressed() {
 
 		try {
-			_window.getWorkbench().showPerspective(getSelectedPerspective(),
-					_window);
-		} catch (WorkbenchException we) {
-			// we.printStackTrace();
+			// _window.getWorkbench().showPerspective(getSelectedPerspective(),
+			// _window);
+
+			// workaround for Eclipse 4.2.x
+			IPerspectiveRegistry registry = _window.getWorkbench()
+					.getPerspectiveRegistry();
+			IWorkbenchPage page = _window.getActivePage();
+			page.setPerspective(registry
+					.findPerspectiveWithId(getSelectedPerspective()));
+
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
 		IPreferenceStore store = ADesignerPlugin.getDefault()
