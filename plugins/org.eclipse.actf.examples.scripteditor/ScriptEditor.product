@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="ACTF Script Editor" id="org.eclipse.actf.examples.scripteditor.product" application="org.eclipse.actf.examples.scripteditor.application" version="0.1.0.qualifier" useFeatures="true" includeLaunchers="true">
+<product name="Eclipse ACTF Script Editor Lite (EASEL)" id="org.eclipse.actf.examples.scripteditor.product" application="org.eclipse.actf.examples.scripteditor.application" version="0.1.0.qualifier" useFeatures="true" includeLaunchers="true">
 
    <aboutInfo>
       <image path="/org.eclipse.actf.examples.scripteditor/about.bmp"/>
@@ -25,7 +25,7 @@
       startupProgressRect="0,318,500,12"
       startupMessageRect="10,250,480,20"
       startupForegroundColor="000000" />
-   <launcher name="ScriptEditor">
+   <launcher name="easel">
       <solaris/>
       <win useIco="true">
          <ico path="/org.eclipse.actf.examples.scripteditor/icons/aiBrowser.ico"/>
@@ -38,15 +38,15 @@
 
    <plugins>
       <plugin id="com.ibm.icu"/>
-      <plugin id="org.apache.commons.jxpath" fragment=""/>
-      <plugin id="org.eclipse.actf.ai.audio.io" fragment=""/>
-      <plugin id="org.eclipse.actf.ai.fennec" fragment=""/>
-      <plugin id="org.eclipse.actf.ai.navigator" fragment=""/>
-      <plugin id="org.eclipse.actf.ai.query" fragment=""/>
+      <plugin id="org.apache.commons.jxpath"/>
+      <plugin id="org.eclipse.actf.ai.audio.io"/>
+      <plugin id="org.eclipse.actf.ai.fennec"/>
+      <plugin id="org.eclipse.actf.ai.navigator"/>
+      <plugin id="org.eclipse.actf.ai.query"/>
       <plugin id="org.eclipse.actf.ai.tts.protalker"/>
       <plugin id="org.eclipse.actf.ai.tts.sapi"/>
       <plugin id="org.eclipse.actf.ai.voice"/>
-      <plugin id="org.eclipse.actf.ai.xmlstore" fragment=""/>
+      <plugin id="org.eclipse.actf.ai.xmlstore"/>
       <plugin id="org.eclipse.actf.core"/>
       <plugin id="org.eclipse.actf.examples.scripteditor"/>
       <plugin id="org.eclipse.actf.model.dom.dombycom"/>
@@ -89,7 +89,7 @@
    </plugins>
 
    <features>
-      <feature id="org.eclipse.actf.examples.scripteditor" version="0.1.0.qualifier"/>
+      <feature id="org.eclipse.actf.examples.scripteditor"/>
       <feature id="org.eclipse.help"/>
    </features>
 

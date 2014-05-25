@@ -45,7 +45,7 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 		configurer.setInitialSize(new Point(1000, 768));
 		configurer.setShowCoolBar(false);
 		configurer.setShowStatusLine(false);
-		configurer.setTitle("ACTF ScriptEditor");
+		configurer.setTitle("EASEL");
 
 		configurer.getWindow().addPerspectiveListener(
 				new IPerspectiveListener() {

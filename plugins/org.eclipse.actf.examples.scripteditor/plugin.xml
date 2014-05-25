@@ -197,14 +197,14 @@
          point="org.eclipse.core.runtime.products">
       <product
             application="org.eclipse.actf.examples.scripteditor.application"
-            name="ACTF Script Editor">
+            name="Eclipse ACTF Script Editor Lite (EASEL)">
          <property
                name="windowImages"
                value="icons/bl_16.gif,icons/bl_32.gif,icons/bl_48.gif">
          </property>
          <property
                name="appName"
-               value="ACTF Script Editor">
+               value="Eclipse ACTF Script Editor Lite (EASEL)">
          </property>
          <property
                name="aboutImage"

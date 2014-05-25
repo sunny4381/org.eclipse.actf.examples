@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: ACTF Example ScriptEditor Client
 Bundle-SymbolicName: org.eclipse.actf.examples.scripteditor; singleton:=true
-Bundle-Version: 0.0.1.qualifier
+Bundle-Version: 0.1.0.qualifier
 Bundle-Activator: org.eclipse.actf.examples.scripteditor.Activator
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.ui,
