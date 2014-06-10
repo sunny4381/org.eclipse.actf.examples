@@ -60,8 +60,7 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 		configurer.setShowCoolBar(true);
 		configurer.setShowMenuBar(true);
 		configurer.setShowStatusLine(true);
-		configurer.setTitle(MiCheckerPlugin
-				.getResourceString("window.title")); //$NON-NLS-1$
+		configurer.setTitle(MiCheckerPlugin.getResourceString("window.title")); //$NON-NLS-1$
 
 		// Show perspective name on title
 		configurer.getWindow().addPerspectiveListener(
@@ -102,15 +101,18 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 				items[i].dispose();
 			}
 		}
-		
-		//hide quick access (for Eclipse 4.2.x)
-		IWorkbenchWindow window = PlatformUI.getWorkbench()
-				.getActiveWorkbenchWindow();
-		MWindow model = ((WorkbenchWindow) window).getModel();
-		EModelService modelService = model.getContext()
-				.get(EModelService.class);
-		modelService.find("SearchField", model).setToBeRendered(false);
 
+		// hide quick access (for Eclipse 4.2.x)
+		try {
+			IWorkbenchWindow window = PlatformUI.getWorkbench()
+					.getActiveWorkbenchWindow();
+			MWindow model = ((WorkbenchWindow) window).getModel();
+			EModelService modelService = model.getContext().get(
+					EModelService.class);
+			modelService.find("SearchField", model).setToBeRendered(false);
+		} catch (Exception e) {
+
+		}
 
 		PreferenceManager prefManager = getWindowConfigurer()
 				.getWorkbenchConfigurer().getWorkbench().getPreferenceManager();
