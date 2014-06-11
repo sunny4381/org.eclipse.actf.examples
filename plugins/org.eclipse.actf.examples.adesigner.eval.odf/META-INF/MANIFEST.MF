@@ -12,8 +12,6 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.actf.visualization.eval
 Export-Package: org.eclipse.actf.examples.adesigner.eval.odf,
  org.eclipse.actf.examples.adesigner.eval.odf.preferences
-Bundle-ClassPath: checkerodf.jar,
- .
 Bundle-Localization: plugin
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: org.eclipse.actf.examples.adesigner.eval.odf.OdfCheckerPlugin
