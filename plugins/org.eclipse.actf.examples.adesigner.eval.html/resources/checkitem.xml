@@ -1190,7 +1190,7 @@
             <desc>This link is not accessible since there is no readable text.</desc>
         </description>
     </checkitem>
-    <checkitem type="warning" id="C_58.0">
+    <checkitem type="user" id="C_58.0">
         <guideline>
             <gItem id="13.1" name="WCAG"/>
             <gItem techniques="G91" id="7.2.4.4" name="JIS"/>
@@ -1199,7 +1199,7 @@
             <gItem techniques="G91" id="2.4.9" name="WCAG 2.0"/>
         </guideline>
         <metrics>
-            <mItem score="2" name="Operable"/>
+            <mItem name="Operable"/>
         </metrics>
         <description>
             <desc>Do not use the same link text more than once when the links point to different URLs.</desc>
