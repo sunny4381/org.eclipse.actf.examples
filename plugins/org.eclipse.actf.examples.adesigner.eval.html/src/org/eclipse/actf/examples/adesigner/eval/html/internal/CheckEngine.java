@@ -2524,29 +2524,29 @@ public class CheckEngine extends HtmlTagUtil {
 		Vector<Node> rowColTables = new Vector<Node>();
 
 		for (Element el : dataTableList) {
-			int thNum = 0;
-			boolean hasScopeAxis = false;
-			for (Element tr : edu.getElementsList(el, "tr")) { //$NON-NLS-1$
-				List<Element> cells = edu.getElementsList(tr, "th"); //$NON-NLS-1$
-				if (cells.size() > 0)
-					thNum++;
-				cells.addAll(edu.getElementsList(tr, "td"));
-				for (Element cell : cells) {
-					if (getAttribute(cell, "scope") != null
-							|| getAttribute(cell, "axis") != null) {
-						hasScopeAxis = true;
-						break;
-					}
-				}
-				if (hasScopeAxis)
-					break;
-			}
-			if (!hasScopeAxis && thNum > 1) {
-				// TODO? alert: two or more rows or columns as table header
-				addCheckerProblem("C_76.0", el); //$NON-NLS-1$
-			}
-
-			// TODO? need to check structure (axis, scope)
+			// duplicated with C_331
+			// int thNum = 0;
+			// boolean hasScopeAxis = false;
+			//			for (Element tr : edu.getElementsList(el, "tr")) { //$NON-NLS-1$
+			//				List<Element> cells = edu.getElementsList(tr, "th"); //$NON-NLS-1$
+			// if (cells.size() > 0)
+			// thNum++;
+			// cells.addAll(edu.getElementsList(tr, "td"));
+			// for (Element cell : cells) {
+			// if (getAttribute(cell, "scope") != null
+			// || getAttribute(cell, "axis") != null) {
+			// hasScopeAxis = true;
+			// break;
+			// }
+			// }
+			// if (hasScopeAxis)
+			// break;
+			// }
+			// if (!hasScopeAxis && thNum > 1) {
+			// // TODO check table header structure
+			//				addCheckerProblem("C_76.0", el); //$NON-NLS-1$
+			// }
+			//
 
 			if (hasRowColSpan(el)) {
 				// the table has rowspan and/or colspan
@@ -3148,14 +3148,48 @@ public class CheckEngine extends HtmlTagUtil {
 	private void item_331() {
 		Vector<Node> withoutScope = new Vector<Node>();
 		Vector<Node> invalidScope = new Vector<Node>();
+
 		for (Element table : dataTableList) {
+			int thCount = 0;
+			boolean isFirstRow = true;
+			boolean isHeaderRow = false;
+			boolean isHeaderColumn = true;
+			int firstRowLength = 0;
+			int trCount = 0;
+
+			for (Element tr : edu.getElementsList(table, "tr")) { //$NON-NLS-1$
+				trCount++;
+				List<Element> cells = edu.getElementsList(tr, "th"); //$NON-NLS-1$
+				if (isFirstRow) {
+					isFirstRow = false;
+					firstRowLength = tr.getChildNodes().getLength();
+					if (cells.size() == firstRowLength) {
+						isHeaderRow = true;
+					}
+				}
+				if (isHeaderColumn) {
+					isHeaderColumn = tr.hasChildNodes()
+							&& tr.getFirstChild().getNodeName()
+									.equalsIgnoreCase("th");
+				}
+				if (cells.size() > 0) {
+					thCount += cells.size();
+				}
+			}
+
+			boolean isSimpleTable = (isHeaderRow && firstRowLength == thCount)
+					|| (isHeaderColumn && trCount == thCount);
+
 			// all data tables are leaf tables, so getElements() suffice.
 			for (Element th : edu.getElementsList(table, "th")) {
-				if (!th.hasAttribute("scope"))
-					withoutScope.add(th);
-				else if (!th.getAttribute("scope").matches(
-						"row(group)?|col(group)?"))
+				if (!th.hasAttribute("scope")) {
+					if (!isSimpleTable) {
+						withoutScope.add(th);
+					}
+				} else if (!th.getAttribute("scope").matches(
+						"row(group)?|col(group)?")) {
 					invalidScope.add(th);
+				}
 			}
 		}
 		if (withoutScope.size() > 0)
