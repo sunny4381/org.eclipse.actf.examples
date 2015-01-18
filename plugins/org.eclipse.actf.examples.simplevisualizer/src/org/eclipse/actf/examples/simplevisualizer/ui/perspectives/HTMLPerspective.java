@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 IBM Corporation and Others
+ * Copyright (c) 2006, 2015 IBM Corporation and Others
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -48,10 +48,10 @@ public class HTMLPerspective implements IPerspectiveFactory {
 
 		try {
 			PerspectiveListenerForBrowserLaunch.setTargetUrl(new URL(
-					"http://www.eclipse.org/actf"));
+					"https://www.eclipse.org/actf"));
 		} catch (MalformedURLException e) {
 		}
-
+		
 		PlatformUI.getWorkbench().getActiveWorkbenchWindow()
 				.addPerspectiveListener(
 						new PerspectiveListenerForBrowserLaunch(ID));

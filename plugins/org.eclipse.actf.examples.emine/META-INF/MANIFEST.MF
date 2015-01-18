@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: ACTF Example eMINE (Incubation)
 Bundle-SymbolicName: org.eclipse.actf.examples.emine;singleton:=true
-Bundle-Version: 0.9.2.qualifier
+Bundle-Version: 1.2.0.qualifier
 Bundle-Activator: org.eclipse.actf.examples.emine.EminePlugin
 Bundle-Vendor: Eclipse.org
 Bundle-Localization: plugin
@@ -17,6 +17,9 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.actf.model.ui.editors.ie,
  org.eclipse.actf.visualization.ui.report,
  org.eclipse.ui.views,
- org.eclipse.actf.util.vocab
+ org.eclipse.actf.util.vocab,
+ org.eclipse.e4.ui.model.workbench,
+ org.eclipse.e4.ui.workbench,
+ org.eclipse.e4.core.contexts
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5

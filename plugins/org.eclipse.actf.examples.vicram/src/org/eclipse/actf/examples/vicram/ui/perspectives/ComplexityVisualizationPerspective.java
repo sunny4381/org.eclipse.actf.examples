@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 IBM Corporation and Others
+ * Copyright (c) 2009, 2015 IBM Corporation and Others
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -25,13 +25,13 @@ public class ComplexityVisualizationPerspective implements IPerspectiveFactory {
 
 	public void createInitialLayout(IPageLayout layout) {
 		layout.setEditorAreaVisible(true);
-		
+
 		try {
 			PerspectiveListenerForBrowserLaunch.setTargetUrl(new URL(
-					"http://www.eclipse.org/actf"));
+					"https://projects.eclipse.org/projects/technology.actf/"));
 		} catch (MalformedURLException e) {
 		}
-
+		
 		PlatformUI.getWorkbench().getActiveWorkbenchWindow()
 				.addPerspectiveListener(
 						new PerspectiveListenerForBrowserLaunch(ID));
