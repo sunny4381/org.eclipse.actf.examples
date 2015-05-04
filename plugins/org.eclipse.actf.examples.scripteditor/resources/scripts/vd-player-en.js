@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 IBM Corporation and others.
+ * Copyright (c) 2009, 2015 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,8 +13,15 @@
 //
 (function () {
   var TEXT_RESOURCES = { playLabel: 'Play', pauseLabel: 'Pause', stopLabel: 'Stop', skipLabel: 'Skip 10 s', backLabel: 'Back 10 s', volUpLabel: 'Vol Up', volDnLabel: 'Vol Down', timeFormat: '%m m %s s', showTextLabel: 'Show Text' }; // English
+  var USER_AGENTS_RE = /MSIE|AppleWebKit/;
   var FORMAT_REPLACE = { MSIE: 'm4a', AppleWebKit: 'm4a', _: 'oga' }; // formats for .* external audio resources (e.g., 'foo.*' is replaced with 'foo.m4a' on MSIE)
 
+  // Ad-hoc codes to bridge the gap between the HTML5 spec and browser implementations
+  //
+  var __track__ = function (e) {
+    return (e.__track__ || e.track);
+  };
+  
   // Parses external text track resources
   //
   var TextTrackParser = [];
@@ -57,7 +64,7 @@
 
     var wildcardToFormat = function (url) {
       if (!url) return null;
-      var v = navigator.userAgent.match(/MSIE|AppleWebKit/) || ['_'];
+      var v = navigator.userAgent.match(USER_AGENTS_RE) || ['_'];
       var f = FORMAT_REPLACE[v[0]];
       return url.replace('*', f);
     };
@@ -76,7 +83,7 @@
 
       for (var i = 0; i < ps.length; ++i) {
         var p = ps[i];
-        var id = p.getAttribute('xml:id'); // p.getAttributeNS(XML_NAMESPACE, 'id'); // for IE
+//      var id = p.getAttribute('xml:id'); // p.getAttributeNS(XML_NAMESPACE, 'id'); // for IE
         var begin = timeToSecond(p.getAttribute('begin'));
         var end = timeToSecond(p.getAttribute('end'));
         var dur = timeToSecond(p.getAttribute('dur'));
@@ -85,7 +92,8 @@
         var external = wildcardToFormat(p.getAttribute('tvd:external')); // p.getAttributeNS(TVD_NAMESPACE, 'external'); // for IE
         end = end || (begin + (extended ? 0 : dur));
         dur = dur || (end - begin);
-        var cue = new TextTrackCue(id, begin, end, text, '', extended);
+        var cue = new TextTrackCue(begin, end, text);
+        cue.pauseOnExit = extended;
         cue.__duration__ = dur;
         cue.__external__ = external;
         cues.push(cue);
@@ -111,7 +119,7 @@
 
     var wildcardToFormat = function (url) {
       if (!url) return null;
-      var v = navigator.userAgent.match(/MSIE|AppleWebKit/) || ['_'];
+      var v = navigator.userAgent.match(USER_AGENTS_RE) || ['_'];
       var f = FORMAT_REPLACE[v[0]];
       return url.replace('*', f);
     };
@@ -131,7 +139,7 @@
         var m = e.match(/^(?:(\w+)\n)?((?:\d{2,})?:\d{2}:\d{2}\.\d{3})[ \t]+-->[ \t]+((?:\d{2,})?:\d{2}:\d{2}\.\d{3})(?:[ \t]+([^\n]+))?\n([\w\W]+)$/m);
         
         if (m) {
-          var id = m[1] || '';
+//        var id = m[1] || '';
           var begin = timeToSecond(m[2]);
           var end = timeToSecond(m[3]);
           var settings = m[4] || '';
@@ -143,7 +151,8 @@
           var external = wildcardToFormat(m2 ? m2[1] : '');
           end = end || (begin + (extended ? 0 : dur));
           dur = dur || (end - begin);
-          var cue = new TextTrackCue(id, begin, end, text, '', extended);
+          var cue = new TextTrackCue(begin, end, text);
+          cue.pauseOnExit = extended;
           cue.__duration__ = dur;
           cue.__external__ = external;
           cues.push(cue);
@@ -161,8 +170,7 @@
   var initCues = function (track, video) {
     var onenter = function (e) {
       var cue = e.target;
-
-      if (cue.track.__kind__ == 'descriptions') {
+      if (__track__(cue).__kind__ == 'descriptions') {
         if (cue.__audio__) { // external resource exists
           cue.__audio__.currentTime = 0;
           cue.__audio__.play();
@@ -174,15 +182,14 @@
           showText(cue.text, video.__descriptions__);
         }
       }
-      else if (cue.track.__kind__ == 'captions') {
+      else if (__track__(cue).__kind__ == 'captions') {
         showText(cue.text, video.__captions__);
       }
     };
 
     var onexit = function (e) {
       var cue = e.target;
-
-      if (cue.track.__kind__ == 'descriptions') {
+      if (__track__(cue).__kind__ == 'descriptions') {
         var isExtended = cue.pauseOnExit && video.paused;
 
         if (isExtended) {
@@ -221,7 +228,7 @@
           }
         }
       }
-      else if (cue.track.__kind__ == 'captions') {
+      else if (__track__(cue).__kind__ == 'captions') {
         showText('', video.__captions__);
       }
     };
@@ -257,12 +264,14 @@
           var cues = TextTrackParser.read(xhr);
 
           if (cues) {
+            var t = __track__(track);
+
             for (var i = 0; i < cues.length; ++i) {
-              track.track.addCue(cues[i]);
+              t.addCue(cues[i]);
             }
 
-            track.track.mode = track['default'] ? TextTrack.SHOWING : TextTrack.DISABLED; // .default causes an error in IE
-            initCues(track.track, video);
+            t.mode = track['default'] ? TextTrack.SHOWING : TextTrack.DISABLED; // .default causes an error in IE
+            initCues(t, video);
           }
           
           break;
@@ -360,7 +369,7 @@
       toggleButton.__update__(paused = true);
     }, false);
 
-    video.addEventListener('playing', function (e) {
+    video.addEventListener('play', function (e) {
       toggleButton.disabled = false;
       stopButton.disabled = false;
       backButton.disabled = false;
@@ -427,7 +436,7 @@
       var t = trackElems[j];
 
       if (t.kind == 'descriptions' || t.kind == 'captions' || t.kind == 'metadata' && (t.dataset.kind == 'descriptions' || t.dataset.kind == 'captions')) {
-        t.track.__kind__ = t.dataset.kind || t.kind;
+        __track__(t).__kind__ = (t.dataset.kind || t.kind);
         loadCues(t, v);
       }
     }

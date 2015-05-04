@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2012 IBM Corporation and others.
+ * Copyright (c) 2009, 2015 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,9 +11,9 @@
 //
 // Ad-hoc codes to bridge the gap between the HTML5 spec and browser implementations
 //
-if (typeof TextTrack == 'undefined') {
+if (true) { // if (typeof TextTrack == 'undefined') { // As of Mar 2015, no major browser sufficiently supports TextTrack.
   (function () {
-    TextTrack = function (kind, label, language) { // See: http://dev.w3.org/html5/spec/media-elements.html#texttrack
+    TextTrack = function (kind, label, language) { // See: http://www.w3.org/TR/html5/embedded-content-0.html#texttrack
       this.kind = kind;
       this.label = label;
       this.language = language;
@@ -27,12 +27,12 @@ if (typeof TextTrack == 'undefined') {
     TextTrack.SHOWING = 2;
 
     TextTrack.prototype.addCue = function (cue) {
-      cue.track = this;
+      cue.track = cue.__track__ = this;
       this.cues.__addCue__(cue);
     };
 
     TextTrack.prototype.removeCue = function (cue) {
-      cue.track = null;
+      cue.track = cue.__track__ = null;
       this.cues.__removeCue__(cue);
     };
 
@@ -40,8 +40,20 @@ if (typeof TextTrack == 'undefined') {
       return 'TextTrack <' + this.kind + '> ' + this.label + ' (' + this.language + ') : ' + this.cues;
     };
 
-    TextTrackList = function () { // See: http://dev.w3.org/html5/spec/media-elements.html#texttracklist
+    TextTrackList = function () { // See: http://www.w3.org/TR/html5/embedded-content-0.html#texttracklist
       var list = [];
+
+      list.getTrackById = function (id) {
+        for (var i = 0; i < this.length; ++i) {
+          var e = this[i];
+
+          if (e.id == id) {
+            return e;
+          }
+        }
+
+        return null;
+      };
 
       list.toString = function () {
         return 'TextTrackList [\n\t' + this.join(',\n\t') + '\n]';
@@ -50,24 +62,22 @@ if (typeof TextTrack == 'undefined') {
       return list;
     };
 
-/*  TextTrackList = function () {}; // not working on IE
-
-    TextTrackList.prototype = [];*/
-
-    TextTrackCue = function (id, startTime, endTime, text, settings, pauseOnExit) { // See: http://dev.w3.org/html5/spec/media-elements.html#texttrackcue
-      this.id = id;
-      this.startTime = startTime;
-      this.endTime = endTime;
-      this.text = text;
-      this.settings = settings || '';
-      this.pauseOnExit = pauseOnExit || false;
+    TextTrackCue = function (startTime, endTime, text) { // See: http://www.w3.org/TR/html5/embedded-content-0.html#texttrackcue
+      if (typeof VTTCue != 'undefined') {
+        return new VTTCue(startTime, endTime, text);
+      }
+      else {
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.text = text;
+      }
     };
 
     TextTrackCue.prototype.toString = function () {
       return 'TextTrackCue <' + this.id + '> ' + this.startTime + ' -> ' + this.endTime + ' : ' + this.text + (this.pauseOnExit ? ' * pause-on-exit * ' : ' ');
     };
 
-    TextTrackCueList = function () { // See: http://dev.w3.org/html5/spec/media-elements.html#texttrackcuelist
+    TextTrackCueList = function () { // See: http://www.w3.org/TR/html5/embedded-content-0.html#texttrackcuelist
       var list = [];
 
       list.getCueById = function (id) {
@@ -101,41 +111,9 @@ if (typeof TextTrack == 'undefined') {
       return list;
     };
 
-/*  TextTrackCueList = function () {}; // not working on IE
-
-    TextTrackCueList.prototype = [];
-
-    TextTrackCueList.prototype.getCueById = function (id) {
-      for (var i = 0; i < this.length; ++i) {
-        var e = this[i];
-
-        if (e.id == id) {
-          return e;
-        }
-      }
-
-      return null;
-    };
-
-    TextTrackCueList.prototype.__addCue__ = function (cue) {
-      this.push(cue);
-    };
-
-    TextTrackCueList.prototype.__removeCue__ = function (cue) {
-      for (var i = 0; i < this.length; ++i) {
-        if (this[i] === cue) {
-          this.splice(i--, 1);
-        }
-      }
-    };
-
-    TextTrackCueList.prototype.toString = function () {
-      return 'TextTrackCueList [\n\t' + this.join(',\n\t') + '\n]';
-    };*/
-
     var fixMediaElement = function (m) {
-      m.textTracks = new TextTrackList();
-      m.addTextTrack = addTextTrack;
+      m.textTracks = m.__textTracks__ = new TextTrackList();
+      m.addTextTrack = m.__addTextTrack__ = addTextTrack;
       m.__lastTime__ = m.currentTime;
       m.addEventListener('timeupdate', updateCues, false);
       m.addEventListener('seeked', updateCues, false);
@@ -164,7 +142,7 @@ if (typeof TextTrack == 'undefined') {
 
     var addTextTrack = function (kind, label, language) { // HTMLMediaElement#addTextTrack
       var t = new TextTrack(kind, label, language);
-      this.textTracks.push(t);
+      this.__textTracks__.push(t);
       return t;
     };
 
@@ -179,7 +157,7 @@ if (typeof TextTrack == 'undefined') {
       var otherCues = [];
       var conflicted = false;
 
-      var tracks = video.textTracks;
+      var tracks = video.__textTracks__;
 
       for (var i = 0; i < tracks.length; ++i) {
         var t = tracks[i];
@@ -226,7 +204,7 @@ if (typeof TextTrack == 'undefined') {
         }
 
         c.__active__ = false;
-        c.track.activeCues.__removeCue__(c);
+        c.__track__.activeCues.__removeCue__(c);
       }
 
       for (var i = 0; i < currentCues.length; ++i) {
@@ -237,7 +215,7 @@ if (typeof TextTrack == 'undefined') {
         }
 
         c.__active__ = true;
-        c.track.activeCues.__addCue__(c);
+        c.__track__.activeCues.__addCue__(c);
       }
 
       events.sort(function (a, b) { return a.timeStamp - b.timeStamp });
@@ -269,14 +247,14 @@ if (typeof TextTrack == 'undefined') {
     for (var i = 0; i < trackElems.length; ++i) {
       var t = trackElems[i];
       fixTrackElement(t);
-      t.track = t.parentNode.addTextTrack(t.kind, t.label, t.srclang);
+      t.track = t.__track__ = t.parentNode.__addTextTrack__(t.kind, t.label, t.srclang);
     }
   })();
 }
 
-if (typeof MediaController == 'undefined') {
+if (true) { // if (typeof MediaController == 'undefined') { // As of Mar 2015, no major browser sufficiently supports MediaController.
   (function () {
-    MediaController = function () {}; // See: http://dev.w3.org/html5/spec/media-elements.html#mediacontroller
+    MediaController = function () {}; // See: http://www.w3.org/TR/html5/embedded-content-0.html#mediacontroller
 
     MediaController.prototype.__syncTime__ = function (kicker) {
       if (kicker.__seekedForSync__) {
