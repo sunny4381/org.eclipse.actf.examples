@@ -3,4 +3,4 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Eclipse ACTF Script Editor Lite Help Plug-in
 Bundle-SymbolicName: org.eclipse.actf.examples.scripteditor.doc;singleton:=true
 Bundle-Version: 0.1.0.qualifier
-Bundle-Vendor: Eclipse.org
+Bundle-Vendor: Eclipse ACTF Project

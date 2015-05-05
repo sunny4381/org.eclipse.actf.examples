@@ -3,7 +3,7 @@
       id="org.eclipse.actf.examples.adesigner.nls"
       label="Eclipse ACTF Example aDesigner Client NLS (Incubation)"
       version="0.7.0.qualifier"
-      provider-name="Eclipse.org">
+      provider-name="Eclipse ACTF Project">
 
    <description>
       %description

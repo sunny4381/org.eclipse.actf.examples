@@ -4,7 +4,7 @@ Bundle-Name: ACTF Examples HtmlChecker
 Bundle-SymbolicName: org.eclipse.actf.examples.htmlchecker;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: org.eclipse.actf.examples.htmlchecker.Activator
-Bundle-Vendor: Eclipse.org
+Bundle-Vendor: Eclipse ACTF Project
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,

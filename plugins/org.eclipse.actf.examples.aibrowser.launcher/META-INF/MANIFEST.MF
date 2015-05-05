@@ -8,4 +8,4 @@ Bundle-Localization: plugin
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.equinox.launcher
 Eclipse-LazyStart: true
-Bundle-Vendor: Eclipse.org
+Bundle-Vendor: Eclipse ACTF Project

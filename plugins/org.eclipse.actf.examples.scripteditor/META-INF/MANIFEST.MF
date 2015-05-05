@@ -24,4 +24,4 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Bundle-localization: plugin
 Import-Package: org.eclipse.actf.model.flash
-Bundle-Vendor: Eclipse.org
+Bundle-Vendor: Eclipse ACTF Project

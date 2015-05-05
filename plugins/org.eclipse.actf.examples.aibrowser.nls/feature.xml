@@ -3,7 +3,7 @@
       id="org.eclipse.actf.examples.aibrowser.nls"
       label="org.eclipse.actf.examples.aibrowser.nls"
       version="0.5.0.qualifier"
-      provider-name="Eclipse.org">
+      provider-name="Eclipse ACTF Project">
 
    <description>
       %description

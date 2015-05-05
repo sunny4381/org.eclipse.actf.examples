@@ -3,5 +3,5 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Eclipse ACTF Script Editor Lite Help NL1 Fragment
 Bundle-SymbolicName: org.eclipse.actf.examples.scripteditor.doc.nl1
 Bundle-Version: 0.1.0.qualifier
-Bundle-Vendor: Eclipse.org
+Bundle-Vendor: Eclipse ACTF Project
 Fragment-Host: org.eclipse.actf.examples.scripteditor.doc;bundle-version="0.0.1"
