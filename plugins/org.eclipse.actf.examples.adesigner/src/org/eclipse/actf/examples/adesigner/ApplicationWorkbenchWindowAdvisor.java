@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2014 IBM Corporation and Others
+ * Copyright (c) 2006, 2015 IBM Corporation and Others
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -15,24 +15,20 @@ import org.eclipse.actf.examples.adesigner.ui.preferences.IPreferenceConstants;
 import org.eclipse.actf.model.flash.proxy.FlashCacheUtil;
 import org.eclipse.actf.model.ui.util.PerspectiveListenerForBrowserLaunch;
 import org.eclipse.actf.visualization.ui.IVisualizationPerspective;
-import org.eclipse.core.runtime.Preferences;
-import org.eclipse.e4.ui.model.application.ui.basic.MWindow;
-import org.eclipse.e4.ui.workbench.modeling.EModelService;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.preference.IPreferenceNode;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferenceManager;
 import org.eclipse.ui.IPerspectiveDescriptor;
 import org.eclipse.ui.IPerspectiveListener;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPreferenceConstants;
-import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.application.ActionBarAdvisor;
 import org.eclipse.ui.application.IActionBarConfigurer;
 import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 import org.eclipse.ui.application.WorkbenchWindowAdvisor;
-import org.eclipse.ui.internal.WorkbenchWindow;
 
 public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 
@@ -105,27 +101,30 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 				items[i].dispose();
 			}
 		}
-		
-		//hide quick access (for Eclipse 4.2.x)
-		IWorkbenchWindow window = PlatformUI.getWorkbench()
-				.getActiveWorkbenchWindow();
-		MWindow model = ((WorkbenchWindow) window).getModel();
-		EModelService modelService = model.getContext()
-				.get(EModelService.class);
-		modelService.find("SearchField", model).setToBeRendered(false);
-						
+
+		// hide quick access (for Eclipse 4.2.x)
+		/*
+		 * IWorkbenchWindow window = PlatformUI.getWorkbench()
+		 * .getActiveWorkbenchWindow(); try { MWindow model = ((WorkbenchWindow)
+		 * window).getModel(); EModelService modelService =
+		 * model.getContext().get( EModelService.class);
+		 * modelService.find("SearchField", model).setToBeRendered(false); }
+		 * catch (Exception e) {
+		 * 
+		 * }
+		 */
+
 		PreferenceManager prefManager = getWindowConfigurer()
 				.getWorkbenchConfigurer().getWorkbench().getPreferenceManager();
 		for (IPreferenceNode node : prefManager.getRootSubNodes()) {
 			if ("org.eclipse.actf.ui.preferences.RootPreferencePage"
 					.equals(node.getId())) {
-				node
-						.remove("org.eclipse.actf.util.vocab.preferences.VocabPreferencePage");
+				node.remove("org.eclipse.actf.util.vocab.preferences.VocabPreferencePage");
 			}
 		}
 
-		Preferences prefStore = ADesignerPlugin.getDefault()
-				.getPluginPreferences();
+		IPreferenceStore prefStore = ADesignerPlugin.getDefault()
+				.getPreferenceStore();
 
 		if (ADesignerPlugin.getPerspectiveID() == null
 				&& prefStore.getString(IPreferenceConstants.STARTUP_OPTION_ID)
