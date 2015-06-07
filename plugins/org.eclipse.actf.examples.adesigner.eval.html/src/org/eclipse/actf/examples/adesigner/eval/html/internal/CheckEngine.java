@@ -2023,18 +2023,12 @@ public class CheckEngine extends HtmlTagUtil {
 				}
 			}
 			// C_54.3 check
-			if (fieldsets.size() >= 2) {
-				FieldsetManager map = new FieldsetManager();
-				int index = 0;
-				for (Element fieldset : fieldsets) {
-					for (Element ctrl : getRadioAndCheck(fieldset)) {
-						map.addEntry(ctrl.getAttribute("name"), ctrl, index);
-					}
-					index++;
-				}
-				for (Vector<Node> error : map.getErrorList()) {
-					addCheckerProblem("C_54.3", "", error); //$NON-NLS-1$
-				}
+			FieldsetManager map = new FieldsetManager();
+			for (Element ctrl : getRadioAndCheck(form)) {
+				map.addEntry(ctrl.getAttribute("name"), ctrl);
+			}
+			for (Vector<Node> error : map.getErrorList()) {
+				addCheckerProblem("C_54.3", "", error); //$NON-NLS-1$
 			}
 		}
 		if (noFieldSetForms.size() > 0)
@@ -3751,15 +3745,15 @@ public class CheckEngine extends HtmlTagUtil {
 	}
 
 	/**
-	 * Returns radio buttons and check boxes contained in the specified fieldset
+	 * Returns radio buttons and check boxes contained in the specified form
 	 * element.
 	 * 
-	 * @param fieldset
+	 * @param form
 	 * @return A <code>List</code> of <code>Element</code>s.
 	 */
-	private List<Element> getRadioAndCheck(Element fieldset) {
+	private List<Element> getRadioAndCheck(Element form) {
 		List<Element> returns = new ArrayList<Element>();
-		List<Element> inputs = edu.getElementsList(fieldset, "input");
+		List<Element> inputs = edu.getElementsList(form, "input");
 		for (Element e : inputs) {
 			if (e.getAttribute("type").toLowerCase().matches("radio|checkbox"))
 				returns.add(e);
