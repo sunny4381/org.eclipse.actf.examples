@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="Visual Complexity Rankings and Accessibility Metrics (ViCRAM)" id="org.eclipse.actf.examples.vicram.ViCRAM" application="org.eclipse.actf.examples.vicram.VicramApplication" version="1.3.0.qualifier" useFeatures="true" includeLaunchers="true">
+<product name="Visual Complexity Rankings and Accessibility Metrics (ViCRAM)" id="org.eclipse.actf.examples.vicram.ViCRAM" application="org.eclipse.actf.examples.vicram.VicramApplication" version="1.3.1.qualifier" useFeatures="true" includeLaunchers="true">
 
    <aboutInfo>
       <image path="/org.eclipse.actf.examples.vicram/about.gif"/>
@@ -35,7 +35,7 @@
    </plugins>
 
    <features>
-      <feature id="org.eclipse.actf.examples.vicram" version="1.3.0.qualifier"/>
+      <feature id="org.eclipse.actf.examples.vicram" version="1.3.1.qualifier"/>
    </features>
 
 
