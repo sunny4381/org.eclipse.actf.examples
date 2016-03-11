@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2011 Ministry of Internal Affairs and Communications, 
+ * Copyright (c) 2004, 2016 Ministry of Internal Affairs and Communications, 
  * IBM Corporation and Others
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -21,6 +21,28 @@ body {
 th, td { /* ns 4 */
   font-family: sans-serif;
 }
+
+table.guide{
+  border: 1px solid;
+  border-collapse:collapse;
+}
+
+table.guide th,td{
+  border: 1px solid;
+  padding: 5px;
+}
+
+table.guide ul{
+  padding: 0;
+  margin: 0;
+}
+
+table.guide li{
+  padding: 0;
+  margin: 0;
+  list-style-position: inside;
+}
+
 
 h1, h2, h3, h4, h5, h6 { text-align: left }
 h1 { font: bold 170% arial }
