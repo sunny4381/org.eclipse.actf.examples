@@ -1787,6 +1787,15 @@
             <desc>Identify the default charset of the document. (Use '&amp;lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=xxx&quot; /&amp;gt;'.)</desc>
         </description>
     </checkitem>
+    <checkitem type="user" id="C_88.1">
+        <guideline/>
+        <metrics>
+            <mItem name="Understandable"/>
+        </metrics>
+        <description>
+            <desc>Confirm if the default charset of the document is identified by '&amp;lt;meta charset=&quot;xxx&quot; /&amp;gt;', Content-Type hedder of HTTP, or Byte Order Mark(BOM) of the document.</desc>
+        </description>
+    </checkitem>
     <checkitem type="error" id="C_89.0">
         <metrics>
             <mItem score="5" name="Perceivable"/>
