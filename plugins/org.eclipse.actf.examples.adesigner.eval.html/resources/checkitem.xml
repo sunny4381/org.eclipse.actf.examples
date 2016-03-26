@@ -3125,4 +3125,16 @@
             <desc>If color is used within an image to convey information, If you use color to convey information, make sure the information is also represented another way.</desc>
         </description>
     </checkitem>
+    <checkitem type="info" id="C_600.20">
+        <guideline>
+            <gItem techniques="G10,G108,G135" id="4.1.2" name="JIS"/>
+            <gItem techniques="G10,G108,G135" id="4.1.2" name="WCAG 2.0"/>
+        </guideline>
+        <metrics>
+            <mItem name="Robust"/>
+        </metrics>
+        <description>
+            <desc>Please use markup features and accessibility APIs that defined for each technology to expose the name, role, and state.</desc>
+        </description>
+    </checkitem>
 </checker-config>

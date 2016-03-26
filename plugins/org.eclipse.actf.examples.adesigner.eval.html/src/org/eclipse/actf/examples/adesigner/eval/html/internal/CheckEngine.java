@@ -1274,6 +1274,14 @@ public class CheckEngine extends HtmlTagUtil {
 			addCheckerProblem("C_600.16", "(" + Messages.Dynamic + tmpS + ")"); //$NON-NLS-1$
 		}
 
+		NodeList tmpNL = target.getElementsByTagName("math");
+		if (tmpNL.getLength() > 0) {
+			addCheckerProblem("C_600.20", "MathML",tmpNL);
+		}
+		tmpNL = target.getElementsByTagName("svg");
+		if (tmpNL.getLength() > 0) {
+			addCheckerProblem("C_600.20", "SVG",tmpNL);
+		}
 	}
 
 	private void item_31() {
