@@ -12,8 +12,7 @@
      Ministry of Internal Affairs and Communications - update
 -->
 <toc label="miCheckerガイド" topic="docs/index.html">
-	<topic label="miCheckerについて" href="docs/about.html">
-		<topic label="miChecker利用ガイド" href="docs/overview.html"/>
+	<topic label="miCheckerについて" href="docs/readme1st.html">
 		<topic label="miCheckerの構成" href="docs/workspace.html"/>
 		<topic label="二つの障害視覚化" href="docs/modes.html"/>
 	</topic>
