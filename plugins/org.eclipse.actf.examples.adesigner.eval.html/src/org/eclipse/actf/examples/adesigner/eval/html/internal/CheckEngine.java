@@ -248,8 +248,16 @@ public class CheckEngine extends HtmlTagUtil {
 		if (tmpD instanceof IDocumentEx) {
 			IStyleSheets styleSheets = ((IDocumentEx) tmpD).getStyleSheets();
 			prepStyleSheets(styleSheets);
-			liveObject = tmpD.getElementsByTagName("object").getLength();
-			liveEmbed = tmpD.getElementsByTagName("embed").getLength();
+			try {
+				liveObject = tmpD.getElementsByTagName("object").getLength();
+			} catch (Exception e) {
+				liveObject = 0;
+			}
+			try {
+				liveEmbed = tmpD.getElementsByTagName("embed").getLength();
+			} catch (Exception e) {
+				liveEmbed = 0;
+			}
 		}
 
 		baseUrl = edu.getBaseUrl();
@@ -319,7 +327,7 @@ public class CheckEngine extends HtmlTagUtil {
 
 		headings = edu.getHeadings();
 
-		//use original document's doctype
+		// use original document's doctype
 		DocumentType docType = edu.getSrcDom().getDoctype();
 		docTypeS = DocumentTypeUtil.getOriginalID(docType);
 		isXHTML = DocumentTypeUtil.isOriginalXHTML(docType);
