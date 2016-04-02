@@ -3,7 +3,7 @@
 <HEAD>
 <META http-equiv="Content-Type" CONTENT="text/html; charset=SHIFT_JIS">
 <META http-equiv="Content-Style-Type" content="text/css">
-<meta name="copyright" content="Copyright (c) Ministry of Internal Affairs and Communications, IBM Corporation and others 2007, 2011. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page." >
+<meta name="copyright" content="Copyright (c) Ministry of Internal Affairs and Communications, IBM Corporation and others 2007, 2016. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page." >
 <TITLE>「アクセシビリティ検証・音声ユーザビリティ視覚化」 で検出されるアクセシビリティおよびユーザビリティの問題点</TITLE>
 <LINK href="miChecker.css" rel="stylesheet" type="text/css" class="head">
 </HEAD>
@@ -40,7 +40,7 @@ miChecker はウェブページ内の各要素への到達時間を、背景色をグラデーションで表現す
 
 <H2 id="internalLink">ページ内リンク</H2>
 <P>
-音声ブラウザによるナビゲーションを容易にするために、ページ内リンクは非常に強力な武器になります。
+音声ブラウザによるナビゲーションを容易にするために、ページ内リンクは有用な仕組みです。
 miChecker は &quot;本文へジャンプ&quot; リンクの有無を調べます。
 このリンクが挿入されていれば、音声ブラウザユーザはウェブページの先頭からメインの部分（本文）にすぐに移動することができるようになります。
 </P>
@@ -48,7 +48,7 @@ miChecker は &quot;本文へジャンプ&quot; リンクの有無を調べます。
 情報量の多いウェブページ（全体を読み上げるのに時間がかかるウェブページ）には、適切にページ内リンクを挿入するようにしてください。
 miChecker は、リンク先が存在しないページ内リンクや、読み上げ可能なテキストがない（つまり音声ブラウザで検知できない）ページ内リンクも検出します。
 これらのエラーが検出されたら、適切に修正してください。
-<b>視覚化</b>ビューでリンク元アイコンを選択すると、対応するリンク先アイコンまでの間に矢印が描画されます。
+<b>音声ユーザビリティ</b>ビューでリンク元アイコンを選択すると、対応するリンク先アイコンまでの間に矢印が描画されます。
 </P>
 
 <H2 id="redundantText">冗長なテキストの情報</H2>
@@ -57,7 +57,7 @@ miChecker は冗長なテキストの情報を検出します。
 たとえば、&quot;電話帳&quot; という alt 属性が与えられたアイコンの後に &quot;電話帳&quot; というテキストが繰り返され、それぞれ同じページにリンクが設定されているような場合、
 音声ブラウザは「電話帳電話帳」と同じテキストを2回読み上げます。
 これは読み上げ時間を増大させ、ユーザビリティを低下させるとともに、ユーザーを混乱させてしまいます。
-このような場合は、アイコンの alt 属性を空文字 (&quot;&quot;) にするのが適切です。
+このような場合は、アイコンとテキストを同一のリンク内に配置した上で、アイコンの alt 属性を空文字 (&quot;&quot;) にする方法などで対応してください。
 </P>
 
 <H2 id="inadequacyalt">不適切なalt属性</H2>
@@ -80,7 +80,7 @@ miChecker はテーブルセルを視覚化し、ウェブページ制作者がテーブル構造を把握するの
 </P>
 <P>
 miChecker は、アクセシビリティ関連タグに色をつけて表示したり、テーブルセルを表示することにより HTML 文書の構造を視覚化します。
-<b>視覚化</b>ビューでは、テーブルヘッダーセル（見出しセル）は緑(*)で表示されます(*色は設定パネルで変更可)。
+<b>音声ユーザビリティ</b>ビューでは、テーブルヘッダーセル（見出しセル）は緑(*)で表示されます(*色は設定パネルで変更可)。
 データテーブルには、常にテーブルヘッダーセルを挿入するようにしてください。
 </P>
 
@@ -92,8 +92,8 @@ miChecker は従来のアクセシビリティ・チェッカーと同様に、アクセシビリティ・ガイド
 
 <H1 class="related">関連項目</H1>
 <UL class="related">
-<LI><A href="checkBlind.html">「音声ユーザビリティ」タブ でウェブページのアクセシビリティやユーザビリティをチェックする</A>
-<LI><A href="problemsLv.html">「ロービジョン」タブ で検出されるアクセシビリティ、およびユーザビリティの問題点</A>
+<LI><A href="checkBlind.html">音声インターフェースユーザーのアクセシビリティやユーザビリティをチェックする</A>
+<LI><A href="problemsLv.html">「ロービジョンシミュレーション」 で検出されるアクセシビリティ、およびユーザビリティの問題点</A>
 <LI><A href="compliance.html">Web アクセシビリティ・ガイドラインへの準拠</A>
 </UL>
 

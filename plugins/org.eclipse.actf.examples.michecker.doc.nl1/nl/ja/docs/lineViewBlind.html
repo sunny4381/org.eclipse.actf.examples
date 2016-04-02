@@ -3,7 +3,7 @@
 <HEAD>
 <META http-equiv="Content-Type" CONTENT="text/html; charset=SHIFT_JIS">
 <META http-equiv="Content-Style-Type" content="text/css">
-<meta name="copyright" content="Copyright (c) Ministry of Internal Affairs and Communications, IBM Corporation and others 2007, 2011. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page." >
+<meta name="copyright" content="Copyright (c) Ministry of Internal Affairs and Communications, IBM Corporation and others 2007, 2016. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page." >
 <TITLE>詳細レポートの個別表示（音声ユーザビリティ）</TITLE>
 <LINK href="miChecker.css" rel="stylesheet" type="text/css" class="head">
 </HEAD>
@@ -26,7 +26,7 @@
 <div style="margin-bottom:20px;margin-top:15px">
 <table border=1><tr><td>
 <IMG src="images/I_Star.gif" alt="星."> </td><td>このアイコンは他のアイコンと併用されます。
-このアイコンが表示されている行を選択すると、<b>視覚化</b>ビュー上でその問題点に対応する要素がハイライトされます。
+このアイコンが表示されている行を選択すると、<b>音声ユーザビリティ</b>ビュー上でその問題点に対応する要素がハイライトされます。
 </td></tr></table>
 </div>
 
@@ -55,7 +55,7 @@
   <LI>WCAG 2.0</li>
   <LI>Section 508</li>
   </UL>
-<li><b>実装方法: </b>対応する実装方法等の項目が表示されます。</li>
+<li><b>達成方法: </b>対応する達成方法（実装方法）等の項目が表示されます。</li>
 <LI><B>行番号: </B>対応する要素が存在する HTML 内の行番号が表示されます。<br>
 (この項目はオプショナルです。メニューの 「<B>ウィンドウ</B>」 &gt; 「<B>設定</B>」  から設定パネルを開き、「<B>ACTF</B> &gt; <B>ガイドラインチェッカー 設定</B>」 の中の 「チェック対象」 で「HTMLファイル（行番号をエラーレポートに追加）を選択すると表示されます。)
 <LI><B>内容: </B>問題点や確認すべき内容が簡潔に記述されます。
@@ -63,16 +63,16 @@
 
 <H2 id="operation">操作</H2>
 <P>
-行を選択すると、対応する要素が<b>視覚化</b>ビュー上でハイライトされます。
+行を選択すると、対応する要素が<b>音声ユーザビリティ</b>ビュー上でハイライトされます。
 右クリックするか、行が選択された状態で 「Shift+F10」 キーを押すと、コンテキストメニューが表示されます。
 音声ユーザビリティ視覚化時には、コンテキストメニューから以下の5つの項目が利用できます。
 </P>
 <UL class="space">
-<LI><B>選択の解除</B>: 個別表示における現在の選択が解除されます。これは、<b>シミュレーション／視覚化</b>ビューにおけるハイライトを消す時に使用することができます。
+<LI><B>選択の解除</B>: 個別表示における現在の選択が解除されます。これは、<b>音声ユーザビリティ/ロービジョン</b>ビューにおけるハイライトを消す時に使用することができます。
 <LI><B>達成基準を見る</B>: 選択されている項目に対応した達成基準などの項目を別ウィンドウに表示します。
-<LI><B>実装方法を見る</B>: 選択されている項目に対応した実装方法などの項目を別ウィンドウに表示します。
+<LI><B>達成方法を見る</B>: 選択されている項目に対応した達成方法（実装方法）などの項目を別ウィンドウに表示します。
 <LI><B>エラーの内容を見る</B>: 個別表示における「エラーの内容」の項目がポップアップ・ウィンドウに表示されます。「エラーの内容」が長すぎてmiCheckerの画面では表示しきれない場合に便利です。
-<LI><B>ソースHTML を見る</B>: <A href="sourceViewer.html">HTML 文書表示パネル</A>を開きます。開いた HTML 文書表示パネル上で、選択されているエラーに該当する HTML 要素がハイライトされています。これにより、HTML 文書内のどこを直せばよいかがすぐにわかります。
+<LI><B>ソースHTML を見る</B>: <A href="sourceViewer.html">HTMLソース ウィンドウ</A>を開きます。開いた HTMLソース ウィンドウ上で、選択されているエラーに該当する HTML 要素がハイライトされています。これにより、HTML 文書内のどこを直せばよいかがすぐにわかります。
 <li><b>コピー</b>：　詳細レポートの内容をタブ区切り形式でクリップボードにコピーします。</li>
 <li><b>プロパティ</b>：　詳細レポートの内容をポップアップダイアログで確認できます。（各項目をダブルクリックしてもプロパティを確認することが出来ます。）</li>
 </UL>
@@ -80,8 +80,8 @@
 <H1 class="related">関連項目</H1>
 <UL class="related">
 <LI><A href="workspace.html">miChecker の構成</A>
-<LI><A href="checkBlind.html">「音声ユーザビリティ」タブ でウェブページのアクセシビリティやユーザビリティをチェックする</A>
-<LI><A href="problemsBlind.html">「アクセシビリティ検証・音声ユーザビリティ視覚化」 で検出されるアクセシビリティ、およびユーザビリティの問題点</A>
+<LI><A href="checkBlind.html">音声インターフェースユーザーのアクセシビリティやユーザビリティをチェックする</A>
+<LI><A href="problemsBlind.html">詳細レポートの個別表示（音声ユーザビリティ）</A>
 <LI><A href="compliance.html">Web アクセシビリティ・ガイドラインへの準拠</A>
 <LI><A href="menusIcons.html">メニュー、ボタン、チェックボックス、アイコンの説明</A>
 <LI><A href="sourceViewer.html">HTML文書表示パネル</A>

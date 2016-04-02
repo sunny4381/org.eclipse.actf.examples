@@ -3,7 +3,7 @@
 <HEAD>
 <META http-equiv="Content-Type" CONTENT="text/html; charset=SHIFT_JIS">
 <META http-equiv="Content-Style-Type" content="text/css">
-<meta name="copyright" content="Copyright (c) Ministry of Internal Affairs and Communications, IBM Corporation and others 2007, 2011. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page." >
+<meta name="copyright" content="Copyright (c) Ministry of Internal Affairs and Communications, IBM Corporation and others 2007, 2016. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page." >
 <TITLE>二つの障害視覚化</TITLE>
 <LINK href="miChecker.css" rel="stylesheet" type="text/css" class="head">
 </HEAD>
@@ -11,13 +11,13 @@
 <H1>二つの障害視覚化</H1>
 
 <UL>
-<LI><a href="#voiceMode">音声ユーザビリティタブ</a>
+<LI><a href="#voiceMode">音声ユーザビリティビュー</a>
 <UL>
 <LI><a href="#voiceUsability">音声ユーザビリティの視覚化</a>
 <LI><a href="#accsabilityCheckv">アクセシビリティとユーザビリティのチェック</a>
 <LI><a href="#accguidelineCheck">アクセシビリティ・ガイドラインへの準拠度のチェック</a>
 </UL>
-<LI><a href="#lowvisionMode">ロービジョンタブ</a>
+<LI><a href="#lowvisionMode">ロービジョンビュー</a>
 <UL>
 <LI><a href="#lowviwionSimulation">ロービジョンシミュレーション</a>
 <LI><a href="#accsabilityCheckl">アクセシビリティとユーザビリティのチェック</a>
@@ -27,16 +27,16 @@
 <P>
 miChecker は、視覚障害者の方にとってのアクセシビリティやユーザビリティの 「チェッカー」 であるとともに、視覚障害の 「シミュレーター」 という面も持っています。
 miChecker は、シミュレートやチェックを行う対象の視覚障害を二つに分類し、それぞれに対応する障害モードを持っています。
-<a href="#voiceMode">『<B>音声ユーザビリティ視覚化</B>』</a>は、視覚を使わず音声ブラウザでウェブページにアクセスするユーザーが対象です。
-音声ブラウザ利用時のウェブページのユーザビリティを視覚化してウェブページ制作者に提示するとともに、音声ブラウザ利用者にとってのアクセシビリティやユーザビリティ、およびアクセシビリティ・ガイドラインへの準拠度をチェックします。
+<a href="#voiceMode">『<B>音声ユーザビリティ視覚化</B>』</a>は、視覚を使わずスクリーンリーダーなどを用いて音声でウェブページにアクセスするユーザーが対象です。
+音声利用時のウェブページのユーザビリティを視覚化してウェブページ制作者に提示するとともに、音声インターフェース利用者にとってのアクセシビリティやユーザビリティ、およびアクセシビリティ・ガイドラインへの準拠度をチェックします。
 <a href="#lowvisionMode">『<B>ロービジョンシミュレーション</B>』</a>は、視覚を使うユーザーが対象で、弱視、色覚異常、白内障（水晶体の光透過率低下）、およびこれらの組み合わせをシミュレートできます。
 また、設定されたユーザーにとってのアクセシビリティやユーザビリティの問題点をチェックします。
 </P>
 
-<H2 id="voiceMode">音声ユーザビリティタブ</H2>
+<H2 id="voiceMode">音声ユーザビリティビュー</H2>
 <P>
-miChecker の音声ユーザビリティタブは、次の3つの機能を持っています。「<a href="#voiceUsability">音声ユーザビリティの視覚化</a>」、「<a href="#accsabilityCheckv">アクセシビリティとユーザビリティのチェック</a>」、「<a href="#accguidelineCheck">アクセシビリティ・ガイドラインへの準拠度のチェック</a>」 です。
-視覚化の詳細は 「<A href="parametersBlind.html">設定パネル（Blind 設定）</A>」 で設定することができます。
+miChecker の音声ユーザビリティビューは、次の3つの機能を持っています。「<a href="#voiceUsability">音声ユーザビリティの視覚化</a>」、「<a href="#accsabilityCheckv">アクセシビリティとユーザビリティのチェック</a>」、「<a href="#accguidelineCheck">アクセシビリティ・ガイドラインへの準拠度のチェック</a>」 です。
+視覚化の詳細は 「<A href="parametersBlind.html">設定パネル（音声ユーザビリティ視覚化 設定）</A>」 で設定することができます。
 </P>
 
 <H3 id="voiceUsability">音声ユーザビリティの視覚化</H3>
@@ -56,15 +56,16 @@ miChecker の音声視覚化では、ウェブページの先頭から各要素に到達するまでにかかる時
 miChecker は以下の4種類のタグを認識し、色をつけて表示します。
 </P>
 <UL>
-<LI>テーブルヘッダーセル (&lt;TH&gt;) 
-<LI>見出しタグ (&lt;H1&gt;, &lt;H2&gt;,...,&lt;H6&gt;) 
-<LI>フォーム要素 (&lt;INPUT&gt;) 
-<LI>ラベルタグ (&lt;LABEL&gt;) 
+<LI>テーブルヘッダー (&lt;th&gt;) 
+<LI>見出し要素(&lt;h1&gt;, &lt;h2&gt;,...,&lt;h6&gt;) 
+<LI>フォーム要素 (&lt;input&gt;) 
+<LI>ラベル要素 (&lt;label&gt;) 
+<LI>キャプション要素 (&lt;caption&gt;, &lt;figcaption&gt;)
 </UL>
 
 <H4>テーブル構造</H4>
 <P>
-&lt;TABLE&gt;タグは表（データテーブル）を作るのにも、レイアウトを整える目的（レイアウトテーブル）にも利用されています。
+&lt;table&gt;タグは表（データテーブル）を作るのにも、レイアウトを整える目的（レイアウトテーブル）にも利用されています。
 いずれの場合にも、情報をテーブルから 「視覚的・直観的に獲得する順序」 と、音声ブラウザによる 「読み上げ順序」 が異なるケースが多く、テーブルはユーザビリティの問題を引き起こしやすいと言えます。
 miChecker はテーブルセルを視覚化し、ウェブページ制作者がテーブル構造を把握するのを助けます。
 </P>
@@ -87,23 +88,23 @@ miChecker は &quot;本文へジャンプ&quot; リンクの有無を調べます。
 また、miChecker は、リンク先が存在しないページ内リンクや、読み上げ可能なテキストがない（つまり音声ブラウザで検知できない）ページ内リンクも検出します。
 </P>
 
-<H4>不適切な ALT 属性</H4>
+<H4>不適切な alt 属性</H4>
 <P>
-miChecker は、画像の不適切な ALT 属性（代替テキスト）を検出します。
-たとえば、スペーサー画像（レイアウトを整える目的で用いられる空白の画像）に &quot;spacer&quot; という ALT 属性を与えることは不適切です。
+miChecker は、画像の不適切なalt 属性（代替テキスト）を検出します。
+たとえば、スペーサー画像（レイアウトを整える目的で用いられる空白の画像）に &quot;spacer&quot; という alt 属性を付与することは不適切です。
 これは、スペーサー画像の存在がわかっても、音声ブラウザユーザーにとっては意味がなく、&quot;spacer&quot; と読み上げても単にユーザーを混乱させる効果しかないからです。
 </P>
 
 <H4>冗長なテキストの情報</H4>
 <P>
 miChecker は冗長なテキストの情報を検出します。
-たとえば、&quot;電話帳&quot; という ALT 属性が与えられたアイコンの後に &quot;電話帳&quot; というテキストが繰り返され、それぞれ同じページにリンクが設定されているような場合です。
+たとえば、&quot;電話帳&quot; という alt 属性が与えられたアイコンの後に &quot;電話帳&quot; というテキストが繰り返され、それぞれ同じページにリンクが設定されているような場合です。
 </P>
 
 <H4>文書構造</H4>
 <P>
 上述のように、アクセシビリティ関連タグに色をつけて表示したり、テーブルセルを表示したりすることにより、miChecker は HTML 文書の構造を視覚化します。
-さらに、miChecker は入れ子になったテーブルや、見出しタグの有無を検出します。
+さらに、miChecker は入れ子になったテーブルや、見出し要素の有無を検出します。
 </P>
 
 <H3 id="accguidelineCheck">アクセシビリティ・ガイドラインへの準拠度のチェック</H3>
@@ -112,9 +113,9 @@ miChecker は、従来のアクセシビリティ・チェッカーと同様に、ウェブページのアクセシ
 詳細については<A href="compliance.html">Web アクセシビリティ・ガイドラインへの準拠</A>をご覧ください。
 </P>
 
-<H2 id="lowvisionMode">ロービジョンタブ</H2>
+<H2 id="lowvisionMode">ロービジョンビュー</H2>
 <P>
-miChecker のロービジョンシミュレーションタブは、「<a href="#lowviwionSimulation">ロービジョンシミュレーション</a>」 と 「<a href="#accsabilityCheckl">アクセシビリティとユーザビリティのチェック</a>」 の2つの機能を持っています。
+miChecker のロービジョンシミュレーションビューは、「<a href="#lowviwionSimulation">ロービジョンシミュレーション</a>」 と 「<a href="#accsabilityCheckl">アクセシビリティとユーザビリティのチェック</a>」 の2つの機能を持っています。
 </P>
 
 <H3 id="lowviwionSimulation">ロービジョンシミュレーション</H3>
@@ -138,7 +139,7 @@ miChecker のロービジョンシミュレーション時には、以下の4種類のチェックを行います�
 画像の中に、色覚異常ユーザーまたは白内障ユーザーにとって区別しづらい色が含まれていないかどうか。
 </UL>
 <P>
-どのような症状（障害）についてシミュレーションを行うかは、「<A href="parametersLv.html">設定パネル（Low Vision 設定）</A>」 で指定することができます。
+どのような症状（障害）についてシミュレーションを行うかは、「<A href="parametersLv.html"設定パネル（ロービジョン シミュレーション 設定）</A>」 で指定することができます。
 </P>
 
 
