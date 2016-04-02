@@ -69,7 +69,7 @@
             name="miChecker">
          <property
                name="windowImages"
-               value="icons/excla_32.png">
+               value="icons/excla_16.png,icons/excla_32.png">
          </property>
          <property
                name="aboutText"

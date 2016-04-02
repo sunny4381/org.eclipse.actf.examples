@@ -18,7 +18,7 @@
       </vmArgs>
    </launcherArgs>
 
-   <windowImages i32="/org.eclipse.actf.examples.michecker/icons/excla_32.png"/>
+   <windowImages i16="/org.eclipse.actf.examples.michecker/icons/excla_16.png" i32="/org.eclipse.actf.examples.michecker/icons/excla_32.png"/>
 
 
    <launcher name="miChecker">
@@ -32,7 +32,6 @@
 
    <vm>
    </vm>
-
 
    <plugins>
    </plugins>

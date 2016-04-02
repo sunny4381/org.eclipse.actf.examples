@@ -14,10 +14,11 @@
    </configIni>
 
    <launcherArgs>
-      <vmArgs>-Xmx512m</vmArgs>
+      <vmArgs>-Xmx512m
+      </vmArgs>
    </launcherArgs>
 
-   <windowImages i32="/org.eclipse.actf.examples.adesigner/icons/excla_32.png"/>
+   <windowImages i16="/org.eclipse.actf.examples.adesigner/icons/excla_16.png" i32="/org.eclipse.actf.examples.adesigner/icons/excla_32.png"/>
 
    <splash
       location="org.eclipse.actf.examples.adesigner"
@@ -31,6 +32,7 @@
          <bmp/>
       </win>
    </launcher>
+
 
    <vm>
    </vm>
