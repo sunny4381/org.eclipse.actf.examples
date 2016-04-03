@@ -3117,6 +3117,13 @@ public class CheckEngine extends HtmlTagUtil {
 				}
 			}
 		}
+
+		NodeList tmpNL = target.getElementsByTagName("canvas");
+		//use Techniques in the future
+		if(tmpNL.getLength()>0){
+			addCheckerProblem("C_300.5","",tmpNL);
+		}
+
 	}
 
 	// moved into 600.18
