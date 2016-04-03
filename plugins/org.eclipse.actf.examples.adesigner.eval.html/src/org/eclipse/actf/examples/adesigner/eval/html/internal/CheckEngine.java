@@ -2669,59 +2669,96 @@ public class CheckEngine extends HtmlTagUtil {
 	private void item_79() {
 		if (labelList == null)
 			labelList = edu.getElementsList(target, "label"); //$NON-NLS-1$
-		Vector<Node> noTitleControls = new Vector<Node>();
+		Vector<Node> noLabelTitleControls = new Vector<Node>();
+		Vector<Node> noLabelTitleControlsNew = new Vector<Node>();
 		Vector<Node> noLabelEmptyTitleControls = new Vector<Node>();
-		Vector<Node> implicitLabelControls = new Vector<Node>();
+		Vector<Node> noLabelEmptyTitleControlsNew = new Vector<Node>();
+		Vector<Node> labeledControls = new Vector<Node>();
+
 		for (Element body : body_elements) { // $NON-NLS-1$
 			for (Element el : getFormControl(body)) {
-				// checks for each input controls
-				TitleCheckResult res = item_79_title(el);
-				if (res == TitleCheckResult.NO_TITLE)
-					noTitleControls.add(el);
-				item_79_label(el, res, noLabelEmptyTitleControls, implicitLabelControls);
+
+				Element label = null;
+
+				if ((label = getLabel(el)) != null) {
+					item_79_label(el, label);
+				} else if ((label = hasImplicitLabel(el)) != null) {
+					// TODO check label place
+					Vector<Node> target = new Vector<Node>();
+					target.add(el);
+					target.add(label);
+					addCheckerProblem("C_79.5", "", target);
+				} else {
+					// check title for each input controls that has no label
+					if (isLabelable(getFormControlType(el))) {
+						TitleCheckResult res = item_79_title(el);
+						if (res == TitleCheckResult.NO_TITLE) {
+							if (isInH44(el)) {
+								noLabelTitleControls.add(el);
+							} else {
+								noLabelTitleControlsNew.add(el);
+							}
+						} else if (res == TitleCheckResult.EMPTY_TITLE) {
+							if (isInH44(label)) {
+								noLabelEmptyTitleControls.add(el);
+							} else {
+								noLabelEmptyTitleControlsNew.add(el);
+							}
+						} else if (res == TitleCheckResult.OK) {
+							addCheckerProblem("C_79.4", el.getAttribute(ATTR_TITLE), el);
+						}
+					}
+				}
 			}
 		}
 
-		if (noTitleControls.size() > 0)
-			addCheckerProblem("C_79.6", "", noTitleControls);
-		if (noLabelEmptyTitleControls.size() > 0)
+		if (noLabelTitleControls.size() > 0) {
+			addCheckerProblem("C_79.6", "", noLabelTitleControls);
+		}
+		if (noLabelTitleControlsNew.size() > 0) {
+			addCheckerProblem("C_79.8", "", noLabelTitleControlsNew);
+		}
+		if (noLabelEmptyTitleControls.size() > 0) {
 			addCheckerProblem("C_79.0", "", noLabelEmptyTitleControls);
-		if (implicitLabelControls.size() > 0)
-			addCheckerProblem("C_79.2", "", implicitLabelControls);
+		}
+		if (noLabelEmptyTitleControlsNew.size() > 0) {
+			addCheckerProblem("C_79.9", "", noLabelEmptyTitleControlsNew);
+		}
 	}
 
-	private void item_79_label(Element ctrl, TitleCheckResult res, Vector<Node> noLabelEmptyTitleControls,
-			Vector<Node> implicitLabelControls) {
+	private boolean isInH44(Element el) {
+		if ("input".equals(el.getNodeName())) {
+			String strType = el.getAttribute("type");
+			if (strType.equals("") // default is text? //$NON-NLS-1$
+					|| strType.equals("text") //$NON-NLS-1$
+					|| strType.equals("textarea") //$NON-NLS-1$
+					|| strType.equals("radio") //$NON-NLS-1$
+					|| strType.equals("checkbox") //$NON-NLS-1$
+					|| strType.equals("file") //$NON-NLS-1$ // For new JIS
+					|| strType.equals("password")) { //$NON-NLS-1$
+				return true;
+			}
+			return false;
+		}
+		return true;
+	}
+
+	private void item_79_label(Element ctrl, Element label) {
 		String elType = getFormControlType(ctrl);
-		Element l;
-		if ((l = hasImplicitLabel(ctrl)) != null) {
-			implicitLabelControls.add(l);
-			return;
-		}
-		if (!isLabelable(elType)) {
-			return;
-		}
+		// TODO highlight the label as well
 
-		String strid = ctrl.getAttribute("id"); //$NON-NLS-1$
-		boolean bHasLabel = this.hasLabel(ctrl);
-		boolean bHasTitle = this.hasTitle(ctrl);
+		Vector<Node> target = new Vector<Node>();
+		target.add(ctrl);
+		target.add(label);
 
-		if (!bHasLabel && !(res == TitleCheckResult.G167)) {
-			if (res == TitleCheckResult.EMPTY_TITLE) {
-				noLabelEmptyTitleControls.add(ctrl);
-			}
+		if (!hasProperLabel(ctrl)) {
+			// in case of TYPE was removed by IE
+			addCheckerProblem("C_79.1", //$NON-NLS-1$
+					" (input type: " + (elType.equals("") ? "text" : elType) + ")", //$NON-NLS-1$ //$NON-NLS-2$
+					target);
 		} else {
-			// TODO highlight the label as well
-			if (!hasProperLabel(ctrl)) {
-				// in case of TYPE was removed by IE
-				addCheckerProblem("C_79.1", //$NON-NLS-1$
-						" (input type: " + (elType.equals("") ? "text" : elType) + ")", //$NON-NLS-1$ //$NON-NLS-2$
-						ctrl);
-			} else {
-				// H44 OK
-				addCheckerProblem("C_79.5", ctrl); //$NON-NLS-1$
-
-			}
+			// H44 OK
+			addCheckerProblem("C_79.5", "", target); //$NON-NLS-1$
 		}
 	}
 
@@ -2736,16 +2773,12 @@ public class CheckEngine extends HtmlTagUtil {
 			if (hasBlankTitle(ctrl)) {
 				return TitleCheckResult.EMPTY_TITLE;
 			}
-			addCheckerProblem("C_79.4", ctrl.getAttribute(ATTR_TITLE), ctrl);
 			return TitleCheckResult.OK;
 		} else {
-			if (isLabelable(getFormControlType(ctrl)) && hasLabel(ctrl))
-				return TitleCheckResult.OK;
-			else { // no title?
-				if (check_G167(ctrl))
-					return TitleCheckResult.G167;
-				else
-					return TitleCheckResult.NO_TITLE;
+			if (check_G167(ctrl)) {
+				return TitleCheckResult.G167;
+			} else {
+				return TitleCheckResult.NO_TITLE;
 			}
 		}
 	}
@@ -3119,9 +3152,9 @@ public class CheckEngine extends HtmlTagUtil {
 		}
 
 		NodeList tmpNL = target.getElementsByTagName("canvas");
-		//use Techniques in the future
-		if(tmpNL.getLength()>0){
-			addCheckerProblem("C_300.5","",tmpNL);
+		// use Techniques in the future
+		if (tmpNL.getLength() > 0) {
+			addCheckerProblem("C_300.5", "", tmpNL);
 		}
 
 	}
@@ -3229,11 +3262,42 @@ public class CheckEngine extends HtmlTagUtil {
 					}
 				}
 			}
-			if (!hasSubmit)
+			if (!hasSubmit && isHTML5 && form.hasAttribute("id")) {
+				String id = form.getAttribute("id");
+				inputs = target.getElementsByTagName("input");
+				for (int i = 0; i < inputs.getLength(); i++) {
+					Element e = (Element) inputs.item(i);
+					String formAttr = e.getAttribute("form");
+					if (id.equals(formAttr)) {
+						String typeS = e.getAttribute("type");
+						if ("submit".equals(typeS) || "image".equals(typeS)) {
+							hasSubmit = true;
+							break;
+						}
+					}
+				}
+				if (!hasSubmit) {
+					NodeList buttons = target.getElementsByTagName("button");
+					for (int i = 0; i < buttons.getLength(); i++) {
+						Element e = (Element) buttons.item(i);
+						String formAttr = e.getAttribute("form");
+						if (id.equals(formAttr)) {
+							String typeS = e.getAttribute("type");
+							if ("submit".equals(typeS)) {
+								hasSubmit = true;
+								break;
+							}
+						}
+					}
+				}
+			}
+			if (!hasSubmit) {
 				noSubmitForms.add(form);
+			}
 		}
-		if (noSubmitForms.size() > 0)
+		if (noSubmitForms.size() > 0) {
 			addCheckerProblem("C_380.0", null, noSubmitForms);
+		}
 	}
 
 	@SuppressWarnings("nls")
@@ -3747,47 +3811,74 @@ public class CheckEngine extends HtmlTagUtil {
 		for (int i = 0; i < length; i++) {
 			Element el = (Element) nl.item(i);
 			String strType = el.getAttribute("type").toLowerCase(); //$NON-NLS-1$
-			if (strType.equals("") // default is text? //$NON-NLS-1$
+			if (isHTML5) {
+				if (!strType.equals("hidden")) {
+					fcVector.add(el);
+				}
+				// TODO update by using techniques (only hidden state is not
+				// labelable in HTML5)
+			} else if (strType.equals("") // default is text? //$NON-NLS-1$
 					|| strType.equals("text") //$NON-NLS-1$
 					|| strType.equals("textarea") //$NON-NLS-1$
 					|| strType.equals("radio") //$NON-NLS-1$
 					|| strType.equals("checkbox") //$NON-NLS-1$
 					|| strType.equals("file") //$NON-NLS-1$ // For new JIS
 					|| strType.equals("password")) { //$NON-NLS-1$
+
 				fcVector.add(el);
 			}
 
 		}
 
+		// TODO update by using techniques
+		// keygen, meter, output, progress
+
 		nl = formEl.getElementsByTagName("textarea"); //$NON-NLS-1$
 		length = nl.getLength();
-		for (int i = 0; i < length; i++) {
+		for (
+
+		int i = 0; i < length; i++)
+
+		{
 			Element el = (Element) nl.item(i);
 			fcVector.add(el);
 		}
 
 		nl = formEl.getElementsByTagName("select"); //$NON-NLS-1$
 		length = nl.getLength();
-		for (int i = 0; i < length; i++) {
+		for (
+
+		int i = 0; i < length; i++)
+
+		{
 			Element el = (Element) nl.item(i);
 			fcVector.add(el);
 		}
 
 		nl = formEl.getElementsByTagName("html:text"); //$NON-NLS-1$
 		length = nl.getLength();
-		for (int i = 0; i < length; i++) {
+		for (
+
+		int i = 0; i < length; i++)
+
+		{
 			Element el = (Element) nl.item(i);
 			fcVector.add(el);
 		}
 
 		nl = formEl.getElementsByTagName("html:radio"); //$NON-NLS-1$
 		length = nl.getLength();
-		for (int i = 0; i < length; i++) {
+		for (
+
+		int i = 0; i < length; i++)
+
+		{
 			Element el = (Element) nl.item(i);
 			fcVector.add(el);
 		}
 
 		return fcVector;
+
 	}
 
 	private int getFormControlNum(Element formEl) {
@@ -3839,7 +3930,9 @@ public class CheckEngine extends HtmlTagUtil {
 	 * @return
 	 */
 	private boolean isLabelable(String type) {
-		return type.matches("|text(area)?|checkbox|radio|file|password|select");
+		return !type.matches("|submit|reset|hidden|image|button");
+		// TODO update by using techniques (only hidden state is not labelable
+		// in HTML5)
 	}
 
 	/**
@@ -3849,19 +3942,19 @@ public class CheckEngine extends HtmlTagUtil {
 	 * @param labels
 	 * @return
 	 */
-	private boolean hasLabel(Element el) {
+	private Element getLabel(Element el) {
 		String strid = el.getAttribute("id"); //$NON-NLS-1$
 
 		if (strid.equals("")) //$NON-NLS-1$
-			return false; // no id
+			return null; // no id
 
 		for (Element e : labelList) {
 			String strFor = e.getAttribute("for"); //$NON-NLS-1$
 			if (strFor != null && strFor.equalsIgnoreCase(strid)) {
-				return true; // label found
+				return e; // label found
 			}
 		}
-		return false; // no label found
+		return null; // no label found
 	}
 
 	/**
@@ -3872,7 +3965,7 @@ public class CheckEngine extends HtmlTagUtil {
 	 * @return label element when an implicit label is used.
 	 */
 	private Element hasImplicitLabel(Element el) {
-		// TODO to be refined so that it looks up in ascendant, not in a parent
+		// TODO check ancestor, check only one or not
 		Node n = el.getParentNode();
 		if (!(n instanceof Element))
 			return null;
