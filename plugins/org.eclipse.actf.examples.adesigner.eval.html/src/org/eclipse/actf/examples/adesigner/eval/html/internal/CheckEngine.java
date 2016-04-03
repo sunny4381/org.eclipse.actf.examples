@@ -146,10 +146,11 @@ public class CheckEngine extends HtmlTagUtil {
 		}
 	}
 
-	private static final String[] AUDIO_FILE_EXTENSION = { "mp3", "mid", "mrm", "mrl", "vqf", "wav" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+	private static final String[] AUDIO_FILE_EXTENSION = { "mp3", "mid", "mrm", "mrl", "vqf", "wav", "ogg", "spx", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+			"oga" };
 
 	private static final String[] MULTIMEDIA_FILE_EXTENSION = { "avi", "ram", "rm", "asf", "wm", "wmx", "wmv", "asx", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
-			"mpeg", "mpg" }; //$NON-NLS-1$ //$NON-NLS-2$
+			"mpeg", "mpg", "mp4", "ogv", "3gp" }; //$NON-NLS-1$ //$NON-NLS-2$
 
 	/**
 	 * debug flag for developers!
@@ -1276,11 +1277,61 @@ public class CheckEngine extends HtmlTagUtil {
 
 		NodeList tmpNL = target.getElementsByTagName("math");
 		if (tmpNL.getLength() > 0) {
-			addCheckerProblem("C_600.20", "MathML",tmpNL);
+			addCheckerProblem("C_600.20", "MathML", tmpNL);
 		}
 		tmpNL = target.getElementsByTagName("svg");
 		if (tmpNL.getLength() > 0) {
-			addCheckerProblem("C_600.20", "SVG",tmpNL);
+			addCheckerProblem("C_600.20", "SVG", tmpNL);
+		}
+
+		Vector<Node> autoError = new Vector<Node>();
+		Vector<Node> autoUserCheck = new Vector<Node>();
+
+		tmpNL = target.getElementsByTagName("video");
+		if (tmpNL.getLength() > 0) {
+			addCheckerProblem("C_500.0", "", tmpNL);
+			addCheckerProblem("C_500.1", "", tmpNL);
+
+			addCheckerProblem("C_600.1", "", tmpNL);
+			addCheckerProblem("C_600.2", "", tmpNL);
+			addCheckerProblem("C_600.7", "", tmpNL);
+
+			for (int i = 0; i < tmpNL.getLength(); i++) {
+				Element e = (Element) tmpNL.item(i);
+				if (e.hasAttribute("autoplay")) {
+					String autoplay = e.getAttribute("autoplay");
+					if (!autoplay.equalsIgnoreCase("false")) {
+						autoError.add(e);
+					} else {
+						autoUserCheck.add(e);
+					}
+				} else {
+					autoUserCheck.add(e);
+				}
+			}
+		}
+		tmpNL = target.getElementsByTagName("audio");
+		if (tmpNL.getLength() > 0) {
+			addCheckerProblem("C_600.1", "", tmpNL);
+			for (int i = 0; i < tmpNL.getLength(); i++) {
+				Element e = (Element) tmpNL.item(i);
+				if (e.hasAttribute("autoplay")) {
+					String autoplay = e.getAttribute("autoplay");
+					if (!autoplay.equalsIgnoreCase("false")) {
+						autoError.add(e);
+					} else {
+						autoUserCheck.add(e);
+					}
+				} else {
+					autoUserCheck.add(e);
+				}
+			}
+		}
+		if (autoError.size() > 0) {
+			addCheckerProblem("C_85.0", "", autoError);
+		}
+		if (autoUserCheck.size() > 0) {
+			addCheckerProblem("C_600.6", "", autoUserCheck);
 		}
 	}
 
