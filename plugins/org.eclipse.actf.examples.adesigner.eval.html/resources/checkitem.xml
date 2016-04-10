@@ -833,12 +833,16 @@
             <desc>Use the latest technology specification available whenever possible.</desc>
         </description>
     </checkitem>
-    <checkitem type="user" id="C_48.0">
+    <checkitem type="warning" id="C_48.0">
         <guideline>
             <gItem id="11.2" name="WCAG"/>
+            <gItem techniques="H88" id="4.1.1" name="JIS"/>
+            <gItem techniques="H88" id="4.1.2" name="JIS"/>
+            <gItem techniques="H88" id="4.1.1" name="WCAG 2.0"/>
+            <gItem techniques="H88" id="4.1.2" name="WCAG 2.0"/>
         </guideline>
         <metrics>
-            <mItem name="Robust"/>
+            <mItem score="2" name="Robust"/>
         </metrics>
         <description>
             <desc>Avoid use of obsolete language features if possible.</desc>
@@ -929,6 +933,21 @@
         </metrics>
         <description>
             <desc>Use strong or em tags to emphasize text instead of b or i tags.</desc>
+        </description>
+    </checkitem>
+    <checkitem type="warning" id="C_48.7">
+        <guideline>
+            <gItem id="11.2" name="WCAG"/>
+            <gItem techniques="H88" id="4.1.1" name="JIS"/>
+            <gItem techniques="H88" id="4.1.2" name="JIS"/>
+            <gItem techniques="H88" id="4.1.1" name="WCAG 2.0"/>
+            <gItem techniques="H88" id="4.1.2" name="WCAG 2.0"/>
+        </guideline>
+        <metrics>
+            <mItem score="2" name="Robust"/>
+        </metrics>
+        <description>
+            <desc>Avoid use of obsolete language features if possible. (Use the ABBR element.)</desc>
         </description>
     </checkitem>    
     <checkitem type="info" id="C_49.0">

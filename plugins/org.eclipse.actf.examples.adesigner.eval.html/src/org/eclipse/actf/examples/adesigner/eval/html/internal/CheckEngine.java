@@ -215,6 +215,7 @@ public class CheckEngine extends HtmlTagUtil {
 
 	private boolean isXHTML = false;
 	private boolean isHTML5 = false;
+	private boolean isXML = false;
 
 	private List<Element> labelList;
 	private List<Element> formList;
@@ -334,6 +335,16 @@ public class CheckEngine extends HtmlTagUtil {
 		isXHTML = DocumentTypeUtil.isOriginalXHTML(docType);
 		isHTML5 = DocumentTypeUtil.isOriginalHTML5(docType);
 
+		// check xml
+		Document srcDoc = edu.getSrcDom();
+		try {
+			Node topN = srcDoc.getFirstChild();
+			if (null != topN && topN.getNodeType() == 7 && topN.getNodeName().toLowerCase().startsWith("xml")) {
+				isXML = true;
+			}
+		} catch (Exception e) {
+
+		}
 		// System.out.println(docTypeS + " : " + isXHTML + " : " + isHTML5);
 
 		checker = TextChecker.getInstance();
@@ -1022,7 +1033,11 @@ public class CheckEngine extends HtmlTagUtil {
 		Element el = target.getDocumentElement();
 		String attName = isXHTML ? "xml:lang" : "lang";
 		String strLang = el.getAttribute(attName);
-		// System.out.println("(xml:)lang = " + strLang); // debug
+
+		if (isEmptyString(strLang) && isHTML5 && isXML) {
+			attName = "xml:lang";
+			strLang = el.getAttribute(attName);
+		}
 
 		if (isEmptyString(strLang)) {
 			// no lang attribute
@@ -1035,7 +1050,7 @@ public class CheckEngine extends HtmlTagUtil {
 				addCheckerProblem("C_21.1", attName, el); //$NON-NLS-1$
 			} else {
 				// valid language
-				addCheckerProblem("C_21.2", attName, el); //$NON-NLS-1$
+				addCheckerProblem("C_21.2", attName + "=" + strLang, el); //$NON-NLS-1$
 			}
 		}
 	}
@@ -1898,7 +1913,6 @@ public class CheckEngine extends HtmlTagUtil {
 		// ?
 		checkObsoluteEle("C_48.2", "strike"); //$NON-NLS-1$
 		checkObsoluteEle("C_48.2", "u"); //$NON-NLS-1$
-		checkObsoluteEle("C_48.2", "s"); //$NON-NLS-1$
 		// DIR, MENU
 		checkObsoluteEle("C_48.3", "dir"); //$NON-NLS-1$
 		checkObsoluteEle("C_48.3", "menu"); //$NON-NLS-1$
@@ -1908,9 +1922,25 @@ public class CheckEngine extends HtmlTagUtil {
 		checkObsoluteEle("C_48.5", "listing"); //$NON-NLS-1$
 		checkObsoluteEle("C_48.5", "plaintext"); //$NON-NLS-1$
 		checkObsoluteEle("C_48.5", "xmp"); //$NON-NLS-1$
-		// em/strong
-		checkObsoluteEle("C_48.6", "b"); //$NON-NLS-1$
-		checkObsoluteEle("C_48.6", "i"); //$NON-NLS-1$
+		if (!isHTML5) {
+			checkObsoluteEle("C_48.2", "s"); //$NON-NLS-1$
+			// em/strong
+			checkObsoluteEle("C_48.6", "b"); //$NON-NLS-1$
+			checkObsoluteEle("C_48.6", "i"); //$NON-NLS-1$
+		}
+
+		if (isHTML5) {
+			checkObsoluteEle("C_48.2", "big");
+			checkObsoluteEle("C_48.2", "tt");
+
+			checkObsoluteEle("C_48.0", "frame");
+			checkObsoluteEle("C_48.0", "frameset");
+			checkObsoluteEle("C_48.0", "noframes");
+			if (isXML) {
+				checkObsoluteEle("C_48.0", "noscript");
+			}
+			checkObsoluteEle("C_48.7", "acronym");
+		}
 	}
 
 	private void item_49() {
