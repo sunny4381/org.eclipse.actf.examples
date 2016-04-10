@@ -1708,7 +1708,7 @@ public class CheckEngine extends HtmlTagUtil {
 			Element el = (Element) nl.item(i);
 			if (!el.hasAttribute("type")) //$NON-NLS-1$
 				continue;
-			String strType = el.getAttribute("type"); //$NON-NLS-1$
+			String strType = el.getAttribute("type").toLowerCase(); //$NON-NLS-1$
 			if (strType.equalsIgnoreCase("text") //$NON-NLS-1$
 					|| strType.equalsIgnoreCase("textbox") //$NON-NLS-1$
 					|| strType.equalsIgnoreCase("textarea") //$NON-NLS-1$
@@ -1738,7 +1738,7 @@ public class CheckEngine extends HtmlTagUtil {
 						Element el2 = (Element) nl.item(j);
 						if (!el2.hasAttribute("type")) //$NON-NLS-1$
 							continue;
-						String strType2 = el2.getAttribute("type"); //$NON-NLS-1$
+						String strType2 = el2.getAttribute("type").toLowerCase(); //$NON-NLS-1$
 
 						if (strType2.equalsIgnoreCase("radio")) { //$NON-NLS-1$
 							String strName2 = el2.getAttribute("name"); //$NON-NLS-1$
@@ -2678,7 +2678,7 @@ public class CheckEngine extends HtmlTagUtil {
 			Element el = (Element) nl.item(i);
 			if (!el.hasAttribute("type"))
 				continue;
-			String strType = el.getAttribute("type");
+			String strType = el.getAttribute("type").toLowerCase();
 			if (strType.equalsIgnoreCase("text") || strType.equalsIgnoreCase("textbox") || strType.equals("")) {
 				textInputs.add(el);
 			}
@@ -2758,7 +2758,7 @@ public class CheckEngine extends HtmlTagUtil {
 
 	private boolean isInH44(Element el) {
 		if ("input".equals(el.getNodeName())) {
-			String strType = el.getAttribute("type");
+			String strType = el.getAttribute("type").toLowerCase();
 			if (strType.equals("") // default is text? //$NON-NLS-1$
 					|| strType.equals("text") //$NON-NLS-1$
 					|| strType.equals("textarea") //$NON-NLS-1$
