@@ -32,6 +32,8 @@ import org.eclipse.actf.model.dom.dombycom.IDocumentEx;
 import org.eclipse.actf.model.dom.dombycom.IStyleSheet;
 import org.eclipse.actf.model.dom.dombycom.IStyleSheets;
 import org.eclipse.actf.model.dom.html.DocumentTypeUtil;
+import org.eclipse.actf.util.xpath.XPathService;
+import org.eclipse.actf.util.xpath.XPathServiceFactory;
 import org.eclipse.actf.visualization.engines.blind.TextCheckResult;
 import org.eclipse.actf.visualization.engines.blind.TextChecker;
 import org.eclipse.actf.visualization.eval.html.HtmlEvalUtil;
@@ -54,6 +56,8 @@ import com.ibm.icu.text.MessageFormat;
 public class CheckEngine extends HtmlTagUtil {
 
 	// use org.w3c.dom.traversal, XPath
+
+	private static final XPathService xpathService = XPathServiceFactory.newService();
 
 	private static final String SPACE_STR = " "; //$NON-NLS-1$
 
@@ -1124,14 +1128,20 @@ public class CheckEngine extends HtmlTagUtil {
 			} else {
 				table_25_1.add(table);
 			}
-			if (table.hasAttribute("summary") && !isEmptyString(table.getAttribute("summary"))) {
-				if (!added) {
-					tables.add(table);
-					added = true;
+			if (isHTML5) {
+				if (table.hasAttribute("summary")) {
+					addCheckerProblem("C_48.8", "summary", table);
 				}
-				addCheckerProblem("C_25.4", table); //$NON-NLS-1$
 			} else {
-				table_25_2.add(table);
+				if (table.hasAttribute("summary") && !isEmptyString(table.getAttribute("summary"))) {
+					if (!added) {
+						tables.add(table);
+						added = true;
+					}
+					addCheckerProblem("C_25.4", table); //$NON-NLS-1$
+				} else {
+					table_25_2.add(table);
+				}
 			}
 		}
 
@@ -1139,10 +1149,12 @@ public class CheckEngine extends HtmlTagUtil {
 			Vector<Node> tablesV = new Vector<Node>(tables);
 			addCheckerProblem("C_23.1", "", tablesV); //$NON-NLS-1$
 		}
-		if (table_25_1.size() > 0)
+		if (table_25_1.size() > 0) {
 			addCheckerProblem("C_25.1", null, table_25_1); //$NON-NLS-1$
-		if (table_25_2.size() > 0)
+		}
+		if (table_25_2.size() > 0) {
 			addCheckerProblem("C_25.2", null, table_25_2); //$NON-NLS-1$
+		}
 
 		tables.clear();
 		for (Element table : layoutTableList) {
@@ -1150,8 +1162,13 @@ public class CheckEngine extends HtmlTagUtil {
 				tables.add(table);
 			} else if (getDirectDescendantElements(table, "caption").size() > 0) {
 				tables.add(table);
-			} else if (table.hasAttribute("summary") && !isEmptyString(table.getAttribute("summary"))) {
-				tables.add(table);
+			} else {
+				if (isHTML5 && table.hasAttribute("summary")) {
+					addCheckerProblem("C_48.8", "summary", table);
+				}
+				if (table.hasAttribute("summary") && !isEmptyString(table.getAttribute("summary"))) {
+					tables.add(table);
+				}
 			}
 		}
 
@@ -3203,48 +3220,78 @@ public class CheckEngine extends HtmlTagUtil {
 
 		for (Element table : dataTableList) {
 			int thCount = 0;
-			boolean isFirstRow = true;
 			boolean isHeaderRow = false;
 			boolean isHeaderColumn = true;
+			boolean isSimpleTable2 = false;
+			// simple table 2
+			// td th th
+			// th
+			// th
+
 			int firstRowLength = 0;
 			int trCount = 0;
 
 			for (Element tr : edu.getElementsList(table, "tr")) { //$NON-NLS-1$
-				trCount++;
 				List<Element> cells = edu.getElementsList(tr, "th"); //$NON-NLS-1$
-				if (isFirstRow) {
-					isFirstRow = false;
+				int cellSize = cells.size();
+				Node firstCell = tr.getFirstChild();
+				String firstCellName = "";
+				if (null != firstCell) {
+					firstCellName = firstCell.getNodeName().toLowerCase();
+				}
+				boolean isTH = firstCellName.equals("th");
+
+				if (trCount == 0) {
 					firstRowLength = tr.getChildNodes().getLength();
-					if (cells.size() == firstRowLength) {
+					if (cellSize == firstRowLength) {
 						isHeaderRow = true;
+					} else if ((cellSize + 1 == firstRowLength) && firstCellName.equals("td")) {
+						isSimpleTable2 = true;
 					}
 				}
 				if (isHeaderColumn) {
-					isHeaderColumn = tr.hasChildNodes() && tr.getFirstChild().getNodeName().equalsIgnoreCase("th");
+					isHeaderColumn = isTH;
 				}
-				if (cells.size() > 0) {
-					thCount += cells.size();
+				if (isSimpleTable2 && trCount != 0) {
+					isSimpleTable2 = isTH;
 				}
+				if (cellSize > 0) {
+					thCount += cellSize;
+				}
+				trCount++;
 			}
 
 			boolean isSimpleTable = (isHeaderRow && firstRowLength == thCount)
 					|| (isHeaderColumn && trCount == thCount);
 
+			isSimpleTable2 = isSimpleTable2 && ((firstRowLength + trCount - 2) == thCount);
+
 			// all data tables are leaf tables, so getElements() suffice.
 			for (Element th : edu.getElementsList(table, "th")) {
 				if (!th.hasAttribute("scope")) {
-					if (!isSimpleTable) {
+					if (!isSimpleTable && !isSimpleTable2) {
 						withoutScope.add(th);
 					}
 				} else if (!th.getAttribute("scope").matches("row(group)?|col(group)?")) {
 					invalidScope.add(th);
 				}
 			}
+			if (withoutScope.size() > 0) {
+				boolean hasHeaders = false;
+				try {
+					NodeList tdWithHeaders = xpathService.evalPathForNodeList("descendant::td[@headers]", table);
+					hasHeaders = tdWithHeaders.getLength() == table.getElementsByTagName("td").getLength();
+				} catch (Exception e) {
+				}
+				if (!hasHeaders) {
+					addCheckerProblem("C_331.0", "", withoutScope);
+				}
+			}
+			withoutScope = new Vector<Node>();
 		}
-		if (withoutScope.size() > 0)
-			addCheckerProblem("C_331.0", "", withoutScope);
-		if (invalidScope.size() > 0)
+		if (invalidScope.size() > 0) {
 			addCheckerProblem("C_331.1", "", invalidScope);
+		}
 	}
 
 	// For new JIS

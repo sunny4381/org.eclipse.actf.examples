@@ -398,17 +398,6 @@
             <desc>If this table is used for layout only, do not use TH tag to achieve formatting effects.</desc>
         </description>
     </checkitem>
-    <checkitem type="info" id="C_25.0">
-        <guideline>
-            <gItem id="5.5" name="WCAG"/>
-        </guideline>
-        <metrics>
-            <mItem name="Perceivable"/>
-        </metrics>
-        <description>
-            <desc>If this is a data table (not used for layout only), provide CAPTION and SUMMARY.</desc>
-        </description>
-    </checkitem>
     <checkitem type="user" id="C_25.1">
         <guideline>
             <gItem id="5.5" name="WCAG"/>
@@ -948,6 +937,21 @@
         </metrics>
         <description>
             <desc>Avoid use of obsolete language features if possible. (Use the ABBR element.)</desc>
+        </description>
+    </checkitem>    
+    <checkitem type="warning" id="C_48.8">
+        <guideline>
+            <gItem id="11.2" name="WCAG"/>
+            <gItem techniques="H88" id="4.1.1" name="JIS"/>
+            <gItem techniques="H88" id="4.1.2" name="JIS"/>
+            <gItem techniques="H88" id="4.1.1" name="WCAG 2.0"/>
+            <gItem techniques="H88" id="4.1.2" name="WCAG 2.0"/>
+        </guideline>
+        <metrics>
+            <mItem score="2" name="Robust"/>
+        </metrics>
+        <description>
+            <desc>Avoid use of obsolete language features if possible. (obsolete attribute)</desc>
         </description>
     </checkitem>    
     <checkitem type="info" id="C_49.0">
@@ -1539,7 +1543,7 @@
             <mItem name="Perceivable"/>
         </metrics>
         <description>
-            <desc>If this is a data table, provide headers (TH), summary, and caption for the table. For layout tables, use style sheets to control layout.</desc>
+            <desc>If this is a data table, provide headers (TH) for the table. For layout tables, use style sheets to control layout.</desc>
         </description>
     </checkitem>
     <checkitem type="user" id="C_76.0">
@@ -1554,7 +1558,7 @@
             <mItem name="Perceivable"/>
         </metrics>
         <description>
-            <desc>If a table has two or more rows or columns that serve as headers, use structural markup (e.g. AXIS and SCOPE) to identify their hierarchy and relationship.</desc>
+            <desc>If a table has two or more rows or columns that serve as headers, use structural markup (e.g. SCOPE) to identify their hierarchy and relationship.</desc>
         </description>
     </checkitem>
     <checkitem type="user" id="C_76.1">
@@ -1569,7 +1573,7 @@
             <mItem name="Perceivable"/>
         </metrics>
         <description>
-            <desc>There are some combined table cells (COLSPAN/ROWSPAN). Use structural markup (e.g. AXIS and SCOPE) to identify their hierarchy and relationship. If possible, avoid using COLSPAN/ROWSPAN in data table.</desc>
+            <desc>There are some combined table cells (COLSPAN/ROWSPAN). Use structural markup (e.g. SCOPE) to identify their hierarchy and relationship. If possible, avoid using COLSPAN/ROWSPAN in data table.</desc>
         </description>
     </checkitem>
     <checkitem type="info" id="C_77.0">
@@ -2052,21 +2056,6 @@
         </guideline>
         <metrics>
             <mItem score="2" name="Understandable"/>
-        </metrics>
-        <description>
-            <desc>Make sure that LABEL of FORM control is properly placed.</desc>
-        </description>
-    </checkitem>
-    <checkitem type="error" id="C_79.2">
-        <guideline>
-            <gItem techniques="H44,F68" id="1.3.1" name="JIS"/>
-            <gItem techniques="H44,F68" id="4.1.2" name="JIS"/>
-            <gItem techniques="H44,F68" id="1.3.1" name="WCAG 2.0"/>
-            <gItem techniques="H44,F68" id="4.1.2" name="WCAG 2.0"/>
-        </guideline>
-        <metrics>
-            <mItem score="5" name="Perceivable"/>
-            <mItem score="5" name="Robust"/>
         </metrics>
         <description>
             <desc>Make sure that LABEL of FORM control is properly placed.</desc>
