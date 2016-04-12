@@ -1664,8 +1664,8 @@
             <gItem id="2.1" name="WCAG"/>
             <gItem id="c" name="Section508"/>
             <gItem id="12" name="IBMGuideline"/>
-            <gItem techniques="G14,G182,G205" id="1.4.1" name="JIS"/>
-            <gItem techniques="G14,G182,G205" id="1.4.1" name="WCAG 2.0"/>
+            <gItem techniques="G14,G182,G205,H92" id="1.4.1" name="JIS"/>
+            <gItem techniques="G14,G182,G205,H92" id="1.4.1" name="WCAG 2.0"/>
         </guideline>
         <metrics>
             <mItem name="Perceivable"/>
@@ -2213,7 +2213,7 @@
             <mItem score="2" name="Understandable"/>
         </metrics>
         <description>
-            <desc></desc>
+            <desc>Provide submit buttons.</desc>
         </description>
     </checkitem>
     <checkitem type="user" id="C_381.0">
@@ -2225,7 +2225,7 @@
             <mItem name="Understandable"/>
         </metrics>
         <description>
-            <desc></desc>
+            <desc>Use a button with a select element to perform an action.</desc>
         </description>
     </checkitem>
     <checkitem type="user" id="C_382.0">
@@ -2239,7 +2239,7 @@
             <mItem name="Understandable"/>
         </metrics>
         <description>
-            <desc></desc>
+            <desc>Describe what will happen before a change to a form control that causes a change of context to occur is made.</desc>
         </description>
     </checkitem>
     <checkitem type="user" id="C_383.0">
@@ -2255,7 +2255,7 @@
             <mItem name="Understandable"/>
         </metrics>
         <description>
-            <desc></desc>
+            <desc>Provide text descriptions to identify required fields that were not completed.</desc>
         </description>
     </checkitem>
     <checkitem type="user" id="C_384.0">
@@ -2271,7 +2271,7 @@
             <mItem name="Understandable"/>
         </metrics>
         <description>
-            <desc></desc>
+            <desc>Consider providing client-side validation and alert.</desc>
         </description>
     </checkitem>
     <checkitem type="user" id="C_385.0">
@@ -2285,7 +2285,7 @@
             <mItem name="Understandable"/>
         </metrics>
         <description>
-            <desc></desc>
+            <desc>Provide a text description when the user provides information that is not in the list of allowed values.</desc>
         </description>
     </checkitem>
     <checkitem type="user" id="C_386.0">
@@ -2299,7 +2299,7 @@
             <mItem name="Understandable"/>
         </metrics>
         <description>
-            <desc></desc>
+            <desc>Provide a text description when user input falls outside the required format or values.</desc>
         </description>
     </checkitem>
     <checkitem type="user" id="C_387.0">
@@ -2313,7 +2313,7 @@
             <mItem name="Understandable"/>
         </metrics>
         <description>
-            <desc></desc>
+            <desc>Provide client-side validation and adding error text via the DOM.</desc>
         </description>
     </checkitem>
     <checkitem type="user" id="C_388.0">
@@ -2328,7 +2328,7 @@
             <mItem name="Understandable"/>
         </metrics>
         <description>
-            <desc></desc>
+            <desc>Provide descriptive labels.</desc>
         </description>
     </checkitem>
     <checkitem type="user" id="C_389.0">
@@ -2342,7 +2342,7 @@
             <mItem name="Understandable"/>
         </metrics>
         <description>
-            <desc></desc>
+            <desc>Provide expected data format and example.</desc>
         </description>
     </checkitem>
     <checkitem type="info" id="C_320.0">
@@ -2356,7 +2356,8 @@
             <mItem name="Robust"/>
         </metrics>
         <description>
-            <desc></desc>
+            <desc>Use markup features to expose the name and role, 
+            allow user-settable properties to be directly set, and provide notification of changes.</desc>
         </description>
     </checkitem>
     <checkitem type="info" id="C_321.0">
@@ -2368,7 +2369,8 @@
             <mItem name="Robust"/>
         </metrics>
         <description>
-            <desc></desc>
+            <desc>Use the accessibility API features of a technology to expose names and roles, 
+            to allow user-settable properties to be directly set, and to provide notification of changes.</desc>
         </description>
     </checkitem>
     <checkitem type="info" id="C_322.0">
@@ -2380,7 +2382,8 @@
             <mItem name="Robust"/>
         </metrics>
         <description>
-            <desc></desc>
+            <desc>Create components using a technology that supports the accessibility API features of the platforms on which the user agents will be run to expose the names and roles, 
+            allow user-settable properties to be directly set, and provide notification of changes.</desc>
         </description>
     </checkitem>
     <checkitem type="user" id="C_23.1">
