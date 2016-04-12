@@ -4116,9 +4116,15 @@ public class CheckEngine extends HtmlTagUtil {
 				}
 				node = node.getParentNode();
 			}
-			if (node.getPreviousSibling().getNodeType() != Node.ELEMENT_NODE)
+			while (null != node && !node.getNodeName().equalsIgnoreCase("label")) { //$NON-NLS-1$
+				if (node.getNodeName().equalsIgnoreCase("body")) { //$NON-NLS-1$
+					return false;
+				}
+				node = node.getPreviousSibling();
+			}
+			if (node == null || node.getNodeType() != Node.ELEMENT_NODE)
 				return false;
-			Element preEl = (Element) node.getPreviousSibling();
+			Element preEl = (Element) node;
 			Element labelEl;
 			if (preEl.getNodeName().equalsIgnoreCase("label")) { //$NON-NLS-1$
 				labelEl = preEl;
