@@ -308,7 +308,7 @@
             <mItem name="Understandable"/>
         </metrics>
         <description>
-            <desc>Use the ABBR and ACRONYM elements to denote and expand any abbreviations and acronyms that are present.</desc>
+            <desc>Use the ABBR element to denote and expand any abbreviations and acronyms that are present.</desc>
         </description>
     </checkitem>
     <checkitem type="user" id="C_200.0">
@@ -986,9 +986,9 @@
             <gItem id="1.1" name="WCAG"/>
             <gItem id="a" name="Section508"/>
             <gItem id="b" name="Section508"/>
-            <gItem techniques="G87,G93" id="1.2.2" name="JIS"/>
+            <gItem techniques="H95,G87,G93" id="1.2.2" name="JIS"/>
             <gItem id="4" name="IBMGuideline"/>
-            <gItem techniques="G87,G93" id="1.2.2" name="WCAG 2.0"/>
+            <gItem techniques="H95,G87,G93" id="1.2.2" name="WCAG 2.0"/>
         </guideline>
         <metrics>
             <mItem name="Perceivable"/>
@@ -1664,8 +1664,8 @@
             <gItem id="2.1" name="WCAG"/>
             <gItem id="c" name="Section508"/>
             <gItem id="12" name="IBMGuideline"/>
-            <gItem techniques="G14,G122,G182" id="1.4.1" name="JIS"/>
-            <gItem techniques="G14,G122,G182" id="1.4.1" name="WCAG 2.0"/>
+            <gItem techniques="G14,G182,G205" id="1.4.1" name="JIS"/>
+            <gItem techniques="G14,G182,G205" id="1.4.1" name="WCAG 2.0"/>
         </guideline>
         <metrics>
             <mItem name="Perceivable"/>
@@ -2564,8 +2564,8 @@
     </checkitem>
     <checkitem type="user" id="C_500.0">
         <guideline>
-            <gItem techniques="G9,G93,G87,SM11,SM12" id="1.2.4" name="JIS"/>
-            <gItem techniques="G9,G93,G87,SM11,SM12" id="1.2.4" name="WCAG 2.0"/>
+            <gItem techniques="H95,G9,G93,G87,SM11,SM12" id="1.2.4" name="JIS"/>
+            <gItem techniques="H95,G9,G93,G87,SM11,SM12" id="1.2.4" name="WCAG 2.0"/>
         </guideline>
         <metrics>
             <mItem name="Perceivable"/>
@@ -2576,8 +2576,8 @@
     </checkitem>
     <checkitem type="user" id="C_500.1">
         <guideline>
-            <gItem techniques="G78,G173,SM6,SM7,G8,SM1,SM2" id="1.2.5" name="JIS"/>
-            <gItem techniques="G78,G173,SM6,SM7,G8,SM1,SM2" id="1.2.5" name="WCAG 2.0"/>
+            <gItem techniques="H96,G78,G173,G203,SM6,SM7,G8,SM1,SM2" id="1.2.5" name="JIS"/>
+            <gItem techniques="H96,G78,G173,G203,SM6,SM7,G8,SM1,SM2" id="1.2.5" name="WCAG 2.0"/>
         </guideline>
         <metrics>
             <mItem name="Perceivable"/>
@@ -2786,8 +2786,8 @@
         <guideline>
             <gItem techniques="F24,G18,G145" id="1.4.3" name="JIS"/>
             <gItem techniques="F24,G17,G18" id="1.4.6" name="JIS"/>
-            <gItem techniques="G14,G122,G182" id="1.4.1" name="JIS"/>
-            <gItem techniques="G14,G122,G182" id="1.4.1" name="WCAG 2.0"/>
+            <gItem techniques="G14,G182,G205" id="1.4.1" name="JIS"/>
+            <gItem techniques="G14,G182,G205" id="1.4.1" name="WCAG 2.0"/>
             <gItem techniques="F24,G18,G145" id="1.4.3" name="WCAG 2.0"/>
             <gItem techniques="F24,G17,G18" id="1.4.6" name="WCAG 2.0"/>
         </guideline>
@@ -2802,8 +2802,8 @@
         <guideline>
             <gItem techniques="F24,G18,G145" id="1.4.3" name="JIS"/>
             <gItem techniques="F24,G17,G18" id="1.4.6" name="JIS"/>
-            <gItem techniques="G14,G122,G182" id="1.4.1" name="JIS"/>
-            <gItem techniques="G14,G122,G182" id="1.4.1" name="WCAG 2.0"/>
+            <gItem techniques="G14,G182,G205" id="1.4.1" name="JIS"/>
+            <gItem techniques="G14,G182,G205" id="1.4.1" name="WCAG 2.0"/>
             <gItem techniques="F24,G18,G145" id="1.4.3" name="WCAG 2.0"/>
             <gItem techniques="F24,G17,G18" id="1.4.6" name="WCAG 2.0"/>
         </guideline>
@@ -2924,8 +2924,8 @@
     </checkitem>
     <checkitem type="error" id="C_422.0">
         <guideline>
-            <gItem techniques="F17,H88" id="4.1.1" name="JIS"/>
-            <gItem techniques="F17,H88" id="4.1.1" name="WCAG 2.0"/>
+            <gItem techniques="H88" id="4.1.1" name="JIS"/>
+            <gItem techniques="H88" id="4.1.1" name="WCAG 2.0"/>
         </guideline>
         <metrics>
             <mItem score="5" name="Perceivable"/>
@@ -2973,8 +2973,8 @@
     </checkitem>
     <checkitem type="user" id="C_600.2">
         <guideline>
-            <gItem techniques="G58,G69,H53,G78,G173,SM6,SM7,G8,SM1,SM2" id="1.2.3" name="JIS"/>
-            <gItem techniques="G58,G69,H53,G78,G173,SM6,SM7,G8,SM1,SM2" id="1.2.3" name="WCAG 2.0"/>
+            <gItem techniques="G58,G69,H53,H96,G78,G173,G203,SM6,SM7,G8,SM1,SM2" id="1.2.3" name="JIS"/>
+            <gItem techniques="G58,G69,H53,H96,G78,G173,G203,SM6,SM7,G8,SM1,SM2" id="1.2.3" name="WCAG 2.0"/>
         </guideline>
         <metrics>
             <mItem name="Perceivable"/>
@@ -3033,8 +3033,8 @@
     </checkitem>
     <checkitem type="user" id="C_600.7">
         <guideline>
-            <gItem techniques="G93,G87,SM11,SM12" id="1.2.2" name="JIS"/>
-            <gItem techniques="G93,G87,SM11,SM12" id="1.2.2" name="WCAG 2.0"/>
+            <gItem techniques="H95,G93,G87,SM11,SM12" id="1.2.2" name="JIS"/>
+            <gItem techniques="H95,G93,G87,SM11,SM12" id="1.2.2" name="WCAG 2.0"/>
         </guideline>
         <metrics>
             <mItem name="Perceivable"/>
@@ -3179,14 +3179,14 @@
     </checkitem>
     <checkitem type="info" id="C_600.19">
         <guideline>
-            <gItem techniques="G111,G14" id="1.4.1" name="JIS"/>
-            <gItem techniques="G111,G14" id="1.4.1" name="WCAG 2.0"/>
+            <gItem techniques="G111,G14,G205" id="1.4.1" name="JIS"/>
+            <gItem techniques="G111,G14,G205" id="1.4.1" name="WCAG 2.0"/>
         </guideline>
         <metrics>
             <mItem name="Perceivable"/>
         </metrics>
         <description>
-            <desc>If color is used within an image to convey information, If you use color to convey information, make sure the information is also represented another way.</desc>
+            <desc>If color is used within an image to convey information, make sure the information is also represented another way.</desc>
         </description>
     </checkitem>
     <checkitem type="user" id="C_600.20">
