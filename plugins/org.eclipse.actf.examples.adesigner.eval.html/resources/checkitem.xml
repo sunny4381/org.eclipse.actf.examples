@@ -130,8 +130,8 @@
     <checkitem type="error" id="C_14.0">
         <guideline>
             <gItem id="3.5" name="WCAG"/>
-            <gItem techniques="G141" id="2.4.10" name="JIS"/>
-            <gItem techniques="G141" id="2.4.10" name="WCAG 2.0"/>
+            <gItem techniques="G141,ARIA12" id="2.4.10" name="JIS"/>
+            <gItem techniques="G141,ARIA12" id="2.4.10" name="WCAG 2.0"/>
         </guideline>
         <metrics>
             <mItem score="5" name="Operable"/>
@@ -1565,15 +1565,15 @@
         <guideline>
             <gItem id="5.2" name="WCAG"/>
             <gItem id="h" name="Section508"/>
-            <gItem techniques="H63" id="1.3.1" name="JIS"/>
+            <gItem techniques="H43,H63" id="1.3.1" name="JIS"/>
             <gItem id="10" name="IBMGuideline"/>
-            <gItem techniques="H63" id="1.3.1" name="WCAG 2.0"/>
+            <gItem techniques="H43,H63" id="1.3.1" name="WCAG 2.0"/>
         </guideline>
         <metrics>
             <mItem name="Perceivable"/>
         </metrics>
         <description>
-            <desc>There are some combined table cells (COLSPAN/ROWSPAN). Use structural markup (e.g. SCOPE) to identify their hierarchy and relationship. If possible, avoid using COLSPAN/ROWSPAN in data table.</desc>
+            <desc>There are some combined table cells (COLSPAN/ROWSPAN). Use structural markup (e.g. scope or id/headers) to identify their hierarchy and relationship. If possible, avoid using COLSPAN/ROWSPAN in data table.</desc>
         </description>
     </checkitem>
     <checkitem type="info" id="C_77.0">
@@ -1664,8 +1664,8 @@
             <gItem id="2.1" name="WCAG"/>
             <gItem id="c" name="Section508"/>
             <gItem id="12" name="IBMGuideline"/>
-            <gItem techniques="G14,G182,G205,H92" id="1.4.1" name="JIS"/>
-            <gItem techniques="G14,G182,G205,H92" id="1.4.1" name="WCAG 2.0"/>
+            <gItem techniques="G14,G182,G205" id="1.4.1" name="JIS"/>
+            <gItem techniques="G14,G182,G205" id="1.4.1" name="WCAG 2.0"/>
         </guideline>
         <metrics>
             <mItem name="Perceivable"/>
@@ -2318,10 +2318,10 @@
     </checkitem>
     <checkitem type="user" id="C_388.0">
         <guideline>
-            <gItem techniques="G131" id="2.4.6" name="JIS"/>
-            <gItem techniques="G131" id="3.3.2" name="JIS"/>
-            <gItem techniques="G131" id="2.4.6" name="WCAG 2.0"/>
-            <gItem techniques="G131" id="3.3.2" name="WCAG 2.0"/>
+            <gItem techniques="G131,H90" id="2.4.6" name="JIS"/>
+            <gItem techniques="G131,H90" id="3.3.2" name="JIS"/>
+            <gItem techniques="G131,H90" id="2.4.6" name="WCAG 2.0"/>
+            <gItem techniques="G131,H90" id="3.3.2" name="WCAG 2.0"/>
         </guideline>
         <metrics>
             <mItem name="Operable"/>
@@ -2445,7 +2445,7 @@
             <mItem score="5" name="Perceivable"/>
         </metrics>
         <description>
-            <desc>Appropriately use the scope attribute to associate header cells and data cells in the data table.</desc>
+            <desc>No scope attribute for th element. Appropriately use the scope attribute to associate header cells and data cells in the data table.</desc>
         </description>
     </checkitem>
     <checkitem type="error" id="C_331.1">
@@ -2457,7 +2457,7 @@
             <mItem score="5" name="Perceivable"/>
         </metrics>
         <description>
-            <desc>Appropriately use the scope attribute to associate header cells and data cells in the data table.</desc>
+            <desc>Invalid value for scope attribute of th element. Appropriately use the scope attribute to associate header cells and data cells in the data table.</desc>
         </description>
     </checkitem>
     <checkitem type="error" id="C_332.0">
@@ -2988,8 +2988,8 @@
     </checkitem>
     <checkitem type="info" id="C_600.3">
         <guideline>
-            <gItem techniques="G115,G117,G138,G140,H48,H49,H51,SCR21" id="1.3.1" name="JIS"/>
-            <gItem techniques="G115,G117,G138,G140,H48,H49,H51,SCR21" id="1.3.1" name="WCAG 2.0"/>
+            <gItem techniques="G115,G117,G138,G140,G205,H48,H49,H51,SCR21" id="1.3.1" name="JIS"/>
+            <gItem techniques="G115,G117,G138,G140,G205,H48,H49,H51,SCR21" id="1.3.1" name="WCAG 2.0"/>
         </guideline>
         <metrics>
             <mItem name="Perceivable"/>
