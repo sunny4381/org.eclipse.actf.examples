@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="aiBrowser for Multimedia" id="org.eclipse.actf.examples.aibrowser.aiBrowser" application="org.eclipse.actf.examples.aibrowser.aiBrowserApplication" version="0.1.1" useFeatures="true" includeLaunchers="true">
+<product name="aiBrowser for Multimedia" uid="ACTF aiBrowser" id="org.eclipse.actf.examples.aibrowser.aiBrowser" application="org.eclipse.actf.examples.aibrowser.aiBrowserApplication" version="0.1.1" useFeatures="true" includeLaunchers="true">
 
    <aboutInfo>
       <image path="/org.eclipse.actf.examples.aibrowser/about.bmp"/>
@@ -14,8 +14,10 @@
    </configIni>
 
    <launcherArgs>
-      <programArgs>-forceProxy -clean</programArgs>
-      <vmArgs>-Xmx256m</vmArgs>
+      <programArgs>-forceProxy -clean
+      </programArgs>
+      <vmArgs>-Xmx256m
+      </vmArgs>
    </launcherArgs>
 
    <windowImages i16="/org.eclipse.actf.examples.aibrowser/icons/bl_16.gif" i32="/org.eclipse.actf.examples.aibrowser/icons/bl_32.gif" i48="/org.eclipse.actf.examples.aibrowser/icons/bl_48.gif"/>
@@ -34,32 +36,32 @@
    </launcher>
 
    <plugins>
-      <plugin id="com.ibm.accessibility.abrowser.client" fragment=""/>
-      <plugin id="com.ibm.accessibility.abrowser.dombycom" fragment=""/>
-      <plugin id="com.ibm.accessibility.abrowser.keyhook.win32" fragment=""/>
-      <plugin id="com.ibm.accessibility.abrowser.keyui" fragment=""/>
-      <plugin id="com.ibm.accessibility.abrowser.navigator" fragment=""/>
-      <plugin id="com.ibm.accessibility.abrowser.nvm3" fragment=""/>
-      <plugin id="com.ibm.accessibility.abrowser.query" fragment=""/>
-      <plugin id="com.ibm.accessibility.adesigner.client" fragment=""/>
-      <plugin id="com.ibm.accessibility.adesigner.common" fragment=""/>
-      <plugin id="com.ibm.accessibility.adesigner.pngmaker" fragment=""/>
-      <plugin id="com.ibm.accessibility.adesigner.runtime" fragment=""/>
-      <plugin id="com.ibm.accessibility.browser.odf" fragment=""/>
-      <plugin id="com.ibm.accessibility.com.win32" fragment=""/>
-      <plugin id="com.ibm.accessibility.common" fragment=""/>
-      <plugin id="com.ibm.accessibility.extension" fragment=""/>
-      <plugin id="com.ibm.accessibility.lowvision" fragment=""/>
-      <plugin id="com.ibm.accessibility.proxy" fragment=""/>
-      <plugin id="com.ibm.accessibility.tts.protalker" fragment=""/>
-      <plugin id="com.ibm.accessibility.tts.sapi" fragment=""/>
-      <plugin id="com.ibm.accessibility.tts.svdk" fragment=""/>
-      <plugin id="com.ibm.accessibility.voice" fragment=""/>
-      <plugin id="com.ibm.accessibility.waxcoding" fragment=""/>
-      <plugin id="com.ibm.accessibility.win32" fragment=""/>
+      <plugin id="com.ibm.accessibility.abrowser.client"/>
+      <plugin id="com.ibm.accessibility.abrowser.dombycom"/>
+      <plugin id="com.ibm.accessibility.abrowser.keyhook.win32"/>
+      <plugin id="com.ibm.accessibility.abrowser.keyui"/>
+      <plugin id="com.ibm.accessibility.abrowser.navigator"/>
+      <plugin id="com.ibm.accessibility.abrowser.nvm3"/>
+      <plugin id="com.ibm.accessibility.abrowser.query"/>
+      <plugin id="com.ibm.accessibility.adesigner.client"/>
+      <plugin id="com.ibm.accessibility.adesigner.common"/>
+      <plugin id="com.ibm.accessibility.adesigner.pngmaker"/>
+      <plugin id="com.ibm.accessibility.adesigner.runtime"/>
+      <plugin id="com.ibm.accessibility.browser.odf"/>
+      <plugin id="com.ibm.accessibility.com.win32"/>
+      <plugin id="com.ibm.accessibility.common"/>
+      <plugin id="com.ibm.accessibility.extension"/>
+      <plugin id="com.ibm.accessibility.lowvision"/>
+      <plugin id="com.ibm.accessibility.proxy"/>
+      <plugin id="com.ibm.accessibility.tts.protalker"/>
+      <plugin id="com.ibm.accessibility.tts.sapi"/>
+      <plugin id="com.ibm.accessibility.tts.svdk"/>
+      <plugin id="com.ibm.accessibility.voice"/>
+      <plugin id="com.ibm.accessibility.waxcoding"/>
+      <plugin id="com.ibm.accessibility.win32"/>
       <plugin id="com.ibm.icu"/>
-      <plugin id="com.ibm.odf" fragment=""/>
-      <plugin id="org.apache.xerces" fragment=""/>
+      <plugin id="com.ibm.odf"/>
+      <plugin id="org.apache.xerces"/>
       <plugin id="org.eclipse.core.commands"/>
       <plugin id="org.eclipse.core.contenttype"/>
       <plugin id="org.eclipse.core.expressions"/>
@@ -83,5 +85,8 @@
       <feature id="org.eclipse.actf.examples.aibrowser" version="0.5.0.qualifier"/>
    </features>
 
+   <configurations>
+      <property name="org.eclipse.update.reconcile" value="false" />
+   </configurations>
 
 </product>

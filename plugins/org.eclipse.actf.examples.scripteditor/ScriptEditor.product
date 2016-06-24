@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="Eclipse ACTF Script Editor Lite (EASEL)" id="org.eclipse.actf.examples.scripteditor.product" application="org.eclipse.actf.examples.scripteditor.application" version="0.1.0.qualifier" useFeatures="true" includeLaunchers="true">
+<product name="Eclipse ACTF Script Editor Lite (EASEL)" uid="ACTF Script Editor Lite" id="org.eclipse.actf.examples.scripteditor.product" application="org.eclipse.actf.examples.scripteditor.application" version="0.1.0.qualifier" useFeatures="true" includeLaunchers="true">
 
    <aboutInfo>
       <image path="/org.eclipse.actf.examples.scripteditor/about.bmp"/>
@@ -14,8 +14,10 @@
    </configIni>
 
    <launcherArgs>
-      <vmArgs>-Xmx256m</vmArgs>
-      <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts</vmArgsMac>
+      <vmArgs>-Xmx256m
+      </vmArgs>
+      <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts
+      </vmArgsMac>
    </launcherArgs>
 
    <windowImages i16="/org.eclipse.actf.examples.scripteditor/icons/bl_16.gif" i32="/org.eclipse.actf.examples.scripteditor/icons/bl_32.gif" i48="/org.eclipse.actf.examples.scripteditor/icons/bl_48.gif"/>
@@ -93,5 +95,8 @@
       <feature id="org.eclipse.help"/>
    </features>
 
+   <configurations>
+      <property name="org.eclipse.update.reconcile" value="false" />
+   </configurations>
 
 </product>

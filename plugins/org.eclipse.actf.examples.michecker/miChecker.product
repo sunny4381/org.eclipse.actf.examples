@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="miChecker" uid="miChecker" id="org.eclipse.actf.examples.michecker.miChecker" application="org.eclipse.actf.examples.michecker.org.eclipse.actf.examples.michecker.Application" version="2.0.0" useFeatures="true" includeLaunchers="true">
+<product name="miChecker" uid="miChecker" id="org.eclipse.actf.examples.michecker.miChecker" application="org.eclipse.actf.examples.michecker.org.eclipse.actf.examples.michecker.Application" version="2.0.1" useFeatures="true" includeLaunchers="true">
 
    <aboutInfo>
       <image path="/org.eclipse.actf.examples.michecker/about.gif"/>
@@ -20,7 +20,6 @@
 
    <windowImages i16="/org.eclipse.actf.examples.michecker/icons/excla_16.png" i32="/org.eclipse.actf.examples.michecker/icons/excla_32.png"/>
 
-
    <launcher name="miChecker">
       <solaris/>
       <win useIco="true">
@@ -28,7 +27,6 @@
          <bmp/>
       </win>
    </launcher>
-
 
    <vm>
    </vm>
@@ -41,6 +39,9 @@
       <feature id="org.eclipse.help"/>
    </features>
 
+   <configurations>
+      <property name="org.eclipse.update.reconcile" value="false" />
+   </configurations>
 
    <preferencesInfo>
       <targetfile overwrite="false"/>

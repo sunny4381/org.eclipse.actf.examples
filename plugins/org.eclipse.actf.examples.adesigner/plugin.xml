@@ -80,7 +80,7 @@
             name="aDesigner">
          <property
                name="windowImages"
-               value="icons/excla_32.png">
+               value="icons/excla_16.png,icons/excla_32.png">
          </property>
          <property
                name="aboutText"
@@ -103,12 +103,12 @@
                value="10,203,500,20">
          </property>
          <property
-               name="preferenceCustomization"
-               value="plugin_customization.ini">
-         </property>
-         <property
                name="appName"
                value="aDesigner">
+         </property>
+         <property
+               name="preferenceCustomization"
+               value="plugin_customization.ini">
          </property>
       </product>
    </extension>

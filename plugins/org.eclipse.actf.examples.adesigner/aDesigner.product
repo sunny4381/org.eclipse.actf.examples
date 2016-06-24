@@ -33,7 +33,6 @@
       </win>
    </launcher>
 
-
    <vm>
    </vm>
 
@@ -45,5 +44,8 @@
       <feature id="org.eclipse.help"/>
    </features>
 
+   <configurations>
+      <property name="org.eclipse.update.reconcile" value="false" />
+   </configurations>
 
 </product>

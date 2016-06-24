@@ -14,8 +14,10 @@
    </configIni>
 
    <launcherArgs>
-      <vmArgs>-Xmx512m</vmArgs>
-      <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts</vmArgsMac>
+      <vmArgs>-Xmx512m
+      </vmArgs>
+      <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts
+      </vmArgsMac>
    </launcherArgs>
 
    <windowImages i32="/org.eclipse.actf.examples.htmlchecker/icons/excla_32.png"/>
@@ -38,5 +40,8 @@
       <feature id="org.eclipse.actf.examples.htmlchecker"/>
    </features>
 
+   <configurations>
+      <property name="org.eclipse.update.reconcile" value="false" />
+   </configurations>
 
 </product>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?pde version="3.4"?>
+<?pde version="3.5"?>
 
-<product name="Simple Visualizer" id="org.eclipse.actf.examples.simplevisualizer.SimpleVisualizer" application="org.eclipse.actf.examples.simplevisualizer.SimpleVisualizerApplication" useFeatures="true">
+<product name="Simple Visualizer" uid="ACTF Simple Visualizer" id="org.eclipse.actf.examples.simplevisualizer.SimpleVisualizer" application="org.eclipse.actf.examples.simplevisualizer.SimpleVisualizerApplication" useFeatures="true" includeLaunchers="true">
 
    <aboutInfo>
       <image path="/org.eclipse.actf.examples.simplevisualizer/about.gif"/>
@@ -14,12 +14,13 @@
    </configIni>
 
    <launcherArgs>
-      <vmArgs>-Xmx256m</vmArgs>
-      <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts</vmArgsMac>
+      <vmArgs>-Xmx256m
+      </vmArgs>
+      <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts
+      </vmArgsMac>
    </launcherArgs>
 
    <windowImages i32="/org.eclipse.actf.examples.simplevisualizer/icons/excla_32.png"/>
-
 
    <launcher>
       <solaris/>
@@ -28,7 +29,6 @@
          <bmp/>
       </win>
    </launcher>
-
 
    <vm>
    </vm>
@@ -39,5 +39,9 @@
    <features>
       <feature id="org.eclipse.actf.examples.simplevisualizer" version="1.4.0.qualifier"/>
    </features>
+
+   <configurations>
+      <property name="org.eclipse.update.reconcile" value="false" />
+   </configurations>
 
 </product>
