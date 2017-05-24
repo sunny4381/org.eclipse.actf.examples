@@ -21,7 +21,7 @@ public class CapturePreferenceInitializer extends AbstractPreferenceInitializer 
 
 		// Initialize values
 		store.setDefault(CapturePreferenceConstants.SAMPRATE_GROUP_NAME,
-				CapturePreferenceConstants.SAMPRATE_NOM);
+				CapturePreferenceConstants.SAMPRATE_FAST);
 		store.setDefault(CapturePreferenceConstants.GAIN_VOLLVL_NAME,
 				CapturePreferenceConstants.GAIN_DEF);
 	}
