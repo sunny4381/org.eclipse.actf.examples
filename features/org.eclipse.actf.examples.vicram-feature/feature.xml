@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.actf.examples.vicram"
       label="ACTF Example ViCRAM feature"
-      version="1.5.0.qualifier"
+      version="1.5.1.qualifier"
       provider-name="Eclipse ACTF Project"
       plugin="org.eclipse.actf.examples.vicram"
       os="win32"
