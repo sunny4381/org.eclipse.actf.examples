@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2016 IBM Corporation and Others
+ * Copyright (c) 2004, 2020 IBM Corporation and Others
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -74,11 +74,11 @@ public class CheckEngine extends HtmlTagUtil {
 	private static final Pattern COMMENT = Pattern.compile("/\\*.*?\\*/", Pattern.DOTALL | Pattern.CASE_INSENSITIVE);
 
 	private static final Pattern FIXSIZE_PATTERN = Pattern.compile(
-			".*\\{[^\\}]*font-size(\\p{Space})*:[^;]*(mm|cm|in|pt|pc|px).*\\}.*",
+			".*\\{[^\\}]*font-size(\\p{Space})*:[^;v]*(mm|cm|in|pt|pc|px).*\\}.*",
 			Pattern.DOTALL | Pattern.CASE_INSENSITIVE);
 
 	private static final Pattern FIXSIZE_PATTERN_ATTR = Pattern
-			.compile("font-size(\\p{Space})*:[^;]*(mm|cm|in|pt|pc|px)", Pattern.DOTALL | Pattern.CASE_INSENSITIVE);
+			.compile("font-size(\\p{Space})*:[^;v]*(mm|cm|in|pt|pc|px)", Pattern.DOTALL | Pattern.CASE_INSENSITIVE);
 
 	private static final Pattern BLINK_PATTERN = Pattern.compile(
 			".*\\{[^\\}]*text-decoration(\\p{Space})*:[^;]*blink.*\\}.*", Pattern.DOTALL | Pattern.CASE_INSENSITIVE);
