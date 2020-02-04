@@ -86,12 +86,6 @@ public class CheckEngine extends HtmlTagUtil {
 	private static final Pattern BLINK_PATTERN_ATTR = Pattern.compile("text-decoration(\\p{Space})*:[^;]*blink.*",
 			Pattern.DOTALL | Pattern.CASE_INSENSITIVE);
 
-	private static final Pattern BEFORE_PATTERN = Pattern.compile(
-			".*:before(\\p{Space})*\\{[^\\}]*content(\\p{Space})*:.*\\}.*", Pattern.DOTALL | Pattern.CASE_INSENSITIVE);
-
-	private static final Pattern AFTER_PATTERN = Pattern.compile(
-			".*:after(\\p{Space})*\\{[^\\}]*content(\\p{Space})*:.*\\}.*", Pattern.DOTALL | Pattern.CASE_INSENSITIVE);
-
 	// not strict check
 	private static final String CSS_COLORS = "(aliceblue|antiquewhite|aqua|aquamarine|azure|beige|bisque|black|blanchedalmond|blue|blueviolet|brown|burlywood|cadetblue|chartreuse|chocolate|coral|cornflowerblue|cornsilk|crimson|cyan|darkblue|darkcyan|darkgoldenrod|darkgray|darkgreen|darkgrey|darkkhaki|darkmagenta|darkolivegreen|darkorange|darkorchid|darkred|darksalmon|darkseagreen|darkslateblue|darkslategray|darkslategrey|darkturquoise|darkviolet|deeppink|deepskyblue|dimgray|dimgrey|dodgerblue|firebrick|floralwhite|forestgreen|fuchsia|gainsboro|ghostwhite|gold|goldenrod|gray|green|greenyellow|grey|honeydew|hotpink|indianred|indigo|ivory|khaki|lavender|lavenderblush|lawngreen|lemonchiffon|lightblue|lightcoral|lightcyan|lightgoldenrodyellow|lightgray|lightgreen|lightgrey|lightpink|lightsalmon|lightseagreen|lightskyblue|lightslategray|lightslategrey|lightsteelblue|lightyellow|lime|limegreen|linen|magenta|maroon|mediumaquamarine|mediumblue|mediumorchid|mediumpurple|mediumseagreen|mediumslateblue|mediumspringgreen|mediumturquoise|mediumvioletred|midnightblue|mintcream|mistyrose|moccasin|navajowhite|navy|oldlace|olive|olivedrab|orange|orangered|orchid|palegoldenrod|palegreen|paleturquoise|palevioletred|papayawhip|peachpuff|peru|pink|plum|powderblue|purple|red|rosybrown|royalblue|saddlebrown|salmon|sandybrown|seagreen|seashell|sienna|silver|skyblue|slateblue|slategray|slategrey|snow|springgreen|steelblue|tan|teal|thistle|tomato|turquoise|violet|wheat|white|whitesmoke|yellow|yellowgreen|ActiveBorder|ActiveCaption|AppWorkspace|Background|ButtonFace|ButtonHighlight|ButtonShadow|ButtonText|CaptionText|GrayText|Highlight|HighlightText|InactiveBorder|InactiveCaption|InactiveCaptionText|InfoBackground|InfoText|Menu|MenuText|Scrollbar|ThreeDDarkShadow|ThreeDFace|ThreeDHighlight|ThreeDLightShadow|ThreeDShadow|Window|WindowFrame|WindowText|inherit|currentColor|rgb[a]?\\(.*\\)|hsl[a]?\\(.*\\)|#[a-f0-9]{3}|#[a-f0-9]{6})";
 
@@ -242,6 +236,8 @@ public class CheckEngine extends HtmlTagUtil {
 	private String docTypeS;
 
 	private Map<IStyleSheet, String> styleSheetsMap = new HashMap<IStyleSheet, String>();
+
+	private CssBeforeAfterChecker cssBeforeAfterChecker = new CssBeforeAfterChecker();
 
 	/**
 	 * 
@@ -3099,12 +3095,7 @@ public class CheckEngine extends HtmlTagUtil {
 		for (Element e : styleElementList) {
 			String style = styleElementMap.get(e);
 			if (style != null) {
-				if (BEFORE_PATTERN.matcher(style).matches()) {
-					addCheckerProblem("C_90.0", "", e);
-				}
-				if (AFTER_PATTERN.matcher(style).matches()) {
-					addCheckerProblem("C_90.1", "", e);
-				}
+				result.addAll(cssBeforeAfterChecker.check(style, e));
 			}
 		}
 
@@ -3113,10 +3104,9 @@ public class CheckEngine extends HtmlTagUtil {
 			if (ss.getHref() != null && ss.getHref().length() > 0) {
 				// avoid duplication
 				String style = styleSheetsMap.get(ss);
-				if (BEFORE_PATTERN.matcher(style).matches())
-					addCheckerProblem("C_90.0", "(" + ss.getHref() + ")");
-				if (AFTER_PATTERN.matcher(style).matches())
-					addCheckerProblem("C_90.1", "(" + ss.getHref() + ")");
+				if (style != null) {
+					result.addAll(cssBeforeAfterChecker.check(style, ss.getHref()));
+				}
 			}
 		}
 	}
