@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.eclipse.actf.examples</groupId>
+    <artifactId>org.eclipse.actf.examples.parent</artifactId>
+    <version>1.5.1</version>
+    <relativePath>../../pom.xml</relativePath>
+  </parent>
+
+  <artifactId>org.eclipse.actf.examples.michecker</artifactId>
+  <name>org.eclipse.actf.examples.michecker</name>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.eclipse.actf.examples</groupId>
+      <artifactId>org.eclipse.actf.examples.adesigner.eval.html</artifactId>
+      <version>${version}</version>
+      <scope>system</scope>
+      <systemPath>${basedir}/../org.eclipse.actf.examples.adesigner.eval.html/target/org.eclipse.actf.examples.adesigner.eval.html-${version}.jar</systemPath>
+    </dependency>
+  </dependencies>
+</project>
