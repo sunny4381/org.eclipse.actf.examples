@@ -6,12 +6,14 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="org.eclipse.actf.examples.adesigner.eval.html" />
+        <module name="org.eclipse.actf.examples.htmlchecker" />
         <module name="org.eclipse.actf.examples.michecker" />
+        <module name="org.eclipse.actf.examples.adesigner.eval.html" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="org.eclipse.actf.examples.adesigner.eval.html" target="1.8" />
+      <module name="org.eclipse.actf.examples.htmlchecker" target="1.8" />
       <module name="org.eclipse.actf.examples.michecker" target="1.8" />
       <module name="org.eclipse.actf.examples.parent" target="1.8" />
     </bytecodeTargetLevel>
