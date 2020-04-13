@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/plugins/org.eclipse.actf.examples.adesigner.eval.html/org.eclipse.actf.examples.adesigner.eval.html.iml" filepath="$PROJECT_DIR$/plugins/org.eclipse.actf.examples.adesigner.eval.html/org.eclipse.actf.examples.adesigner.eval.html.iml" />
+      <module fileurl="file://$PROJECT_DIR$/plugins/org.eclipse.actf.examples.michecker/org.eclipse.actf.examples.michecker.iml" filepath="$PROJECT_DIR$/plugins/org.eclipse.actf.examples.michecker/org.eclipse.actf.examples.michecker.iml" />
+      <module fileurl="file://$PROJECT_DIR$/org.eclipse.actf.examples.parent.iml" filepath="$PROJECT_DIR$/org.eclipse.actf.examples.parent.iml" />
+    </modules>
+  </component>
+</project>
