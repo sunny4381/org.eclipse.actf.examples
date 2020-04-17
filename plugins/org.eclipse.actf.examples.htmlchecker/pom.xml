@@ -12,4 +12,22 @@
 
   <artifactId>org.eclipse.actf.examples.htmlchecker</artifactId>
   <name>org.eclipse.actf.examples.htmlchecker</name>
+
+  <build>
+    <resources>
+      <resource>
+        <directory>.</directory>
+        <includes>
+          <include>META-INF/MANIFEST.MF</include>
+          <include>icons/**/*</include>
+          <include>about.gif</include>
+          <include>about.html</include>
+          <include>htmlchecker.product</include>
+          <include>plugin.properties</include>
+          <include>plugin.xml</include>
+          <include>plugin_ja.properties</include>
+        </includes>
+      </resource>
+    </resources>
+  </build>
 </project>
